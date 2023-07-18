@@ -15,8 +15,7 @@
     <!--end::Fonts-->
 
     <!-- begin: Page level CSS -->
-    <link href="{{ asset('css/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('css/fullcalendar.bundle.css') }}" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <!-- end: Page level CSS -->
 
     <!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
@@ -25,6 +24,15 @@
     <!--end::Global Stylesheets Bundle-->
     <link href="{{ asset('css/myicons.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css" />
+
+    <!--begin::Global Javascript Bundle(mandatory for all pages)-->
+    <script src="{{ asset('js/plugins.bundle.js') }}"></script>
+    <script src="{{ asset('js/scripts.bundle.js') }}"></script>
+    <!--end::Global Javascript Bundle-->
+
+    <!-- begin: Page level JS -->
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <!-- end: Page level JS -->
 </head>
 
 <body id="kt_body"
@@ -76,16 +84,6 @@
     <!--begin::Scrolltop-->
     @include('layouts.app.scrolltop')
     <!--end::Scrolltop-->
-
-    <!--begin::Global Javascript Bundle(mandatory for all pages)-->
-    <script src="{{ asset('js/plugins.bundle.js') }}"></script>
-    <script src="{{ asset('js/scripts.bundle.js') }}"></script>
-    <!--end::Global Javascript Bundle-->
-
-    <!-- begin: Page level JS -->
-    <script src="{{ asset('js/fullcalendar.bundle.js') }}"></script>
-    <script src="{{ asset('js/datatables.bundle.js') }}"></script>
-    <!-- end: Page level JS -->
 </body>
 
 </html>
