@@ -9,7 +9,9 @@
             class="page-title d-flex align-items-center me-3 flex-wrap lh-1">
             <!--begin::Title-->
             <h1 class="d-flex align-items-center text-dark fw-bold my-1 fs-3">
-                Multipurpose
+                @if (isset($header))
+                    {{ $header }}
+                @endif
             </h1>
             <!--end::Title-->
 

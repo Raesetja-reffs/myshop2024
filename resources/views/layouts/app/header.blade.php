@@ -12,7 +12,7 @@
 
         <!--begin::Mobile logo-->
         <div class="d-flex align-items-center flex-grow-1 flex-lg-grow-0">
-            <a href="{{ route('dashboard') }}" class="d-lg-none">
+            <a href="{{ route('home') }}" class="d-lg-none">
                 <img alt="Logo" src="{{ asset('images/Logo-01.png') }}" class="h-25px" />
             </a>
         </div>
@@ -91,7 +91,7 @@
 
                         <!--begin::Menu item-->
                         <div class="menu-item px-5">
-                            <a href="{{ route('logout') }}"
+                            <a href="javascript:void(0);"
                                 class="menu-link px-5"
                                 onclick="event.preventDefault();document.getElementById('logout-form').submit();"
                             >

@@ -6,7 +6,7 @@
     <!--begin::Brand-->
     <div class="aside-logo flex-column-auto" id="kt_aside_logo">
         <!--begin::Logo-->
-        <a href="{{ route('dashboard') }}">
+        <a href="{{ route('home') }}">
             <img alt="Logo" src="{{ asset('images/Logo-01.png') }}" class="h-15px logo" />
         </a>
         <!--end::Logo-->
