@@ -20,9 +20,8 @@
         </div>
         <!--begin::Heading-->
 
-        <!--begin::Input group--->
+        <!--UserName--->
         <div class="fv-row mb-8">
-            <!--begin::Email-->
             <x-text-input
                 id="UserName"
                 class="form-control bg-transparent"
@@ -31,11 +30,10 @@
                 :value="old('UserName')"
                 placeholder="UserName"
                 required autofocus autocomplete="UserName" />
-            <!--end::Email-->
             <x-input-error :messages="$errors->get('UserName')" class="mt-2" />
         </div>
 
-        <!--end::Input group--->
+        <!--Password--->
         <div class="fv-row mb-3">
             <x-text-input
                 id="Password"
@@ -44,11 +42,8 @@
                 name="Password"
                 placeholder="Password"
                 required autocomplete="current-password" />
-
             <x-input-error :messages="$errors->get('Password')" class="mt-2" />
-            <!--end::Password-->
         </div>
-        <!--end::Input group--->
 
         <!--begin::Wrapper-->
         <div class="d-flex flex-stack flex-wrap gap-3 fs-base fw-semibold mb-8">
