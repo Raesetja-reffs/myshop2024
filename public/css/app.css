@@ -6,9 +6,18 @@
         padding: 0 15px !important;
     } */
 }
+
 .card .card-body {
     padding: 1rem 1.25rem;
 }
+
 .text-deep-pink {
     color: deeppink !important;
+}
+
+.disable-number-arrows {
+    /* Disable the up and down arrow controls */
+    -moz-appearance: textfield;
+    -webkit-appearance: none;
+    appearance: none;
 }

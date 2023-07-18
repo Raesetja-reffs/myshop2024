@@ -35,7 +35,7 @@
             </div>
             <div class="me-2 flex-grow-1">
                 <label for="inputOrderId">Order ID</label>
-                <input type="number" class="form-control" id="orderId" autocomplete="off">
+                <input type="number" class="form-control disable-number-arrows" id="orderId" autocomplete="off">
             </div>
             <div class="me-2 flex-grow-1">
                 <button type="button" id="checkOrders" class="btn btn-primary mt-6">Check</button>

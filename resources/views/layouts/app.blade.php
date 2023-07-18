@@ -15,7 +15,7 @@
     <!--end::Fonts-->
 
     <!-- begin: Page level CSS -->
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
     <!-- end: Page level CSS -->
 
     <!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
@@ -23,6 +23,9 @@
     <link href="{{ asset('css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
     <!--end::Global Stylesheets Bundle-->
     <link href="{{ asset('css/myicons.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('css/tippop.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('css/contextMenu.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('css/jquery.flexdatalist.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css" />
 
     <!--begin::Global Javascript Bundle(mandatory for all pages)-->
@@ -31,7 +34,11 @@
     <!--end::Global Javascript Bundle-->
 
     <!-- begin: Page level JS -->
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <script src="{{ asset('js/jquery.tippop.min.js') }}"></script>
+    <script src="{{ asset('js/contextMenu.js') }}"></script>
+    <script src="{{ asset('js/jquery.flexdatalist.js') }}"></script>
+    <script src="{{ asset('js/jquery.mcautocomplete.js') }}"></script>
     <!-- end: Page level JS -->
 </head>
 

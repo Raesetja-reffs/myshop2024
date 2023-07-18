@@ -26,4 +26,7 @@
     </div>
     <!--end::Row-->
     @include('dims.sales-order.partials.allscript')
+    <script>
+
+    </script>
 </x-app-layout>
