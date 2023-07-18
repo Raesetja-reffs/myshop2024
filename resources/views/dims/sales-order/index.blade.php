@@ -2,6 +2,11 @@
     <x-slot name="header">
         {{ __('Sales Order') }}
     </x-slot>
-    <label class="form-label">Default input</label>
-    <input type="text" class="form-control" placeholder="name@example.com"/>
+    <!--begin::Row-->
+    <div class="card">
+        <div class="card-body">
+            @include('dims.sales-order.partials.searchbar')
+        </div>
+    </div>
+    <!--end::Row-->
 </x-app-layout>

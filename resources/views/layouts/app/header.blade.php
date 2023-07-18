@@ -107,6 +107,11 @@
                     <!--end::Menu wrapper-->
                 </div>
                 <!--end::User -->
+                <!--begin::Calculator-->
+                <div class="d-flex align-items-center ms-1 ms-lg-3">
+                    <i class="cursor-pointer fas fa-calculator fs-3x text-deep-pink" aria-hidden="true" id="tamaraCalculatorId"></i>
+                </div>
+                <!--end::Calculator-->
 
                 <!--begin::Heaeder menu toggle-->
                 <div class="d-flex align-items-stretch d-lg-none px-3 me-n3" title="Show header menu">

@@ -24,7 +24,7 @@
     <link href="{{ asset('css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
     <!--end::Global Stylesheets Bundle-->
     <link href="{{ asset('css/myicons.css') }}" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css" />
 </head>
 
 <body id="kt_body"
@@ -56,11 +56,7 @@
                     <div class="post d-flex flex-column-fluid" id="kt_post">
                         <!--begin::Container-->
                         <div id="kt_content_container" class=" container-xxl ">
-                            <!--begin::Row-->
-                            <div class="row g-5 gx-xl-10 mb-5 mb-xl-10">
-                                {{ $slot }}
-                            </div>
-                            <!--end::Row-->
+                            {{ $slot }}
                         </div>
                         <!--end::Container-->
                     </div>
