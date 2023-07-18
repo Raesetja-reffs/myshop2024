@@ -46,6 +46,7 @@
             <!--end::Email-->
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
+
         <!--Password--->
         <div class="fv-row mb-8">
             <!--begin::Email-->
