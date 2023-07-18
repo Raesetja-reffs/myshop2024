@@ -21,35 +21,8 @@
         <!--begin::Wrapper-->
         <div class="d-flex align-items-stretch justify-content-between flex-lg-grow-1">
             <!--begin::Navbar-->
-            <div class="d-flex align-items-stretch" id="kt_header_nav">
-
-                <!--begin::Menu wrapper-->
-                <div class="header-menu align-items-stretch" data-kt-drawer="true" data-kt-drawer-name="header-menu"
-                    data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true"
-                    data-kt-drawer-width="{default:'200px', '300px': '250px'}" data-kt-drawer-direction="end"
-                    data-kt-drawer-toggle="#kt_header_menu_mobile_toggle" data-kt-swapper="true"
-                    data-kt-swapper-mode="prepend" data-kt-swapper-parent="{default: '#kt_body', lg: '#kt_header_nav'}">
-                    <!--begin::Menu-->
-                    <div class="menu menu-rounded menu-column menu-lg-row menu-root-here-bg-desktop menu-active-bg menu-state-primary menu-title-gray-800 menu-arrow-gray-400 align-items-stretch my-5 my-lg-0 px-2 px-lg-0 fw-semibold fs-6"
-                        id="#kt_header_menu" data-kt-menu="true">
-                        <!--begin:Menu item-->
-                        <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}"
-                            data-kt-menu-placement="bottom-start"
-                            class="menu-item here show menu-here-bg menu-lg-down-accordion me-0 me-lg-2">
-                            <!--begin:Menu link--><span class="menu-link py-3"><span
-                                    class="menu-title">Dashboards</span><span
-                                    class="menu-arrow d-lg-none"></span></span>
-                            <!--end:Menu link-->
-                        </div>
-                        <!--end:Menu item-->
-                    </div>
-                    <!--end::Menu-->
-                </div>
-                <!--end::Menu wrapper-->
-            </div>
+            @include('layouts.app.navbar')
             <!--end::Navbar-->
-
-
             <!--begin::Toolbar wrapper-->
             <div class="topbar d-flex align-items-stretch flex-shrink-0">
                 <!--begin::User-->
@@ -118,10 +91,15 @@
 
                         <!--begin::Menu item-->
                         <div class="menu-item px-5">
-                            <a href="/metronic8/demo13/../demo13/authentication/layouts/corporate/sign-in.html"
-                                class="menu-link px-5">
+                            <a href="{{ route('logout') }}"
+                                class="menu-link px-5"
+                                onclick="event.preventDefault();document.getElementById('logout-form').submit();"
+                            >
                                 Logout
                             </a>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                {{ csrf_field() }}
+                            </form>
                         </div>
                         <!--end::Menu item-->
                     </div>

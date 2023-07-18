@@ -1,0 +1,531 @@
+.mi-extras {
+    background-image: url("icons/extras.png");
+    background-repeat: no-repeat;
+    background-size: 18px;
+    height: 18px;
+    width: 18px;
+    -webkit-font-smoothing: antialiased;
+    display: var(--fa-display,inline-block);
+    font-style: normal;
+    font-variant: normal;
+    line-height: 1;
+    text-rendering: auto;
+    color: currentColor;
+    vertical-align: middle !important;
+    /*margin-right: 10px;
+    margin-left: 10px;*/
+    filter: sepia(100%) hue-rotate(190deg) saturate(900%);
+}
+
+.mi-cpanel {
+    background-image: url("icons/cpanel.png");
+    background-repeat: no-repeat;
+    background-size: 18px;
+    height: 18px;
+    width: 18px;
+    -webkit-font-smoothing: antialiased;
+    display: var(--fa-display,inline-block);
+    font-style: normal;
+    font-variant: normal;
+    line-height: 1;
+    text-rendering: auto;
+    color: currentColor;
+    vertical-align: middle !important;
+    /*margin-right: 10px;
+    margin-left: 10px;*/
+    filter: sepia(100%) hue-rotate(190deg) saturate(900%);
+}
+
+.mi-backorders {
+    background-image: url("icons/backorders.png");
+    background-repeat: no-repeat;
+    background-size: 18px;
+    height: 18px;
+    width: 18px;
+    -webkit-font-smoothing: antialiased;
+    display: var(--fa-display,inline-block);
+    font-style: normal;
+    font-variant: normal;
+    line-height: 1;
+    text-rendering: auto;
+    color: currentColor;
+    vertical-align: middle !important;
+    /*margin-right: 10px;
+    margin-left: 10px;*/
+    filter: sepia(100%) hue-rotate(190deg) saturate(900%);
+}
+
+.mi-customers {
+    background-image: url("icons/customers.png");
+    background-repeat: no-repeat;
+    background-size: 18px;
+    height: 18px;
+    width: 18px;
+    -webkit-font-smoothing: antialiased;
+    display: var(--fa-display,inline-block);
+    font-style: normal;
+    font-variant: normal;
+    line-height: 1;
+    text-rendering: auto;
+    color: currentColor;
+    vertical-align: middle !important;
+    /*margin-right: 10px;
+    margin-left: 10px;*/
+    filter: sepia(100%) hue-rotate(190deg) saturate(900%);
+}
+.mi-truck {
+    background-image: url("icons/truck.png");
+    background-repeat: no-repeat;
+    background-size: 18px;
+    height: 18px;
+    width: 18px;
+    -webkit-font-smoothing: antialiased;
+    display: var(--fa-display,inline-block);
+    font-style: normal;
+    font-variant: normal;
+    line-height: 1;
+    text-rendering: auto;
+    color: currentColor;
+    vertical-align: middle !important;
+    /*margin-right: 10px;
+    margin-left: 10px;*/
+    filter: sepia(100%) hue-rotate(190deg) saturate(900%);
+}
+.mi-route {
+    background-image: url("icons/route.png");
+    background-repeat: no-repeat;
+    background-size: 18px;
+    height: 18px;
+    width: 18px;
+    -webkit-font-smoothing: antialiased;
+    display: var(--fa-display,inline-block);
+    font-style: normal;
+    font-variant: normal;
+    line-height: 1;
+    text-rendering: auto;
+    color: currentColor;
+    vertical-align: middle !important;
+    /*margin-right: 10px;
+    margin-left: 10px;*/
+    filter: sepia(100%) hue-rotate(190deg) saturate(900%);
+}
+.mi-driver {
+    background-image: url("icons/driver.png");
+    background-repeat: no-repeat;
+    background-size: 18px;
+    height: 18px;
+    width: 18px;
+    -webkit-font-smoothing: antialiased;
+    display: var(--fa-display,inline-block);
+    font-style: normal;
+    font-variant: normal;
+    line-height: 1;
+    text-rendering: auto;
+    color: currentColor;
+    vertical-align: middle !important;
+    /*margin-right: 10px;
+    margin-left: 10px;*/
+    filter: sepia(100%) hue-rotate(190deg) saturate(900%);
+}
+.mi-contract {
+    background-image: url("icons/contract.png");
+    background-repeat: no-repeat;
+    background-size: 18px;
+    height: 18px;
+    width: 18px;
+    -webkit-font-smoothing: antialiased;
+    display: var(--fa-display,inline-block);
+    font-style: normal;
+    font-variant: normal;
+    line-height: 1;
+    text-rendering: auto;
+    color: currentColor;
+    vertical-align: middle !important;
+    /*margin-right: 10px;
+    margin-left: 10px;*/
+    filter: sepia(100%) hue-rotate(190deg) saturate(900%);
+}
+.mi-box {
+    background-image: url("icons/box.png");
+    background-repeat: no-repeat;
+    background-size: 18px;
+    height: 18px;
+    width: 18px;
+    -webkit-font-smoothing: antialiased;
+    display: var(--fa-display,inline-block);
+    font-style: normal;
+    font-variant: normal;
+    line-height: 1;
+    text-rendering: auto;
+    color: currentColor;
+    vertical-align: middle !important;
+    /*margin-right: 10px;
+    margin-left: 10px;*/
+    filter: sepia(100%) hue-rotate(190deg) saturate(900%);
+}
+.mi-fleet {
+    background-image: url("icons/fleet.png");
+    background-repeat: no-repeat;
+    background-size: 18px;
+    height: 18px;
+    width: 18px;
+    -webkit-font-smoothing: antialiased;
+    display: var(--fa-display,inline-block);
+    font-style: normal;
+    font-variant: normal;
+    line-height: 1;
+    text-rendering: auto;
+    color: currentColor;
+    vertical-align: middle !important;
+    /*margin-right: 10px;
+    margin-left: 10px;*/
+    filter: sepia(100%) hue-rotate(190deg) saturate(900%);
+}
+.mi-smartphone {
+    background-image: url("icons/smartphone.png");
+    background-repeat: no-repeat;
+    background-size: 18px;
+    height: 18px;
+    width: 18px;
+    -webkit-font-smoothing: antialiased;
+    display: var(--fa-display,inline-block);
+    font-style: normal;
+    font-variant: normal;
+    line-height: 1;
+    text-rendering: auto;
+    color: currentColor;
+    vertical-align: middle !important;
+    /*margin-right: 10px;
+    margin-left: 10px;*/
+    filter: sepia(100%) hue-rotate(190deg) saturate(900%);
+}
+.mi-isellit {
+    background-image: url("icons/isellit.png");
+    background-repeat: no-repeat;
+    background-size: 18px;
+    height: 18px;
+    width: 18px;
+    -webkit-font-smoothing: antialiased;
+    display: var(--fa-display,inline-block);
+    font-style: normal;
+    font-variant: normal;
+    line-height: 1;
+    text-rendering: auto;
+    color: currentColor;
+    vertical-align: middle !important;
+    /*margin-right: 10px;
+    margin-left: 10px;*/
+    filter: sepia(100%) hue-rotate(190deg) saturate(900%);
+}
+.mi-search {
+    background-image: url("icons/search.png");
+    background-repeat: no-repeat;
+    background-size: 18px;
+    height: 18px;
+    width: 18px;
+    -webkit-font-smoothing: antialiased;
+    display: var(--fa-display,inline-block);
+    font-style: normal;
+    font-variant: normal;
+    line-height: 1;
+    text-rendering: auto;
+    color: currentColor;
+    vertical-align: middle !important;
+    /*margin-right: 10px;
+    margin-left: 10px;*/
+    filter: sepia(100%) hue-rotate(190deg) saturate(900%);
+}
+.mi-pteams {
+    background-image: url("icons/pteams.png");
+    background-repeat: no-repeat;
+    background-size: 18px;
+    height: 18px;
+    width: 18px;
+    -webkit-font-smoothing: antialiased;
+    display: var(--fa-display,inline-block);
+    font-style: normal;
+    font-variant: normal;
+    line-height: 1;
+    text-rendering: auto;
+    color: currentColor;
+    vertical-align: middle !important;
+    /*margin-right: 10px;
+    margin-left: 10px;*/
+    filter: sepia(100%) hue-rotate(190deg) saturate(900%);
+}
+.mi-qtyajustments{
+    background-image: url("icons/qtyajustments.png");
+    background-repeat: no-repeat;
+    background-size: 18px;
+    height: 18px;
+    width: 18px;
+    -webkit-font-smoothing: antialiased;
+    display: var(--fa-display,inline-block);
+    font-style: normal;
+    font-variant: normal;
+    line-height: 1;
+    text-rendering: auto;
+    color: currentColor;
+    vertical-align: middle !important;
+    /*margin-right: 10px;
+    margin-left: 10px;*/
+    filter: sepia(100%) hue-rotate(190deg) saturate(900%);
+}
+.mi-salesperfuser {
+    background-image: url("icons/salesperfuser.png");
+    background-repeat: no-repeat;
+    background-size: 18px;
+    height: 18px;
+    width: 18px;
+    -webkit-font-smoothing: antialiased;
+    display: var(--fa-display,inline-block);
+    font-style: normal;
+    font-variant: normal;
+    line-height: 1;
+    text-rendering: auto;
+    color: currentColor;
+    vertical-align: middle !important;
+    /*margin-right: 10px;
+    margin-left: 10px;*/
+    filter: sepia(100%) hue-rotate(190deg) saturate(900%);
+}
+.mi-warehousetransfer {
+    background-image: url("icons/warehousetransfer.png");
+    background-repeat: no-repeat;
+    background-size: 18px;
+    height: 18px;
+    width: 18px;
+    -webkit-font-smoothing: antialiased;
+    display: var(--fa-display,inline-block);
+    font-style: normal;
+    font-variant: normal;
+    line-height: 1;
+    text-rendering: auto;
+    color: currentColor;
+    vertical-align: middle !important;
+    /*margin-right: 10px;
+    margin-left: 10px;*/
+    filter: sepia(100%) hue-rotate(190deg) saturate(900%);
+}
+
+.mi-groups {
+    background-image: url("icons/groups.png");
+    background-repeat: no-repeat;
+    background-size: 18px;
+    height: 18px;
+    width: 18px;
+    -webkit-font-smoothing: antialiased;
+    display: var(--fa-display,inline-block);
+    font-style: normal;
+    font-variant: normal;
+    line-height: 1;
+    text-rendering: auto;
+    color: currentColor;
+    vertical-align: middle !important;
+    /*margin-right: 10px;
+    margin-left: 10px;*/
+    filter: sepia(100%) hue-rotate(190deg) saturate(900%);
+}
+
+.mi-overallspecials {
+    background-image: url("icons/overallspecials.png");
+    background-repeat: no-repeat;
+    background-size: 18px;
+    height: 18px;
+    width: 18px;
+    -webkit-font-smoothing: antialiased;
+    display: var(--fa-display,inline-block);
+    font-style: normal;
+    font-variant: normal;
+    line-height: 1;
+    text-rendering: auto;
+    color: currentColor;
+    vertical-align: middle !important;
+    /*margin-right: 10px;
+    margin-left: 10px;*/
+    filter: sepia(100%) hue-rotate(190deg) saturate(900%);
+}
+
+.mi-products {
+    background-image: url("icons/products.png");
+    background-repeat: no-repeat;
+    background-size: 18px;
+    height: 18px;
+    width: 18px;
+    -webkit-font-smoothing: antialiased;
+    display: var(--fa-display,inline-block);
+    font-style: normal;
+    font-variant: normal;
+    line-height: 1;
+    text-rendering: auto;
+    color: currentColor;
+    vertical-align: middle !important;
+    /*margin-right: 10px;
+    margin-left: 10px;*/
+    filter: sepia(100%) hue-rotate(190deg) saturate(900%);
+}
+.mi-dispatch {
+    background-image: url("icons/transportation.png");
+    background-repeat: no-repeat;
+    background-size: 18px;
+    height: 18px;
+    width: 18px;
+    -webkit-font-smoothing: antialiased;
+    display: var(--fa-display,inline-block);
+    font-style: normal;
+    font-variant: normal;
+    line-height: 1;
+    text-rendering: auto;
+    color: currentColor;
+    vertical-align: middle !important;
+    /*margin-right: 10px;
+    margin-left: 10px;*/
+    filter: sepia(100%) hue-rotate(190deg) saturate(900%);
+}
+.mi-driversreport{
+    background-image: url("icons/driversreport.png");
+    background-repeat: no-repeat;
+    background-size: 18px;
+    height: 18px;
+    width: 18px;
+    -webkit-font-smoothing: antialiased;
+    display: var(--fa-display,inline-block);
+    font-style: normal;
+    font-variant: normal;
+    line-height: 1;
+    text-rendering: auto;
+    color: currentColor;
+    vertical-align: middle !important;
+    /*margin-right: 10px;
+    margin-left: 10px;*/
+    filter: sepia(100%) hue-rotate(190deg) saturate(900%);
+}
+.mi-warehouse{
+    background-image: url("icons/warehouse.png");
+    background-repeat: no-repeat;
+    background-size: 18px;
+    height: 18px;
+    width: 18px;
+    -webkit-font-smoothing: antialiased;
+    display: var(--fa-display,inline-block);
+    font-style: normal;
+    font-variant: normal;
+    line-height: 1;
+    text-rendering: auto;
+    color: currentColor;
+    vertical-align: middle !important;
+    /*margin-right: 10px;
+    margin-left: 10px;*/
+    filter: sepia(100%) hue-rotate(190deg) saturate(900%);
+}
+.mi-badge{
+    background-image: url("icons/badge.png");
+    background-repeat: no-repeat;
+    background-size: 18px;
+    height: 18px;
+    width: 18px;
+    -webkit-font-smoothing: antialiased;
+    display: var(--fa-display,inline-block);
+    font-style: normal;
+    font-variant: normal;
+    line-height: 1;
+    text-rendering: auto;
+    color: currentColor;
+    vertical-align: middle !important;
+    /*margin-right: 10px;
+    margin-left: 10px;*/
+    filter: sepia(100%) hue-rotate(190deg) saturate(900%);
+}
+.mi-awaiting{
+    background-image: url("icons/awaiting.png");
+    background-repeat: no-repeat;
+    background-size: 18px;
+    height: 18px;
+    width: 18px;
+    -webkit-font-smoothing: antialiased;
+    display: var(--fa-display,inline-block);
+    font-style: normal;
+    font-variant: normal;
+    line-height: 1;
+    text-rendering: auto;
+    color: currentColor;
+    vertical-align: middle !important;
+    /*margin-right: 10px;
+    margin-left: 10px;*/
+    filter: sepia(100%) hue-rotate(190deg) saturate(900%);
+}
+.mi-checkout{
+    background-image: url("icons/checkout.png");
+    background-repeat: no-repeat;
+    background-size: 18px;
+    height: 18px;
+    width: 18px;
+    -webkit-font-smoothing: antialiased;
+    display: var(--fa-display,inline-block);
+    font-style: normal;
+    font-variant: normal;
+    line-height: 1;
+    text-rendering: auto;
+    color: currentColor;
+    vertical-align: middle !important;
+    /*margin-right: 10px;
+    margin-left: 10px;*/
+    filter: sepia(100%) hue-rotate(190deg) saturate(900%);
+}
+
+.mi-routeplan {
+    background-image: url("icons/routeplan.png");
+    background-repeat: no-repeat;
+    background-size: 18px;
+    height: 18px;
+    width: 18px;
+    -webkit-font-smoothing: antialiased;
+    display: var(--fa-display,inline-block);
+    font-style: normal;
+    font-variant: normal;
+    line-height: 1;
+    text-rendering: auto;
+    color: currentColor;
+    vertical-align: middle !important;
+    /*margin-right: 10px;
+    margin-left: 10px;*/
+    filter: sepia(100%) hue-rotate(190deg) saturate(900%);
+}
+
+.mi-template {
+    background-image: url("icons/template.png");
+    background-repeat: no-repeat;
+    background-size: 18px;
+    height: 18px;
+    width: 18px;
+    -webkit-font-smoothing: antialiased;
+    display: var(--fa-display,inline-block);
+    font-style: normal;
+    font-variant: normal;
+    line-height: 1;
+    text-rendering: auto;
+    color: currentColor;
+    vertical-align: middle !important;
+    /*margin-right: 10px;
+    margin-left: 10px;*/
+    filter: sepia(100%) hue-rotate(190deg) saturate(900%);
+}
+
+.mi-webstore {
+    background-image: url("icons/webstore.png");
+    background-repeat: no-repeat;
+    background-size: 18px;
+    height: 18px;
+    width: 18px;
+    -webkit-font-smoothing: antialiased;
+    display: var(--fa-display,inline-block);
+    font-style: normal;
+    font-variant: normal;
+    line-height: 1;
+    text-rendering: auto;
+    color: currentColor;
+    vertical-align: middle !important;
+    /*margin-right: 10px;
+    margin-left: 10px;*/
+    filter: sepia(100%) hue-rotate(190deg) saturate(900%);
+}
