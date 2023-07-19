@@ -3687,16 +3687,34 @@
 
             }
         }).data("ui-autocomplete")._renderItem = function(ul, item) {
-            var table =
-                '<table class="table2"><tr style="font-size: 12px;color:black"><td style="background: green;width:25px;color:white">' +
-                item.value + '</td><td>' +
-                item.id + '</td><td style="background: green;width:25px;color:white">' +
-                item.CustomerPastelCode + '</td><td>' +
-                item.StoreName + '</td>' +
-                '</tr></table>';
+            if (item.value) {
+                var table = `
+                    <table class="table2">
+                        <tr style="font-size: 12px;color:black">
+                            <td style="background: green;width:25px;color:white;white-space: nowrap;" colspan="4">
+                                ${item.value}
+                            </td>
+                        </tr>
+                    </table>
+                `;
+                if (item.id)
+                {
+                    var table =
+                        '<table class="table2"><tr style="font-size: 12px;color:black"><td style="background: green;width:25px;color:white">' +
+                        item.value + '</td><td>' +
+                        item.id + '</td><td style="background: green;width:25px;color:white">' +
+                        item.CustomerPastelCode + '</td><td>' +
+                        item.StoreName + '</td>' +
+                        '</tr></table>';
+                }
+                return $("<li>")
+                    .data("ui-autocomplete-item", item)
+                    .append("<a>" + table + "</a>")
+                    .appendTo(ul);
+            }
+
             return $("<li>")
-                .data("ui-autocomplete-item", item)
-                .append("<a>" + table + "</a>")
+                .append("<a></a>")
                 .appendTo(ul);
         };
 

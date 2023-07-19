@@ -22,11 +22,11 @@
     <div class="card">
         <div class="card-body">
             @include('dims.sales-order.partials.searchbar')
+            @include('dims.sales-order.partials.order-details')
         </div>
     </div>
     <!--end::Row-->
     @include('dims.sales-order.partials.allscript')
     <script>
-
     </script>
 </x-app-layout>
