@@ -1658,48 +1658,48 @@
                                                 "bulkitemcolor";
                                         }
                                         var $row = $(`
-                                            <tr id="new_row_ajax${tokenId}" class="fast_remove" style="font-weight: 600;font-size: 11px;">
-                                                <td contenteditable="false" class="col-sm-1">
+                                            <tr id="new_row_ajax${tokenId}" class="fast_remove">
+                                                <td contenteditable="false">
                                                     <input name="theProductCode" id ="prodCode_${tokenId}" class="theProductCode_ set_autocomplete inputs" value="${valueDetails.PastelCode}" ${props}>
                                                     <input name="col1" id ="col1${tokenId}" class="col1 ${classAnonymouscols}" readonly>
                                                 </td>
-                                                <td contenteditable="false" class="col-md-4">
+                                                <td contenteditable="false">
                                                     <input name="prodDescription_" id ="prodDescription_${tokenId}" class="prodDescription_ set_autocomplete inputs" value="${valueDetails.PastelDescription}" ${props}>
                                                     <input name="col8" id ="col8${tokenId}" class="col8 ${classAnonymouscols}" readonly>
                                                 </td>
-                                                <td contenteditable="false" class="col-md-1">
+                                                <td contenteditable="false">
                                                     <input type="text" name="prodBulk_"  id ="prodBulk_${tokenId}" class="prodBulk_ resize-input-inside ${bulkitemcolor}"  value="${valueDetails.UnitCount}" ${props} readonly>
                                                     <input name="col3" id ="col3${tokenId}" class="col3 ${classAnonymouscols}" readonly>
                                                 </td>
-                                                <td  contenteditable="false" class="col-md-1">
+                                                <td contenteditable="false">
                                                     <input type="text" name="prodQty_" id ="prodQty_${tokenId}"   onkeypress="return isFloatNumber(this,event)"  class="prodQty_ resize-input-inside inputs" value="${(parseFloat(valueDetails.Qty)).toFixed(3)}" ${props}>
                                                     <input name="col4" id ="col4${tokenId}" class="col4 ${classAnonymouscols}" readonly>
                                                 </td>
-                                                <td  contenteditable="false"  class="col-md-1">
+                                                <td contenteditable="false">
                                                     <input type="text" name="prodPrice_" id ="prodPrice_${tokenId}" onkeypress="return isFloatNumber(this,event)" class="prodPrice_ resize-input-inside inputs" value="${(parseFloat(valueDetails.Price)).toFixed(2)}" ${props}>
                                                     <input name="col1" id ="col1${tokenId}" class="col1 ${classAnonymouscols}" readonly>
                                                 </td>
-                                                <td  contenteditable="false"  class="col-md-1">
+                                                <td  contenteditable="false">
                                                     <input type="text" name="prodDisc_" id ="prodDisc_${tokenId}" onkeypress="return isFloatNumber(this,event)" class="prodDisc_ resize-input-inside inputs" value="${valueDetails.LineDisc}" ${props} {{ $discountProperty }}>
                                                     <input name="col6" id ="col6${tokenId}" class="col6 ${classAnonymouscols}" style="color: brown;" readonly>
                                                 </td>
-                                                <td  contenteditable="false"  class="col-md-1">
+                                                <td  contenteditable="false">
                                                     <input  type="text" name="prodUnitSize_" id ="prodUnitSize_${tokenId}" class="prodUnitSize_ resize-input-inside inputs" value="${valueDetails.UnitSize}" ${props}>
                                                 </td>
                                                 <td contenteditable="false" style="display:flex;" class="col-md-1">
-                                                    <input type="text" name="instockReadOnly" id ="instockReadOnly_${tokenId}" value="${valueDetails.QtyInStock}"  class="instockReadOnly_ resize-input-inside inputs" style="font-weight: 800;width: 54px !important;color:blue;">
-                                                    <input type="text" name="shelf" id ="shelf_${tokenId}" class="shelf_ resize-input-inside" value="${valueDetails.shelf}" style="font-weight: 800;color:red;width: 54px;float:right;">
+                                                    <input type="text" name="instockReadOnly" id ="instockReadOnly_${tokenId}" value="${valueDetails.QtyInStock}"  class="instockReadOnly_ resize-input-inside inputs">
+                                                    <input type="text" name="shelf" id ="shelf_${tokenId}" class="shelf_ resize-input-inside" value="${valueDetails.shelf}">
                                                     <select name="col2" id ="col2${tokenId}" class="col2 ${classAnonymouscols}">
                                                         <option value="${valueDetails.ID}" >"${valueDetails.Warehouse}"</option>
                                                     </select>
                                                 </td>
-                                                <td contenteditable="false"  class="col-md-1">
-                                                    <input type="text" name="instockReadOnly" id ="clcstock_${tokenId}" value="${valueDetails.QtyInStock}"  class="clcstock_ resize-input-inside inputs" style="font-weight: 800;width: 80%;color:blue;">
+                                                <td contenteditable="false">
+                                                    <input type="text" name="instockReadOnly" id ="clcstock_${tokenId}" value="${valueDetails.QtyInStock}"  class="clcstock_ resize-input-inside inputs">
                                                 </td>
-                                                <td contenteditable="false"  class="col-md-1">
-                                                    <input type="text" name="additionalcost_" id ="additionalcost_${tokenId}" value ="" class="additionalcost_ resize-input-inside inputs" style="font-weight: 800;font-size:8px !important;color:blue;">
+                                                <td contenteditable="false">
+                                                    <input type="text" name="additionalcost_" id ="additionalcost_${tokenId}" value ="" class="additionalcost_ resize-input-inside inputs">
                                                 </td>
-                                                <td  contenteditable="false" class="col-md-3">
+                                                <td  contenteditable="false">
                                                     <input type="text" name="prodComment_" id ="prodComment_${tokenId}" class="prodComment_ resize-input-inside last inputs" title="${valueDetails.Comment}"  value="${valueDetails.Comment}" ${props}>
                                                     <input name="col9" id ="col9${tokenId}" class="col9 ${classAnonymouscols}" readonly>
                                                 </td>

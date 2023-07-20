@@ -38,26 +38,24 @@
 
                 <div class="row mb-3">
                     <div class="table-responsive">
-                        <table id="table" class="table table-bordered table-condensed"
-                            style="font-family: sans-serif;color:black">
+                        <table id="table" class="table table-bordered table-condensed">
                             <thead>
                                 <tr class="fw-bold fs-6 text-gray-800">
                                     <th class="<?php echo env('PRODUCT_CODE_LENGTH'); ?>">Code</th>
-                                    <th class="col-md-4">Description</th>
-                                    <th style="">Bulk</th>
-                                    <th class="col-md-1">Qty</th>
-                                    <th class="col-md-1">Price</th>
-                                    <th class="col-md-1">Disc% L.Tot</th>
+                                    <th>Description</th>
+                                    <th>Bulk</th>
+                                    <th>Qty</th>
+                                    <th>Price</th>
+                                    <th>Disc% L.Tot</th>
                                     <th>UOM</th>
                                     <th>In Stk<i style="color:red;float:right">W Stk</i></th>
                                     <th>C Stk</th>
                                     <th>Addt.Cst</th>
-                                    <th class="col-md-3">Comment</th>
-                                    <th class="col-md-1 table-header">Actions</th>
+                                    <th>Comment</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
-
                             </tbody>
                         </table>
                     </div>
