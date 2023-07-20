@@ -46,6 +46,7 @@
     <script src="{{ asset('js/jquery.dialogextend.js') }}"></script>
     <script src="{{ asset('js/jquery.pleaseWait.js') }}"></script>
     <!-- end: Page level JS -->
+    <script src="{{ asset('js/app.js') }}"></script>
 </head>
 
 <body id="kt_body"

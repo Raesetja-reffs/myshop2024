@@ -2,11 +2,11 @@
     <div class="card">
         <div class="card-body">
             <div class="row mb-3">
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <label for="routeName" class="form-label">Route</label>
                     <input type="button" id="routeonabutton" class="btn btn-primary btn-sm ps-1 pe-1"
                         value="TEST LONG ROUTE IF">
-                    <select class="form-control form-select" name="routeName" id="routeName">
+                    <select class="form-control form-select" name="routeName" id="routeName" style="display:none;">
                     </select>
                 </div>
                 <div class="col-md-2" id="deprecated_cangeDate">

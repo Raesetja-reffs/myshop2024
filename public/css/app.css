@@ -56,3 +56,11 @@
     width: 15px;
     height: 15px;
 }
+
+.flexdatalist-results .highlight{
+    all: unset;
+}
+
+.anonymouscolsOff{
+    display: none;
+}

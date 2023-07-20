@@ -1443,12 +1443,16 @@
                             height: 200,
                             width: 700,
                             modal: true,
-                            buttons: {
-                                "Okay": function() {
-                                    dialog.dialog('close');
-                                    location.reload(true);
+                            buttons: [
+                                {
+                                    text: "Okay",
+                                    class: "btn btn-secondary btn-sm pb-8", // Add your custom class here
+                                    click: function() {
+                                        dialog.dialog('close');
+                                        location.reload(true);
+                                    }
                                 }
-                            }
+                            ]
                         });
                     } else {
                         console.debug(data.data);

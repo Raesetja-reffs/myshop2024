@@ -41,7 +41,7 @@
                         <table id="table" class="table table-bordered table-condensed"
                             style="font-family: sans-serif;color:black">
                             <thead>
-                                <tr>
+                                <tr class="fw-bold fs-6 text-gray-800">
                                     <th class="<?php echo env('PRODUCT_CODE_LENGTH'); ?>">Code</th>
                                     <th class="col-md-4">Description</th>
                                     <th style="">Bulk</th>
