@@ -27,6 +27,7 @@
     <link href="{{ asset('css/tippop.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('css/contextMenu.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('css/jquery.flexdatalist.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('css/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css" />
 
     <!--begin::Global Javascript Bundle(mandatory for all pages)-->
@@ -41,12 +42,15 @@
     <script src="{{ asset('js/contextMenu.js') }}"></script>
     <script src="{{ asset('js/jquery.flexdatalist.js') }}"></script>
     <script src="{{ asset('js/jquery.mcautocomplete.js') }}"></script>
+    <script src="{{ asset('js/datatables.bundle.js') }}"></script>
+    <script src="{{ asset('js/jquery.dialogextend.js') }}"></script>
+    <script src="{{ asset('js/jquery.pleaseWait.js') }}"></script>
     <!-- end: Page level JS -->
 </head>
 
 <body id="kt_body"
     class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled toolbar-fixed toolbar-tablet-and-mobile-fixed aside-enabled aside-fixed"
-    style="--kt-toolbar-height:55px;--kt-toolbar-height-tablet-and-mobile:55px">
+    style="--kt-toolbar-height:55px;--kt-toolbar-height-tablet-and-mobile:55px" data-kt-aside-minimize="on">
     <!--begin::Theme mode setup on page load-->
     @include('layouts.theme-mode');
     <!--end::Theme mode setup on page load-->

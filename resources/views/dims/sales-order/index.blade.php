@@ -19,12 +19,8 @@
     }
 
     ?>
-    <div class="card">
-        <div class="card-body">
-            @include('dims.sales-order.partials.searchbar')
-            @include('dims.sales-order.partials.order-details')
-        </div>
-    </div>
+    @include('dims.sales-order.partials.searchbar')
+    @include('dims.sales-order.partials.order-details')
     <!--end::Row-->
     @include('dims.sales-order.partials.allscript')
     <script>

@@ -23,7 +23,7 @@
 
 <body id="kt_body" class="auth-bg bgi-size-cover bgi-attachment-fixed bgi-position-center bgi-no-repeat">
     <!--begin::Theme mode setup on page load-->
-    @include('layouts.theme-mode');
+    @include('layouts.theme-mode')
     <!--end::Theme mode setup on page load-->
     <div>
         <div class="wave"></div>
@@ -46,7 +46,7 @@
                         {{ $slot }}
                     </div>
                     <!--end::Wrapper-->
-                    @include('layouts.guest.footer');
+                    @include('layouts.guest.footer')
                 </div>
                 <!--end::Card-->
             </div>
