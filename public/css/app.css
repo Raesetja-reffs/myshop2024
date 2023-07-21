@@ -64,3 +64,13 @@
 .anonymouscolsOff{
     display: none;
 }
+
+.bulkitemcolor {
+    background: #0BA008;
+}
+
+.btn.btn-sm {
+    font-size: 12.35px;
+    padding-bottom: 25px !important;
+    padding-top: 6px !important;
+}

@@ -6,7 +6,7 @@ if (!function_exists('getMenuItems')) {
         return [
             [
                 'name' => 'Extras',
-                'icon' => 'fa mi-extras',
+                'icon' => 'ki-outline ki-printer fs-2',
                 'submenuitems' => [
                     [
                         'name' => 'Management Console',

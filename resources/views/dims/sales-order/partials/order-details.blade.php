@@ -36,11 +36,12 @@
                     </div>
                 </div>
 
-                <div class="row mb-3">
+                <div class="row mb-3 mt-6">
                     <div class="table-responsive">
-                        <table id="table" class="table table-bordered table-condensed">
+                        <table id="table" class="table table-bordered table-condensed table-hover">
                             <thead>
                                 <tr class="fw-bold fs-6 text-gray-800">
+                                    <th>Actions</th>
                                     <th class="<?php echo env('PRODUCT_CODE_LENGTH'); ?>">Code</th>
                                     <th>Description</th>
                                     <th>Bulk</th>
@@ -52,7 +53,6 @@
                                     <th>C Stk</th>
                                     <th>Addt.Cst</th>
                                     <th>Comment</th>
-                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -61,12 +61,12 @@
                     </div>
                 </div>
 
-                <div class="row mb-3">
+                <div class="row mb-3 mt-6">
                     <div class="col-md-6">
                         <div class="row">
                             <div class="col-md-12">
                                 <h6 id="numberOfLines" style="margin-bottom: 0px !important;" class="hidebody">
-                                    0 Lines</h6>
+                                    0 Line Item(s)</h6>
                             </div>
                             <div class="col-md-12 mb-2">
                                 <label for="messagebox">Message</label>

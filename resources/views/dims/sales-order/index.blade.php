@@ -19,10 +19,8 @@
     }
 
     ?>
-    @include('dims.sales-order.partials.searchbar')
+    {{-- @include('dims.sales-order.partials.searchbar')
     @include('dims.sales-order.partials.order-details')
     <!--end::Row-->
-    @include('dims.sales-order.partials.allscript')
-    <script>
-    </script>
+    @include('dims.sales-order.partials.allscript') --}}
 </x-app-layout>
