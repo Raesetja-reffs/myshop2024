@@ -98,6 +98,68 @@
     <!--begin::Scrolltop-->
     @include('layouts.app.scrolltop')
     <!--end::Scrolltop-->
+    <!-- Scripts -->
+    <script>
+        $(document).ready(function() {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $('#clearlocks').click(function(){
+                //console.debug($('#orderId').val());
+                if($('#orderId').val().length < 3) {
+                    $.ajax({
+                        url: '{!!url("/deleteuserOrderLocks")!!}',
+                        type: "POST",
+                        data: {
+                            userId: $('#clearlocks').val()
+                        },
+                        primary: function (data) {
+
+                        },
+                        success: function(data) {
+                            showAlert('primary', "All locks has been successfully deleted.")
+                        }
+                    });
+                }else {
+                    var dialog = $('<p>Please Reload you DIMS before clearing your locks and also make sure everything is saved.</p>').dialog({
+                        height: 200, width: 700, modal: true, containment: false,
+                        buttons: {
+                            "OKAY": function () {
+
+                                dialog.dialog('close');
+
+                            }
+                        }
+                    });
+                }
+            });
+
+            $('#offcanv').click(function(){
+                $('#offcanvas').toggle();
+            });
+        });
+        function showAlert(type, message) {
+            $("#kt_content_container").prepend(`
+                <div class="alert alert-${type} d-flex align-items-center p-2">
+                    <i class="ki-outline  ki-shield-tick fs-2hx text-${type} me-2"></i>
+                    <div class="d-flex flex-column">
+                        <h4 class="mb-1 text-${type}">${message}</h4>
+                    </div>
+                    <button type="button" class="position-absolute position-sm-relative m-2 m-sm-0 top-0 end-0 btn btn-icon ms-sm-auto" data-bs-dismiss="alert" fdprocessedid="g4ghrt">
+                        <i class="ki-outline ki-cross fs-2x text-${type}"></i>
+                    </button>
+                </div>
+            `);
+            setTimeout((type) => {
+                if ($("#kt_content_container").find('div.alert.alert-' + type).length > 0) {
+                    $("#kt_content_container").find('div.alert.alert-' + type).remove();
+                }
+            }, 3000, type);
+        }
+    </script>
 </body>
 
 </html>

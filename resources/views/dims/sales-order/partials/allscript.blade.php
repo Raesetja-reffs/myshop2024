@@ -1295,29 +1295,34 @@
                                     height: 200,
                                     width: 700,
                                     buttons: {
-                                        "FIX": function() {
-
-                                            dialog.dialog('close');
-                                            consoleManagement(
-                                                '{!! url('/logMessageAjax') !!}',
-                                                325, 2, 'User Pressed FIX',
-                                                0, 0, 0, 0, 0, 0, 0, 0, $(
-                                                    '#orederNumber').val(),
-                                                0, computerName, $(
-                                                    '#orderId').val(), 0);
+                                        "FIX": {
+                                            text: "FIX",
+                                            class: "btn btn-success btn-sm",
+                                            click: function() {
+                                                dialog.dialog('close');
+                                                consoleManagement(
+                                                    '{!! url('/logMessageAjax') !!}',
+                                                    325, 2, 'User Pressed FIX',
+                                                    0, 0, 0, 0, 0, 0, 0, 0, $(
+                                                        '#orederNumber').val(),
+                                                    0, computerName, $(
+                                                        '#orderId').val(), 0);
+                                            }
                                         },
-                                        "CONTINUE ANYWAY": function() {
-
-                                            finishThis();
-                                            dialog.dialog('close');
-                                            consoleManagement(
-                                                '{!! url('/logMessageAjax') !!}',
-                                                325, 2, 'User Pressed FIX',
-                                                0, 0, 0, 0, 0, 0, 0, 0, $(
-                                                    '#orederNumber').val(),
-                                                0, computerName, $(
-                                                    '#orderId').val(), 0);
-
+                                        "CONTINUE ANYWAY": {
+                                            text: "CONTINUE ANYWAY",
+                                            class: "btn btn-primary btn-sm",
+                                            click: function() {
+                                                finishThis();
+                                                dialog.dialog('close');
+                                                consoleManagement(
+                                                    '{!! url('/logMessageAjax') !!}',
+                                                    325, 2, 'User Pressed FIX',
+                                                    0, 0, 0, 0, 0, 0, 0, 0, $(
+                                                        '#orederNumber').val(),
+                                                    0, computerName, $(
+                                                        '#orderId').val(), 0);
+                                            }
                                         }
                                     }
                                 });
@@ -1446,7 +1451,7 @@
                             buttons: [
                                 {
                                     text: "Okay",
-                                    class: "btn btn-secondary btn-sm pb-8", // Add your custom class here
+                                    class: "btn btn-primary btn-sm",
                                     click: function() {
                                         dialog.dialog('close');
                                         location.reload(true);
@@ -4363,51 +4368,60 @@
                             resizable: false,
                             buttons: {
                                 DelUser: {
-                                    class: 'leftButton',
-                                    text: 'Point Of Sale ',
+                                    class: 'leftButton btn btn-primary btn-sm',
+                                    text: 'Point Of Sale',
                                     click: function() {
                                         allInoneDocumentsave("POS");
-
                                     }
                                 },
-                                Yes: function() {
-                                    allInoneDocumentsave("YES");
+                                Yes: {
+                                    class: 'btn btn-success btn-sm',
+                                    text: 'Yes',
+                                    click: function() {
+                                        allInoneDocumentsave("YES");
+                                    }
                                 },
-                                No: function() {
-
-                                    allInoneDocumentsave("NO");
+                                No: {
+                                    class: 'btn btn-warning btn-sm',
+                                    text: 'No',
+                                    click:  function() {
+                                        allInoneDocumentsave("NO");
+                                    }
                                 },
-                                PDF: function() {
-                                    var dialog = $(
-                                        '<p><strong style="color:black"> Please wait...</strong></p>'
-                                        ).dialog({
-                                        height: 200,
-                                        width: 700,
-                                        modal: true,
-                                        containment: false,
-                                        buttons: {
-                                            "Okay": function() {
-                                                dialog.dialog('close');
+                                PDF: {
+                                    class: 'btn btn-primary btn-sm',
+                                    text: 'PDF',
+                                    click:  function() {
+                                        var dialog = $(
+                                            '<p><strong style="color:black"> Please wait...</strong></p>'
+                                            ).dialog({
+                                            height: 200,
+                                            width: 700,
+                                            modal: true,
+                                            containment: false,
+                                            buttons: {
+                                                "Okay": function() {
+                                                    dialog.dialog('close');
+                                                }
                                             }
+                                        });
+                                        if (($('#invoiceNo').val()).length > 3) {
+                                            window.open('{!! url('/pdforder') !!}/' + $('#orderId')
+                                                .val(), "PDF",
+                                                "location=1,status=1,scrollbars=1, width=1200,height=850"
+                                                );
+                                            //View PDF
+                                            disableOnFinish();
+                                            $(this).dialog("close");
+                                            $('#finishOrder').hide();
+                                        } else {
+                                            //finishArray2 -- use to be
+                                            allInoneDocumentsave("PDF");
                                         }
-                                    });
-                                    if (($('#invoiceNo').val()).length > 3) {
-                                        window.open('{!! url('/pdforder') !!}/' + $('#orderId')
-                                            .val(), "PDF",
-                                            "location=1,status=1,scrollbars=1, width=1200,height=850"
-                                            );
-                                        //View PDF
-                                        disableOnFinish();
+
                                         $(this).dialog("close");
-                                        $('#finishOrder').hide();
-                                    } else {
-                                        //finishArray2 -- use to be
-                                        allInoneDocumentsave("PDF");
                                     }
-
-                                    $(this).dialog("close");
                                 }
-
                             },
                             close: function(event, ui) {
                                 $(this).remove();

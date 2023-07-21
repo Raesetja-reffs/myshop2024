@@ -108,7 +108,7 @@
                 </div>
                 <!--end::User -->
                 <!--begin::Calculator-->
-                <div class="d-flex align-items-center d-lg-none px-3 me-n3">
+                <div class="d-flex align-items-center px-3 me-n3">
                     <i class="cursor-pointer fas fa-calculator fs-3x text-deep-pink" aria-hidden="true" id="tamaraCalculatorId"></i>
                 </div>
                 <!--end::Calculator-->

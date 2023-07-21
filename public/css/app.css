@@ -74,3 +74,7 @@
     padding-bottom: 25px !important;
     padding-top: 6px !important;
 }
+
+.hidden_row {
+    display: none;
+}

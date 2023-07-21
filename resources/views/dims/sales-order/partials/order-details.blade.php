@@ -40,7 +40,7 @@
                     <div class="table-responsive">
                         <table id="table" class="table table-bordered table-condensed table-hover">
                             <thead>
-                                <tr class="fw-bold fs-6 text-gray-800">
+                                <tr>
                                     <th>Actions</th>
                                     <th class="<?php echo env('PRODUCT_CODE_LENGTH'); ?>">Code</th>
                                     <th>Description</th>

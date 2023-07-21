@@ -2,26 +2,26 @@
     <div class="card">
         <div class="card-body">
             <div class="row mb-3">
-                <div class="col-md-3">
+                <div class="col-md-3 ps-3 me-4 mb-3">
                     <label for="routeName" class="form-label">Route</label>
                     <input type="button" id="routeonabutton" class="btn btn-primary btn-sm ps-1 pe-1"
                         value="TEST LONG ROUTE IF">
                     <select class="form-control form-select" name="routeName" id="routeName" style="display:none;">
                     </select>
                 </div>
-                <div class="col-md-2" id="deprecated_cangeDate">
+                <div class="col-md-2 ps-3 p-md-0 me-1" id="deprecated_cangeDate">
                     <label for="changeDelvDate" class="form-label">Delv Date</label>
                     <input type="text" class="form-control" id="changeDelvDate">
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-2 ps-3 p-md-0 me-1 mb-3">
                     <label for="creditLimit" class="form-label">CR Limit</label>
                     <input type="text" class="form-control" id="creditLimit" readonly>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-2 p-md-0 ps-3 me-1 mb-3">
                     <label for="balDue" class="form-label">BalDue</label>
                     <input type="text" class="form-control" id="balDue" readonly>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-2 ps-3 p-md-0 mb-3">
                     <label for="headerWh" class="form-label">WH</label>
                     <select id="headerWh" class="form-control form-select">
                     </select>
@@ -46,75 +46,91 @@
 
                     <div class="tab-content">
                         <div class="tab-pane fade show active" id="content1">
-                            <div class="table-responsive">
-                                <table class="table search-table" id="orderPatternIdTable"
-                                    style="overflow-y: scroll; width: 100%;font-family: sans-serif;!important; ">
-                                    <thead>
-                                        <tr>
-                                            <th class="col-md-8">Description</th>
-                                            <th class="col-xs-1">2Week</th>
-                                            <th class="col-xs-1">Avg</th>
-                                            <th class="col-xs-1">InStk</th>
-                                            <th style="width:2px;font-size:5px;">C</th>
-                                            <th class="col-xs-1">T</th>
-                                            <th class="col-xs-1 ">Auth</th>
-                                            <th class="col-xs-1 ">Code</th>
-                                            <th class="col-xs-1 ">P</th>
-                                            <th class="col-xs-1 ">Tx</th>
-                                            <th class="col-xs-1 ">U</th>
-                                            <th class="col-xs-1 ">U.W</th>
-                                            <th class="col-xs-1 ">S.B.W</th>
-                                            <th class="col-xs-1 ">B.U</th>
-                                            <th class="col-xs-1 ">Mgn</th>
-                                        </tr>
-                                    </thead>
-                                </table>
+                            <div class="row mt-3">
+                                <div class="col-md-12">
+                                    <div class="table-responsive">
+                                        <table class="search-table table table-striped table-bordered table-hover" id="orderPatternIdTable">
+                                            <thead>
+                                                <tr>
+                                                    <th>Description</th>
+                                                    <th>2Week</th>
+                                                    <th>Avg</th>
+                                                    <th>InStk</th>
+                                                    <th>C</th>
+                                                    <th>T</th>
+                                                    <th>Auth</th>
+                                                    <th>Code</th>
+                                                    <th>P</th>
+                                                    <th>Tx</th>
+                                                    <th>U</th>
+                                                    <th>U.W</th>
+                                                    <th>S.B.W</th>
+                                                    <th>B.U</th>
+                                                    <th>Mgn</th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="tab-pane fade" id="content2">
-                            <div class="col-lg-12 " style="height: 46%;overflow-y:auto;padding: 0px;">
-                                <h5>Customer Special Pricing</h5>
-                                <table id="customerSpecials" class="table"
-                                    style=" width: 100%;font-family: sans-serif;">
-                                    <tr style="font-size: 10px;">
-                                        <th>Item</th>
-                                        <th>Code</th>
-                                        <th>Price</th>
-                                        <th>From</th>
-                                        <th>To</th>
-                                        <th>UOM</th>
-                                        <th></th>
-                                    </tr>
-                                </table>
+                            <div class="row mt-3">
+                                <div class="col-md-12" style="height: 46%;overflow-y:auto;padding: 0px;">
+                                    <h5>Customer Special Pricing</h5>
+                                    <div class="table-responsive">
+                                        <table id="customerSpecials" class="table table-bordered table-hover"
+                                            style=" width: 100%;font-family: sans-serif;">
+                                            <tr style="font-size: 10px;">
+                                                <th>Item</th>
+                                                <th>Code</th>
+                                                <th>Price</th>
+                                                <th>From</th>
+                                                <th>To</th>
+                                                <th>UOM</th>
+                                                <th></th>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
-
-                            <div class="col-lg-12 "
-                                style="height: 46%;overflow-y:auto;background: lightcyan;padding: 0px;">
-                                <h5>Group Special Pricing</h5>
-                                <table id="groupSpecials" class="table" style=" width: 100%;font-family: sans-serif;">
-                                    <tr style="font-size: 10px;">
-                                        <th>Item</th>
-                                        <th>Code</th>
-                                        <th>Price</th>
-                                        <th>From</th>
-                                        <th>To</th>
-                                        <th>UOM</th>
-                                        <th></th>
-                                    </tr>
-                                </table>
+                            <div class="row mt-3">
+                                <div class="col-md-12" style="height: 46%;overflow-y:auto;background: lightcyan;padding: 0px;">
+                                    <h5>Group Special Pricing</h5>
+                                    <div class="table-responsive">
+                                        <table id="groupSpecials" class="table table-bordered table-hover" style=" width: 100%;font-family: sans-serif;">
+                                            <tr style="font-size: 10px;">
+                                                <th>Item</th>
+                                                <th>Code</th>
+                                                <th>Price</th>
+                                                <th>From</th>
+                                                <th>To</th>
+                                                <th>UOM</th>
+                                                <th></th>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="tab-pane fade" id="content3">
-                            <table id="pastInvoices" class="table"
-                                style="font-weight: 700;color: #062a04; width: 100%;font-family: sans-serif;">
-                                <tr style="font-size: 9px;">
-                                    <th>Invoice No</th>
-                                    <th>Order date</th>
-                                    <th>Delivery Date</th>
-                                    <th>Ref</th>
-                                    <th style="width:1px"></th>
-                                </tr>
-                            </table>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="table-responsive">
+                                        <table id="pastInvoices" class="table table-bordered table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Invoice No</th>
+                                                    <th style="width: 90px;">Order date</th>
+                                                    <th style="width: 108px;">Delivery Date</th>
+                                                    <th>Ref</th>
+                                                    <th style="width:1px"></th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="tab-pane fade" id="content4">
                             <div id="gridbackorders" style="max-width: 100% !important">
