@@ -44,7 +44,7 @@
                         </li>
                     </ul>
 
-                    <div class="tab-content">
+                    <div class="tab-content fs-8">
                         <div class="tab-pane fade show active" id="content1">
                             <div class="row mt-3">
                                 <div class="col-md-12">
@@ -52,14 +52,14 @@
                                         <table class="search-table table table-striped table-bordered table-hover" id="orderPatternIdTable">
                                             <thead>
                                                 <tr>
-                                                    <th>Description</th>
+                                                    <th class="text-nowrap">Description</th>
                                                     <th>2Week</th>
                                                     <th>Avg</th>
                                                     <th>InStk</th>
                                                     <th>C</th>
                                                     <th>T</th>
                                                     <th>Auth</th>
-                                                    <th>Code</th>
+                                                    <th class="text-nowrap">Code</th>
                                                     <th>P</th>
                                                     <th>Tx</th>
                                                     <th>U</th>
@@ -76,57 +76,64 @@
                         </div>
                         <div class="tab-pane fade" id="content2">
                             <div class="row mt-3">
-                                <div class="col-md-12" style="height: 46%;overflow-y:auto;padding: 0px;">
-                                    <h5>Customer Special Pricing</h5>
+                                <div class="col-md-12" style="height: 350px;overflow-y:auto;">
+                                    <h6>Customer Special Pricing</h6>
                                     <div class="table-responsive">
                                         <table id="customerSpecials" class="table table-bordered table-hover"
-                                            style=" width: 100%;font-family: sans-serif;">
-                                            <tr style="font-size: 10px;">
-                                                <th>Item</th>
-                                                <th>Code</th>
-                                                <th>Price</th>
-                                                <th>From</th>
-                                                <th>To</th>
-                                                <th>UOM</th>
-                                                <th></th>
-                                            </tr>
+                                            style="width: 100%;">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-nowrap">Item</th>
+                                                    <th class="text-nowrap">Code</th>
+                                                    <th>Price</th>
+                                                    <th class="text-nowrap">From</th>
+                                                    <th class="text-nowrap">To</th>
+                                                    <th>UOM</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
                                         </table>
                                     </div>
                                 </div>
                             </div>
                             <div class="row mt-3">
-                                <div class="col-md-12" style="height: 46%;overflow-y:auto;background: lightcyan;padding: 0px;">
-                                    <h5>Group Special Pricing</h5>
+                                <div class="col-md-12" style="height: 350px;overflow-y:auto;">
+                                    <h6 class="pt-2">Group Special Pricing</h6>
                                     <div class="table-responsive">
-                                        <table id="groupSpecials" class="table table-bordered table-hover" style=" width: 100%;font-family: sans-serif;">
-                                            <tr style="font-size: 10px;">
-                                                <th>Item</th>
-                                                <th>Code</th>
-                                                <th>Price</th>
-                                                <th>From</th>
-                                                <th>To</th>
-                                                <th>UOM</th>
-                                                <th></th>
-                                            </tr>
+                                        <table id="groupSpecials" class="table table-bordered table-hover" style="width: 100%;">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-nowrap">Item</th>
+                                                    <th class="text-nowrap">Code</th>
+                                                    <th>Price</th>
+                                                    <th class="text-nowrap">From</th>
+                                                    <th class="text-nowrap">To</th>
+                                                    <th>UOM</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
                                         </table>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="tab-pane fade" id="content3">
-                            <div class="row">
-                                <div class="col-md-12">
+                            <div class="row mt-3">
+                                <div class="col-md-12" style="height: 400px;overflow-y:auto;">
                                     <div class="table-responsive">
                                         <table id="pastInvoices" class="table table-bordered table-hover">
                                             <thead>
                                                 <tr>
-                                                    <th>Invoice No</th>
-                                                    <th style="width: 90px;">Order date</th>
-                                                    <th style="width: 108px;">Delivery Date</th>
+                                                    <th class="text-nowrap">Invoice No</th>
+                                                    <th class="text-nowrap">Order date</th>
+                                                    <th class="text-nowrap">Delivery Date</th>
                                                     <th>Ref</th>
                                                     <th style="width:1px"></th>
                                                 </tr>
                                             </thead>
+                                            <tbody></tbody>
                                         </table>
                                     </div>
                                 </div>

@@ -46,6 +46,7 @@
     <script src="{{ asset('js/jquery.dialogextend.js') }}"></script>
     <script src="{{ asset('js/jquery.pleaseWait.js') }}"></script>
     <!-- end: Page level JS -->
+    <script src="{{ asset('js/commonScript.js') }}"></script>
     <script src="{{ asset('js/app.js') }}"></script>
 </head>
 
@@ -127,10 +128,12 @@
                     var dialog = $('<p>Please Reload you DIMS before clearing your locks and also make sure everything is saved.</p>').dialog({
                         height: 200, width: 700, modal: true, containment: false,
                         buttons: {
-                            "OKAY": function () {
-
-                                dialog.dialog('close');
-
+                            "OKAY": {
+                                text: "OKAY",
+                                class: "btn btn-primary btn-sm",
+                                click: function() {
+                                    dialog.dialog('close');
+                                }
                             }
                         }
                     });

@@ -12,8 +12,7 @@
             @auth
                 @php $navBarItems = getNavBarItems(); @endphp
                 @foreach ($navBarItems as $navBarItem)
-                    <div data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-placement="bottom-start"
-                        class="menu-item  menu-lg-down-accordion me-0 me-lg-2">
+                    <div class="menu-item  menu-lg-down-accordion me-0 me-lg-2">
                         @if (isset($navBarItem['isLink']) && $navBarItem['isLink'])
                             <a class="menu-link py-3 {{ request()->routeIs($navBarItem['route']) ? 'active' : '' }}"
                                 href="{{ route($navBarItem['route']) }}">

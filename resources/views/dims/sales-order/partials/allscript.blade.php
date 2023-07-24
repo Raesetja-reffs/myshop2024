@@ -4192,109 +4192,106 @@
                 console.debug("combined special" + data);
 
                 $.each(data.customerSpecials, function(key, value) {
-                    trHTML += '<tr class="fast_remove" style="font-size: 9px;color:black"><td>' +
-                        value.PastelDescription + '</td><td>' +
-                        value.PastelCode + '</td><td>' +
-                        parseFloat(value.Price).toFixed(2) + '</td><td>' +
-                        value.DateFrom + '</td><td>' +
-                        value.DateTo +
-                        '<input type="hidden" id="' + value.PastelCode + '" value="' + value
-                        .PastelCode + '" style="width:1px" class="foo">' +
-                        '<input type="hidden" id="Prodcost" value="' + parseFloat(value.Cost)
-                        .toFixed(2) + '" style="width:1px" >' +
-                        '<input type="hidden" id="ProdQnt" value="' + parseFloat(value.QtyInStock)
-                        .toFixed(2) + '" style="width:1px" ></td>' +
-                        '<input type="hidden" id="titles" value="authorised" style="width:1px" ><input type="hidden" id="taxCode" class="taxCodes" value="' +
-                        value.Tax + '" style="width:1px" ></td>' +
-                        '<input type="hidden" id ="soldByWieght" class="soldByWieght" value="' +
-                        value.SoldByWeight + '" />' +
-                        '<input type="hidden" id ="unitWeight"  class="unitWeight" value="' + value
-                        .UnitWeight + '" />' +
-                        '<input type="hidden" id ="strBulkUnit"  class="strBulkUnit" value="' +
-                        value.strBulkUnit + '" />' +
-                        '<input type="hidden" id ="ProductMargin"  class="ProductMargin" value="' +
-                        value.ProductMargin + '" />' +
-                        '</td><td>' +
-                        value.UnitSize + '</td></tr>';
+                    trHTML += `
+                        <tr class="fast_remove">
+                            <td class="text-nowrap">${value.PastelDescription}</td>
+                            <td class="text-nowrap">${value.PastelCode}</td>
+                            <td>${parseFloat(value.Price).toFixed(2)}</td>
+                            <td class="text-nowrap">${value.DateFrom}</td>
+                            <td class="text-nowrap">
+                                ${value.DateTo}
+                                <input type="hidden" id="${value.PastelCode}" value="${value.PastelCode}" style="width:1px" class="foo">
+                                <input type="hidden" id="Prodcost" value="${parseFloat(value.Cost).toFixed(2)}" style="width:1px">
+                                <input type="hidden" id="ProdQnt" value="${parseFloat(value.QtyInStock).toFixed(2)}" style="width:1px">
+                                <input type="hidden" id="titles" value="authorised" style="width:1px">
+                                <input type="hidden" id="taxCode" class="taxCodes" value="${value.Tax}" style="width:1px" >
+                            </td>
+                            <td>${value.UnitSize}</td>
+                            <td>
+                                <input type="hidden" id ="soldByWieght" class="soldByWieght" value="${value.SoldByWeight}" />
+                                <input type="hidden" id ="unitWeight"  class="unitWeight" value="${value.UnitWeight}" />
+                                <input type="hidden" id ="strBulkUnit"  class="strBulkUnit" value="${value.strBulkUnit}" />
+                                <input type="hidden" id ="ProductMargin"  class="ProductMargin" value="${value.ProductMargin}" />
+                            </td>
+                        </tr>
+                    `;
 
                 });
-                $('#customerSpecials').append(trHTML);
+                $('#customerSpecials tbody').append(trHTML);
                 var trHTML = '';
 
                 $.each(data.GroupSpecials, function(key, value) {
-                    trHTML += '<tr class="fast_remove"  style="font-size: 9px;color:black"><td>' +
-                        value.PastelDescription + '</td><td>' +
-                        value.PastelCode + '</td><td>' +
-                        parseFloat(value.Price).toFixed(2) + '</td><td>' +
-                        value.DateFrom + '</td><td>' +
-                        value.DateTo +
-                        '<input type="hidden" id="' + value.PastelCode + '" value="' + value
-                        .PastelCode + '" style="width:1px" class="foo">' +
-                        '<input type="hidden" id="Prodcost" value="' + parseFloat(value.Cost)
-                        .toFixed(2) + '" style="width:1px" >' +
-                        '<input type="hidden" id="ProdQnt" value="' + parseFloat(value.QtyInStock)
-                        .toFixed(2) + '" style="width:1px" ></td>' +
-                        '<input type="hidden" id="titles" value="authorised" style="width:1px" ><input type="hidden" id="taxCode" class="taxCodes" value="' +
-                        value.Tax + '" style="width:1px" ></td>' +
-                        '<input type="hidden" id ="soldByWieght" class="soldByWieght" value="' +
-                        value.SoldByWeight + '" />' +
-                        '<input type="hidden" id ="unitWeight"  class="unitWeight" value="' + value
-                        .UnitWeight + '" />' +
-                        '<input type="hidden" id ="strBulkUnit"  class="strBulkUnit" value="' +
-                        value.strBulkUnit + '" />' +
-                        '<input type="hidden" id ="ProductMargin"  class="ProductMargin" value="' +
-                        value.ProductMargin + '" />' +
-                        '</td><td>' +
-                        value.UnitSize + '</td></tr>';
+                    trHTML += `
+                        <tr class="fast_remove">
+                            <td class="text-nowrap">${value.PastelDescription}</td>
+                            <td class="text-nowrap">${value.PastelCode}</td>
+                            <td>${parseFloat(value.Price).toFixed(2)}</td>
+                            <td class="text-nowrap">${value.DateFrom}</td>
+                            <td class="text-nowrap">
+                                ${value.DateTo}
+                                <input type="hidden" id="${value.PastelCode}" value="${value.PastelCode}" style="width:1px" class="foo">
+                                <input type="hidden" id="Prodcost" value="${parseFloat(value.Cost).toFixed(2)}" style="width:1px">
+                                <input type="hidden" id="ProdQnt" value="${parseFloat(value.QtyInStock).toFixed(2)}" style="width:1px">
+                                <input type="hidden" id="titles" value="authorised" style="width:1px">
+                                <input type="hidden" id="taxCode" class="taxCodes" value="${value.Tax}" style="width:1px">
+                            </td>
+                            <td>${value.UnitSize}</td>
+                            <td>
+                                <input type="hidden" id ="soldByWieght" class="soldByWieght" value="${value.SoldByWeight}"/>
+                                <input type="hidden" id ="unitWeight"  class="unitWeight" value="${value.UnitWeight}"/>
+                                <input type="hidden" id ="strBulkUnit"  class="strBulkUnit" value="${value.strBulkUnit}"/>
+                                <input type="hidden" id ="ProductMargin"  class="ProductMargin" value="${value.ProductMargin}"/>
+                            </td>
+                        </tr>
+                    `;
                 });
-                $('#groupSpecials').append(trHTML);
+                $('#groupSpecials tbody').append(trHTML);
                 var trHTML = '';
                 var inv = 'id';
                 var counter = 0;
+                var dimsPlusIcon = '<i class="ki-outline ki-plus text-primary cursor-pointer pe-1"></i>';
                 $.each(data.pastInvoices, function(key, value) {
                     if (inv != value.InvoiceNo) {
                         var k = parseInt(counter) + parseInt(1);
-                        trHTML +=
-                            '<tr ondblclick="this.style.display = none" class="fast_remove" style="font-size: 11px;" onclick="show_hide_row(\'hidden_row1' +
-                            k + '\') ;"><td>' +
-                            value.InvoiceNo + '</td><td>' +
-                            value.OrderDate + '</td><td>' +
-                            value.DeliveryDate + '</td><td>' +
-                            value.OrderNo +
-                            '<input type="hidden" class="dontTakeme" value="thisIsIt"></td><td></tr>';
+                        trHTML += `
+                            <tr ondblclick="this.style.display = none" class="fast_remove" onclick="show_hide_row(this, 'hidden_row1${k}');">
+                                <td class="dims_invoice_no text-nowrap">${dimsPlusIcon} ${value.InvoiceNo}</td>
+                                <td class="text-nowrap">${value.OrderDate}</td>
+                                <td class="text-nowrap">${value.DeliveryDate}</td>
+                                <td>
+                                    ${value.OrderNo}
+                                    <input type="hidden" class="dontTakeme" value="thisIsIt">
+                                </td>
+                                <td></td>
+                            </tr>
+                        `;
                         counter++;
                     }
 
-                    trHTML += '<tr style="font-size: 9px;color: black" class="hidden_row1' +
-                        counter + ' hidden_row">' +
-                        '<td style="padding: 0px;">' + value.PastelDescription + '</td>' +
-                        '<input type="hidden" id="' + value.PastelCode + '" value="' + value
-                        .PastelCode + '" style="width:1px" class="foo">' +
-                        '<input type="hidden" id="Prodcost" value="' + parseFloat(value.Cost)
-                        .toFixed(2) + '" style="width:1px" >' +
-                        '<input type="hidden" id="ProdQnt" value="' + parseFloat(value.QtyInStock)
-                        .toFixed(2) + '" style="width:1px" ></td>' +
-                        '<input type="hidden" id="titles" value="authorised" style="width:1px" ><input type="hidden" class="dontTakeme" value=""><input type="hidden" id="UnitSizes" value="' +
-                        value.UnitSize + '" style="width:1px" ></td>' +
-                        '<input type="hidden" id ="soldByWieght" class="soldByWieght" value="' +
-                        value.SoldByWeight + '" />' +
-                        '<input type="hidden" id ="unitWeight"  class="unitWeight" value="' + value
-                        .UnitWeight + '" />' +
-                        '<input type="hidden" id ="strBulkUnit"  class="strBulkUnit" value="' +
-                        value.strBulkUnit + '" />' +
-                        '<input type="hidden" id ="strBulkUnit"  class="strBulkUnit" value="' +
-                        value.strBulkUnit + '" />' +
-                        '<input type="hidden" id ="ProductMargin"  class="ProductMargin" value="' +
-                        value.ProductMargin + '" />' +
-                        '<input type="hidden" id ="taxCode"  class="taxCode" value="' + value.Tax +
-                        '" />' +
-                        '<td style="padding: 0px;">' + parseFloat(value.Qty).toFixed(2) +
-                        '</td><tr>';
-
+                    trHTML += `
+                        <tr class="hidden_row1${counter} hidden_row" style="display:none;">
+                            <td colspan="3" class="ps-8">
+                                ${value.PastelDescription}
+                                <input type="hidden" id="${value.PastelCode}" value="${value.PastelCode}" style="width:1px" class="foo">
+                                <input type="hidden" id="Prodcost" value="${parseFloat(value.Cost).toFixed(2)}" style="width:1px">
+                                <input type="hidden" id="ProdQnt" value="${parseFloat(value.QtyInStock).toFixed(2)}" style="width:1px">
+                                <input type="hidden" id="titles" value="authorised" style="width:1px">
+                                <input type="hidden" class="dontTakeme" value="">
+                                <input type="hidden" id="UnitSizes" value="${value.UnitSize}" style="width:1px">
+                                <input type="hidden" id ="soldByWieght" class="soldByWieght" value="${value.SoldByWeight}" />
+                                <input type="hidden" id ="unitWeight"  class="unitWeight" value="${value.UnitWeight}" />
+                                <input type="hidden" id ="strBulkUnit"  class="strBulkUnit" value="${value.strBulkUnit}" />
+                                <input type="hidden" id ="strBulkUnit"  class="strBulkUnit" value="${value.strBulkUnit}" />
+                                <input type="hidden" id ="ProductMargin"  class="ProductMargin" value="${value.ProductMargin}" />
+                                <input type="hidden" id ="taxCode"  class="taxCode" value="${value.Tax}" />
+                            </td>
+                            <td>${parseFloat(value.Qty).toFixed(2)}</td>
+                        </tr>
+                    `;
                     inv = value.InvoiceNo
 
                 });
-                $('#pastInvoices').append(trHTML);
+                $('#pastInvoices tbody').append(trHTML);
 
                 //data.contacts[0].
                 $.each(data.contacts, function(key, value) {
@@ -4919,8 +4916,14 @@
         });
     }
 
-    function show_hide_row(row) {
+    function show_hide_row(obj, row) {
         $("." + row).toggle();
+        $("." + row).css('display', $("." + row).is(':visible') ? 'revert' : 'none');
+        $(obj).find(".dims_invoice_no i").toggleClass("ki-plus");
+        $(obj).find(".dims_invoice_no i").toggleClass("text-primary");
+        $(obj).find(".dims_invoice_no i").toggleClass("ki-minus");
+        $(obj).find(".dims_invoice_no i").toggleClass("text-danger");
+
     }
     $(document).on("dblclick", "#callListTable tbody tr", function() {
         // alert('Row dblclicked');
@@ -5448,43 +5451,43 @@
                     <input style="width: 100px;" name="theProductCode" id ="prodCode_${tokenId}" class="theProductCode_ set_autocomplete inputs form-control">
                     <input name="col1" id ="col1${tokenId}" class="col1 ${classAnonymouscols}"  readonly>
                 </td>
-                <td contenteditable="false" class="col-md-4">
+                <td contenteditable="false">
                     <input style="width: 250px;" name="prodDescription_" id ="prodDescription_${tokenId}" class="prodDescription_ set_autocomplete inputs form-control" tabindex="-1">
                     <input name="col8" id ="col8${tokenId}" class="col8 ${classAnonymouscols}" readonly>
                 </td>
-                <td contenteditable="false" class="col-md-1">
+                <td contenteditable="false">
                     <input style="width: 65px;" type="text" name="prodBulk_"  id="prodBulk_${tokenId}" class="prodBulk_ resize-input-inside form-control" onkeypress="return isFloatNumber(this,event)">
                     <input name="col3" id ="col3${tokenId}" class="col3 ${classAnonymouscols}"  readonly>
                 </td>
-                <td contenteditable="false" class="col-md-1">
+                <td contenteditable="false">
                     <input style="width: 65px;" type="text" name="prodQty_" id ="prodQty_${tokenId}" onkeypress="return isFloatNumber(this,event)" title="in stock" class="prodQty_ resize-input-inside inputs form-control">
                     <input name="col4" id ="col4${tokenId}" class="col4 ${classAnonymouscols}"  readonly>
                 </td>
-                <td contenteditable="false"  class="col-md-1">
+                <td contenteditable="false">
                     <input style="width: 100px;" type="text" name="prodPrice_" id ="prodPrice_${tokenId}" onkeypress="return isFloatNumber(this,event)" class="prodPrice_ resize-input-inside inputs form-control">
                     <div style="display: initial;" data-value="${tokenId}">
                     </div>
                 </td>
-                <td contenteditable="false"  class="col-md-1">
+                <td contenteditable="false">
                     <input style="width: 80px;" type="text" name="prodDisc_" id ="prodDisc_${tokenId}" onkeypress="return isFloatNumber(this,event)" class="prodDisc_ resize-input-inside inputs form-control" {{ $discountProperty }}>
                     <input name="col6" id ="col6${tokenId}" class="col6 ${classAnonymouscols}"  style="color: brown;" readonly>
                 </td>
-                <td contenteditable="false" class="col-md-1">
+                <td contenteditable="false">
                     <input style="width: 75px;" type="text" name="prodUnitSize_" id ="prodUnitSize_${tokenId}" class="prodUnitSize_ resize-input-inside form-control">
                     <input name="col7" id ="col7${tokenId}" class="col7 ${classAnonymouscols}" readonly>
                 </td>
-                <td contenteditable="false" style="display: flex;" class="col-md-1">
+                <td contenteditable="false" style="display: flex;">
                     <input style="width: 100px; color: blue;" type="text" name="instockReadOnly" id ="instockReadOnly_${tokenId}" class="instockReadOnly_ resize-input-inside inputs form-control me-2">
-                    <input style="width: 100px; color: blue;" type="text" name="shelf" id ="shelf_${tokenId}" class="shelf_ resize-input-inside form-control">
+                    <input style="width: 100px; color: red;" type="text" name="shelf" id ="shelf_${tokenId}" class="shelf_ resize-input-inside form-control">
                     <select name="col2" id ="col2${tokenId}" class="col2 ${classAnonymouscols}" ></select>
                 </td>
-                <td contenteditable="false" class="col-md-1">
+                <td contenteditable="false">
                     <input style="width: 100px; color:blue;" type="text" name="clcstock" id ="clcstock_${tokenId}" class="clcstock_ resize-input-inside inputs form-control">
                 </td>
-                <td contenteditable="false" class="col-md-1">
+                <td contenteditable="false">
                     <input style="width: 100px; color:blue;" type="text" name="additionalcost" id ="additionalcost_${tokenId}" class="additionalcost_ resize-input-inside inputs form-control">
                 </td>
-                <td contenteditable="false" class="col-md-3">
+                <td contenteditable="false">
                     <input style="width: 200px;" type="text" name="prodComment_" id ="prodComment_${tokenId}" class="prodComment_ resize-input-inside lst inputs form-control">
                     <input name="col9" id ="col9${tokenId}" class="col9 ${classAnonymouscols}" readonly>
                 </td>
@@ -5943,11 +5946,10 @@
             },
             "columns": [{
                     "data": "PastelDescription",
-                    "class": "small"
+                    "class": "text-nowrap",
                 },
                 {
                     "data": "twoWeeks",
-                    "class": "small",
                     render: function(data, type, row, meta) {
                         // check to see if this is JSON
                         try {
@@ -5963,7 +5965,6 @@
                 },
                 {
                     "data": "Avg",
-                    "class": "small",
                     render: function(data, type, row, meta) {
                         // check to see if this is JSON
                         try {
@@ -5979,11 +5980,9 @@
                 },
                 {
                     "data": "Remaining",
-                    "class": "small"
                 },
                 {
                     "data": "Cost",
-                    "class": "small",
                     render: function(data, type, row, meta) {
                         // check to see if this is JSON
                         try {
@@ -6007,7 +6006,6 @@
                 },
                 {
                     "data": "TrendingId",
-                    "class": "small",
                     render: function(data, type, row, meta) {
                         // check to see if this is JSON
                         try {
@@ -6043,39 +6041,31 @@
                 },
                 {
                     "data": "authorised",
-                    "class": "small"
                 },
                 {
                     "data": "PastelCode",
-                    "class": "small"
+                    "class": "text-nowrap",
                 },
                 {
                     "data": "PushProduct",
-                    "class": "small"
                 },
                 {
                     "data": "Tax",
-                    "class": "small"
                 },
                 {
                     "data": "UnitSize",
-                    "class": "small"
                 },
                 {
                     "data": "UnitWeight",
-                    "class": "small"
                 },
                 {
                     "data": "SoldByWeight",
-                    "class": "small"
                 },
                 {
                     "data": "strBulkUnit",
-                    "class": "small"
                 },
                 {
                     "data": "ProductMargin",
-                    "class": "small"
                 }
 
             ],
@@ -6108,7 +6098,7 @@
                 "targets": 8
             }],
             "deferRender": true,
-            "scrollY": "365px",
+            "scrollY": "400px",
             "scrollCollapse": true,
             searching: true,
             bPaginate: false,
@@ -6122,6 +6112,22 @@
                     'autocomplete', 'this-is');
             },
             autoFill: false,
+            scrollX: true,
+            // fixedColumns:   {
+            //     left: 1
+            // },
+            dom:
+                "<'row'" +
+                "<'col-sm-6 d-flex align-items-center justify-conten-start'l>" +
+                "<'col-sm-6 d-flex align-items-center justify-content-end'f>" +
+                ">" +
+
+                "<'table-responsive'tr>" +
+
+                "<'row'" +
+                "<'col-sm-12 col-md-5 d-flex align-items-center justify-content-center justify-content-md-start'i>" +
+                "<'col-sm-12 col-md-7 d-flex align-items-center justify-content-center justify-content-md-end'p>" +
+                ">"
 
         });
         //  datatableOrderPattern.columns([6]).visible(false);
