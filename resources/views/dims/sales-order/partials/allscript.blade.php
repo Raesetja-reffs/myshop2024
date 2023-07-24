@@ -738,60 +738,46 @@
                 "stateSave": false,
                 "columns": [{
                         "data": "OrderId",
-                        "class": "small",
                         "bSortable": true
                     },
                     {
                         "data": "InvoiceNo",
-                        "class": "small"
                     },
                     {
                         "data": "CustomerPastelCode",
-                        "class": "small"
                     },
                     {
                         "data": "StoreName",
-                        "class": "small"
                     },
                     {
                         "data": "LateOrder",
-                        "class": "small"
                     },
                     {
                         "data": "Route",
-                        "class": "small"
                     },
                     {
                         "data": "DeliveryDate",
-                        "class": "small"
                     },
                     {
                         "data": "OrderDate",
-                        "class": "small"
                     },
                     {
                         "data": "OrderNo",
-                        "class": "small"
                     },
                     {
                         "data": "UserName",
-                        "class": "small"
                     },
                     {
                         "data": "inclusives",
-                        "class": "small"
                     },
                     {
                         "data": "Terms",
-                        "class": "small"
                     },
                     {
                         "data": "BalanceDue",
-                        "class": "small"
                     },
                     {
                         "data": "GPperc",
-                        "class": "small",
                         render: function(data, type, row, meta) {
                             // check to see if this is JSON
                             try {
@@ -823,7 +809,7 @@
                     this.api().columns().every(function() {
                         var column = this;
                         var select = $(
-                                '<select><option value=""></option></select>')
+                                '<select class="form-control form-select"><option value=""></option></select>')
                             .appendTo($(column.footer()).empty())
                             .on('change', function() {
                                 var val = $.fn.dataTable.util.escapeRegex(
@@ -842,7 +828,8 @@
                         });
                     });
                 },
-                "bDestroy": true
+                "bDestroy": true,
+                scrollX: true,
             });
 
             $('#createdOrders tbody').on('dblclick', 'tr', function() {
@@ -873,23 +860,26 @@
 
                             buttons: {
 
-                                Yes: function() {
-                                    $(this).dialog("close");
-                                    if ($('#orderId').val().length < 3) {
-                                        $('#orderId').val(data.OrderId);
-                                        $("#checkOrders").click();
+                                Yes: {
+                                    text: "Yes",
+                                    class: "btn btn-success btn-sm",
+                                    click: function() {
+                                        $(this).dialog("close");
+                                        if ($('#orderId').val().length < 3) {
+                                            $('#orderId').val(data.OrderId);
+                                            $("#checkOrders").click();
+                                        }
+                                        $("#dialog").dialogExtend("minimize");
+                                        $(this).prop("disable", true);
                                     }
-
-
-                                    $("#dialog").dialogExtend("minimize");
-
-                                    $(this).prop("disable", true);
                                 },
-                                No: function() {
-
-                                    $(this).dialog("close");
+                                No: {
+                                    text: "No",
+                                    class: "btn btn-primary btn-sm",
+                                    click: function() {
+                                        $(this).dialog("close");
+                                    }
                                 }
-
                             },
                             close: function(event, ui) {
                                 $(this).remove();

@@ -78,3 +78,6 @@
 .hidden_row {
     display: none;
 }
+
+tr.row_selectedYellowish td{background-color:#91ff00 !important;}
+input.row_selectedYellowish {background-color:#91ff00 !important;}
