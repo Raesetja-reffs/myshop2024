@@ -4244,7 +4244,7 @@
                     if (inv != value.InvoiceNo) {
                         var k = parseInt(counter) + parseInt(1);
                         trHTML += `
-                            <tr ondblclick="this.style.display = none" class="fast_remove" onclick="show_hide_row(this, 'hidden_row1${k}');">
+                            <tr ondblclick="/*this.style.display = none*/" class="fast_remove" onclick="show_hide_row(this, 'hidden_row1${k}');">
                                 <td class="dims_invoice_no text-nowrap">${dimsPlusIcon} ${value.InvoiceNo}</td>
                                 <td class="text-nowrap">${value.OrderDate}</td>
                                 <td class="text-nowrap">${value.DeliveryDate}</td>
@@ -6131,6 +6131,8 @@
             $('#thiswwwwwwwwwwwwwwwwww').removeAttr('readonly');
             console.debug("this is it*********************______");
         });
+        $('#orderPatternIdTable_filter input').removeClass('form-control-sm');
+        $('#orderPatternIdTable_filter input').removeClass('form-control-solid');
 
 
     }
@@ -10962,89 +10964,69 @@
                     } else {
                         var classAnonymouscols = "anonymouscolsOff";
                     }
-                    var $row = $('<tr id="new_row_ajax' + tokenId +
-                        '" class="fast_remove" style="font-weight: 600;font-size: 11px;">' +
-                        '<td contenteditable="false" class="col-sm-1"><input name="theProductCode" id ="prodCode_' +
-                        tokenId + '" class="theProductCode_ set_autocomplete inputs" value="' +
-                        valueDetails.PastelCode + '" ' + props +
-                        ' ><br><input name="col1" id ="col1' + tokenId + '" class="col1 ' +
-                        classAnonymouscols + '"  readonly></td>' +
-                        '<td contenteditable="false" class="col-md-4"><input name="prodDescription_" id ="prodDescription_' +
-                        tokenId + '" class="prodDescription_ set_autocomplete inputs" value="' +
-                        valueDetails.PastelDescription + '" ' + props +
-                        ' ><br><input name="col8" id ="col8' + tokenId + '" class="col8 ' +
-                        classAnonymouscols + '" readonly></td>' +
-                        '<td  style="" contenteditable="false" class="col-md-1"><input type="text" name="prodBulk_"  id ="prodBulk_' +
-                        tokenId + '" class="prodBulk_ resize-input-inside"  value="' +
-                        valueDetails.UnitCount + '" ' + props +
-                        ' readonly><br><input name="col3" id ="col3' + tokenId +
-                        '" class="col3 ' + classAnonymouscols + '" readonly></td>' +
-                        '<td  contenteditable="false" class="col-md-1"><input type="text" name="prodQty_" id ="prodQty_' +
-                        tokenId +
-                        '"   onkeypress="return isFloatNumber(this,event)"  class="prodQty_ resize-input-inside inputs" value="' +
-                        (parseFloat(valueDetails.Qty)).toFixed(3) + '" ' + props +
-                        '><br><input name="col4" id ="col4' + tokenId + '" class="col4 ' +
-                        classAnonymouscols + '" readonly></td>' +
-                        '<td  contenteditable="false"  class="col-md-1"><input type="text" name="prodPrice_" id ="prodPrice_' +
-                        tokenId +
-                        '" onkeypress="return isFloatNumber(this,event)" class="prodPrice_ resize-input-inside inputs" value="' +
-                        (parseFloat(valueDetails.Price)).toFixed(2) + '" ' + props +
-                        '><br><input name="col1" id ="col1' + tokenId + '" class="col1 ' +
-                        classAnonymouscols + '" readonly></td>' +
-                        '<td  contenteditable="false"  class="col-md-1"><input type="text" name="prodDisc_" id ="prodDisc_' +
-                        tokenId +
-                        '" onkeypress="return isFloatNumber(this,event)" class="prodDisc_ resize-input-inside inputs" value="' +
-                        valueDetails.LineDisc + '" ' + props +
-                        ' {{ $discountProperty }}><br><input name="col6" id ="col6' + tokenId +
-                        '" class="col6 ' + classAnonymouscols +
-                        '" style="color: brown;" readonly></td>' +
-                        '<td  contenteditable="false"  class="col-md-1"><input  type="text" name="prodUnitSize_" id ="prodUnitSize_' +
-                        tokenId + '" class="prodUnitSize_ resize-input-inside inputs" value="' +
-                        valueDetails.UnitSize + '" ' + props + ' ></td>' +
-                        '<td contenteditable="false"  class="col-md-1"><input type="text" name="instockReadOnly" id ="instockReadOnly_' +
-                        tokenId + '" value="' + valueDetails.QtyInStock +
-                        '"  class="instockReadOnly_ resize-input-inside inputs" style="font-weight: 800;width: 80%;color:blue;"><select name="col2" id ="col2' +
-                        tokenId + '" class="col2 ' + classAnonymouscols + '"><option value="' +
-                        valueDetails.ID + '" >"' + valueDetails.Warehouse +
-                        '"</option> </select>' +
-                        '<td contenteditable="false"  class="col-md-1"><input type="text" name="additionalcost_" id ="additionalcost_' +
-                        tokenId +
-                        '" value ="" class="additionalcost_ resize-input-inside inputs" style="font-weight: 800;font-size:8px !important;color:blue;">' +
-                        '<td  contenteditable="false" class="col-md-3"><input type="text" name="prodComment_" id ="prodComment_' +
-                        tokenId +
-                        '" class="prodComment_ resize-input-inside last inputs" title="' +
-                        valueDetails.Comment + '"  value="' + valueDetails.Comment + '" ' +
-                        props + ' ><br><input name="col9" id ="col9' + tokenId +
-                        '" class="col9 ' + classAnonymouscols + '" readonly></td>' +
-                        '<td><input type="hidden" id="title_' + tokenId +
-                        '" class="title" value="" /><input type="hidden" id="theOrdersDetailsId" value="' +
-                        valueDetails.OrderDetailId + '" /><input type="hidden" id ="taxCode' +
-                        tokenId + '" value="' + valueDetails.Tax + '" class="taxCodes" />' +
-                        '<input type="hidden" id ="cost_' + tokenId + '" value="' + valueDetails
-                        .Cost + '" class="costs" /><input type="hidden" id ="inStock_' +
-                        tokenId + '" value="' + valueDetails.QtyInStock +
-                        '" class="inStock" style="color:blue !important" /><input type="hidden" value ="' +
-                        tokenId + '" class="hiddenToken" />' +
-                        '<input type="hidden" id ="priceholder_' + tokenId + '" value="' + (
-                            parseFloat(valueDetails.Price)).toFixed(2) +
-                        '" class="priceholder" />' +
-                        '<input type="hidden" id ="alcohol_' + tokenId +
-                        '" value="" class="alcohol" /><input type="hidden" id ="margin_' +
-                        tokenId + '" value="" class="margin" />' +
-                        '<input type="hidden" id ="soldByWieght' + tokenId +
-                        '" value="" class="soldByWieght" />' +
-                        '<input type="hidden" id ="unitWeight' + tokenId +
-                        '" value="" class="unitWeight" />' +
-                        '<input type="hidden" id ="strBulkUnit' + tokenId +
-                        '" value="" class="strBulkUnit" />' +
-                        '<input type="hidden" id ="prohibited_' + tokenId +
-                        '" value="" class="prohibited" />' +
-                        '<input type="hidden" id ="productmarginauth' + tokenId +
-                        '" value="1" class="productmarginauth" />' +
-                        '<button type="button" id="deleteaLine" value="' + valueDetails
-                        .OrderDetailId +
-                        '" class="getOrderDetailLine btn-warning" >Delete</button>' +
-                        '</td></tr>');
+                    var $row = $(`
+                        <tr id="new_row_ajax${tokenId}" class="fast_remove">
+                            <td>
+                                <input type="hidden" id="title_${tokenId}" class="title" value="" />
+                                <input type="hidden" id="theOrdersDetailsId" value="${valueDetails.OrderDetailId}" />
+                                <input type="hidden" id ="taxCode${tokenId}" value="${valueDetails.Tax}" class="taxCodes" />
+                                <input type="hidden" id ="cost_${tokenId}" value="${valueDetails.Cost}" class="costs" />
+                                <input type="hidden" id ="inStock_${tokenId}" value="${valueDetails.QtyInStock}" class="inStock" style="color:blue !important" />
+                                <input type="hidden" value ="${tokenId}" class="hiddenToken" />
+                                <input type="hidden" id ="priceholder_${tokenId}" value="${(parseFloat(valueDetails.Price)).toFixed(2)}" class="priceholder" />
+                                <input type="hidden" id ="alcohol_${tokenId}" value="" class="alcohol" />
+                                <input type="hidden" id ="margin_${tokenId}" value="" class="margin" />
+                                <input type="hidden" id ="soldByWieght${tokenId}" value="" class="soldByWieght" />
+                                <input type="hidden" id ="unitWeight${tokenId}" value="" class="unitWeight" />
+                                <input type="hidden" id ="strBulkUnit${tokenId}" value="" class="strBulkUnit" />
+                                <input type="hidden" id ="prohibited_${tokenId}" value="" class="prohibited" />
+                                <input type="hidden" id ="productmarginauth${tokenId}" value="1" class="productmarginauth" />
+                                <button type="button" id="deleteaLine" value="${valueDetails.OrderDetailId}" class="getOrderDetailLine btn btn-danger btn-sm">
+                                    Delete
+                                </button>
+                            </td>
+                            <td contenteditable="false">
+                                <input style="width: 100px;" name="theProductCode" id ="prodCode_${tokenId}" class="theProductCode_ set_autocomplete inputs form-control" value="${valueDetails.PastelCode}" ${props}>
+                                <input name="col1" id="col1${tokenId}" class="col1 ${classAnonymouscols}" readonly>
+                            </td>
+                            <td contenteditable="false">
+                                <input style="width: 250px;" name="prodDescription_" id ="prodDescription_${tokenId}" class="prodDescription_ set_autocomplete inputs form-control" value="${valueDetails.PastelDescription}" ${props}>
+                                <input name="col8" id ="col8${tokenId}" class="col8 ${classAnonymouscols}" readonly>
+                            </td>
+                            <td contenteditable="false">
+                                <input style="width: 65px;" type="text" name="prodBulk_"  id ="prodBulk_${tokenId}" class="prodBulk_ resize-input-inside form-control"  value="${valueDetails.UnitCount}" ${props} readonly>
+                                <input name="col3" id ="col3${tokenId}" class="col3 ${classAnonymouscols}" readonly>
+                            </td>
+                            <td contenteditable="false">
+                                <input style="width: 65px;" type="text" name="prodQty_" id ="prodQty_${tokenId}" onkeypress="return isFloatNumber(this,event)" class="prodQty_ resize-input-inside inputs form-control" value="${(parseFloat(valueDetails.Qty)).toFixed(3)}" ${props}>
+                                <input name="col4" id ="col4${tokenId}" class="col4 ${classAnonymouscols}" readonly>
+                            </td>
+                            <td contenteditable="false">
+                                <input style="width: 100px;" type="text" name="prodPrice_" id ="prodPrice_${tokenId}" onkeypress="return isFloatNumber(this,event)" class="prodPrice_ resize-input-inside inputs" value="${(parseFloat(valueDetails.Price)).toFixed(2)}" ${props}>
+                                <input name="col1" id ="col1${tokenId}" class="col1 ${classAnonymouscols}" readonly>
+                            </td>
+                            <td contenteditable="false">
+                                <input style="width: 80px;" type="text" name="prodDisc_" id ="prodDisc_${tokenId}" onkeypress="return isFloatNumber(this,event)" class="prodDisc_ resize-input-inside inputs form-control" value="${valueDetails.LineDisc}" ${props} {{ $discountProperty }}>
+                                <input name="col6" id ="col6${tokenId}" class="col6 ${classAnonymouscols}" style="color: brown;" readonly>
+                            </td>
+                            <td contenteditable="false">
+                                <input style="width: 75px;" type="text" name="prodUnitSize_" id ="prodUnitSize_${tokenId}" class="prodUnitSize_ resize-input-inside inputs form-control" value="${valueDetails.UnitSize}" ${props}>
+                            </td>
+                            <td contenteditable="false">
+                                <input style="width: 100px; color: blue;" type="text" name="instockReadOnly" id ="instockReadOnly_${tokenId}" value="${valueDetails.QtyInStock}" class="instockReadOnly_ resize-input-inside inputs form-control">
+                                <select name="col2" id ="col2${tokenId}" class="col2 ${classAnonymouscols}">
+                                    <option value="${valueDetails.ID}" >"${valueDetails.Warehouse}"</option>
+                                </select>
+                            </td>
+                            <td contenteditable="false">
+                                <input style="width: 100px; color:blue;" type="text" name="additionalcost_" id ="additionalcost_${tokenId}" class="additionalcost_ resize-input-inside inputs form-control">
+                            </td>
+                            <td contenteditable="false">
+                                <input style="width: 200px;" type="text" name="prodComment_" id ="prodComment_${tokenId}" class="prodComment_ resize-input-inside last inputs form-control" title="${valueDetails.Comment}"  value="${valueDetails.Comment}" ${props}>
+                                <input name="col9" id ="col9${tokenId}" class="col9 ${classAnonymouscols}" readonly>
+                            </td>
+                        </tr>
+                    `);
                     $('#table tbody').append($row);
 
 
@@ -11099,89 +11081,69 @@
                     } else {
                         var classAnonymouscols = "anonymouscolsOff";
                     }
-                    var $row = $('<tr id="new_row_ajax' + tokenId +
-                        '" class="fast_remove" style="font-weight: 600;font-size: 11px;">' +
-                        '<td contenteditable="false" class="col-sm-1"><input name="theProductCode" id ="prodCode_' +
-                        tokenId + '" class="theProductCode_ set_autocomplete inputs" value="' +
-                        valueDetails.PastelCode + '" ' + props +
-                        ' ><br><input name="col1" id ="col1' + tokenId + '" class="col1 ' +
-                        classAnonymouscols + '"  readonly></td>' +
-                        '<td contenteditable="false" class="col-md-4"><input name="prodDescription_" id ="prodDescription_' +
-                        tokenId + '" class="prodDescription_ set_autocomplete inputs" value="' +
-                        valueDetails.PastelDescription + '" ' + props +
-                        ' ><br><input name="col8" id ="col8' + tokenId + '" class="col8 ' +
-                        classAnonymouscols + '" readonly></td>' +
-                        '<td  style="" contenteditable="false" class="col-md-1"><input type="text" name="prodBulk_"  id ="prodBulk_' +
-                        tokenId + '" class="prodBulk_ resize-input-inside"  value="' +
-                        valueDetails.UnitCount + '" ' + props +
-                        ' readonly><br><input name="col3" id ="col3' + tokenId +
-                        '" class="col3 ' + classAnonymouscols + '" readonly></td>' +
-                        '<td  contenteditable="false" class="col-md-1"><input type="text" name="prodQty_" id ="prodQty_' +
-                        tokenId +
-                        '"   onkeypress="return isFloatNumber(this,event)"  class="prodQty_ resize-input-inside inputs" value="' +
-                        (parseFloat(valueDetails.Qty)).toFixed(3) + '" ' + props +
-                        '><br><input name="col4" id ="col4' + tokenId + '" class="col4 ' +
-                        classAnonymouscols + '" readonly></td>' +
-                        '<td  contenteditable="false"  class="col-md-1"><input type="text" name="prodPrice_" id ="prodPrice_' +
-                        tokenId +
-                        '" onkeypress="return isFloatNumber(this,event)" class="prodPrice_ resize-input-inside inputs" value="' +
-                        (parseFloat(valueDetails.Price)).toFixed(2) + '" ' + props +
-                        '><br><input name="col1" id ="col1' + tokenId + '" class="col1 ' +
-                        classAnonymouscols + '" readonly></td>' +
-                        '<td  contenteditable="false"  class="col-md-1"><input type="text" name="prodDisc_" id ="prodDisc_' +
-                        tokenId +
-                        '" onkeypress="return isFloatNumber(this,event)" class="prodDisc_ resize-input-inside inputs" value="' +
-                        valueDetails.LineDisc + '" ' + props +
-                        ' {{ $discountProperty }}><br><input name="col6" id ="col6' + tokenId +
-                        '" class="col6 ' + classAnonymouscols +
-                        '" style="color: brown;" readonly></td>' +
-                        '<td  contenteditable="false"  class="col-md-1"><input  type="text" name="prodUnitSize_" id ="prodUnitSize_' +
-                        tokenId + '" class="prodUnitSize_ resize-input-inside inputs" value="' +
-                        valueDetails.UnitSize + '" ' + props + ' ></td>' +
-                        '<td contenteditable="false"  class="col-md-1"><input type="text" name="instockReadOnly" id ="instockReadOnly_' +
-                        tokenId + '" value="' + valueDetails.QtyInStock +
-                        '"  class="instockReadOnly_ resize-input-inside inputs" style="font-weight: 800;width: 80%;color:blue;"><select name="col2" id ="col2' +
-                        tokenId + '" class="col2 ' + classAnonymouscols + '"><option value="' +
-                        valueDetails.ID + '" >"' + valueDetails.Warehouse +
-                        '"</option> </select>' +
-                        '<td contenteditable="false"  class="col-md-1"><input type="text" name="additionalcost_" id ="additionalcost_' +
-                        tokenId +
-                        '" value ="" class="additionalcost_ resize-input-inside inputs" style="font-weight: 800;font-size:8px !important;color:blue;">' +
-                        '<td  contenteditable="false" class="col-md-3"><input type="text" name="prodComment_" id ="prodComment_' +
-                        tokenId +
-                        '" class="prodComment_ resize-input-inside last inputs" title="' +
-                        valueDetails.Comment + '"  value="' + valueDetails.Comment + '" ' +
-                        props + ' ><br><input name="col9" id ="col9' + tokenId +
-                        '" class="col9 ' + classAnonymouscols + '" readonly></td>' +
-                        '<td><input type="hidden" id="title_' + tokenId +
-                        '" class="title" value="" /><input type="hidden" id="theOrdersDetailsId" value="' +
-                        valueDetails.OrderDetailId + '" /><input type="hidden" id ="taxCode' +
-                        tokenId + '" value="' + valueDetails.Tax + '" class="taxCodes" />' +
-                        '<input type="hidden" id ="cost_' + tokenId + '" value="' + valueDetails
-                        .Cost + '" class="costs" /><input type="hidden" id ="inStock_' +
-                        tokenId + '" value="' + valueDetails.QtyInStock +
-                        '" class="inStock" style="color:blue !important" /><input type="hidden" value ="' +
-                        tokenId + '" class="hiddenToken" />' +
-                        '<input type="hidden" id ="priceholder_' + tokenId + '" value="' + (
-                            parseFloat(valueDetails.Price)).toFixed(2) +
-                        '" class="priceholder" />' +
-                        '<input type="hidden" id ="alcohol_' + tokenId +
-                        '" value="" class="alcohol" /><input type="hidden" id ="margin_' +
-                        tokenId + '" value="" class="margin" />' +
-                        '<input type="hidden" id ="soldByWieght' + tokenId +
-                        '" value="" class="soldByWieght" />' +
-                        '<input type="hidden" id ="unitWeight' + tokenId +
-                        '" value="" class="unitWeight" />' +
-                        '<input type="hidden" id ="strBulkUnit' + tokenId +
-                        '" value="" class="strBulkUnit" />' +
-                        '<input type="hidden" id ="prohibited_' + tokenId +
-                        '" value="" class="prohibited" />' +
-                        '<input type="hidden" id ="productmarginauth' + tokenId +
-                        '" value="1" class="productmarginauth" />' +
-                        '<button type="button" id="deleteaLine" value="' + valueDetails
-                        .OrderDetailId +
-                        '" class="getOrderDetailLine btn-warning" >Delete</button>' +
-                        '</td></tr>');
+                    var $row = $(`
+                        <tr id="new_row_ajax${tokenId}" class="fast_remove">
+                            <td>
+                                <input type="hidden" id="title_${tokenId}" class="title" value="" />
+                                <input type="hidden" id="theOrdersDetailsId" value="${valueDetails.OrderDetailId}" />
+                                <input type="hidden" id ="taxCode${tokenId}" value="${valueDetails.Tax}" class="taxCodes" />
+                                <input type="hidden" id ="cost_${tokenId}" value="${valueDetails.Cost}" class="costs" />
+                                <input type="hidden" id ="inStock_${tokenId}" value="${valueDetails.QtyInStock}" class="inStock" style="color:blue !important" />
+                                <input type="hidden" value ="${tokenId}" class="hiddenToken" />
+                                <input type="hidden" id ="priceholder_${tokenId}" value="${(parseFloat(valueDetails.Price)).toFixed(2)}" class="priceholder" />
+                                <input type="hidden" id ="alcohol_${tokenId}" value="" class="alcohol" />
+                                <input type="hidden" id ="margin_${tokenId}" value="" class="margin" />
+                                <input type="hidden" id ="soldByWieght${tokenId}" value="" class="soldByWieght" />
+                                <input type="hidden" id ="unitWeight${tokenId}" value="" class="unitWeight" />
+                                <input type="hidden" id ="strBulkUnit${tokenId}" value="" class="strBulkUnit" />
+                                <input type="hidden" id ="prohibited_${tokenId}" value="" class="prohibited" />
+                                <input type="hidden" id ="productmarginauth${tokenId}" value="1" class="productmarginauth" />
+                                <button type="button" id="deleteaLine" value="${valueDetails.OrderDetailId}" class="getOrderDetailLine btn btn-danger btn-sm">
+                                    Delete
+                                </button>
+                            </td>
+                            <td contenteditable="false">
+                                <input style="width: 100px;" name="theProductCode" id ="prodCode_${tokenId}" class="theProductCode_ set_autocomplete inputs form-control" value="${valueDetails.PastelCode}" ${props}>
+                                <input name="col1" id ="col1${tokenId}" class="col1 ${classAnonymouscols}"  readonly>
+                            </td>
+                            <td contenteditable="false">
+                                <input style="width: 250px;" name="prodDescription_" id ="prodDescription_${tokenId}" class="prodDescription_ set_autocomplete inputs form-control" value="${valueDetails.PastelDescription}" ${props}>
+                                <input name="col8" id ="col8${tokenId}" class="col8 ${classAnonymouscols}" readonly>
+                            </td>
+                            <td contenteditable="false">
+                                <input style="width: 65px;" type="text" name="prodBulk_"  id ="prodBulk_${tokenId}" class="prodBulk_ resize-input-inside form-control"  value="${valueDetails.UnitCount}" ${props} readonly>
+                                <input name="col3" id ="col3${tokenId}" class="col3 ${classAnonymouscols}" readonly>
+                            </td>
+                            <td contenteditable="false">
+                                <input style="width: 65px;" type="text" name="prodQty_" id ="prodQty_${tokenId}" onkeypress="return isFloatNumber(this,event)" class="prodQty_ resize-input-inside inputs form-control" value="${(parseFloat(valueDetails.Qty)).toFixed(3)}" ${props}>
+                                <input name="col4" id ="col4${tokenId}" class="col4 ${classAnonymouscols}" readonly>
+                            </td>
+                            <td contenteditable="false">
+                                <input style="width: 100px;" type="text" name="prodPrice_" id ="prodPrice_${tokenId}" onkeypress="return isFloatNumber(this,event)" class="prodPrice_ resize-input-inside inputs form-control" value="${(parseFloat(valueDetails.Price)).toFixed(2)}" ${props}>
+                                <input name="col1" id ="col1${tokenId}" class="col1 ${classAnonymouscols}" readonly>
+                            </td>
+                            <td contenteditable="false">
+                                <input style="width: 80px;" type="text" name="prodDisc_" id ="prodDisc_${tokenId}" onkeypress="return isFloatNumber(this,event)" class="prodDisc_ resize-input-inside inputs form-control" value="${valueDetails.LineDisc}" ${props} {{ $discountProperty }}>
+                                <input name="col6" id ="col6${tokenId}" class="col6 ${classAnonymouscols}" style="color: brown;" readonly>
+                            </td>
+                            <td contenteditable="false">
+                                <input style="width: 75px;" type="text" name="prodUnitSize_" id ="prodUnitSize_${tokenId}" class="prodUnitSize_ resize-input-inside inputs form-control" value="${valueDetails.UnitSize}" ${props}>
+                            </td>
+                            <td contenteditable="false">
+                                <input style="width: 100px; color: blue;" type="text" name="instockReadOnly" id ="instockReadOnly_${tokenId}" value="${valueDetails.QtyInStock}"  class="instockReadOnly_ resize-input-inside inputs form-control">
+                                <select name="col2" id ="col2${tokenId}" class="col2 ${classAnonymouscols}">
+                                    <option value="${valueDetails.ID}" >"${valueDetails.Warehouse}"</option>
+                                </select>
+                            </td>
+                            <td contenteditable="false">
+                                <input style="width: 100px; color:blue;" type="text" name="additionalcost_" id ="additionalcost_${tokenId}" value ="" class="additionalcost_ resize-input-inside inputs form-control">
+                            </td>
+                            <td contenteditable="false">
+                                <input style="width: 200px;" type="text" name="prodComment_" id ="prodComment_${tokenId}" class="prodComment_ resize-input-inside last inputs form-control" title="${valueDetails.Comment}"  value="${valueDetails.Comment}" ${props}>
+                                <input name="col9" id ="col9${tokenId}" class="col9 ${classAnonymouscols}" readonly>
+                            </td>
+                        </tr>
+                    `);
                     $('#table tbody').append($row);
 
 
