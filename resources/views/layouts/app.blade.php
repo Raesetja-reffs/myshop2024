@@ -28,6 +28,7 @@
     <link href="{{ asset('css/contextMenu.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('css/jquery.flexdatalist.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('css/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('css/dx.material.blue.light.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css" />
 
     <!--begin::Global Javascript Bundle(mandatory for all pages)-->
@@ -45,6 +46,7 @@
     <script src="{{ asset('js/datatables.bundle.js') }}"></script>
     <script src="{{ asset('js/jquery.dialogextend.js') }}"></script>
     <script src="{{ asset('js/jquery.pleaseWait.js') }}"></script>
+    <script src="{{ asset('js/dx.all.js') }}"></script>
     <!-- end: Page level JS -->
     <script src="{{ asset('js/commonScript.js') }}"></script>
     <script src="{{ asset('js/app.js') }}"></script>
