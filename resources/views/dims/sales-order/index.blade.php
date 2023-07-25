@@ -39,6 +39,7 @@
     @include('dims.sales-order.partials.searchbar')
     @include('dims.sales-order.partials.order-details')
     @include('dims.sales-order.partials.order-listing')
+    @include('dims.sales-order.partials.alldialogs')
     <!-- Script: -->
     @include('dims.sales-order.partials.allscript')
 </x-app-layout>

@@ -3204,9 +3204,10 @@
                 //generateALine();
                 generateALine2();
             } else {
-                $("<div title='Fill in required fields'>Please make sure all required fields such as <br>Product code and Description<br>Quantity<br> Price<br> Discount <br>Contains Data Before saving </div>")
+                $("<div title='Fill in required fields'>Please make sure all required fields such as: <br>Product code and Description<br>Quantity<br> Price<br> Discount <br>Contains Data Before saving </div>")
                     .dialog({
-                        modal: true
+                        modal: true,
+                        width: 360
                     });
 
             }
@@ -3739,8 +3740,12 @@
                             modal: true,
                             containment: false,
                             buttons: {
-                                "Okay": function() {
-                                    dialog.dialog('close');
+                                "Okay": {
+                                    text: "Okay",
+                                    class: "btn btn-primary btn-sm",
+                                    click: function() {
+                                        dialog.dialog('close');
+                                    }
                                 }
                             }
                         });
@@ -11002,7 +11007,7 @@
                                 <input name="col4" id ="col4${tokenId}" class="col4 ${classAnonymouscols}" readonly>
                             </td>
                             <td contenteditable="false">
-                                <input style="width: 100px;" type="text" name="prodPrice_" id ="prodPrice_${tokenId}" onkeypress="return isFloatNumber(this,event)" class="prodPrice_ resize-input-inside inputs" value="${(parseFloat(valueDetails.Price)).toFixed(2)}" ${props}>
+                                <input style="width: 100px;" type="text" name="prodPrice_" id ="prodPrice_${tokenId}" onkeypress="return isFloatNumber(this,event)" class="prodPrice_ resize-input-inside inputs form-control" value="${(parseFloat(valueDetails.Price)).toFixed(2)}" ${props}>
                                 <input name="col1" id ="col1${tokenId}" class="col1 ${classAnonymouscols}" readonly>
                             </td>
                             <td contenteditable="false">

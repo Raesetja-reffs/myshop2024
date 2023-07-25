@@ -29,7 +29,7 @@
                             style="font-weight: 900;">
                         <button class="btn btn-danger btn-sm ps-1 pe-1" id="deleteAllLines">Delete All
                             Lines</button>
-                        @if ($userActions != 0 || true)
+                        @if ($userActions != 0)
                             <button type="button" id="button_user_actions" class="btn btn-info btn-sm ps-1 pe-1">User
                                 Actions</button>
                         @endif
@@ -100,7 +100,7 @@
                                     <button class="btn btn-warning btn-sm ps-1 pe-1" id="makeNewDelivAddress"
                                         type="button">New</button>
                                 </div>
-                                <i class="fa fa-plus-square" aria-hidden="true" id="addANewDelvAddressOnModal"></i>
+                                <i class="fa fa-plus-square cursor-pointer" aria-hidden="true" id="addANewDelvAddressOnModal"></i>
                                 <textarea id="customerSelectedDelDate" class="form-control" style="" readonly></textarea>
                                 <i style="" id="tempDelivAddressClosethis">Press <a href="javascript:void(0);"
                                         id="tempDelivAddress">here</a> to create a temp delivery address </i>
@@ -143,18 +143,18 @@
                             </div>
                             <div class="col-md-12 mb-2">
                                 <label>Line Extra Info</label>
-                                <div class="row text-red">
+                                <div class="row text-danger">
                                     <div class="col-md-4">
                                         <label>L.Margin</label>
-                                        <input id="linemargins" class="form-control">
+                                        <input id="linemargins" class="form-control text-danger">
                                     </div>
                                     <div class="col-md-4">
                                         <label>L.Total (Exc)</label>
-                                        <input id="linetotalex" class="form-control">
+                                        <input id="linetotalex" class="form-control text-danger">
                                     </div>
                                     <div class="col-md-4">
                                         <label>L.Total (Inc)</label>
-                                        <input id="linetotalInc" class="form-control">
+                                        <input id="linetotalInc" class="form-control text-danger">
                                     </div>
                                 </div>
                             </div>
@@ -165,7 +165,7 @@
                             </div>
                             <div class="col-md-12 mb-2">
                                 <label>Totals</label>
-                                <div class="row text-red">
+                                <div class="row">
                                     <div class="col-md-6">
                                         <label>Exc</label>
                                         <input id="totalEx" class="form-control">
@@ -178,7 +178,7 @@
                             </div>
                             <div class="col-md-12 mb-2">
                                 <label>Order Disc Totals</label>
-                                <div class="row text-red">
+                                <div class="row">
                                     <div class="col-md-12">
                                         <label>Tot(Inc)</label>
                                         <input id="totalInOrder" class="form-control">
