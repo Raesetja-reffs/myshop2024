@@ -49,7 +49,8 @@
                             <div class="row mt-3">
                                 <div class="col-md-12">
                                     <div class="table-responsive">
-                                        <table class="search-table table table-striped table-bordered table-hover" id="orderPatternIdTable">
+                                        <table class="search-table table table-striped table-bordered table-hover"
+                                            id="orderPatternIdTable">
                                             <thead>
                                                 <tr>
                                                     <th class="text-nowrap">Description</th>
@@ -101,7 +102,8 @@
                                 <div class="col-md-12" style="height: 350px;overflow-y:auto;">
                                     <h6 class="pt-2">Group Special Pricing</h6>
                                     <div class="table-responsive">
-                                        <table id="groupSpecials" class="table table-bordered table-hover" style="width: 100%;">
+                                        <table id="groupSpecials" class="table table-bordered table-hover"
+                                            style="width: 100%;">
                                             <thead>
                                                 <tr>
                                                     <th class="text-nowrap">Item</th>
@@ -140,7 +142,11 @@
                             </div>
                         </div>
                         <div class="tab-pane fade" id="content4">
-                            <div id="gridbackorders" style="max-width: 100% !important">
+                            <div class="row mt-3">
+                                <div class="col-md-12">
+                                    <div id="gridbackorders" style="max-width: 100% !important">
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -149,3 +155,284 @@
         </div>
     </div>
 </div>
+
+<script>
+    function backorderandawaiting(addressId) {
+        $.ajax({
+            url: '{!! url('/backordersandawaiting') !!}',
+            type: "POST",
+            data: {
+                addressId: addressId,
+                customerCode: $('#inputCustAcc').val(),
+            },
+            success: function(data) {
+                console.log(data);
+
+                $("#gridbackorders").dxDataGrid({
+                    dataSource: data, //as json
+                    hoverStateEnabled: true,
+                    showBorders: true,
+                    filterRow: {
+                        visible: false
+                    },
+                    allowColumnResizing: true,
+                    columnAutoWidth: true,
+                    wordWrapEnabled: true,
+                    showScrollbar: "always",
+                    // height: 500,
+                    paging: {
+                        pageSize: 10,
+                    },
+                    editing: {
+                        mode: 'single',
+                        // allowUpdating: true,
+                        allowDeleting: true,
+                    },
+                    selection: {
+                        mode: 'batch',
+                    },
+                    columns: [
+                        {
+                            dataField: "prodStatusType",
+                            caption: "Type",
+                            width: 62,
+                            cellTemplate: function(cellElement, cellInfo) {
+
+                                cellElement.addClass('custom-font');
+
+                                cellElement.text(cellInfo.text);
+                            }
+
+                        },
+                        {
+                            dataField: "OrderId",
+                            caption: "OrderId",
+                            width: 75,
+                            cellTemplate: function(cellElement, cellInfo) {
+                                cellElement.addClass('custom-font');
+                                cellElement.text(cellInfo.text);
+                            }
+
+                        },
+                        {
+                            dataField: "ProductId",
+                            caption: "ProductId",
+                            visible: false,
+                        },
+                        {
+                            dataField: "DeliveryAddressID",
+                            caption: "DeliveryAddressID",
+                            visible: false,
+                        },
+                        {
+                            dataField: "OrderDetailId",
+                            caption: "OrderDetailId",
+                            visible: false,
+                        },
+                        {
+                            dataField: "PastelCode",
+                            caption: "Product Code",
+                            width: 30,
+                            visible: false,
+                            cellTemplate: function(cellElement, cellInfo) {
+
+                                cellElement.addClass('custom-font');
+
+                                cellElement.text(cellInfo.text);
+                            }
+                        },
+                        {
+                            dataField: "Description",
+                            caption: "Item",
+                            width: 100,
+                            cellTemplate: function(cellElement, cellInfo) {
+                                console.debug("column");
+                                console.debug(cellInfo.column);
+
+                                cellElement.addClass('custom-font');
+
+                                cellElement.text(cellInfo.text);
+                            }
+                        },
+                        {
+                            dataField: "Ordered",
+                            caption: "QTY",
+                            width: 70,
+                            cellTemplate: function(cellElement, cellInfo) {
+
+                                cellElement.addClass('custom-font');
+
+                                cellElement.text(cellInfo.text);
+                            }
+                        },
+                        {
+                            dataField: "originalQty",
+                            caption: "Orig.Qty",
+                            width: 88,
+                            cellTemplate: function(cellElement, cellInfo) {
+
+                                cellElement.addClass('custom-font');
+
+                                cellElement.text(cellInfo.text);
+                            }
+                        },
+                        {
+                            dataField: "DeliveryDate",
+                            caption: "D.Date",
+                            width: 100,
+                            displayFormat: "yyyy-mm-dd",
+                            cellTemplate: function(cellElement, cellInfo) {
+
+                                cellElement.addClass('custom-font');
+
+                                cellElement.text(cellInfo.text);
+                            }
+                        },
+                        {
+                            dataField: "UnitWeight",
+                            caption: "UnitWeight",
+                            width: 30,
+                            visible: false,
+                            cellTemplate: function(cellElement, cellInfo) {
+
+                                cellElement.addClass('custom-font');
+
+                                cellElement.text(cellInfo.text);
+                            }
+                        },
+                        {
+                            dataField: "SoldByWeight",
+                            caption: "SoldByWeight",
+                            width: 30,
+                            visible: false,
+                            cellTemplate: function(cellElement, cellInfo) {
+                                cellElement.addClass('custom-font');
+                                cellElement.text(cellInfo.text);
+                            }
+                        },
+                        {
+                            dataField: "Tax",
+                            caption: "Tax",
+                            visible: false,
+
+                            cellTemplate: function(cellElement, cellInfo) {
+
+                                cellElement.addClass('custom-font');
+                                cellElement.text(cellInfo.text);
+                            }
+                        },
+                        {
+                            dataField: "strBulkUnit",
+                            caption: "strBulkUnit",
+                            visible: false,
+                            cellTemplate: function(cellElement, cellInfo) {
+
+                                cellElement.addClass('custom-font');
+
+                                cellElement.text(cellInfo.text);
+                            }
+                        },
+                        {
+                            dataField: "ProductMargin",
+                            caption: "ProductMargin",
+                            visible: false,
+                            cellTemplate: function(cellElement, cellInfo) {
+
+                                cellElement.addClass('custom-font');
+
+                                cellElement.text(cellInfo.text);
+                            }
+                        },
+                        {
+                            dataField: "UnBookedStock",
+                            caption: "UnBookedStock",
+                            width: 30,
+                            visible: false,
+                            format: {
+                                type: "fixedPoint",
+                                precision: 3
+                            },
+                            customizeText: function(cellInfo) {
+                                return Number(cellInfo.value).toFixed(3);
+                            }
+                        },
+                        {
+                            dataField: "OrderNumber",
+                            caption: "O.Num",
+                            width: 71,
+                            cellTemplate: function(cellElement, cellInfo) {
+                                if (cellInfo.column.index === 0) {
+                                    cellElement.addClass('custom-font');
+                                }
+                                cellElement.text(cellInfo.text);
+                            }
+                        },
+                        {
+                            dataField: "Comment",
+                            caption: "Comment",
+                            width: 30,
+                            visible: false,
+                            cellTemplate: function(cellElement, cellInfo) {
+                                if (cellInfo.column.index === 0) {
+                                    cellElement.addClass('custom-font');
+                                }
+                                cellElement.text(cellInfo.text);
+                            }
+                        },
+                        {
+                            dataField: "Cost",
+                            caption: "Cost",
+                            width: 30,
+                            visible: false,
+                            format: {
+                                type: "fixedPoint",
+                                precision: 2
+                            },
+                            customizeText: function(cellInfo) {
+                                return Number(cellInfo.value).toFixed(2);
+                            }
+                        },
+                        {
+                            dataField: "UnitSize",
+                            caption: "UnitSize",
+                            width: 30,
+                            visible: false,
+                            cellTemplate: function(cellElement, cellInfo) {
+                                if (cellInfo.column.index === 0) {
+                                    cellElement.addClass('custom-font');
+                                }
+                                cellElement.text(cellInfo.text);
+                            }
+                        }
+                    ],
+                    onRowDblClick: function(e) {
+                        var invNum = e.data.OrderId;
+                        var productCode = e.data.PastelCode;
+                        var producutDescr = e.data.Description;
+                        if (e.rowType == 'data' && e.data.prodStatusType == "Awaiting Stock") {
+                        }
+                    },
+                    onRowPrepared(e) {
+                        if (e.rowType == 'data' && e.data.prodStatusType == "Back Order") {
+                            e.rowElement.css('background', 'rgb(155, 236, 248)');
+                        }
+                    },
+                    onRowRemoving: function(e) {
+                        var OrderDetailId = e.data.OrderDetailId;
+                        console.debug("orderdetail Id ____________" + OrderDetailId);
+                        $.ajax({
+                            url: '{!! url('/deleteOrderLinedetails') !!}',
+                            type: "POST",
+                            data: {
+                                OrderId: OrderDetailId,
+                            },
+                            success: function(data) {
+                                alert(data[0]['Result']);
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    }
+</script>

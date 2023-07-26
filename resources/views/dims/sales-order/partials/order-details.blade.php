@@ -104,7 +104,7 @@
                                 <textarea id="customerSelectedDelDate" class="form-control" style="" readonly></textarea>
                                 <i style="" id="tempDelivAddressClosethis">Press <a href="javascript:void(0);"
                                         id="tempDelivAddress">here</a> to create a temp delivery address </i>
-                                <button class="btn btn-warning btn-sm ps-1 pe-1"
+                                <button class="btn btn-warning btn-sm ps-1 pe-1 mt-1"
                                     id="changeDeliveryAddressOnNotInvoiced">Change Delivery Address</button>
                             </div>
                             <div class="col-md-12 mb-2">
