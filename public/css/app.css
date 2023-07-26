@@ -105,3 +105,13 @@ input.row_selectedYellowish {background-color:#91ff00 !important;}
     border-color: #f1f1f2 !important;
 }
 /*code for set the data grid same like other table end*/
+
+.general-loader {
+    display: none;
+    position: fixed;
+    z-index: 1031; /* High z-index so it is on top of the page */
+    top: 50%;
+    right: 50%; /* or: left: 50%; */
+    /*margin-top: -..px; /* half of the elements height */
+    /*margin-right: -..px; /* half of the elements width */
+}

@@ -625,16 +625,7 @@
     </table>
 </div>
 
-<div id="tempDeliveryAddressOnTheFly" title="Delivery Address associated with this address order only">
-    <form>
-        <input class="form-control" id="address1OnTheFly" placeholder="Address 1">
-        <input class="form-control" id="address2OnTheFly" placeholder="Address 2">
-        <input class="form-control" id="address3OnTheFly" placeholder="Address 3">
-        <input class="form-control" id="address4OnTheFly" placeholder="Address 4">
-        <input class="form-control" id="address5OnTheFly" placeholder="Address 5">
-    </form>
-    <button id="doneWithAddressOntheFly" class="btn-xs btn-success pull-right">Done</button>
-</div>
+@include('dims.sales-order.partials.temp-delivery-address-on-the-fly')
 
 <div id="priceLookPriceWithCustomer" title="Price Look on Customer">
     <div class="col-lg-12" style="line-height: 0.88;">
