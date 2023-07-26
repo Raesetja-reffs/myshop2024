@@ -454,23 +454,7 @@
     </form>
 </div>
 
-<div id="addNewAddress" title="Add new address">
-    <div class="col-lg-12">
-        <table class="table table-bordered table-condensed" style="font-family: sans-serif;color:black"
-            id="addNewAddressModal">
-            <thead>
-                <tr>
-                    <th>Address1</th>
-                    <th>Address2</th>
-                    <th>Address3</th>
-                    <th>Address4</th>
-                    <th>Address5</th>
-                </tr>
-            </thead>
-        </table>
-        <button id="addTableAddressToDB" class="btn-xs btn-success pull-right">Done</button>
-    </div>
-</div>
+@include('dims.sales-order.partials.addnewaddress')
 
 <div id="multipleDeliveriesOnTheSameDate" title="Orders">
     <div class="col-lg-12">
@@ -1056,22 +1040,7 @@
     <button id="auththisrouteontheorder" class="btn-md btn-success">Submit</button>
 </div>
 
-<div id="brandedorderno" title="Order Numbers" style="background: #ffa65d;">
-    <label>Route</label><br>
-    <table class="table2" id="tableorderno">
-        <thead>
-            <tr>
-                <th class="col-md-1">Brand Id</th>
-                <th class="col-md-2">Brand</th>
-                <th class="col-md-5">Order Number</th>
-            </tr>
-        </thead>
-        <tbody>
-
-        </tbody>
-    </table>
-    <button id="submitorderno" class="btn-md btn-success pull-right">Submit</button>
-</div>
+@include('dims.sales-order.partials.brandedorderno')
 
 <div id="splitOrder" title="Split Order">
     <div class="col-md-12">

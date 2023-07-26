@@ -919,15 +919,27 @@ function finishArray2(customerCode,OrderId,url)
 }
 function addAddressLineOnSingleCustAddress(tag)
 {
-    var tokenId=new Date().valueOf();
-    var $row = $('<tr id="new_row_ajax_remove_address_line" class="fast_remove_addressLine">' +
-        '<td contenteditable="false" class="col-md-1"><input type="text" name="AddressLine1" id ="AddressLine1_'+tokenId+'" class="AddressLine1 inputs" value =""></td>' +
-        '<td contenteditable="false" class="col-md-1"><input type="text" name="AddressLine2" id ="AddressLine3_'+tokenId+'" class="AddressLine2  inputs" value =""></td>' +
-        '<td  contenteditable="false" class="col-md-1"><input type="text" name="AddressLine3" id ="AddressLine2_'+tokenId+'" class="AddressLine3 inputs" value =""></td>' +
-        '<td  contenteditable="false" class="col-md-1"><input type="text" name="AddressLine4" id ="AddressLine4_'+tokenId+'" class="AddressLine4 inputs" value =""></td>' +
-        '<td  contenteditable="false" class="col-md-1"><input type="text" name="AddressLine5" id ="AddressLine5_'+tokenId+'" class="AddressLine5 inputs" value =""></td>' +
-        '</tr>');
-    $(tag).append( $row );
+    var tokenId = new Date().valueOf();
+    var $row = $(`
+        <tr id="new_row_ajax_remove_address_line" class="fast_remove_addressLine">
+            <td contenteditable="false">
+                <input type="text" name="AddressLine1" id ="AddressLine1_${tokenId}" class="AddressLine1 inputs form-control" value ="">
+            </td>
+            <td contenteditable="false">
+                <input type="text" name="AddressLine2" id ="AddressLine3_${tokenId}" class="AddressLine2 inputs form-control" value ="">
+            </td>
+            <td contenteditable="false">
+                <input type="text" name="AddressLine3" id ="AddressLine2_${tokenId}" class="AddressLine3 inputs form-control" value ="">
+            </td>
+            <td contenteditable="false">
+                <input type="text" name="AddressLine4" id ="AddressLine4_${tokenId}" class="AddressLine4 inputs form-control" value ="">
+            </td>
+            <td contenteditable="false">
+                <input type="text" name="AddressLine5" id ="AddressLine5_${tokenId}" class="AddressLine5 inputs form-control" value ="">
+            </td>
+        </tr>
+    `);
+    $(tag).append($row);
 }
 function Tablenavigate()
 {

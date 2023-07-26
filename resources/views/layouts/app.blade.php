@@ -56,7 +56,7 @@
     class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled toolbar-fixed toolbar-tablet-and-mobile-fixed aside-enabled aside-fixed"
     style="--kt-toolbar-height:55px;--kt-toolbar-height-tablet-and-mobile:55px" data-kt-aside-minimize="on">
     <!--begin::Theme mode setup on page load-->
-    @include('layouts.theme-mode');
+    @include('layouts.theme-mode')
     <!--end::Theme mode setup on page load-->
 
     <!--begin::Main-->

@@ -386,7 +386,6 @@
         $('#extrasononrder').hide();
         $('#creditLimitAuth').hide();
         $('#reprintAuth').hide();
-        $('#addNewAddress').hide();
         $('#copyOrdersMenu').hide();
         $('#multipleDeliveriesOnTheSameDate').hide();
         $('#copyingOrderProgress').hide();
@@ -418,7 +417,6 @@
         $('#emailDoc').hide();
         $('#salesmandialog').hide();
         $('#routingdialog').hide();
-        $('#brandedorderno').hide();
         $('#splitOrder').hide();
         $('#exceeded').hide();
         $('#qtyzero').hide();
@@ -569,42 +567,7 @@
                 });
             });
         });
-        $('#addANewDelvAddressOnModal').click(function() {
-            $('#addNewAddress').show();
-            $("#addNewAddress").dialog({
-                height: 600,
-                width: 900,
-                containment: false
-            }).dialogExtend({
-                "closable": true, // enable/disable close button
-                "maximizable": false, // enable/disable maximize button
-                "minimizable": true, // enable/disable minimize button
-                "collapsable": true, // enable/disable collapse button
-                "dblclick": "collapse", // set action on double click. false, 'maximize', 'minimize', 'collapse'
-                "titlebar": false, // false, 'none', 'transparent'
-                "minimizeLocation": "right", // sets alignment of minimized dialogues
-                "icons": { // jQuery UI icon class
-                    "close": "ui-icon-circle-close",
-                    "maximize": "ui-icon-circle-plus",
-                    "minimize": "ui-icon-circle-minus",
-                    "collapse": "ui-icon-triangle-1-s",
-                    "restore": "ui-icon-bullet"
-                },
-                "load": function(evt, dlg) {}, // event
-                "beforeCollapse": function(evt, dlg) {}, // event
-                "beforeMaximize": function(evt, dlg) {}, // event
-                "beforeMinimize": function(evt, dlg) {}, // event
-                "beforeRestore": function(evt, dlg) {}, // event
-                "collapse": function(evt, dlg) {}, // event
-                "maximize": function(evt, dlg) {}, // event
-                "minimize": function(evt, dlg) {}, // event
-                "restore": function(evt, dlg) {} // event
-            });
 
-            for (var i = 0; i < 20; i++) {
-                addAddressLineOnSingleCustAddress('#addNewAddressModal');
-            }
-        });
         $('#tempDelivAddress').click(function() {
             $('#tempDeliveryAddressOnTheFly').show();
             showDialog('#tempDeliveryAddressOnTheFly', '50%', 250);
@@ -653,9 +616,6 @@
                 });
             });
             //
-        });
-        $('#addTableAddressToDB').click(function() {
-            createAddressArray('{!! url('/insertNewAddress') !!}', $('#inputCustAcc').val());
         });
         /**
          * CALL LIST
@@ -1896,38 +1856,7 @@
         $('#totaddidtionalcst').click(function() {
             calcAdditionalCost();
         });
-        $('#advancedorderNumber').click(function() {
-            //brandedorderno
-            $('#brandedorderno').show();
-            showDialog('#brandedorderno', '45%', 400);
-            $.ajax({
-                url: '{!! url('/advancedorderno') !!}',
-                type: "POST",
-                data: {
 
-                    OrderId: $('#orderId').val()
-
-                },
-                success: function(data) {
-                    // $('#salesmandialog').dialog('close');
-                    var trHTML = '';
-                    $.each(data, function(key, value) {
-                        trHTML +=
-                            '<tr class="fast_remove" style="font-size: 9px;color:black"><td>' +
-                            value.BrandId + '</td><td>' +
-                            value.Brand + '</td><td>' +
-                            '<input type="text"  class="form-control input-sm col-xs-1" id="neworderno" value="' +
-                            value.OrderNo + '" class="foo">' +
-                            '<input type="hidden" id="brandid" value="' + value
-                            .BrandId + '" style="width:1px" class="foo">' +
-                            '</td></tr>';
-
-                    });
-                    $('#tableorderno').append(trHTML);
-                }
-            });
-
-        });
         $('#pricingOnCustomer').click(function() {
             $('#priceLookPriceWithCustomer').show();
             showDialog('#priceLookPriceWithCustomer', '65%', 620);
@@ -9109,79 +9038,6 @@
             $next.focus();
         }
     });
-
-    function createAddressArray(url, CustomerCode) {
-        var address1 = [];
-        var address2 = [];
-        var address3 = [];
-        var address4 = [];
-        var address5 = [];
-        var objectTable = [];
-        var i = 0;
-        $('#addNewAddressModal tr').each(function() {
-
-            var address1v = [];
-            var address2v = [];
-            var address3v = [];
-            var address4v = [];
-            var address5v = [];
-            var valueobjectTable = [];
-
-            $(this).find(".AddressLine1").each(function() {
-                address1v.push($(this).val());
-                valueobjectTable["AddressLine1"] = $(this).val();
-            });
-            $(this).find(".AddressLine2").each(function() {
-                address2v.push($(this).val());
-                valueobjectTable["AddressLine2"] = $(this).val();
-            });
-            $(this).find(".AddressLine3").each(function() {
-                address3v.push($(this).val());
-                valueobjectTable["AddressLine3"] = $(this).val();
-            });
-            $(this).find(".AddressLine4").each(function() {
-                address4v.push($(this).val());
-                valueobjectTable["AddressLine4"] = $(this).val();
-            });
-            $(this).find(".AddressLine5").each(function() {
-                address5v.push($(this).val());
-                valueobjectTable["AddressLine5"] = $(this).val();
-            });
-
-            address1.push(address1v);
-            address2.push(address2v);
-            address3.push(address3v);
-            address4.push(address4v);
-            address5.push(address5v);
-
-            if ((address1v[0]) != 0 || (address2v[0]) != 0 || (address3v[0]) != 0 || (address4v[0]) != 0 || (
-                    address5v[0]) != 0) {
-                objectTable[i] = valueobjectTable;
-                i = i + 1;
-            } else {
-
-            }
-
-        });
-        for (var i = 0; i < objectTable.length; i++) {
-            $.ajax({
-                url: url,
-                type: "POST",
-                data: {
-                    AddressLine1: objectTable[i]['AddressLine1'],
-                    AddressLine2: objectTable[i]['AddressLine2'],
-                    AddressLine3: objectTable[i]['AddressLine3'],
-                    AddressLine4: objectTable[i]['AddressLine4'],
-                    AddressLine5: objectTable[i]['AddressLine5'],
-                    CustomerCode: CustomerCode
-                },
-                success: function(data) {
-                    $('#addNewAddress').dialog('close');
-                }
-            });
-
-        }
-    }
     //copy the order
     $(document).on('click', '#copyOrdersBtn', function(e) {
         var valuesObject = new Array();
