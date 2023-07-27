@@ -397,7 +397,6 @@
         $('#prodonInvoice').hide();
         $('#dispatchQuantityForm').hide();
         $('#priceLookPriceWithCustomer').hide();
-        $('#deliveryAddressOnOrderWithoutInoiceNo').hide();
         $('#tamaraCalculator').hide();
         $('#pointOfSaleDialog').hide();
         $('#posCashUp').hide();
@@ -414,7 +413,6 @@
         $('#createOrderOnCallList').hide();
         $('#copyOrdersBtn').hide();
         $('#emailDoc').hide();
-        $('#salesmandialog').hide();
         $('#routingdialog').hide();
         $('#splitOrder').hide();
         $('#exceeded').hide();
@@ -511,9 +509,6 @@
         });
         $("#callList").contextMenu(dataMenuOnRightClick);
         $("#salesOnOrder").contextMenu(dataMenuOnRightClickOnOrder);
-        $('#changeDeliveryAddressOnNotInvoiced').click(function() {
-            changeDeliveryAddress();
-        });
         $('#dicPercHeader').click(function() {
             //changeDeliveryAddress();
             var oldDiscPercent = $('#dicPercHeader').val();
@@ -1812,35 +1807,6 @@
             showDialog('#priceLookPriceWithCustomer', '65%', 620);
             $('#goOnPL').click(function() {
                 PL();
-            });
-
-        });
-        $('#addTheSalesMan').click(function() {
-            $('#salesmandialog').show();
-            showDialog('#salesmandialog', '35%', 350);
-            $('#authsalesmanusername').val(" ");
-            $('#authsalesmanpassword').val(" ");
-            $('#submitsalesman').click(function() {
-                $.ajax({
-                    url: '{!! url('/changesalesman') !!}',
-                    type: "POST",
-                    data: {
-                        userID: $('#salesmanselectstatement').val(),
-                        OrderId: $('#orderId').val(),
-                        DriverDeliveryDate: $('#inputDeliveryDate').val(),
-                        authUserName: $('#authsalesmanusername').val(),
-                        authUserPassword: $('#authsalesmanpassword').val()
-                    },
-                    success: function(data) {
-                        if (data == "DONE") {
-                            $('#salesmandialog').dialog('close');
-                        } else {
-                            alert(
-                                "Sorry ,you don't have access to authorize rep codes");
-                        }
-
-                    }
-                });
             });
 
         });
@@ -3572,31 +3538,34 @@
                     resizable: false,
                     buttons: {
                         DelUser: {
-                            class: 'leftButton',
                             text: 'Point Of Sale ',
+                            class: 'leftButton btn btn-primary btn-sm',
                             click: function() {
                                 allInoneDocumentsave("POS");
                             }
                         },
-                        Yes: function() {
-                            //Update the tblOrders and tblOrdersDetails here
-
-                            calculator();
-                            allInoneDocumentsave("INVOICEIT");
-
-
-                            $(this).dialog("close");
+                        Yes: {
+                            text: "Yes",
+                            class: "btn btn-success btn-sm",
+                            click: function() {
+                                //Update the tblOrders and tblOrdersDetails here
+                                calculator();
+                                allInoneDocumentsave("INVOICEIT");
+                                $(this).dialog("close");
+                            }
                         },
-                        No: function() {
-
-                            $(this).dialog("close");
+                        No: {
+                            text: "No",
+                            class: "btn btn-warning btn-sm",
+                            click: function() {
+                                $(this).dialog("close");
+                            }
                         }
                     },
                     close: function(event, ui) {
                         $(this).remove();
                     }
                 });
-
         });
         $('#updatecontactsontheorder').on('click', function() {
 
@@ -6776,7 +6745,7 @@
             if (fieldQuantity < 0.0000005 && ($('#' + $cellProdQuant).val()).length > 0 &&
                 theProductCode_.length > 0 && fieldQuantity.length > 0) {
                 $('#qtyzero').show();
-                showDialogWithoutClose('#qtyzero', 350, 350);
+                showDialogWithoutClose('#qtyzero', 400, 200);
                 $('#yestozeroqty').click(function() {
                     $('#qtyzero').dialog('close');
                 });
@@ -8153,7 +8122,7 @@
     function commonDialog() {
         $('#authorisations').show();
         $("#authorisations").dialog({
-            height: 250,
+            height: 400,
             modal: true,
             width: 500,
             containment: false
@@ -8199,7 +8168,7 @@
         $('#authorisations').show();
 
         $("#authorisations").dialog({
-            height: 250,
+            height: 400,
             modal: true,
             closeOnEscape: false,
             width: 500,
@@ -8434,7 +8403,7 @@
 
         $('#authorisations').show();
         $("#authorisations").dialog({
-            height: 250,
+            height: 400,
             modal: true,
             width: 500,
             containment: false
@@ -9220,72 +9189,6 @@
                 }
             });
 
-        });
-    }
-
-    function changeDeliveryAddress() {
-        $.ajax({
-            url: '{!! url('/changeDeliveryAddressOnNoInvoiceNo') !!}',
-            type: "POST",
-            data: {
-                customerCode: $('#inputCustAcc').val()
-            },
-            success: function(data) {
-                $('#tbldeliveryAddressOnOrderWithoutInoiceNo tbody').empty();
-                $('#deliveryAddressOnOrderWithoutInoiceNo').show();
-                showDialog('#deliveryAddressOnOrderWithoutInoiceNo', '85%', 640);
-                var trHTML = '';
-                $.each(data, function(key, value) {
-                    trHTML +=
-                        '<tr  class="rebuild_price_check_list" style="font-size: 10px;color:black"><td>' +
-                        value.DeliveryAddressID + '</td><td>' +
-                        value.DAddress1 + '</td><td>' +
-                        value.DAddress2 + '</td><td>' +
-                        value.DAddress3 + '</td><td>' +
-                        value.DAddress4 + '</td><td>' +
-                        value.DAddress5 + '</td><td>' +
-                        value.Route + '</td><td>' +
-                        value.Routeid + '</td>' +
-                        '</tr>';
-                });
-                $('#tbldeliveryAddressOnOrderWithoutInoiceNo').append(trHTML);
-
-                $('#tbldeliveryAddressOnOrderWithoutInoiceNo tbody').on('dblclick', 'tr', function() {
-                    var deliveryID = $(this).closest('tr').find('td:eq(0)').text();
-                    var address1 = $(this).closest('tr').find('td:eq(1)').text();
-                    var address2 = $(this).closest('tr').find('td:eq(2)').text();
-                    var address3 = $(this).closest('tr').find('td:eq(3)').text();
-                    var address4 = $(this).closest('tr').find('td:eq(4)').text();
-                    var address5 = $(this).closest('tr').find('td:eq(5)').text();
-                    var routeids = $(this).closest('tr').find('td:eq(7)').text();
-                    $('#hiddenDeliveryAddressId').val(deliveryID);
-                    $('#address1hidden').val($.trim(address1));
-                    $('#address2hidden').val($.trim(address2));
-                    $('#address3hidden').val($.trim(address3));
-                    $('#address4hidden').val($.trim(address4));
-                    $('#address5hidden').val($.trim(address5));
-                    $('#deliveryAddressOnOrderWithoutInoiceNo').dialog('close');
-                    $('#customerSelectedDelDate').val($.trim(address1) + ' ' + $.trim(address2) +
-                        ' ' + $.trim(address3) + ' ' + $.trim(address4) + ' ' + $.trim(address4)
-                        );
-                    $.ajax({
-                        url: '{!! url('/changerouteonorder') !!}',
-                        type: "POST",
-                        data: {
-                            routeId: routeids,
-                            OrderId: $('#orderId').val(),
-
-                        },
-                        success: function(data) {
-                            //console.debug(data);
-                            $('#routeonabutton').val(data);
-
-                        }
-                    });
-
-                });
-
-            }
         });
     }
 

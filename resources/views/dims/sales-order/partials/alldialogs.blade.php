@@ -275,39 +275,7 @@
     </div>
 </div>
 
-<div id="authorisations" title="Please Authorise" style="background: #d03939;">
-    <div id="appendErrormsg" style="background: white;font-size:10px">
-    </div>
-    <form>
-        <div class="form-group  col-md-4" style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">
-            <label class="control-label" for="userAuthName"
-                style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Name</label>
-            <input class="form-control input-sm col-md-4 auto-complete-off" name="userAuthName" id="userAuthName"
-                style="height:30px;font-size: 10px;">
-        </div>
-        <div class="form-group  col-md-4" style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">
-            <label class="control-label" for="userAuthPassWord"
-                style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">PassWord</label>
-            <input type="password" name="userAuthPassWord" class="form-control input-sm col-md-4 auto-complete-off"
-                id="userAuthPassWord" style="height:30px;font-size: 10px;" readonly
-                onfocus="$(this).removeAttr('readonly');">
-        </div>
-        <div>
-            <div class="form-group  col-md-4"
-                style="margin-bottom: 0px;font-weight: 700;font-size: 11px;display:none;">
-                <label class="control-label" for="userNewVariable"
-                    style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">New Val</label>
-                <input type="text" name="userNewVariable" class="form-control input-sm col-md-4"
-                    id="userNewVariable" style="height:30px;font-size: 10px;" value="0" readonly>
-            </div>
-        </div>
-        <button type="button" id="doAuth" class="btn-success btn-xs" style="margin-top: 4%;">Authorise</button>
-    </form>
-
-    <button type="button" id="noThanksRedo" class="btn-warning btn-xs pull-right" style="margin-top: 10%;">No
-        Thanks Redo the Line</button>
-
-</div>
+@include('dims.sales-order.partials.authorisations')
 
 <div id="custLookUp" title="Price look up on order" style="background: darkorange;">
     <div class="col-lg-12">
@@ -722,26 +690,7 @@
     </div>
 </div>
 
-<div id="deliveryAddressOnOrderWithoutInoiceNo" title="Please Change the Delivery Address">
-    <p>Please Double click To Change the Delivery Address</p>
-    <table class="table" id="tbldeliveryAddressOnOrderWithoutInoiceNo" style="width:100%">
-        <thead>
-            <tr>
-                <th>Delivery Address Id</th>
-                <th>Address 1 </th>
-                <th>Address 2</th>
-                <th>Address 3 </th>
-                <th>Address 4</th>
-                <th>Address 5</th>
-                <th>Route</th>
-                <th>Route ID</th>
-            </tr>
-        </thead>
-        <tbody>
-
-        </tbody>
-    </table>
-</div>
+@include('dims.sales-order.partials.delivery-address-on-orderwithout-inoiceno')
 
 <div id="tamaraCalculator" title="Calculate" class="col-md-12">
     <form id="formID">
@@ -991,32 +940,7 @@
     <button id="emailthis" class="btn-md btn-success">Send</button>
 </div>
 
-<div id="salesmandialog" title="Choose the Salesman" style="background: ghostwhite;">
-    <label>Salesman</label><br>
-
-    <select id="salesmanselectstatement">
-        @foreach ($salesmen as $value)
-            <option value="{{ $value->strSalesmanCode }}">{{ $value->UserName }}</option>
-        @endforeach
-    </select>
-    <br>
-    <div>
-        <fieldset>
-            <legend>This require authorization. </legend>
-            <div>
-                <label>UserName</label><br>
-                <input id="authsalesmanusername" class="form-control input-sm col-md-4 auto-complete-off">
-            </div>
-            <div>
-                <label>Password</label><br>
-                <input type="password" id="authsalesmanpassword"
-                    class="form-control input-sm col-md-4 auto-complete-off">
-            </div>
-        </fieldset>
-
-    </div>
-    <button id="submitsalesman" class="btn-md btn-success">Submit</button>
-</div>
+@include('dims.sales-order.partials.salesmandialog')
 
 <div id="routingdialog" title="Choose Route" style="background: #ffa65d;">
     <label>Route</label><br>
@@ -1073,10 +997,7 @@
     </div>
 </div>
 
-<div id="qtyzero" title="Quatity of 0">
-    <p><strong style="color:red">You have entered zero (0) quantity.</strong></p>
-    <button id="yestozeroqty" class="btn-md btn-danger">OKAY</button>
-</div>
+@include('dims.sales-order.partials.qtyzero')
 
 <div id="MarginProblems" title="Please Authorise">
     <h5>The Order/Product is below the minimum margin, Please Authorise and Report to your manager </h5>
