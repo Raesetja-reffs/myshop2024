@@ -3,7 +3,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-12">
-                    <h6 class="pt-2">Please Double click To Change the Delivery Address</h6>
+                    <h6>Please Double click To Change the Delivery Address</h6>
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover" id="tbldeliveryAddressOnOrderWithoutInoiceNo"
                             style="width:100%">

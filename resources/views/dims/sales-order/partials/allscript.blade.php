@@ -513,7 +513,7 @@
             //changeDeliveryAddress();
             var oldDiscPercent = $('#dicPercHeader').val();
             $('#authDiscount').show();
-            showDialog('#authDiscount', 500, 300);
+            showDialog('#authDiscount', 500, 400);
             $('#newDiscountPercentage').val($('#dicPercHeader').val());
             $('#newDiscountPercentage').select();
             //authNewDiscountPerc(message);
@@ -2550,8 +2550,8 @@
             getOrderTypes('#CopyorderType', '{!! url('/deliveryTypes') !!}');
             $('#copyOrderDialog').show();
             $("#copyOrderDialog").dialog({
-                height: 200,
-                width: 900,
+                height: 400,
+                width: 700,
                 containment: false
             }).dialogExtend({
                 "closable": true, // enable/disable close button

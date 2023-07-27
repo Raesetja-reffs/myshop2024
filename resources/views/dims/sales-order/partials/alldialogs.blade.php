@@ -241,32 +241,7 @@
     <img src="{{ asset('images/Rolling.gif') }}" />
 </div>
 
-<div id="copyOrderDialog" title="Copying Order">
-    <div class="col-lg-12">
-        <form>
-            <div class="form-group col-md-2">
-                <label class="control-label" for="copyDeliveryDate"
-                    style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Delivery Date</label>
-                <input type="text" class="form-control input-sm col-xs-1" id="copyDeliveryDate"
-                    style="font-size: 10px;">
-            </div>
-            <div class="form-group  col-md-2" style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">
-                <label class="control-label" for="inputOrderId"
-                    style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Delivery Type</label>
-                <select class="form-control input-sm col-xs-1" id="CopyorderType" style="font-size: 10px;"></select>
-            </div>
-            <div class="form-group col-md-2">
-                <label class="control-label" for="inputOrderId"
-                    style="margin-bottom: 0px;font-weight: 700;font-size: 11px;"></label>
-                <input type="hidden" class="form-control input-sm col-xs-1" id="copyCustCode"
-                    style="font-size: 10px;">
-                <input type="hidden" class="form-control input-sm col-xs-1" id="copyRouteID"
-                    style="height:15px;font-size: 10px;">
-                <button type="button" id="submitCopyOrder" class="btn-xs btn-success">Submit</button>
-            </div>
-        </form>
-    </div>
-</div>
+@include('dims.sales-order.partials.copyorderdialog')
 
 <div id="copyOrderDialogComfirmation" title="Copied Items">
     <div class="col-lg-12" style="">
@@ -866,30 +841,7 @@
     </form>
 </div>
 
-<div id="authDiscount" title="Authorise Discount">
-    <h5>To change the Discount % you need to put in the new discount % and authorise</h5>
-    Discount %<input class="form-control input-sm col-md-4" id="newDiscountPercentage"
-        onkeypress="return isFloatNumber(this,event)">
-    <form>
-        <div class="form-group  col-md-4" style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">
-            <label class="control-label" for="userAuthDisc"
-                style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Name</label>
-            <input class="form-control input-sm col-md-4 auto-complete-off" name="userAuthDisc" id="userAuthDisc"
-                style="height:30px;font-size: 10px;" autocomplete="off">
-        </div>
-        <div class="form-group  col-md-4" style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">
-            <label class="control-label" for="userAuthPassWordDisc"
-                style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">PassWord</label>
-            <input type="password" name="userAuthPassWordDisc"
-                class="form-control input-sm col-md-4 auto-complete-off" id="userAuthPassWordDisc"
-                style="height:30px;font-size: 10px;" readonly onfocus="$(this).removeAttr('readonly');"
-                autocomplete="off">
-        </div>
-
-        <button type="button" id="doAuthDiscounts" class="btn-success btn-xs pull-right"
-            style="margin-top: 29px;margin-right: 15px;">Authorise</button>
-    </form>
-</div>
+@include('dims.sales-order.partials.authdiscount')
 
 <div id="theCustomerNotes" title="Customer Notes">
     <h4 id="putTheCustomerNoteHere" style="color:red;"></h4>
