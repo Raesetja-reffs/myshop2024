@@ -204,12 +204,6 @@
         $('#posPayMentTypeCreditCard').select();
         $('#posPayMentTypeAccount').select();
         $('#posPayMentTypeCheque').select();
-        //simple calc
-        $('#tamaraCalculatorId').click(function() {
-            $('#tamaraCalculator').show();
-            showDialog('#tamaraCalculator', 320, 350);
-            $('#display').select();
-        });
         $('#treatAsQuote').change(function() {
             if ($('#treatAsQuote').is(':checked')) {
                 treatAsQuote(1);
@@ -390,12 +384,10 @@
         $('#multipleDeliveriesOnTheSameDate').hide();
         $('#copyingOrderProgress').hide();
         $('#reprintInvoice').hide();
-        $('#userActionGrid').hide();
         $('#prodOnOrder').hide();
         $('#prodonInvoice').hide();
         $('#dispatchQuantityForm').hide();
         $('#priceLookPriceWithCustomer').hide();
-        $('#tamaraCalculator').hide();
         $('#pointOfSaleDialog').hide();
         $('#posCashUp').hide();
         $('#authDropDowns').hide();
@@ -3741,18 +3733,6 @@
                 dateFormat: "dd-mm-yyyy"
             });
             //getDataFromTblManagement()
-
-            $('#button_user_actions').on('click', function() {
-                $('#userActionGrid').show();
-                showDialog('#userActionGrid', '65%', 500);
-                getDataFromTblManagement();
-                $('#refreshUserActionDataGrid').click(function() {
-                    datatableUserActions.draw();
-                });
-            });
-
-
-
         }
         /**
          * ON SALES ORDER
@@ -5861,170 +5841,9 @@
             $('#thiswwwwwwwwwwwwwwwwww').removeAttr('readonly');
             console.debug("this is it*********************______");
         });
-        $('#orderPatternIdTable_filter input').removeClass('form-control-sm');
-        $('#orderPatternIdTable_filter input').removeClass('form-control-solid');
+        $('#orderPatternIdTable_filter input').removeClass('form-control-sm form-control-solid');
 
 
-    }
-
-
-    function getDataFromTblManagement() {
-        datatableUserActions = $('#tableUserActions').DataTable({
-            "ajax": {
-                url: '{!! url('/getDataFromManagementConsole') !!}',
-                "type": "GET",
-                data: function(data) {
-
-                    data.orderID = $('#orderId').val();
-
-                }
-            },
-            "columns": [{
-                    "data": "Message",
-                    "class": "small",
-                    "bSortable": false
-                },
-                {
-                    "data": "LoggedBy",
-                    "class": "small",
-                    "bSortable": false
-                },
-                {
-                    "data": "Computer",
-                    "class": "small",
-                    "bSortable": false
-                },
-                {
-                    "data": "PastelDescription",
-                    "class": "small"
-                },
-                {
-                    "data": "PastelCode",
-                    "class": "small"
-                },
-                {
-                    "data": "dtm",
-                    "class": "small",
-                    "bSortable": true
-                },
-                {
-                    "data": "StoreName",
-                    "class": "small"
-                },
-                {
-                    "data": "CustomerPastelCode",
-                    "class": "small"
-                },
-                {
-                    "data": "ReferenceNo",
-                    "class": "small",
-                    "bSortable": true
-                },
-                {
-                    "data": "NewQty",
-                    "class": "small",
-                    render: function(data, type, row, meta) {
-                        // check to see if this is JSON
-                        try {
-                            var jsn = JSON.parse(data);
-                            //console.log(" parsing json" + jsn);
-                        } catch (e) {
-
-                            return jsn.data;
-                        }
-                        return parseFloat(jsn).toFixed(2);
-
-                    },
-                    "bSortable": true
-                },
-                {
-                    "data": "OldQty",
-                    "class": "small",
-                    render: function(data, type, row, meta) {
-                        // check to see if this is JSON
-                        try {
-                            var jsn = JSON.parse(data);
-                            //console.log(" parsing json" + jsn);
-                        } catch (e) {
-
-                            return jsn.data;
-                        }
-                        return parseFloat(jsn).toFixed(2);
-
-                    },
-                    "bSortable": true
-                },
-                {
-                    "data": "NewPrice",
-                    "class": "small",
-                    render: function(data, type, row, meta) {
-                        // check to see if this is JSON
-                        try {
-                            var jsn = JSON.parse(data);
-                            //console.log(" parsing json" + jsn);
-                        } catch (e) {
-
-                            return jsn.data;
-                        }
-                        return parseFloat(jsn).toFixed(2);
-
-                    },
-                    "bSortable": true
-                },
-                {
-                    "data": "OldPrice",
-                    "class": "small",
-                    render: function(data, type, row, meta) {
-                        // check to see if this is JSON
-                        try {
-                            var jsn = JSON.parse(data);
-                            //console.log(" parsing json" + jsn);
-                        } catch (e) {
-
-                            return jsn.data;
-                        }
-                        return parseFloat(jsn).toFixed(2);
-
-                    },
-                    "bSortable": true
-                }
-
-            ],
-            "deferRender": true,
-            "scrollY": "200px",
-            "scrollCollapse": true,
-            searching: true,
-            bPaginate: false,
-            bFilter: false,
-            "LengthChange": false,
-            "info": false,
-            "bDestroy": true,
-            dom: 'Bfrtip',
-            buttons: [
-                'copy',
-                {
-                    extend: 'csv',
-                    className: 'btn-primary',
-                    title: 'Dims User Actions #' + $('#orderId').val()
-                },
-                {
-                    extend: 'excel',
-                    className: 'btn-primary',
-                    title: 'Dims User Actions #' + $('#orderId').val()
-                },
-                {
-                    extend: 'pdf',
-                    className: 'btn-primary',
-                    title: 'Dims User Actions #' + $('#orderId').val(),
-                    exportOptions: {
-                        columns: [0, 1, 5]
-                    }
-                }
-
-            ]
-
-        });
-        //datatableOrderPattern.columns([6,8,9]).visible(false);
     }
 
     function fetchDeliveyAddressFronSelect(addressId) {
