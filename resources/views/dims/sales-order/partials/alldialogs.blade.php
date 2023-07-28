@@ -301,51 +301,11 @@
 
 @include('dims.sales-order.partials.authdropdowns')
 
-<div id="authDropDownsClosedRoutePass" title="Please Authorise" style="background:rgba(0,0,255,0.31)">
-    <h4 style="color:red">The Route You Are Trying to Place this Order Is Currently Closed Please Authorise First.
-    </h4>
-
-    <form>
-        <div class="form-group  col-md-4" style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">
-            <label class="control-label" for="userAuthClosedRoute"
-                style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Name</label>
-            <input class="form-control input-sm col-md-4 auto-complete-off" name="userAuthClosedRoute"
-                id="userAuthClosedRoute" style="height:30px;font-size: 10px;">
-        </div>
-        <div class="form-group  col-md-4" style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">
-            <label class="control-label" for="userAuthClosedRoutePass"
-                style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">PassWord</label>
-            <input type="password" name="userAuthClosedRoutePass"
-                class="form-control input-sm col-md-4 auto-complete-off" id="userAuthClosedRoutePass"
-                style="height:30px;font-size: 10px;" onfocus="$(this).removeAttr('readonly');">
-        </div>
-
-        <button type="button" id="doAuthDropDownClosedRoutePass" class="btn-success btn-xs pull-right"
-            style="margin-top: 29px;margin-right: 15px;">Authorise</button>
-        <button type="button" id="doCancelAuthDropDownClosedRoutePass" class="btn-warning btn-xs pull-right"
-            style="margin-top: 29px;margin-right: 15px;">Cancel</button>
-    </form>
-</div>
+@include('dims.sales-order.partials.authdropdownsclosedroutepass')
 
 @include('dims.sales-order.partials.addnewaddress')
 
-<div id="multipleDeliveriesOnTheSameDate" title="Orders">
-    <div class="col-lg-12">
-        <table class="table table-bordered table-condensed" style="font-family: sans-serif;color:black"
-            id="multipleAddressesOnTheSameDateModal">
-            <thead>
-                <tr>
-                    <th>OrderId</th>
-                    <th>Order Date</th>
-                    <th>Delv Date</th>
-                    <th>Route</th>
-                    <th>Delivery Address</th>
-                </tr>
-            </thead>
-
-        </table>
-    </div>
-</div>
+@include('dims.sales-order.partials.multipledeliveriesonthesamedate')
 
 <div id="copyOrdersMenu" title="Copy Order">
     <div class="col-lg-12">
@@ -439,43 +399,7 @@
 <div id="copyingOrderProgress" title="Copying Order">
 </div>
 
-<div id="salesOEmail" title="Sales Order">
-    <div class="col-lg-12">
-        <form>
-            <div class="form-group ">
-                <label class="control-label" for="fromEmail"
-                    style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">From</label>
-                <input type="text" class="form-control input-sm col-xs-1" id="fromEmail" style="font-size: 10px;"
-                    value="{{ Auth::user()->Email }}">
-            </div>
-            <div class="form-group ">
-                <label class="control-label" for="toEmail"
-                    style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">To</label>
-                <input type="text" class="form-control input-sm col-xs-1" id="toEmail"
-                    style="font-size: 10px;">
-            </div>
-            <div class="form-group " style="display:none">
-                <label class="control-label" for="cc"
-                    style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">CC</label>
-                <input type="text" class="form-control input-sm col-xs-1" id="cc"
-                    style="font-size: 10px;">
-            </div>
-            <div class="form-group ">
-                <label class="control-label" for="subject"
-                    style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Subject</label>
-                <input type="text" class="form-control input-sm col-xs-1" id="subject"
-                    style="font-size: 10px;">
-            </div>
-            <div class="form-group ">
-                <label class="control-label" for="bodyOnEmail"
-                    style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Message</label>
-                <input class="form-control" id="bodyOnEmail" style="height:100px"
-                    value="Thank you ,the attached document is your order.">
-            </div>
-            <button type="button" id="sendOrderEmail" class="btn-success btn-xs ">Send</button>
-        </form>
-    </div>
-</div>
+@include('dims.sales-order.partials.salesoemail')
 
 <div id="userActionGrid" title="User Actions">
     <i class="fa fa-refresh pull-left" aria-hidden="true" id="refreshUserActionDataGrid"></i>

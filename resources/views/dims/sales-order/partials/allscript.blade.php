@@ -389,10 +389,8 @@
         $('#copyOrdersMenu').hide();
         $('#multipleDeliveriesOnTheSameDate').hide();
         $('#copyingOrderProgress').hide();
-        $('#abilityToEmailOrder').hide();
         $('#reprintInvoice').hide();
         $('#userActionGrid').hide();
-        $('#salesOEmail').hide();
         $('#prodOnOrder').hide();
         $('#prodonInvoice').hide();
         $('#dispatchQuantityForm').hide();
@@ -1237,62 +1235,6 @@
                 });
             }
         });
-        $('#abilityToEmailOrder').click(function() {
-            var ob = new Array();
-            ob = emailSalesOrderOnTheFly();
-            //console.debug(ob);
-            $.ajax({
-                url: '{!! url('/generatePDFForOrders') !!}',
-                type: "POST",
-                data: {
-                    orderLinesOnTheFly: ob,
-                    totalInc: $("#totalInc").val(),
-                    custDescription: $('#custDescription').val(),
-                    orderId: $('#orderId').val()
-                },
-                success: function(data) {
-                    $('#toEmail').val($('#customerEmail').val());
-                    $('#sendOrderEmail').val(data);
-                    $('#subject').val('Order #' + $('#orderId').val());
-                    $('#salesOEmail').show();
-                    showDialog('#salesOEmail', '50%', 500);
-                    $('#sendOrderEmail').on('click', function() {
-                        $.ajax({
-                            url: '{!! url('/emailSalesOrder') !!}',
-                            type: "POST",
-                            data: {
-                                orderId: $('#orderId').val(),
-                                from: $('#fromEmail').val(),
-                                to: $('#toEmail').val(),
-                                cc: $('#cc').val(),
-                                subject: $('#subject').val(),
-                                bodyOnEmail: $('#bodyOnEmail').val(),
-                                file: data
-                            },
-                            success: function(data2) {
-
-                                var dialog = $(
-                                    '<p><strong style="color:black">' +
-                                    data2 + '</strong></p>')
-                            .dialog({
-                                    height: 200,
-                                    width: 700,
-                                    modal: true,
-                                    containment: false,
-                                    buttons: {
-                                        "Okay": function() {
-
-                                            dialog.dialog(
-                                                'close');
-                                        }
-                                    }
-                                });
-                            }
-                        });
-                    });
-                }
-            });
-        });
         /**
          * Send the request to the server and get order headers and details
          *
@@ -1916,78 +1858,7 @@
                                     text: "No",
                                     class: "btn btn-danger btn-sm",
                                     click: function() {
-                                        $('#multipleDeliveriesOnTheSameDate').show();
-                                        $("#multipleDeliveriesOnTheSameDate")
-                                            .dialog({
-                                                height: 600,
-                                                width: 950,
-                                                containment: false
-                                            }).dialogExtend({
-                                                "closable": true, // enable/disable close button
-                                                "maximizable": false, // enable/disable maximize button
-                                                "minimizable": true, // enable/disable minimize button
-                                                "collapsable": true, // enable/disable collapse button
-                                                "dblclick": "collapse", // set action on double click. false, 'maximize', 'minimize', 'collapse'
-                                                "titlebar": false, // false, 'none', 'transparent'
-                                                "minimizeLocation": "right", // sets alignment of minimized dialogues
-                                                "icons": { // jQuery UI icon class
-                                                    "close": "ui-icon-circle-close",
-                                                    "maximize": "ui-icon-circle-plus",
-                                                    "minimize": "ui-icon-circle-minus",
-                                                    "collapse": "ui-icon-triangle-1-s",
-                                                    "restore": "ui-icon-bullet"
-                                                },
-                                                "load": function(evt,
-                                                dlg) {}, // event
-                                                "beforeCollapse": function(evt,
-                                                    dlg) {}, // event
-                                                "beforeMaximize": function(evt,
-                                                    dlg) {}, // event
-                                                "beforeMinimize": function(evt,
-                                                    dlg) {}, // event
-                                                "beforeRestore": function(evt,
-                                                    dlg) {}, // event
-                                                "collapse": function(evt,
-                                                    dlg) {}, // event
-                                                "maximize": function(evt,
-                                                    dlg) {}, // event
-                                                "minimize": function(evt,
-                                                    dlg) {}, // event
-                                                "restore": function(evt,
-                                                    dlg) {} // event
-                                            });
-                                        var trHTML = '';
-                                        $('.fast_removeOrders').empty();
-                                        $.each(data, function(key, value) {
-                                            trHTML +=
-                                                '<tr role="row" class="fast_removeOrders"  style="font-size: 16px;color:black"><td>' +
-                                                value.OrderId +
-                                                '</td><td>' +
-                                                value.OrderDate +
-                                                '</td><td>' +
-                                                value.DeliveryDate +
-                                                '</td><td>' +
-                                                value.routename +
-                                                '</td><td>' +
-                                                value.DeliveryAddress1 +
-                                                '</td>' +
-                                                '</tr>';
-                                        });
-                                        $('#multipleAddressesOnTheSameDateModal').append(trHTML);
-                                        $('#multipleAddressesOnTheSameDateModal tbody')
-                                            .on('dblclick', 'tr', function() {
-                                                var orderIdClicked = $(this)
-                                                    .closest('tr').find(
-                                                        'td:eq(0)').text();
-
-                                                $('#orderId').val(
-                                                    orderIdClicked);
-                                                dialog.dialog('close');
-                                                $('#checkOrders').click();
-                                                $("#multipleDeliveriesOnTheSameDate")
-                                                    .dialog('close');
-
-                                            });
+                                        multipleDeliveriesOnTheSameDateShowPopUp(data);
                                     }
                                 },
                                 "Cancel": {
@@ -8019,9 +7890,9 @@
 
     function authFinishOrder() {
         $("#authDropDownsClosedRoutePass").dialog({
-            height: 500,
+            height: 300,
             modal: true,
-            width: 1200,
+            width: 900,
             containment: false
         }).dialogExtend({
             "closable": false, // enable/disable close button
