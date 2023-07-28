@@ -9592,7 +9592,7 @@
         $('#authonholdaccount').show();
 
         $("#authonholdaccount").dialog({
-            height: 800,
+            height: 350,
             modal: true,
             closeOnEscape: false,
             width: 800,

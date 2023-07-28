@@ -679,39 +679,7 @@
 
 </div>
 
-<div title="ACCOUNT ON HOLD" id="authonholdaccount">
-    <h2>PLEASE AUTHORIZE</h2>
-    <form>
-        <div class="form-group  col-md-4" style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">
-            <label class="control-label" for="onholdaccountmanagername"
-                style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Name</label><br>
-            <input class="" id="onholdaccountmanagername" name="onholdaccountmanagername"
-                style="height:30px;font-size: 10px;" autocomplete="off" value="-">
-        </div>
-        <div class="form-group  col-md-4" style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">
-            <label class="control-label" for="onholdaccountmanagerpassword"
-                style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">PassWord</label><br>
-            <input type="password" name="onholdaccountmanagerpassword" class=""
-                id="onholdaccountmanagerpassword" style="height:30px;font-size: 10px;" autocomplete="off"
-                value="-">
-        </div><br>
-        <div>
-            <button type="button" id="doAuthZeroonholdaccount" class="btn-success btn-xs pull-right"
-                style="margin-top: 29px;margin-right: 15px;">Authorise</button>
-        </div>
-        <div class="form-group  col-md-12">
-            <div>
-                <fieldset>
-                    <legend>NB :THIS ORDER WILL NOT GO FOR PICKING UNTIL AUTHORISATION.</legend>
-                    <button type="button" id="treattheauthaccountasquotation"
-                        class="btn-danger btn-xs pull-right"
-                        style="margin-top: 29px;margin-right: 15px;display:none;">Notify Managers And
-                        Continue</button>
-                </fieldset>
-            </div>
-        </div>
-    </form>
-</div>
+@include('dims.sales-order.partials.authonholdaccount')
 
 <div title="Additional Cost" id="addcostdialog">
     <table class="table2 table-bordered" id="additionalcost">
