@@ -1462,7 +1462,7 @@
 
                                     $('#authDropDowns').show();
                                     showDialogWithoutClose('#authDropDowns',
-                                        '65%', 420);
+                                        '65%', 320);
 
                                     $('#doAuthDropDown').click(function() {
                                         authChangeOfOrderType(
@@ -2364,7 +2364,7 @@
                         var jqThis = $(this).data('pre');
 
                         $('#authDropDowns').show();
-                        showDialogWithoutClose('#authDropDowns', '65%', 420);
+                        showDialogWithoutClose('#authDropDowns', '65%', 320);
 
                         $('#doAuthDropDown').click(function() {
                             authChangeOfOrderType(toRoute, 'Authorised Route From ' +
@@ -3611,19 +3611,25 @@
                 modal: true,
                 containment: false,
                 buttons: {
-                    Yes: function() {
-                        $('#reprintAuth').show();
-                        showDialog('#reprintAuth', '65%', 420);
-                        $(this).dialog("close");
-                        $('#doAuthReprint').click(function() {
-                            authReprints();
-
-                        });
-
+                    Yes: {
+                        text: "Yes",
+                        class: "btn btn-success btn-sm",
+                        click: function() {
+                            $('#reprintAuth').show();
+                            showDialog('#reprintAuth', '65%', 300);
+                            $(this).dialog("close");
+                            $('#doAuthReprint').click(function() {
+                                authReprints();
+                            });
+                        }
                     },
-                    No: function() {
-                        $(this).dialog("close");
-                        disableOnFinish();
+                    No: {
+                        text: "No",
+                        class: "btn btn-primary btn-sm",
+                        click: function() {
+                            $(this).dialog("close");
+                            disableOnFinish();
+                        }
                     }
                 }
             });
@@ -3639,7 +3645,7 @@
                 buttons: {
                     Yes: function() {
                         $('#reprintAuth').show();
-                        showDialog('#reprintAuth', '65%', 420);
+                        showDialog('#reprintAuth', '65%', 300);
                         $(this).dialog("close");
                         $('#doAuthReprint').click(function() {
                             authReprintsOnTabletLoading();
@@ -7295,7 +7301,7 @@
             $('#custLookUp').show();
             $("#custLookUp").dialog({
                 height: 450,
-                width: 400,
+                width: 600,
                 containment: false
             }).dialogExtend({
                 "closable": true, // enable/disable close button
@@ -7416,7 +7422,7 @@
             console.debug('productCode' + productCode);
             $('#extrasononrder').show();
             $("#extrasononrder").dialog({
-                height: 450,
+                // height: 450,
                 width: 400,
                 containment: false
             }).dialogExtend({

@@ -252,37 +252,9 @@
 
 @include('dims.sales-order.partials.authorisations')
 
-<div id="custLookUp" title="Price look up on order" style="background: darkorange;">
-    <div class="col-lg-12">
-        <div id="productSelectedForPriceListOrderForm"></div>
-        <table class="table" id="customersellingPrice" style="width:100%">
-            <thead>
-                <tr>
-                    <th>Price</th>
-                    <th>Delv Date</th>
-                </tr>
-            </thead>
-        </table>
-        <hr>
-        <h5>Other Prices</h5>
-        <table class="table" id="customerDetailLookUp" style="width:100%">
-            <thead>
-                <tr>
-                    <th>Price List</th>
-                    <th>Price</th>
-                </tr>
-            </thead>
-        </table>
-        <input type="text" id="lastprice" readonly>
-        <input type="text" id="costOnCustomerOrangeForm" readonly style="background:red;">Cost
-    </div>
-</div>
+@include('dims.sales-order.partials.custlookup')
 
-<div id="extrasononrder" title="Extras" style="background: #9ab5bb;">
-    <div class="col-lg-12">
-        <input type="text" id="randomweightdescription" style="width: 100%;" readonly>
-    </div>
-</div>
+@include('dims.sales-order.partials.extrasononrder')
 
 <div id="addNewDeliveryAddressForSingleCustomer" title="Add Address" style="display:none">
     <button id="addNewLineOnAddress" class="btn-success btn-xs">New Line</button>
@@ -325,51 +297,9 @@
     </form>
 </div>
 
-<div id="reprintAuth" title="Please Authorise before using this action" style="background:rgba(0,0,255,0.31)">
-    <form>
-        <div class="form-group  col-md-4" style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">
-            <label class="control-label" for="userAuthNameReprint"
-                style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Name</label>
-            <input class="form-control input-sm col-md-4 auto-complete-off" name="userAuthNameReprint"
-                id="userAuthNameReprint" style="height:30px;font-size: 10px;">
-        </div>
-        <div class="form-group  col-md-4" style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">
-            <label class="control-label" for="userAuthPassWordReprint"
-                style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">PassWord</label>
-            <input type="password" name="userAuthPassWordReprint"
-                class="form-control input-sm col-md-4 auto-complete-off" id="userAuthPassWordReprint"
-                style="height:30px;font-size: 10px;" readonly onfocus="$(this).removeAttr('readonly');">
-        </div>
+@include('dims.sales-order.partials.reprintauth')
 
-        <button type="button" id="doAuthReprint" class="btn-success btn-xs pull-right"
-            style="margin-top: 29px;margin-right: 15px;">Authorise</button>
-    </form>
-</div>
-
-<div id="authDropDowns" title="Please Authorise before using this action" style="background:rgba(0,0,255,0.31)">
-    <h4 style="color:red">BY CLICKING CANCEL THIS WILL GO BACK TO THE ORIGINAL DATA LOADED WITH THIS ORDER</h4>
-
-    <form>
-        <div class="form-group  col-md-4" style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">
-            <label class="control-label" for="userAuthNameDropDown"
-                style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Name</label>
-            <input class="form-control input-sm col-md-4 auto-complete-off" name="userAuthNameDropDown"
-                id="userAuthNameDropDown" style="height:30px;font-size: 10px;">
-        </div>
-        <div class="form-group  col-md-4" style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">
-            <label class="control-label" for="userAuthPassWordDropDown"
-                style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">PassWord</label>
-            <input type="password" name="userAuthPassWordDropDown"
-                class="form-control input-sm col-md-4 auto-complete-off" id="userAuthPassWordDropDown"
-                style="height:30px;font-size: 10px;" readonly onfocus="$(this).removeAttr('readonly');">
-        </div>
-
-        <button type="button" id="doAuthDropDown" class="btn-success btn-xs pull-right"
-            style="margin-top: 29px;margin-right: 15px;">Authorise</button>
-        <button type="button" id="doCancelAuthDropDown" class="btn-warning btn-xs pull-right"
-            style="margin-top: 29px;margin-right: 15px;">Cancel</button>
-    </form>
-</div>
+@include('dims.sales-order.partials.authdropdowns')
 
 <div id="authDropDownsClosedRoutePass" title="Please Authorise" style="background:rgba(0,0,255,0.31)">
     <h4 style="color:red">The Route You Are Trying to Place this Order Is Currently Closed Please Authorise First.
