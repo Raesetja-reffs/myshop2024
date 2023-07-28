@@ -571,30 +571,7 @@
     </div>
 </div>
 
-<div id="prohibitedProductAuth" title="Please Authorise">
-    <h5>This is a Prohibited Product</h5>
-    <form>
-        <div class="form-group  col-md-4" style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">
-            <label class="control-label" for="userAuthProhibited"
-                style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Name</label>
-            <input class="form-control input-sm col-md-4 auto-complete-off" name="userAuthProhibited"
-                id="userAuthProhibited" style="height:30px;font-size: 10px;" autocomplete="off"></input>
-        </div>
-        <div class="form-group  col-md-4" style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">
-            <label class="control-label" for="userAuthPassWordProhibited"
-                style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">PassWord</label>
-            <input type="password" name="userAuthPassWordProhibited"
-                class="form-control input-sm col-md-4 auto-complete-off" id="userAuthPassWordProhibited"
-                style="height:30px;font-size: 10px;" readonly onfocus="$(this).removeAttr('readonly');"
-                autocomplete="off">
-        </div>
-
-        <button type="button" id="doAuthProhibited" class="btn-success btn-xs pull-right"
-            style="margin-top: 29px;margin-right: 15px;">Authorise</button>
-        <button type="button" id="doCancelAuthProhibited" class="btn-warning btn-xs pull-right"
-            style="margin-top: 29px;margin-right: 15px;">No Thanks,Redo The Line</button>
-    </form>
-</div>
+@include('dims.sales-order.partials.prohibitedproductauth')
 
 @include('dims.sales-order.partials.authdiscount')
 
@@ -602,12 +579,7 @@
     <h4 id="putTheCustomerNoteHere" style="color:red;"></h4>
 </div>
 
-<div id="assignRouteOnTheFly" id="Customer With No Routes">
-    <h4>Customer Has No Route,Please select a route below</h4>
-    <select class="form-control" id="assignRouteOnTheFlyDropDown"></select>
-    <button id="doneAssigningRoutes" class="btn-success btn-sm pull-right">Done</button>
-
-</div>
+@include('dims.sales-order.partials.assignrouteonthefly')
 
 <div title="Transaction" id="popTransaction">
     <table id="tablePopUpSuccessRes" class="table table-bordered">
@@ -630,16 +602,7 @@
     <h2 style="text-align:center;">There Is 0 (ZERO) Available</h2>
 </div>
 
-<div title="Create Order" class="col-md-6" id="createOrderOnCallList">
-    <h3>Press YES to create Or NO to Cancel</h3>
-    <div class="col-md-3">
-        <button class="btn-md btn-success" id="yesOnCreatingOrderFromCallList">YES</button>
-    </div>
-    <div class="col-md-3">
-        <button class="btn-md btn-danger" id="noOnCreatingOrderFromCallList">NO.</button>
-    </div>
-
-</div>
+@include('dims.sales-order.partials.createorderoncalllist')
 
 <div id="emailDoc" title="Email Document">
     <label>From :</label> <input id="yourEmail" name="yourEmail"><br>
@@ -649,18 +612,7 @@
 
 @include('dims.sales-order.partials.salesmandialog')
 
-<div id="routingdialog" title="Choose Route" style="background: #ffa65d;">
-    <label>Route</label><br>
-
-    <select id="changetcurrentrouteonorder">
-        @foreach ($routesNames as $value)
-            <option value="{{ $value->Routeid }}">{{ $value->Route }}</option>
-        @endforeach
-    </select>
-    <br>
-    <p>BY CLICKING SUBMIT YOU ARE AUTHORISING THE ROUTE CHANGE ON THIS ORDER</p>
-    <button id="auththisrouteontheorder" class="btn-md btn-success">Submit</button>
-</div>
+@include('dims.sales-order.partials.routingdialog')
 
 @include('dims.sales-order.partials.brandedorderno')
 

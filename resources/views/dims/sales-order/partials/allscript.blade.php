@@ -403,7 +403,6 @@
         $('#createOrderOnCallList').hide();
         $('#copyOrdersBtn').hide();
         $('#emailDoc').hide();
-        $('#routingdialog').hide();
         $('#splitOrder').hide();
         $('#exceeded').hide();
         $('#qtyzero').hide();
@@ -1744,28 +1743,6 @@
             });
 
         });
-        $('#routeonabutton').click(function() {
-            $('#routingdialog').show();
-            showDialog('#routingdialog', '25%', 250);
-            $('#auththisrouteontheorder').click(function() {
-                $.ajax({
-                    url: '{!! url('/changerouteonorder') !!}',
-                    type: "POST",
-                    data: {
-                        routeId: $('#changetcurrentrouteonorder').val(),
-                        OrderId: $('#orderId').val(),
-
-                    },
-                    success: function(data) {
-                        //console.debug(data);
-                        $('#routeonabutton').val(data);
-                        $('#routingdialog').dialog('close');
-                    }
-                });
-            });
-
-        });
-
         /**
          * Main form filters to generate the order
          * */
@@ -7623,7 +7600,7 @@
         console.debug('prohibited/----' + token_number);
         $('#userAuthProhibited').val('');
         $('#userAuthPassWordProhibited').val('');
-        showDialogWithoutClose('#prohibitedProductAuth', 600, 400);
+        showDialogWithoutClose('#prohibitedProductAuth', 600, 300);
 
         $('#doCancelAuthProhibited').off().click(function() {
             console.debug('#new_row_ajax' + token_number);

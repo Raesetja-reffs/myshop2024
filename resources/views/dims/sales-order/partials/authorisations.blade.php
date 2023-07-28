@@ -29,7 +29,7 @@
                         Authorise
                     </button>
                     <button type="button" id="noThanksRedo" class="btn btn-warning btn-sm">
-                        No Thanks Redo the Line
+                        No Thanks, Redo the Line
                     </button>
                 </div>
             </div>
