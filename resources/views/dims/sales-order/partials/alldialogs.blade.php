@@ -658,65 +658,9 @@
 
 @include('dims.sales-order.partials.qtyzero')
 
-<div id="MarginProblems" title="Please Authorise">
-    <h5>The Order/Product is below the minimum margin, Please Authorise and Report to your manager </h5>
-    <form>
-        <div class="form-group  col-md-4" style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">
-            <input id="margin_auth" type="hidden" value="0">
-            <label class="control-label" for="userAuthProhibitedCred"
-                style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Name</label>
-            <input class="form-control col-md-4 auto-complete-off" id="userAuthProhibitedCred_marg"
-                name="userAuthProhibitedCred" style="height:30px;font-size: 10px;" autocomplete="off">
-        </div>
-        <div class="form-group  col-md-4" style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">
-            <label class="control-label" for="userAuthPassWordCredit"
-                style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">PassWord</label>
-            <input type="password" name="userAuthPassWordCredit" class="form-control col-md-4 auto-complete-off"
-                id="userAuthPassWordCredit_marg" style="height:30px;font-size: 10px;" autocomplete="off">
-        </div>
+@include('dims.sales-order.partials.marginproblems')
 
-        <div class="form-group  col-md-12">
-            <div class="form-group  col-md-6">
-                <button type="button" id="doAuthCredits" class="btn-success btn-xs pull-right"
-                    style="margin-top: 29px;margin-right: 15px;">Authorise</button>
-            </div>
-            <div class="form-group  col-md-6">
-                <button type="button" id="doCancelAuthCredits" class="btn-danger btn-xs pull-right"
-                    style="margin-top: 29px;margin-right: 15px;">Cancel</button>
-            </div>
-        </div>
-    </form>
-</div>
-
-<div id="ZeroPrice" title="Please Authorise">
-    <h5>The product has zero(0) price ,please authorise. </h5>
-    <form>
-        <div class="form-group  col-md-4" style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">
-            <label class="control-label" for="userauthproductwithzeroprice"
-                style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Name</label>
-            <input class="form-control col-md-4 auto-complete-off" id="userauthproductwithzeroprice"
-                name="userauthproductwithzeroprice" style="height:30px;font-size: 10px;" autocomplete="off">
-        </div>
-        <div class="form-group  col-md-4" style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">
-            <label class="control-label" for="userAuthPassWordzeroprice"
-                style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">PassWord</label>
-            <input type="password" name="userAuthPassWordzeroprice"
-                class="form-control col-md-4 auto-complete-off" id="userAuthPassWordzeroprice"
-                style="height:30px;font-size: 10px;" autocomplete="off">
-        </div>
-
-        <div class="form-group  col-md-12">
-            <div class="form-group  col-md-6">
-                <button type="button" id="doAuthZeroPrice" class="btn-success btn-xs pull-right"
-                    style="margin-top: 29px;margin-right: 15px;">Authorise</button>
-            </div>
-            <div class="form-group  col-md-6">
-                <button type="button" id="doCancelAuthZeroPrice" class="btn-danger btn-xs pull-right"
-                    style="margin-top: 29px;margin-right: 15px;">Re-do Line</button>
-            </div>
-        </div>
-    </form>
-</div>
+@include('dims.sales-order.partials.zeroprice')
 
 <div title="Processing Receipt" id="processingpos">
     <h2 style="color:green">Please wait .........</h2>

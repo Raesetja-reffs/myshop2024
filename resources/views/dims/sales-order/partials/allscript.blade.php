@@ -6054,7 +6054,7 @@
                         if ($('#marginandpriceauthbycustomer').val().length > 1) {
                             $('#prodPrice_' + token_number).val('0');
                             $('#ZeroPrice').show();
-                            showDialogWithoutClose('#ZeroPrice', '40%', 250);
+                            showDialogWithoutClose('#ZeroPrice', '40%', 300);
                             $('#ZeroPrice').keydown(function(event) {
                                 if (event.keyCode == 27) {
                                     return false;
@@ -6082,7 +6082,7 @@
                     if ($('#marginandpriceauthbycustomer').val().length > 1) {
                         $('#prodPrice_' + token_number).val('0');
                         $('#ZeroPrice').show();
-                        showDialogWithoutClose('#ZeroPrice', '40%', 250);
+                        showDialogWithoutClose('#ZeroPrice', '40%', 300);
                         $('#ZeroPrice').keydown(function(event) {
                             if (event.keyCode == 27) {
                                 return false;
@@ -10435,7 +10435,7 @@
             $('#MarginProblems').show();
             $('#userAuthProhibitedCred_marg').val('');
             $('#userAuthPassWordCredit_marg').val('');
-            showDialogWithoutClose('#MarginProblems', 400, 400);
+            showDialogWithoutClose('#MarginProblems', 600, 300);
             $('#MarginProblems').keydown(function(event) {
                 if (event.keyCode == 27) {
                     return false;
