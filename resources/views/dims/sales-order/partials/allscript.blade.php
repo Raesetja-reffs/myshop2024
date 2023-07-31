@@ -3736,28 +3736,6 @@
             });
 
         });
-        $('#salesInvoiced').click(function() {
-            $('#prodonInvoice').show();
-            showDialog('#prodonInvoice', '85%', 640);
-            productsOnInvoiced();
-            $('#tblOnInvoiced tbody').on('click', 'tr', function(e) {
-                $("#tblOnInvoiced tbody tr").removeClass('row_selected');
-                $(this).addClass('row_selected');
-                globalOrderIdToBePushed = [];
-                arrayOfCustomerInfo = [];
-                $('#orderIds').val('');
-                var rowOnOrder = $(this).closest("tr");
-                var orderIDrowOnOrder = rowOnOrder.find('td:eq(0)').text();
-                globalOrderIdToBePushed.push(orderIDrowOnOrder);
-                arrayOfCustomerInfo.push(rowOnOrder.find('td:eq(1)').text());
-                arrayOfCustomerInfo.push(rowOnOrder.find('td:eq(2)').text());
-                arrayOfCustomerInfo.push(rowOnOrder.find('td:eq(3)').text());
-            });
-            $('#callSpOnInvoiced').click(function() {
-                productsOnInvoiced();
-            });
-
-        });
         //Search method
 
         quickSearchOnCustomerPrioritisePastelCode(finalData, '#inputCustCustomers');
@@ -4492,105 +4470,6 @@
             paging: {
                 pageSize: 50,
             },
-        });
-    }
-
-    function productsOnInvoiced() {
-        productsOnOrders = $('#tblOnInvoiced').DataTable({
-            "ajax": {
-                url: '{!! url('/productsOnInvoiced') !!}',
-                "type": "post",
-                data: function(data) {
-                    data.productCode = $('#productCodeOnInvoice').val();
-
-                }
-            },
-            "columns": [{
-                    "data": "OrderId",
-                    "class": "small",
-                    "bSortable": true
-                },
-                {
-                    "data": "OrderDate",
-                    "class": "small"
-                },
-                {
-                    "data": "DeliveryDate",
-                    "class": "small"
-                },
-                {
-                    "data": "CustomerPastelCode",
-                    "class": "small"
-                },
-                {
-                    "data": "StoreName",
-                    "class": "small"
-                },
-                {
-                    "data": "Qty",
-                    "class": "small",
-                    render: function(data, type, row, meta) {
-                        // check to see if this is JSON
-                        try {
-                            var jsn = JSON.parse(data);
-                            //console.log(" parsing json" + jsn);
-                        } catch (e) {
-
-                            return jsn.data;
-                        }
-                        return parseFloat(jsn).toFixed(2);
-
-                    },
-                    "bSortable": true
-                },
-                {
-                    "data": "PastelCode",
-                    "class": "small"
-                },
-                {
-                    "data": "PastelDescription",
-                    "class": "small"
-                },
-                {
-                    "data": "Comment",
-                    "class": "small"
-                },
-                {
-                    "data": "NettPrice",
-                    "class": "small",
-                    render: function(data, type, row, meta) {
-                        // check to see if this is JSON
-                        try {
-                            var jsn = JSON.parse(data);
-                            //console.log(" parsing json" + jsn);
-                        } catch (e) {
-
-                            return jsn.data;
-                        }
-                        return parseFloat(jsn).toFixed(2);
-
-                    },
-                    "bSortable": true
-                },
-                {
-                    "data": "Backorder",
-                    "class": "small"
-                }
-
-            ],
-            "deferRender": true,
-            "scrollY": "300px",
-            "scrollCollapse": true,
-            searching: true,
-            bPaginate: false,
-            bFilter: false,
-            dom: 'Bfrtip',
-            buttons: [
-                'copy', 'csv', 'excel'
-            ],
-            "LengthChange": false,
-            "info": false,
-            "destroy": true
         });
     }
 
