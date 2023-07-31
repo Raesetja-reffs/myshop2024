@@ -27,6 +27,7 @@ use App\Http\Controllers\WareHouseManagementController;
 use App\Http\Controllers\SalesManBriefcase;
 use App\Http\Controllers\KerstonSpecialController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\CallList;
 
 /*
 |--------------------------------------------------------------------------

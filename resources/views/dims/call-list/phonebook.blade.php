@@ -1,25 +1,49 @@
-@extends('layouts.app')
+<x-app-layout>
+    <x-slot name="header">
+        {{ __('Extra Contacts') }}
+    </x-slot>
 
-@section('content')
-    <div class="col-lg-12"  style="background: white;">
-        <h1 style="text-align:center;">Extra Contacts</h1>
-        <fieldset class="well">
-            <legend class="well-legend">Filters</legend>
+    <x-slot name="breadcrum">
+        <!--begin::Item-->
+        <li class="breadcrumb-item text-muted">
+            <a href="{{ route('home') }}" class="text-muted text-hover-primary">
+                Home </a>
+        </li>
+        <!--end::Item-->
+        <!--begin::Item-->
+        <li class="breadcrumb-item">
+            <span class="bullet bg-gray-300 w-5px h-2px"></span>
+        </li>
+        <!--end::Item-->
+
+        <!--begin::Item-->
+        <li class="breadcrumb-item text-dark">
+            Call List </li>
+        <!--end::Item-->
+    </x-slot>
+
+    <div class="card mb-5 mt-5">
+        <div class="card-body">
             <form>
-                <div class="form-group  col-md-3"  style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">
-                    <label class="control-label" for="inputCustAcc"  style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Customer Code</label>
-                    <input type="text" name="custCode" class="form-control input-sm col-xs-1" id="inputCustAcc" style="background:grey;height:22px;font-size: 10px;font-weight: 900;    color: black;" >
+                <div class="row">
+                    <h5>Filters</h5>
+                    <div class="col-md-4 mb-2">
+                        <label for="inputCustAcc">Customer Code</label>
+                        <input type="text" name="custCode" class="form-control" id="inputCustAcc">
+                    </div>
+                    <div class="col-md-4 mb-2">
+                        <label for="inputCustName">Customer Name</label>
+                        <input type="text" name="custDescription" class="form-control" id="inputCustName">
+                        <input type="hidden" name="customerid" class="form-control" id="customerid" >
+                    </div>
+                    <div class="col-md-4 mb-2">
+                        <button type="button" id="submitFiltersOnCustSpecial" class="btn btn-primary btn-sm mt-md-6">Submit</button>
+                    </div>
                 </div>
-
-                <div class="form-group col-md-3"  style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">
-                    <label class="control-label" for="inputCustName"  style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Customer Name</label>
-                    <input type="text" name="custDescription" class="form-control input-sm col-xs-1" id="inputCustName" style="height:22px;font-size: 10px;font-weight: 900;    color: black;">
-                    <input type="hidden" name="customerid" class="form-control input-sm col-xs-1" id="customerid" >
-                </div>
-                <button type="button" id="submitFiltersOnCustSpecial" class="btn-xs btn-primary">Submit</button>
             </form>
-        </fieldset>
+        </div>
     </div>
+
     <div class="col-lg-12" id="afterFilter">
         <h5 id="specialslink"></h5>
         <div class="col-lg-6">
@@ -98,12 +122,11 @@
     <div id="updatedspecials" title="Specials Updated" >
         <button id="btnspecialUpdated" class="btn-md btn-success">OKAY</button>
     </div>
-@endsection
-<script src="{{ asset('js/jquery-2.2.3.min.js') }}"></script>
-<script>
+</x-app-layout>
 
+<script>
     $( document ).on( 'focus', ':input', function(){
-        $( this ).attr( 'autocomplete', 'off' );
+        $(this).attr('autocomplete', 'off');
     });
     $(document).keydown(function(e) {
         if (e.keyCode == 27) return false;
@@ -155,7 +178,6 @@
 
     });
 
-
     $(document).ready(function() {
         $('#orderListing').hide();
         $('#pricing').hide();
@@ -181,7 +203,6 @@
             data: finalDataProductDescription
         });
         inputGroupAccount.on('select:flexdatalist', function (event, data) {
-
             $('#inputCustAcc').val(data.CustomerPastelCode);
             $('#inputCustName').val(data.StoreName);
             $('#customerid').val(data.CustomerId);
@@ -197,15 +218,12 @@
             data: finalDataProductDescription
         });
         inputCode.on('select:flexdatalist', function (event, data) {
-
             $('#inputCustAcc').val(data.CustomerPastelCode);
             $('#inputCustName').val(data.StoreName);
             $('#customerid').val(data.CustomerId);
         });
 
-
         $('#addLine').click(function(){
-
             generateALine2();
         });
 
@@ -213,9 +231,6 @@
         {
             var contacts = new Array();
             $('#tblCreateNewContanct > tbody  > tr').each(function() {
-                // var data = $(this);
-                // var orderDetailID = $(this).closest('tr').find('#theOrdersDetailsId').val();
-
                 if (($(this).closest('tr').find('.ContactPerson_').val()).length > 0 && ($(this).closest('tr').find('.ContactNumbers_').val()).length > 0 ) {
                     contacts.push({
                         'ContactPerson': $(this).closest('tr').find('.ContactPerson_').val(),
@@ -245,42 +260,41 @@
                 }
             });
         });
+
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-//showDialog('#tempDeliveryAddressOnTheFly','50%',250);
+
         $('#submitFiltersOnCustSpecial').click(function(){
             $('#tblCreateNewContanct tbody').empty();
             generateALine2();
             $('#afterFilter').show();
-                $.ajax({
-                    url: '{!!url("/customerphonebookcontacts")!!}',
-                    type: "GET",
-                    data: {
-                        customerId: $('#customerid').val()
-                    },
-                    success: function (data) {
-                        var trHTML ="";
-                        $('.remthisLine').remove();
+            $.ajax({
+                url: '{!!url("/customerphonebookcontacts")!!}',
+                type: "GET",
+                data: {
+                    customerId: $('#customerid').val()
+                },
+                success: function (data) {
+                    var trHTML ="";
+                    $('.remthisLine').remove();
 
-                        $.each(data, function (key,value) {
-                            trHTML += '<tr  class="remthisLine" style="font-size: 11px;color:black;"><td>' +
-                                value.intCustomerContactID + '</td><td>' +
-                                value.StoreName + '</td><td>' +
-                                value.ContactPerson + '</td><td>' +
-                                value.ContactNumbers + '</td><td>' +
-                                value.ReferenceNo +
-                                '</td>'+
-                                '<td><button class="btn-sx" value="' +value.intCustomerContactID +'">Delete</button></td></tr>';
+                    $.each(data, function (key,value) {
+                        trHTML += '<tr  class="remthisLine" style="font-size: 11px;color:black;"><td>' +
+                            value.intCustomerContactID + '</td><td>' +
+                            value.StoreName + '</td><td>' +
+                            value.ContactPerson + '</td><td>' +
+                            value.ContactNumbers + '</td><td>' +
+                            value.ReferenceNo +
+                            '</td>'+
+                            '<td><button class="btn-sx" value="' +value.intCustomerContactID +'">Delete</button></td></tr>';
 
-                        });
-
-                        $('#tblCustomerPhoneBook').append(trHTML);
-                    }
-                });
-
+                    });
+                    $('#tblCustomerPhoneBook').append(trHTML);
+                }
+            });
         });
 
         $('#tblCustomerPhoneBook').on('click', 'button', function (e) {
@@ -293,7 +307,6 @@
                     removeSpecial: $thisVal
                 },
                 success: function (data) {
-
                     var dialog = $('<p>Special Removed</p>').dialog({
                         height: 200, width: 700, modal: true, containment: false,
                         buttons: {
@@ -346,7 +359,6 @@
                         specialGp: $('#specialGp').val()
                     },
                     success: function (data) {
-
                         $('#updatedspecials').show();
                         showDialog('#updatedspecials',380,100);
                         $('#btnspecialUpdated').click(function(){
@@ -354,7 +366,6 @@
                             $('#updatedspecials').dialog('close');
                             $('#submitFiltersOnCustSpecial').click();
                         });
-
                     }
                 });
             });
@@ -365,7 +376,6 @@
         var contractFrom = $('#dateFrom').val();
         var contractTo = $('#dateTo').val();
         var tokenId=Math.floor(Math.pow(10, 9-1) + Math.random() * 9 * Math.pow(10, 9-1));
-
         var $row = $('<tr id="new_row_ajax'+tokenId+'" class="fast_remove" style="font-weight: 600;font-size: 11px;">' +
             '<td contenteditable="false" class="col-sm-4"><input name="ContactPerson" id ="ContactPerson_'+tokenId+'" class="ContactPerson_ set_autocomplete inputs"></td>' +
             '<td contenteditable="false" class="col-md-2"><input name="ContactNumbers_" id ="ContactNumbers_'+tokenId+'" maxlength="10"  onkeypress="return isNumber(event)" class="ContactNumbers_ set_autocomplete inputs" tabindex="-1"></td>' +
@@ -377,16 +387,12 @@
         if(!$('.lst').is(":focus"))
         {
             $('#ContactPerson_' + tokenId).focus();
-
-
         }
 
         $('#tblCreateNewContanct').on('click', 'button', function (e) {
             var $this = $(this);
             var $thisVal = $(this).val();
             $this.closest('tr').remove();
-
-
         });
 
     }
@@ -407,21 +413,14 @@
         var prodPriceClosest = closesttr.find(".prodPrice_").val();
         if ( (code == 34 || code == 13 || code == 39 ) && $.trim(prodClosest.length) > 0 && prodDescClosest.length > 0 &&  prodPriceClosest.length > 0) {
             generateALine2();
-
         }
     });
     $(document).on('keyup', '.lst', function(e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if (code == 13 || code == 9) {
             var index = $('.inputs').index(this);
-
             $('.lst').eq(index).focus();
             generateALine2();
-
-
-
-
-
         }
     });
     function marginCalculator(cost,onCellVal)
@@ -430,7 +429,6 @@
     }
     $(document).on('keydown', '#tblCreateNewSpecial', function(e) {
         var $table = $(this);
-
         var $active = $('input:focus,select:focus,li:focus',$table);
         var $next = null;
         var focusableQuery = 'input:visible,select:visible,textarea:visible,li:visible';
@@ -442,7 +440,6 @@
                 $next = $active.parent('td').prev().find(focusableQuery);
                 break;
             case 33: // <Up>
-                c
                 if ($celltheProductCode_.length < 1) {
                     $next = $active
                         .closest('tr')
@@ -489,12 +486,9 @@
         /*  var key = (e.keyCode ? e.keyCode : e.which);
          var $isAuth = $(this).closest("tr").find(".title").attr("id");
          var $priceToken = $(this).closest("tr").find(".prodPrice_").attr("id");*/
-
         var costing = $(this).closest("tr").find(".cost_").val();
         var prodPriceVal =  $(this).closest("tr").find(".prodPrice_").val();
         $(this).closest("tr").find(".gp_").val( parseFloat( marginCalculator(costing,prodPriceVal)).toFixed(2));
-
-
     });
     $(document).on('keyup', '#specialPrice', function(e) {
         $('#specialGp').val(parseFloat( marginCalculator($('#specialCost').val(),$('#specialPrice').val())).toFixed(2));
@@ -536,5 +530,4 @@
         }
         return true;
     }
-
 </script>

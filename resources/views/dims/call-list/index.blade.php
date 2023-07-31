@@ -1,6 +1,4 @@
-@extends('layouts.app')
-
-@section('content')
+<x-app-layout>
     <div class="container" style="width: 100%;">
         <div class="row">
 
@@ -54,9 +52,8 @@
 
         </div>
     </div>
+</x-app-layout>
 
-
-@endsection
 <script src="{{ asset('js/jquery-2.2.3.min.js') }}"></script>
 <script>
     var jArraydelivRoutes = JSON.stringify({!! json_encode($routesNames) !!});

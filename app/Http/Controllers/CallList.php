@@ -51,7 +51,7 @@ class CallList extends Controller
         $getLastInserted= DB::connection('sqlsrv3')
             ->select("Select * from viewGetLastInsertedOrderIdAndDeliveryDate");
 
-        return view('dims/call_list')->with('products',$queryProducts)
+        return view('dims/call-list/index')->with('products',$queryProducts)
             ->with('trueOrFalse',$trueFalse)
             ->with('LastInserted',$getLastInserted)
             ->with('customers',$queryCustomers)
@@ -232,7 +232,7 @@ class CallList extends Controller
     public function getPhoneBook()
     {
         $queryCustomers =DB::connection('sqlsrv3')->table("viewtblCustomers" )->select('CustomerId','StoreName','CustomerPastelCode','CreditLimit','BalanceDue','UserField5','Email','Routeid','Discount','OtherImportantNotes','strRoute','mnyCustomerGp','ID','Warehouse')->where('StatusId',1)->orderBy('CustomerPastelCode','ASC')->get();
-        return view('dims/phonebook')->with('customers',$queryCustomers);
+        return view('dims/call-list/phonebook')->with('customers',$queryCustomers);
     }
     public function customerphonebookcontacts(Request $request)
     {
