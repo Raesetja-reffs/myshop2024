@@ -368,7 +368,6 @@
         //getTheLastInsertedDeliveryDate();
         $('#dialog').hide(); //Dialog
         $('#dialog2').hide(); //Dialog
-        $('#callListDialog').hide(); //Dialog
         $('#listOfDelivAdress').hide(); //Dialog
         $('#customDeliveeryAddress').hide(); //Dialog
         $('#tabletLoading').hide();
@@ -452,50 +451,6 @@
         });
 
         //
-
-        $('#callList').click(function() {
-            //callList();
-
-            getDimsUsers('#callListUser', '{!! url('/getDimsUsers') !!}');
-            $('#callListDialog').show();
-
-            $("#callListDialog").dialog({
-                height: 700.4,
-                width: 1100,
-                containment: false
-            }).dialogExtend({
-                "closable": true, // enable/disable close button
-                "maximizable": false, // enable/disable maximize button
-                "minimizable": true, // enable/disable minimize button
-                "collapsable": true, // enable/disable collapse button
-                "dblclick": "collapse", // set action on double click. false, 'maximize', 'minimize', 'collapse'
-                "titlebar": "transparent", // false, 'none', 'transparent'
-                "minimizeLocation": "right", // sets alignment of minimized dialogues
-                "icons": { // jQuery UI icon class
-                    "close": "ui-icon-circle-close",
-                    "maximize": "ui-icon-circle-plus",
-                    "minimize": "ui-icon-circle-minus",
-                    "collapse": "ui-icon-triangle-1-s",
-                    "restore": "ui-icon-bullet"
-                },
-                "load": function(evt, dlg) {}, // event
-                "beforeCollapse": function(evt, dlg) {}, // event
-                "beforeMaximize": function(evt, dlg) {}, // event
-                "beforeMinimize": function(evt, dlg) {}, // event
-                "beforeRestore": function(evt, dlg) {}, // event
-                "collapse": function(evt, dlg) {}, // event
-                "maximize": function(evt, dlg) {}, // event
-                "minimize": function(evt, dlg) {}, // event
-                "restore": function(evt, dlg) {} // event
-            });
-
-
-
-        });
-
-        $('#passCallistFilter').click(function() {
-            callList();
-        });
         $("#callList").contextMenu(dataMenuOnRightClick);
         $("#salesOnOrder").contextMenu(dataMenuOnRightClickOnOrder);
         $('#dicPercHeader').click(function() {
@@ -4533,61 +4488,6 @@
 
         // });
     });
-
-    function callList() {
-        $.ajax({
-            url: '{!! url('/getCallList') !!}',
-            type: "POST",
-            data: {
-                userId: $('#callListUser').val(),
-                routeId: $('#routeToFilterWith').val(),
-                OrderDate: $('#callListOrderDate').val(),
-                deliveryDate: $('#callListDeliveryDate').val(),
-                UserName: $('#callListUser').find("option:selected").text(),
-                routeName: $('#routeToFilterWith').find("option:selected").text()
-
-            },
-            success: function(data) {
-                var trHTML = '';
-
-                $('.fast_removeCallList').empty();
-                $.each(data, function(key, value) {
-
-                    var tokenIdn = parseInt(Math.random() * 1000000000, 10);
-                    // alert(tokenIdn);
-                    trHTML +=
-                        '<tr role="row" class="fast_removeCallList"  style="font-size: 9px;color:black"><td>' +
-                        value.CustomerPastelCode + '</td><td>' +
-                        $.trim(value.StoreName) + '</td><td>' +
-                        '<input type="checkbox"  name="called" style="width:18px;height:15px !important" value="' +
-                        value.CustomerPastelCode +
-                        '" onclick="javascript: SelectallColorsForStyle(this, value,' + tokenIdn +
-                        ');" ></td><td>' +
-                        value.ContactPerson + '</td><td>' +
-                        value.BuyerTelephone + '</td><td>' +
-                        value.CellPhone + '</td><td>' +
-                        value.Routeid + '</td><td>' +
-                        value.BuyerContact + '</td><td>' +
-                        value.LocationID + '</td><td>' +
-                        value.Discount + '</td><td>' +
-                        value.custRouteId + '</td><td><input type="text" id="' + tokenIdn +
-                        '" class="notes"><input type="hidden" value="' + value.CustomerId +
-                        '" class="custids"></td>' +
-                        '</tr>';
-                });
-                $('#callListTable').append(trHTML);
-                console.debug("check how many times i get called+++++++++++++++++++++++++++++");
-
-
-                $('#callListTable tbody').on('click', 'tr', function(e) {
-                    $("#callListTable tbody tr").removeClass('row_selectedYellowish');
-                    $(this).addClass('row_selectedYellowish');
-                });
-
-            }
-        });
-
-    }
 
     function confirmmultideliveryaddressonfinish() {
         console.debug("******************************* Routing ID " + $('#hiddenDeliveryAddressIdAfterSaved').val());
