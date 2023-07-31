@@ -2585,7 +2585,7 @@
                     isCheckedOrderPatternAuth = false;
                     $('#appendErrormsg').empty();
                     $('#appendErrormsg').append("It appears that you don't have enough in stock");
-                    showDialogWithoutClose("#authorisations", 500, 500);
+                    showDialogWithoutClose("#authorisations", 500, 400);
                     //if (e.keyCode == 27) return false;
                     $('#noThanksRedo').off().click(function() {
 
@@ -3716,7 +3716,7 @@
          * */
         $('#salesOnOrder').click(function() {
             $('#prodOnOrder').show();
-            showDialog('#prodOnOrder', '100%', 800);
+            showDialog('#prodOnOrder', '80%', 750);
             productsOnOrder();
             $('#tblOnsalesOrder tbody').on('click', 'tr', function(e) {
                 $("#tblOnsalesOrder tbody tr").removeClass('row_selected');
@@ -3947,21 +3947,19 @@
 
                     trHTML += `
                         <tr class="hidden_row1${counter} hidden_row" style="display:none;">
-                            <td colspan="3" class="ps-8">
-                                ${value.PastelDescription}
-                                <input type="hidden" id="${value.PastelCode}" value="${value.PastelCode}" style="width:1px" class="foo">
-                                <input type="hidden" id="Prodcost" value="${parseFloat(value.Cost).toFixed(2)}" style="width:1px">
-                                <input type="hidden" id="ProdQnt" value="${parseFloat(value.QtyInStock).toFixed(2)}" style="width:1px">
-                                <input type="hidden" id="titles" value="authorised" style="width:1px">
-                                <input type="hidden" class="dontTakeme" value="">
-                                <input type="hidden" id="UnitSizes" value="${value.UnitSize}" style="width:1px">
-                                <input type="hidden" id ="soldByWieght" class="soldByWieght" value="${value.SoldByWeight}" />
-                                <input type="hidden" id ="unitWeight"  class="unitWeight" value="${value.UnitWeight}" />
-                                <input type="hidden" id ="strBulkUnit"  class="strBulkUnit" value="${value.strBulkUnit}" />
-                                <input type="hidden" id ="strBulkUnit"  class="strBulkUnit" value="${value.strBulkUnit}" />
-                                <input type="hidden" id ="ProductMargin"  class="ProductMargin" value="${value.ProductMargin}" />
-                                <input type="hidden" id ="taxCode"  class="taxCode" value="${value.Tax}" />
-                            </td>
+                            <input type="hidden" id="${value.PastelCode}" value="${value.PastelCode}" style="width:1px" class="foo">
+                            <input type="hidden" id="Prodcost" value="${parseFloat(value.Cost).toFixed(2)}" style="width:1px">
+                            <input type="hidden" id="ProdQnt" value="${parseFloat(value.QtyInStock).toFixed(2)}" style="width:1px">
+                            <input type="hidden" id="titles" value="authorised" style="width:1px">
+                            <input type="hidden" class="dontTakeme" value="">
+                            <input type="hidden" id="UnitSizes" value="${value.UnitSize}" style="width:1px">
+                            <input type="hidden" id ="soldByWieght" class="soldByWieght" value="${value.SoldByWeight}" />
+                            <input type="hidden" id ="unitWeight"  class="unitWeight" value="${value.UnitWeight}" />
+                            <input type="hidden" id ="strBulkUnit"  class="strBulkUnit" value="${value.strBulkUnit}" />
+                            <input type="hidden" id ="strBulkUnit"  class="strBulkUnit" value="${value.strBulkUnit}" />
+                            <input type="hidden" id ="ProductMargin"  class="ProductMargin" value="${value.ProductMargin}" />
+                            <input type="hidden" id ="taxCode"  class="taxCode" value="${value.Tax}" />
+                            <td colspan="3" class="ps-8">${value.PastelDescription}</td>
                             <td>${parseFloat(value.Qty).toFixed(2)}</td>
                         </tr>
                     `;
@@ -4490,7 +4488,10 @@
                     alert(
                         "Sorry, you cannot delete the line because it is not a stock item that is Awaiting Stock.");
                 }
-            }
+            },
+            paging: {
+                pageSize: 50,
+            },
         });
     }
 
@@ -5943,7 +5944,7 @@
                                 $('#appendErrormsg').empty();
                                 $('#appendErrormsg').append(
                                     "It appears that you don't have enough in stock");
-                                showDialogWithoutClose("#authorisations", 500, 500);
+                                showDialogWithoutClose("#authorisations", 500, 400);
                                 //if (e.keyCode == 27) return false;
                                 $('#noThanksRedo').off().click(function() {
                                     $('#new_row_ajax' + token_number).remove();

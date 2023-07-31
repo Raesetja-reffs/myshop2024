@@ -129,3 +129,6 @@ input.row_selectedYellowish {background-color:#91ff00 !important;}
     height: 40px;
     padding: 10px !important;
 }
+.dx-editor-cell .dx-texteditor .dx-texteditor-input {
+    height: 22px;
+}

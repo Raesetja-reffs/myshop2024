@@ -1,36 +1,52 @@
 <div class="col-lg-12" id="prodOnOrder" title="Products on Sales Order" style="background: darkgoldenrod">
-    <form>
-        <fieldset class="well" style="    background: #e8e8e8;">
-            <a href='{!!url("/warehouseitems")!!}' onclick="window.open(this.href, 'briefcase','left=20,top=20,width=1400,height=950,toolbar=1,resizable=0'); return false;">Advanced</a>
-            <legend class="well-legend">Search</legend>
-                <div class="col-md-12">
-                    <div class="form-group col-md-4">
-                        <label class="control-label" for="productCodeOnOrder"  style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Product Code</label>
-                        <input type="text" class="form-control input-sm col-xs-1" id="productCodeOnOrder" style="height:22px;font-size: 10px;font-family: sans-serif;font-weight: 900;">
-                    </div>
-                    <div class="form-group col-md-4">
-                        <label class="control-label" for="productDescOnOrder"  style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Product Desc</label>
-                        <input type="text" class="form-control input-sm col-xs-1" id="productDescOnOrder" style="height:22px;font-size: 10px;font-family: sans-serif;font-weight: 900;">
+    <div class="card mb-3">
+        <div class="card-body">
+            <form>
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4>Search</h4>
                     </div>
                 </div>
-                <div class="col-md-12">
-                    <div class="form-group col-md-4">
-                        <label class="control-label" for="custCodeOnOrder"  style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Customer Code</label>
-                        <input type="text" class="form-control input-sm col-xs-1" id="custCodeOnOrder" style="height:22px;font-size: 10px;font-family: sans-serif;font-weight: 900;">
+                <div class="row">
+                    <div class="col-md-2 mb-2">
+                        <label for="productCodeOnOrder">Product Code</label>
+                        <input type="text" class="form-control" id="productCodeOnOrder">
                     </div>
-                    <div class="form-group col-md-4">
-                        <label class="control-label" for="custDescOnOrder"  style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Customer Desc</label>
-                        <input type="text" class="form-control input-sm col-xs-1" id="custDescOnOrder" style="height:22px;font-size: 10px;font-family: sans-serif;font-weight: 900;">
+                    <div class="col-md-2 mb-2">
+                        <label for="productDescOnOrder">Product Desc</label>
+                        <input type="text" class="form-control" id="productDescOnOrder">
                     </div>
-                    <div class="form-group col-md-4">
-                        <button type="button" id="callSpOnOrder" class="btn-xs btn-success">GO</button>
+                    <div class="col-md-2 mb-2">
+                        <label for="custCodeOnOrder">Customer Code</label>
+                        <input type="text" class="form-control" id="custCodeOnOrder">
+                    </div>
+                    <div class="col-md-2 mb-2">
+                        <label for="custDescOnOrder">Customer Desc</label>
+                        <input type="text" class="form-control" id="custDescOnOrder">
+                    </div>
+                    <div class="col-md-2 mb-2">
+                        <button type="button" id="callSpOnOrder" class="btn btn-success btn-sm mt-md-6">GO</button>
+                        <a href='{!!url("/warehouseitems")!!}'
+                            onclick="window.open(this.href, 'briefcase','left=20,top=20,width=1400,height=950,toolbar=1,resizable=0'); return false;"
+                            class="btn btn-primary btn-sm mt-md-6"
+                        >
+                            Advanced
+                        </a>
                     </div>
                 </div>
+            </form>
+        </div>
+    </div>
 
-        </fieldset>
-    </form>
-
-    <div id="gridContainer" style="height: 590px;"></div>
+    <div class="card mb-3">
+        <div class="card-body pt-0">
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="gridContainer" style="height: 590px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     {{-- <table class="table  search-table" id="tblOnsalesOrder" style=" color: black;overflow-y: scroll; width: 100%;font-family: sans-serif; font-weight: 700;font-size: 36px;" tabindex=0>
         <thead>
