@@ -1,69 +1,112 @@
 <x-app-layout>
-    <div id="dialog2" title="Price Check" style="font-weight: 900;color: black;">
-        <div class="col-lg-12">
-            <form>
-                <fieldset class="well">
-                    <legend class="well-legend">Search</legend>
-                    <div class="form-group col-md-6">
-                        <label class="control-label" for="productCodeSearchPrice"
-                            style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Code</label>
-                        <input type="text" class="form-control input-sm " id="productCodeSearchPrice"
-                            style="font-size: 10px;">
-                    </div>
-                    <div class="form-group col-md-6">
-                        <label class="control-label" for="productDescriptionSearchPrice"
-                            style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Description</label>
-                        <input type="text" class="form-control input-sm " id="productDescriptionSearchPrice"
-                            style="font-size: 10px;">
-                    </div>
-                </fieldset>
+    <x-slot name="header">
+        {{ __('Price Check') }}
+    </x-slot>
+    <x-slot name="breadcrum">
+        <!--begin::Item-->
+        <li class="breadcrumb-item text-muted">
+            <a href="{{ route('home') }}" class="text-muted text-hover-primary">
+                Home </a>
+        </li>
+        <!--end::Item-->
+        <!--begin::Item-->
+        <li class="breadcrumb-item">
+            <span class="bullet bg-gray-300 w-5px h-2px"></span>
+        </li>
+        <!--end::Item-->
 
-            </form>
+        <!--begin::Item-->
+        <li class="breadcrumb-item text-dark">
+            Price Check </li>
+        <!--end::Item-->
+    </x-slot>
+
+    <div id="dialog2" title="Price Check">
+        <div class="card mb-3">
+            <div class="card-body">
+                <form>
+                    <div class="row">
+                        <h5>Search</h5>
+                        <div class="col-md-6">
+                            <label for="productCodeSearchPrice">Code</label>
+                            <input type="text" class="form-control" id="productCodeSearchPrice">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="productDescriptionSearchPrice">Description</label>
+                            <input type="text" class="form-control " id="productDescriptionSearchPrice">
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
-        <div class="col-lg-12">
-            <div class="col-md-6" style="background: goldenrod;padding: 10px;">
-                <input id="selling_price" class="form-control input-sm " type="text"
-                    placeholder="Type In your Deal Price">
-                <table class="table" id="cost_margin" style="width:100%">
-                    <thead>
-                        <tr>
-                            <th>Cost</th>
-                            <th>Margin %</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><input id="costs"><input id="avgCost" type="text" readonly></td>
-                            <td><input id="margin"></td>
-                        </tr>
-                    </tbody>
 
-                </table>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="col-md-12 mb-3">
+                            <input id="selling_price" class="form-control" type="text" placeholder="Type In your Deal Price">
+                        </div>
+                        <div class="col-md-12">
+                            <table class="table table-bordered table-hover" id="cost_margin" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>Cost</th>
+                                        <th>Margin %</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <input id="costs" class="form-control mb-3">
+                                            <input id="avgCost" type="text" class="form-control" readonly>
+                                        </td>
+                                        <td>
+                                            <input id="margin" class="form-control">
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="col-md-6" style="height:400px;background:white">
-                <table class="table2 table-bordered " id="priceCheckingOnCall"
-                    style="width:100%;overflow-y: scroll;font-weight: 900;">
-                    <thead>
-                        <tr>
-                            <th>Price List</th>
-                            <th>Price</th>
-                            <th>Price Inc</th>
-                        </tr>
-                    </thead>
-
-                </table>
-
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table2 table table-bordered table-hover" id="priceCheckingOnCall" style="width:100%;overflow-y: scroll;">
+                            <thead>
+                                <tr>
+                                    <th>Price List</th>
+                                    <th>Price</th>
+                                    <th>Price Inc</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
             </div>
-            <hr>
+        </div>
 
-            <div style="width: 50%;float: right;background: darkseagreen; height: 174px;">
-                <table class="table" id="appendQtyOnHand" style="display: none">
+        <hr>
 
-                </table>
+        <div class="row">
+            <div class="col-md-6">
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table table-bordered table-hover" id="appendQtyOnHand" style="display: none">
+                        </table>
+                    </div>
+                </div>
 
-                <table class="table" id="appendOnPurchasesAnsSalesOrders">
-
-                </table>
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table table-bordered table-hover" id="appendOnPurchasesAnsSalesOrders">
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -188,7 +231,7 @@
 
                         $.each(data, function(key, value) {
                             trHTML +=
-                                '<tr  class="rebuild_price_check_list" style="font-size: 10px;color:black"><td>' +
+                                '<tr  class="rebuild_price_check_list"><td>' +
                                 value.PriceList + '</td><td><strong>' +
                                 value.Price + '</strong></td><td>' +
                                 value.PriceInc + '</td><td>' +
@@ -218,13 +261,13 @@
                                     success: function(data3) {
 
                                         trHTML +=
-                                            '<tr  class="rebuild_price_check" style="font-size: 13px;color:black"><td>' +
+                                            '<tr  class="rebuild_price_check"><td>' +
                                             'Sales Orders</td><td><strong>' +
                                             data3 +
                                             '</strong>' +
                                             '</td></tr>';
                                         trHTML +=
-                                            '<tr  class="rebuild_price_check" style="font-size: 13px;color:black"><td>' +
+                                            '<tr  class="rebuild_price_check"><td>' +
                                             'Purchase</td><td><strong>' +
                                             ui.item.PurchOrder +
                                             '</strong>' +
@@ -247,13 +290,13 @@
                                                 data3) {
 
                                                 trHTML +=
-                                                    '<tr  class="rebuild_price_check" style="font-size: 13px;color:black"><td>' +
+                                                    '<tr  class="rebuild_price_check"><td>' +
                                                     'Available</td><td><strong>' +
                                                     data3 +
                                                     '</strong>' +
                                                     '</td></tr>';
                                                 trHTML +=
-                                                    '<tr  class="rebuild_price_check" style="font-size: 13px;color:black"><td>' +
+                                                    '<tr  class="rebuild_price_check"><td>' +
                                                     'Cost Price</td><td><strong>' +
                                                     (parseFloat(
                                                         data2[
@@ -273,13 +316,13 @@
                                         break;
                                     case 'Other':
                                         trHTML +=
-                                            '<tr  class="rebuild_price_check" style="font-size: 13px;color:black"><td>' +
+                                            '<tr  class="rebuild_price_check"><td>' +
                                             'Available</td><td><strong>' +
                                             data2[0].Remaining +
                                             '</strong>' +
                                             '</td></tr>';
                                         trHTML +=
-                                            '<tr  class="rebuild_price_check" style="font-size: 13px;color:black"><td>' +
+                                            '<tr  class="rebuild_price_check"><td>' +
                                             'Cost Price</td><td><strong>' +
                                             (parseFloat(data2[0].Cost))
                                             .toFixed(2) + '</strong>' +
@@ -345,7 +388,7 @@
 
                         $.each(data, function(key, value) {
                             trHTML +=
-                                '<tr  class="rebuild_price_list" style="font-size: 10px;color:black"><td>' +
+                                '<tr  class="rebuild_price_list"><td>' +
                                 value.PriceList + '</td><td><strong>' +
                                 value.Price + '</strong></td><td>' +
                                 value.PriceInc + '</td><td>' +
@@ -380,13 +423,13 @@
                                                 data3) {
 
                                                 trHTML +=
-                                                    '<tr  class="rebuild_price_check" style="font-size: 10px;color:black"><td>' +
+                                                    '<tr  class="rebuild_price_check"><td>' +
                                                     'Available</td><td><strong>' +
                                                     data3 +
                                                     '</strong>' +
                                                     '</td></tr>';
                                                 trHTML +=
-                                                    '<tr  class="rebuild_price_check" style="font-size: 10px;color:black"><td>' +
+                                                    '<tr  class="rebuild_price_check"><td>' +
                                                     'Cost Price</td><td><strong>' +
                                                     (parseFloat(
                                                         data2[
@@ -416,14 +459,14 @@
 
                                                         trHTML
                                                             +=
-                                                            '<tr  class="rebuild_price_check" style="font-size: 13px;color:black"><td>' +
+                                                            '<tr  class="rebuild_price_check"><td>' +
                                                             'Sales Orders</td><td><strong>' +
                                                             data3 +
                                                             '</strong>' +
                                                             '</td></tr>';
                                                         trHTML
                                                             +=
-                                                            '<tr  class="rebuild_price_check" style="font-size: 13px;color:black"><td>' +
+                                                            '<tr  class="rebuild_price_check"><td>' +
                                                             'Purchase</td><td><strong>' +
                                                             ui
                                                             .item
@@ -442,13 +485,13 @@
                                         break;
                                     case 'Other':
                                         trHTML +=
-                                            '<tr  class="rebuild_price_check" style="font-size: 10px;color:black"><td>' +
+                                            '<tr  class="rebuild_price_check"><td>' +
                                             'Available</td><td><strong>' +
                                             data2[0].Remaining +
                                             '</strong>' +
                                             '</td></tr>';
                                         trHTML +=
-                                            '<tr  class="rebuild_price_check" style="font-size: 10px;color:black"><td>' +
+                                            '<tr  class="rebuild_price_check"><td>' +
                                             'Cost Price</td><td><strong>' +
                                             (parseFloat(data2[0].Cost))
                                             .toFixed(2) + '</strong>' +
@@ -467,13 +510,13 @@
                                                 data3) {
 
                                                 trHTML +=
-                                                    '<tr  class="rebuild_price_check" style="font-size: 13px;color:black"><td>' +
+                                                    '<tr  class="rebuild_price_check"><td>' +
                                                     'Sales Orders</td><td><strong>' +
                                                     data3 +
                                                     '</strong>' +
                                                     '</td></tr>';
                                                 trHTML +=
-                                                    '<tr  class="rebuild_price_check" style="font-size: 13px;color:black"><td>' +
+                                                    '<tr  class="rebuild_price_check"><td>' +
                                                     'Purchase</td><td><strong>' +
                                                     ui.item
                                                     .PurchOrder +

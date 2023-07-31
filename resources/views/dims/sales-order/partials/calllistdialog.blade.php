@@ -80,7 +80,7 @@
             getDimsUsers('#callListUser', '{!! url('/getDimsUsers') !!}');
             $('#callListDialog').show();
             $("#callListDialog").dialog({
-                height: 650,
+                height: 660,
                 width: '80%',
                 containment: false
             }).dialogExtend({

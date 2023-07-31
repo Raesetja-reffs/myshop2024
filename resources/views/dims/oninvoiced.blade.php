@@ -158,7 +158,7 @@
 
             ],
             "deferRender": true,
-            "scrollY": "300px",
+            "scrollY": "330px",
             "scrollCollapse": true,
             searching: true,
             bPaginate: false,

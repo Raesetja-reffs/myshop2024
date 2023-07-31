@@ -38,11 +38,11 @@
         </div>
     </div>
 
-    <div class="card mb-3">
-        <div class="card-body pt-0">
+    <div class="card">
+        <div class="card-body pt-0 pb-0">
             <div class="row">
                 <div class="col-md-12">
-                    <div id="gridContainer" style="height: 590px;"></div>
+                    <div id="gridContainer" style="height: 476px;"></div>
                 </div>
             </div>
         </div>

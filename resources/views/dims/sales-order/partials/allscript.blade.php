@@ -3671,7 +3671,7 @@
          * */
         $('#salesOnOrder').click(function() {
             $('#prodOnOrder').show();
-            showDialog('#prodOnOrder', '80%', 750);
+            showDialog('#prodOnOrder', '80%', 680);
             productsOnOrder();
             $('#tblOnsalesOrder tbody').on('click', 'tr', function(e) {
                 $("#tblOnsalesOrder tbody tr").removeClass('row_selected');
@@ -4423,7 +4423,7 @@
                 }
             },
             paging: {
-                pageSize: 50,
+                pageSize: 7,
             },
         });
     }

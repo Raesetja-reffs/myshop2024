@@ -188,7 +188,7 @@ class SalesForm extends Controller
                 break;
 
         }
-        return view('dims/pricelookup')->with('products',$queryProducts);
+        return view('dims/sales-order/pricelookup')->with('products',$queryProducts);
     }
 
     public function getProducts()
