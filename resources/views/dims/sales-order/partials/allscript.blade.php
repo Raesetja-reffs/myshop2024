@@ -1689,15 +1689,6 @@
         $('#totaddidtionalcst').click(function() {
             calcAdditionalCost();
         });
-
-        $('#pricingOnCustomer').click(function() {
-            $('#priceLookPriceWithCustomer').show();
-            showDialog('#priceLookPriceWithCustomer', '65%', 620);
-            $('#goOnPL').click(function() {
-                PL();
-            });
-
-        });
         /**
          * Main form filters to generate the order
          * */
@@ -4085,71 +4076,6 @@
                 //( waitingInvoice , 8000 );
             }
 
-        });
-    }
-
-    function PL() {
-        $.ajax({
-            url: '{!! url('/productPriceLookUp') !!}',
-            type: "POST",
-            data: {
-                productCode: $('#productCodePl').val(),
-                customerCode: $('#custCodePl').val(),
-                prodId: $('#prodId').val(),
-                custId: $('#custId').val(),
-            },
-            success: function(data) {
-
-                var trHTML = '';
-                $('#priceCheckByCustomer tbody').empty();
-                $.each(data.priceList, function(key, value) {
-                    trHTML +=
-                        '<tr  class="rebuild_price_check_list" style="font-size: 10px;color:black"><td>' +
-                        value.PriceList + '</td><td><strong>' +
-                        (parseFloat(value.Price)).toFixed(2) + '</strong></td><td>' +
-                        (parseFloat(value.PriceInc)).toFixed(2) + '</td><td>' +
-                        '</td></tr>';
-                });
-                $('#priceCheckByCustomer').append(trHTML);
-
-                var trHTML = '';
-                $('#currentCustomerPrices tbody').empty();
-                $.each(data.currentPrices, function(key, value) {
-                    trHTML +=
-                        '<tr  class="rebuild_price_check_list" style="font-size: 10px;color:black"><td>' +
-                        value.ProductId + '</td><td><strong>' +
-                        value.info + '</strong></td><td>' +
-                        (parseFloat(value.Price)).toFixed(2) + '</td><td>' +
-                        '</td></tr>';
-                });
-                $('#currentCustomerPrices').append(trHTML);
-
-                var trHTML = '';
-                $('#individualCost tbody').empty();
-
-                $.each(data.stock, function(key, value) {
-                    trHTML +=
-                        '<tr  class="rebuild_price_check_list" style="font-size: 10px;color:black"><td>' +
-                        (parseFloat(value.Cost)).toFixed(2) + '</td><td><strong>' +
-                        value.Remaining + '</strong></td>' +
-
-                        '</td></tr>';
-                });
-                $('#individualCost').append(trHTML);
-                var trHTML = '';
-                $('#individualPriceCheckByCustomer tbody').empty(); //+ value.Price
-                $.each(data.productPriceForCust, function(key, value) {
-                    var pricesInc = (parseFloat(value.Price * value.Tax) + parseFloat(value.Price))
-                        .toFixed(2);
-                    trHTML +=
-                        '<tr  class="rebuild_price_check_list" style="font-size: 18px;color:black"><td>' +
-                        pricesInc + '</td><td><strong>' +
-                        (parseFloat(value.Price)).toFixed(2) + '</strong></td>' +
-                        '</tr>';
-                });
-                $('#individualPriceCheckByCustomer').append(trHTML);
-
-            }
         });
     }
 
