@@ -44,83 +44,104 @@
         </div>
     </div>
 
-    <div class="col-lg-12" id="afterFilter">
+    <div class="row" id="afterFilter">
         <h5 id="specialslink"></h5>
-        <div class="col-lg-6">
-            <h4>Current Contacts</h4>
-            <table id ="tblCustomerPhoneBook" class="table table-bordered table-condensed" style="font-family: sans-serif;" tabindex=0>
-                <thead>
-                <tr style="font-size: 12px;">
-                    <td>System ID</td>
-                    <td>Company</td>
-                    <td>Contact Person</td>
-                    <td>Contact Numbers</td>
-                    <td>Reference</td>
-                    <td></td>
-
-                </tr>
-                </thead>
-                <tbody></tbody>
-
-            </table>
-
-        </div>
-        <div class="col-lg-6" style="background: green;height: 80%;">
-
-            <button class="btn-success btn-xs" id="addLine">Add Line</button>
-            <div class="col-lg-12" style="background: white;height: 60%;overflow-y: scroll">
-
-
-                <table id ="tblCreateNewContanct" class="table table-bordered table-condensed">
-                    <thead>
-                    <tr style="font-size: 12px;">
-
-                        <td>Contact Person</td>
-                        <td>Contact Numbers</td>
-                        <td>Reference</td>
-                        <td></td>
-
-                    </tr>
-                    </thead>
-                    <tbody></tbody>
-
-                </table>
-
-            </div>
-            <div class="col-lg-12" style="background: white;">
-                <button id="doneCreating" class="btn-xs btn-success">Done</button>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5>Current Contacts</h5>
+                        <table id ="tblCustomerPhoneBook" class="table table-bordered table-condensed" tabindex=0>
+                            <thead>
+                                <tr>
+                                    <td>System ID</td>
+                                    <td>Company</td>
+                                    <td>Contact Person</td>
+                                    <td>Contact Numbers</td>
+                                    <td>Reference</td>
+                                    <td></td>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                </div>
             </div>
         </div>
-
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="col-md-12 mb-3">
+                        <button class="btn btn-success btn-sm" id="addLine">Add Line</button>
+                    </div>
+                    <div class="col-md-12" style="background: white;height: 60%;overflow-y: scroll">
+                        <table id ="tblCreateNewContanct" class="table table-bordered table-condensed">
+                            <thead>
+                                <tr>
+                                    <td>Contact Person</td>
+                                    <td>Contact Numbers</td>
+                                    <td>Reference</td>
+                                    <td></td>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-12">
+                        <button id="doneCreating" class="btn btn-success btn-sm">Done</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div id="popUpdateLine" title="Please Update">
-        <div class="col-lg-12" >
-            <label class="control-label" for="specialIdUpdate"  style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Contact Person</label><br>
-            <input type="text"  class="form-control input-sm col-xs-1" id="" style="font-weight: 900;    color: black;font-size: 13px;" readonly><br>
-            <input type="hidden"  class="form-control input-sm col-xs-1" id="hiddenSpecaialFrom" >
-            <input type="hidden"  class="form-control input-sm col-xs-1" id="hiddenSpecaialTo" >
-            <label class="control-label" for="itemCode"  style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Code</label><br>
-            <input type="text"  class="form-control input-sm col-xs-1" id="itemCode" style="font-weight: 900;    color: black;font-size: 13px;" readonly><br>
-            <label class="control-label" for="itemDescription"  style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Description</label><br>
-            <input type="text"  class="form-control input-sm col-xs-1" id="itemDescription" style="font-weight: 900;    color: black;font-size: 13px;" readonly><br>
-            <label class="control-label" for="specialFrom"  style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Date From</label><br>
-            <input type="text"  class="form-control input-sm col-xs-1" id="specialFrom" style="font-weight: 900;    color: black;font-size: 13px;" ><br>
-            <label class="control-label" for="specialTo"  style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Date To</label><br>
-            <input type="text"  class="form-control input-sm col-xs-1" id="specialTo" style="font-weight: 900;    color: black;font-size: 13px;"><br>
-            <label class="control-label" for="specialPrice"  style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Special Price</label><br>
-            <input type="text"  class="form-control input-sm col-xs-1" id="specialPrice" style="font-weight: 900;    color: black;font-size: 13px;" ><br>
-            <label class="control-label" for="specialCost"  style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Special Cost</label><br>
-            <input type="text"  class="form-control input-sm col-xs-1" id="specialCost" style="font-weight: 900;    color: black;font-size: 13px;" readonly><br>
-            <label class="control-label" for="specialGp"  style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">GP</label><br>
-            <input type="text"  class="form-control input-sm col-xs-1" id="specialGp" style="font-weight: 900;    color: black;font-size: 13px;" readonly><br>
-        </div>
-        <div class="col-lg-12" >
-            <button id="updateTheSpecuial" class="btn-md btn-success">Update the Specials</button>
-        </div>
 
+    <div id="popUpdateLine" title="Please Update">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12 mb-3" >
+                        <label for="specialIdUpdate">Contact Person</label>
+                        <input type="text"  class="form-control" id="" readonly>
+                        <input type="hidden"  class="form-control input-sm col-xs-1" id="hiddenSpecaialFrom" >
+                        <input type="hidden"  class="form-control input-sm col-xs-1" id="hiddenSpecaialTo" >
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label for="itemCode">Code</label>
+                        <input type="text" class="form-control" id="itemCode" readonly>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label for="itemDescription">Description</label>
+                        <input type="text" class="form-control" id="itemDescription" readonly>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label for="specialFrom">Date From</label>
+                        <input type="text" class="form-control" id="specialFrom">
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label for="specialTo">Date To</label>
+                        <input type="text" class="form-control" id="specialTo">
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label for="specialPrice">Special Price</label>
+                        <input type="text" class="form-control" id="specialPrice">
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label for="specialCost">Special Cost</label>
+                        <input type="text" class="form-control" id="specialCost" readonly>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label for="specialGp">GP</label>
+                        <input type="text" class="form-control" id="specialGp" readonly>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <button id="updateTheSpecuial" class="btn btn-success btn-sm">
+                            Update the Specials
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <div id="updatedspecials" title="Specials Updated" >
-        <button id="btnspecialUpdated" class="btn-md btn-success">OKAY</button>
+        <button id="btnspecialUpdated" class="btn btn-success btn-sm">OKAY</button>
     </div>
 </x-app-layout>
 
@@ -282,17 +303,19 @@
                     $('.remthisLine').remove();
 
                     $.each(data, function (key,value) {
-                        trHTML += '<tr  class="remthisLine" style="font-size: 11px;color:black;"><td>' +
-                            value.intCustomerContactID + '</td><td>' +
-                            value.StoreName + '</td><td>' +
-                            value.ContactPerson + '</td><td>' +
-                            value.ContactNumbers + '</td><td>' +
-                            value.ReferenceNo +
-                            '</td>'+
-                            '<td><button class="btn-sx" value="' +value.intCustomerContactID +'">Delete</button></td></tr>';
+                        trHTML += `
+                            <tr class="remthisLine">
+                                <td>${value.intCustomerContactID}</td>
+                                <td>${value.StoreName}</td>
+                                <td>${value.ContactPerson}</td>
+                                <td>${value.ContactNumbers}</td>
+                                <td>${value.ReferenceNo}</td>
+                                <td><button class="btn btn-danger btn-sm" value="${value.intCustomerContactID}">Delete</button></td>
+                            </tr>
+                        `;
 
                     });
-                    $('#tblCustomerPhoneBook').append(trHTML);
+                    $('#tblCustomerPhoneBook tbody').append(trHTML);
                 }
             });
         });
@@ -331,7 +354,7 @@
             $("#tblCustomerPhoneBook tbody tr").removeClass('row_selected');
             $(this).addClass('row_selected');
             $('#popUpdateLine').show();
-            showDialog('#popUpdateLine','60%',450);
+            showDialog('#popUpdateLine', '60%', 630);
             var rowOnOrder =  $(this).closest("tr");
 
             $('#specialIdUpdate').val(rowOnOrder.find('td:eq(0)').text());
@@ -376,11 +399,24 @@
         var contractFrom = $('#dateFrom').val();
         var contractTo = $('#dateTo').val();
         var tokenId=Math.floor(Math.pow(10, 9-1) + Math.random() * 9 * Math.pow(10, 9-1));
-        var $row = $('<tr id="new_row_ajax'+tokenId+'" class="fast_remove" style="font-weight: 600;font-size: 11px;">' +
-            '<td contenteditable="false" class="col-sm-4"><input name="ContactPerson" id ="ContactPerson_'+tokenId+'" class="ContactPerson_ set_autocomplete inputs"></td>' +
-            '<td contenteditable="false" class="col-md-2"><input name="ContactNumbers_" id ="ContactNumbers_'+tokenId+'" maxlength="10"  onkeypress="return isNumber(event)" class="ContactNumbers_ set_autocomplete inputs" tabindex="-1"></td>' +
-            '<td  contenteditable="false" class="col-md-6"><input type="text" name="ReferenceNo" id ="ReferenceNo'+tokenId+'" title="in stock" class="ReferenceNo resize-input-inside inputs"></td>' +
-            '<td><button type="button" id="cancelThis" class="btn-danger btn-xs cancel" style="height: 16px;padding: 0px 5px;font-size: 9px;">Cancel</button></td></tr>');
+        var $row = $(`
+            <tr id="new_row_ajax'+tokenId+'" class="fast_remove" style="font-weight: 600;font-size: 11px;">
+                <td contenteditable="false">
+                    <input name="ContactPerson" id ="ContactPerson_${tokenId}" class="ContactPerson_ set_autocomplete inputs form-control">
+                </td>
+                <td contenteditable="false">
+                    <input name="ContactNumbers_" id ="ContactNumbers_${tokenId}" maxlength="10" onkeypress="return isNumber(event)" class="ContactNumbers_ set_autocomplete inputs form-control" tabindex="-1">
+                </td>
+                <td  contenteditable="false">
+                    <input type="text" name="ReferenceNo" id ="ReferenceNo${tokenId}" title="in stock" class="ReferenceNo resize-input-inside inputs form-control">
+                </td>
+                <td>
+                    <button type="button" id="cancelThis" class="btn btn-danger btn-sm cancel">
+                        Cancel
+                    </button>
+                </td>
+            </tr>
+        `);
         $('#tblCreateNewContanct tbody')
             .append( $row )
             .trigger('addRows', [ $row, false ]);

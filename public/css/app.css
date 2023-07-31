@@ -132,3 +132,6 @@ input.row_selectedYellowish {background-color:#91ff00 !important;}
 .dx-editor-cell .dx-texteditor .dx-texteditor-input {
     height: 22px;
 }
+tr.row_selected td{
+    background-color:red !important;
+}
