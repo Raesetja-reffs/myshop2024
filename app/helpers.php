@@ -449,6 +449,12 @@ if (!function_exists('getNavBarItems')) {
                 'id' => 'orderListing',
             ],
             [
+                'name' => 'REPORTS',
+                'route' => '',
+                'id' => 'reports',
+                'menu_item_style' => 'display: none;'
+            ],
+            [
                 'name' => 'Price Check',
                 'route' => '',
                 'id' => 'pricing'
@@ -464,6 +470,30 @@ if (!function_exists('getNavBarItems')) {
                 'id' => 'callList'
             ],
             [
+                'name' => 'Reprint',
+                'route' => '',
+                'id' => 'tabletLoadingApp',
+                'menu_item_style' => 'display: none;'
+            ],
+            [
+                'name' => 'Sales Quotes',
+                'route' => '',
+                'id' => 'salesQuotebtn',
+                'menu_item_style' => 'display: none;'
+            ],
+            [
+                'name' => 'Copy Orders',
+                'route' => '',
+                'id' => 'copyOrdersBtn',
+                'menu_item_style' => 'display: none;'
+            ],
+            [
+                'name' => 'Route Plan',
+                'route' => '',
+                'id' => 'routePlanning',
+                'menu_item_style' => 'display: none;'
+            ],
+            [
                 'name' => 'On Order',
                 'route' => '',
                 'id' => 'salesOnOrder'
@@ -477,6 +507,18 @@ if (!function_exists('getNavBarItems')) {
                 'name' => 'Cash Up',
                 'route' => '',
                 'id' => 'posCashUp'
+            ],
+            [
+                'name' => 'Price List',
+                'route' => '',
+                'id' => 'pricelist',
+                'menu_item_style' => 'display: none;'
+            ],
+            [
+                'name' => 'Returns',
+                'route' => '',
+                'id' => 'returns',
+                'menu_item_style' => 'display: none;'
             ],
         ];
     }
