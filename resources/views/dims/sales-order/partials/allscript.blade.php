@@ -377,7 +377,6 @@
         $('#copyOrderDialogComfirmation').hide();
         $('#custLookUp').hide();
         $('#extrasononrder').hide();
-        $('#creditLimitAuth').hide();
         $('#reprintAuth').hide();
         $('#copyOrdersMenu').hide();
         $('#multipleDeliveriesOnTheSameDate').hide();
@@ -7188,50 +7187,6 @@
                 // dd(data);
                 //Try to use web sql
             }
-        });
-
-    }
-
-    function creditLimitAuth(mess) {
-        $('#appendErrormsgCreditLimit').empty();
-        $('#appendErrormsgCreditLimit').append(mess);
-
-        $('#creditLimitAuth').show();
-        $("#creditLimitAuth").dialog({
-            height: 250,
-            modal: true,
-            width: 500,
-            containment: false
-        }).dialogExtend({
-            "closable": true, // enable/disable close button
-            "maximizable": false, // enable/disable maximize button
-            "minimizable": true, // enable/disable minimize button
-            "collapsable": true, // enable/disable collapse button
-            "dblclick": "collapse", // set action on double click. false, 'maximize', 'minimize', 'collapse'
-            "titlebar": false, // false, 'none', 'transparent'
-            "minimizeLocation": "right", // sets alignment of minimized dialogues
-            "icons": { // jQuery UI icon class
-                "close": "ui-icon-circle-close",
-                "maximize": "ui-icon-circle-plus",
-                "minimize": "ui-icon-circle-minus",
-                "collapse": "ui-icon-triangle-1-s",
-                "restore": "ui-icon-bullet"
-            },
-            "load": function(evt, dlg) {}, // event
-            "beforeCollapse": function(evt, dlg) {}, // event
-            "beforeMaximize": function(evt, dlg) {}, // event
-            "beforeMinimize": function(evt, dlg) {}, // event
-            "beforeRestore": function(evt, dlg) {}, // event
-            "collapse": function(evt, dlg) {}, // event
-            "maximize": function(evt, dlg) {}, // event
-            "minimize": function(evt, dlg) {}, // event
-            "restore": function(evt, dlg) {} // event
-        });
-        $('#doAuthcrLimit').off().click(function() {
-
-        });
-        $('#cancelWithoutSaving').off().click(function() {
-            location.reload(true);
         });
 
     }

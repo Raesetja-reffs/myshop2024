@@ -72,107 +72,7 @@
     </div>
 </div>
 
-<div id="listOfDelivAdress" title="Delivery Address" style="display: flex;">
-    <div class="col-lg-12">
-        <div class="col-lg-4">
-            <div class="form-group">
-                <label class="control-label" for="generalRouteForNewDeliveryAddress"
-                    style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Route</label>
-                <select id="generalRouteForNewDeliveryAddress"
-                    class="form-control input-sm col-xs-1 generalRouteForNewDeliveryAddress">
-                </select>
-            </div>
-            <div class="form-group">
-                <label class="control-label" for="address1"
-                    style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Address 1</label>
-                <input class="form-control input-sm col-xs-1" id="address1" name="address1">
-            </div>
-            <div class="form-group">
-                <label class="control-label" for="address2"
-                    style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Address 2</label>
-                <input class="form-control input-sm col-xs-1" id="address2" name="address2">
-            </div>
-            <div class="form-group">
-                <label class="control-label" for="address3"
-                    style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Address 3</label>
-                <input class="form-control input-sm col-xs-1" id="address3" name="address3">
-            </div>
-            <div class="form-group">
-                <label class="control-label" for="address4"
-                    style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Address 4</label>
-                <input class="form-control input-sm col-xs-1" id="address4" name="address4">
-            </div>
-            <div class="form-group">
-                <label class="control-label" for="address5"
-                    style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Address 5</label>
-                <input class="form-control input-sm col-xs-1" id="address5" name="address5">
-                <input type="hidden" id="deliveryAddressIdOnPopUp" name="deliveryAddressIdOnPopUp" value="">
-            </div>
-            <div class="form-group">
-                <label class="control-label" for="salesPerson"
-                    style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">SalesPerson</label>
-                <select class="form-control input-sm col-xs-1" id="salesPerson">
-                </select>
-            </div>
-            <button type="button" id="doneCustomAddress" class="btn-success doneCustomAddress">Done</button>
-
-        </div>
-        <div class="col-lg-8">
-            <input type='text' id='txtList' onkeyup="filter(this)" class="form-control"
-                placeholder="Please search address here..." />
-            <hr style="margin-top: 15px;margin-bottom: 15px;border: 0;border-top: 5px solid #00ff00;" />
-            <div>
-                <ul id="listaddresses" style="font-size: 9px;list-style-type: none;overflow-y: auto;height:300px">
-                </ul>
-            </div>
-
-        </div>
-        <div class="col-lg-12" id="dynamicaddress" style="background: #f8f8f8;">
-            <form>
-                <table class="table table-bordered table-condensed">
-                    <tr>
-                        <td>
-                            <label class="control-label">Route</label>
-                            <select name="AddressAddSelect" id="AddressAddSelect" style="font-size: 9px;">
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><input style="height: 20px;" name="Address1Add" id="Address1Add"
-                                placeholder="Please type address1 "></td>
-                        <td><input style="height: 20px;" name="Address2Add" id="Address2Add"
-                                placeholder="Please type address2 "></td>
-                        <td><input style="height: 20px;" name="Address3Add" id="Address3Add"
-                                placeholder="Please type address3 "></td>
-                        <td><input style="height: 20px;" name="Address4Add" id="Address4Add"
-                                placeholder="Please type address4 "></td>
-                        <td><input style="height: 20px;" name="Address5Add" id="Address5Add"
-                                placeholder="Please type address5 "></td>
-                        <td>
-                            <select name="salesPersonOnDynamic" id="salesPersonOnDynamic"
-                                style="font-size: 9px;height: 20px;" placeholder="Sales Person"></select>
-                        </td>
-                        <td><button type="button" id="AddressAddMakeNew" class="btn-xs btn-warning ">Add</button>
-                        </td>
-                    </tr>
-                </table>
-            </form>
-            <table class="table" id="generateDynamicAddress" style="background: #f5e5e5;font-size: 9px;">
-                <tr>
-                    <th></th>
-                    <th>Route</th>
-                    <th>Address1</th>
-                    <th>Address2</th>
-                    <th>Address3</th>
-                    <th>Address4</th>
-                    <th>Address5</th>
-                    <th>Sales Person</th>
-                    <th></th>
-                </tr>
-            </table>
-        </div>
-    </div>
-</div>
+@include('dims.sales-order.partials.listofdelivadress')
 
 <div id='loadingmessage' style='display:none'>
     <img src="{{ asset('images/Rolling.gif') }}" />
@@ -200,39 +100,7 @@
     <button class="btn-success btn-">Done</button>
 </div>
 
-<div id="creditLimitAuth" title="Credit Limit Authorisation" style="background:rgba(0,0,255,0.31)">
-    <div id="appendErrormsgCreditLimit" style="background: white;font-size:10px">
-    </div>
-    <form>
-        <div class="form-group  col-md-4" style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">
-            <label class="control-label" for="userAuthNamecrLimit"
-                style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Name</label>
-            <input class="form-control input-sm col-md-4 auto-complete-off" name="userAuthNamecrLimit"
-                id="userAuthNamecrLimit" style="height:30px;font-size: 10px;">
-        </div>
-        <div class="form-group  col-md-4" style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">
-            <label class="control-label" for="userAuthPassWordcrLimit"
-                style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">PassWord</label>
-            <input type="password" name="userAuthPassWordcrLimit"
-                class="form-control input-sm col-md-4 auto-complete-off" id="userAuthPassWordcrLimit"
-                style="height:30px;font-size: 10px;" readonly onfocus="$(this).removeAttr('readonly');">
-        </div>
-        <div>
-            <div class="form-group  col-md-4"
-                style="margin-bottom: 0px;font-weight: 700;font-size: 11px;display:none;">
-                <label class="control-label" for="userNewVariable"
-                    style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Value</label>
-                <input type="text" name="userNewVariablecrLimit" class="form-control input-sm col-md-4"
-                    id="userNewVariablecrLimit" style="display:none;height:30px;font-size: 10px;" value="0"
-                    readonly>
-            </div>
-        </div>
-        <button type="button" id="doAuthcrLimit" class="btn-success btn-xs pull-right"
-            style="margin-top: 29px;margin-right: 15px;">Authorise</button>
-        <button type="button" id="cancelWithoutSaving" class="btn-warning btn-xs pull-right"
-            style="margin-top: 29px;margin-right: 15px;">Cancel Without Saving</button>
-    </form>
-</div>
+@include('dims.sales-order.partials.creditlimitauth')
 
 @include('dims.sales-order.partials.reprintauth')
 
