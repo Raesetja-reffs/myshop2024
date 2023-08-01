@@ -1,6 +1,27 @@
-@extends('layouts.app')
+<x-app-layout>
 
-@section('content')
+    <x-slot name="header">
+        {{ __('Web Store') }}
+    </x-slot>
+
+    <x-slot name="breadcrum">
+        <!--begin::Item-->
+        <li class="breadcrumb-item text-muted">
+            <a href="{{ route('home') }}" class="text-muted text-hover-primary">
+                Home </a>
+        </li>
+        <!--end::Item-->
+        <!--begin::Item-->
+        <li class="breadcrumb-item">
+            <span class="bullet bg-gray-300 w-5px h-2px"></span>
+        </li>
+        <!--end::Item-->
+
+        <!--begin::Item-->
+        <li class="breadcrumb-item text-dark">
+            Web Store </li>
+        <!--end::Item-->
+    </x-slot>
 
     <div class="col-lg-12" >
         <button id="products" class="btn-md btn-success" style="    padding: 11px;    width: 200px;">Sync Products</button>
@@ -26,138 +47,133 @@
     <div class="col-lg-12" >
         <button id="groupspecials" class="btn-md btn-success" style="    padding: 11px;    width: 200px;">Sync Group Specials</button>
     </div>
-<div class="col-lg-12" >
+    <div class="col-lg-12" >
         <button id="overall" class="btn-md btn-success" style="    padding: 11px;    width: 200px;">Sync Overall Specials</button>
     </div>
 
+    <script>
+        $(document).ready(function() {
 
+            $('#popUpIndividualBulk').hide();
+            $('#popUpBatchBulk').hide();
+            $('#orderListing').hide();
+            $('#pricing').hide();
+            $('#pricingOnCustomer').hide();
+            $('#callList').hide();
+            $('#tabletLoadingApp').hide();
+            $('#copyOrdersBtn').hide();
+            $('#salesOnOrder').hide();
+            $('#salesInvoiced').hide();
+            $('#posCashUp').hide();
 
-@endsection
-<script src="{{ asset('js/jquery-2.2.3.min.js') }}"></script>
-<script>
-    $(document).ready(function() {
-
-        $('#popUpIndividualBulk').hide();
-        $('#popUpBatchBulk').hide();
-        $('#orderListing').hide();
-        $('#pricing').hide();
-        $('#pricingOnCustomer').hide();
-        $('#callList').hide();
-        $('#tabletLoadingApp').hide();
-        $('#copyOrdersBtn').hide();
-        $('#salesOnOrder').hide();
-        $('#salesInvoiced').hide();
-        $('#posCashUp').hide();
-
-        $('#outstandingcust').DataTable( {
-            dom: 'Bfrtip',
-            "pageLength": 150,
-            scrollY:        650,
-            scrollCollapse: true,
-            scroller:       true,
-            buttons: [
-                'copyHtml5',
-                'excelHtml5',
-                'csvHtml5',
-                'pdfHtml5'
-            ]
-        } );
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-
-        $('#products').click(function(){
-            $.ajax({
-                url: '{!!url("/syncproducts")!!}',
-                type: "POST",
-                success: function (data) {
-//results
-                    console.debug(data[0].results);
-                    alert('Returns ' + data[0].results+' Rows');
+            $('#outstandingcust').DataTable( {
+                dom: 'Bfrtip',
+                "pageLength": 150,
+                scrollY:        650,
+                scrollCollapse: true,
+                scroller:       true,
+                buttons: [
+                    'copyHtml5',
+                    'excelHtml5',
+                    'csvHtml5',
+                    'pdfHtml5'
+                ]
+            } );
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-        });
-        $('#stock').click(function(){
-            $.ajax({
-                url: '{!!url("/syncpricelistStock")!!}',
-                type: "POST",
-                success: function (data) {
 
-                    alert('Returns ' + data[0].results+' Rows');
-                }
+            $('#products').click(function(){
+                $.ajax({
+                    url: '{!!url("/syncproducts")!!}',
+                    type: "POST",
+                    success: function (data) {
+                        console.debug(data[0].results);
+                        alert('Returns ' + data[0].results+' Rows');
+                    }
+                });
             });
-        });
-        $('#customers').click(function(){
-            $.ajax({
-                url: '{!!url("/synccustomers")!!}',
-                type: "POST",
-                success: function (data) {
+            $('#stock').click(function(){
+                $.ajax({
+                    url: '{!!url("/syncpricelistStock")!!}',
+                    type: "POST",
+                    success: function (data) {
 
-                    alert('Returns ' + data[0].results+' Rows');
-                }
+                        alert('Returns ' + data[0].results+' Rows');
+                    }
+                });
             });
+            $('#customers').click(function(){
+                $.ajax({
+                    url: '{!!url("/synccustomers")!!}',
+                    type: "POST",
+                    success: function (data) {
+
+                        alert('Returns ' + data[0].results+' Rows');
+                    }
+                });
+            });
+
+            $('#orderpattern').click(function(){
+                $.ajax({
+                    url: '{!!url("/syncorderpattern")!!}',
+                    type: "POST",
+                    success: function (data) {
+
+                        alert('Returns ' + data[0].results+' Rows');
+                    }
+                });
+            });
+            $('#pricelists').click(function(){
+                $.ajax({
+                    url: '{!!url("/syncpricelist")!!}',
+                    type: "POST",
+                    success: function (data) {
+                        alert('Returns ' + data[0].results+' Rows');
+                    }
+                });
+            });
+            $('#pricelistsprices').click(function(){
+                $.ajax({
+                    url: '{!!url("/syncpricelistPrices")!!}',
+                    type: "POST",
+                    success: function (data) {
+                        alert('Returns ' + data[0].results+' Rows');
+                    }
+                });
+            });
+            $('#custspecials').click(function(){
+                $.ajax({
+                    url: '{!!url("/synccustomerspecials")!!}',
+                    type: "POST",
+                    success: function (data) {
+                        alert('Returns ' + data[0].results+' Rows');
+                    }
+                });
+            });
+
+            $('#groupspecials').click(function(){
+                $.ajax({
+                    url: '{!!url("/syncgroupspecials")!!}',
+                    type: "POST",
+                    success: function (data) {
+                        alert('Returns ' + data[0].results+' Rows');
+                    }
+                });
+            });
+            $('#overall').click(function(){
+                $.ajax({
+                    url: '{!!url("/syncoverallspecials")!!}',
+                    type: "POST",
+                    success: function (data) {
+                        alert('Returns ' + data[0].results+' Rows');
+                    }
+                });
+            });
+
         });
 
-        $('#orderpattern').click(function(){
-            $.ajax({
-                url: '{!!url("/syncorderpattern")!!}',
-                type: "POST",
-                success: function (data) {
-
-                    alert('Returns ' + data[0].results+' Rows');
-                }
-            });
-        });
-        $('#pricelists').click(function(){
-            $.ajax({
-                url: '{!!url("/syncpricelist")!!}',
-                type: "POST",
-                success: function (data) {
-                    alert('Returns ' + data[0].results+' Rows');
-                }
-            });
-        });
-        $('#pricelistsprices').click(function(){
-            $.ajax({
-                url: '{!!url("/syncpricelistPrices")!!}',
-                type: "POST",
-                success: function (data) {
-                    alert('Returns ' + data[0].results+' Rows');
-                }
-            });
-        });
-        $('#custspecials').click(function(){
-            $.ajax({
-                url: '{!!url("/synccustomerspecials")!!}',
-                type: "POST",
-                success: function (data) {
-                    alert('Returns ' + data[0].results+' Rows');
-                }
-            });
-        });
-
-        $('#groupspecials').click(function(){
-            $.ajax({
-                url: '{!!url("/syncgroupspecials")!!}',
-                type: "POST",
-                success: function (data) {
-                    alert('Returns ' + data[0].results+' Rows');
-                }
-            });
-        });
-        $('#overall').click(function(){
-            $.ajax({
-                url: '{!!url("/syncoverallspecials")!!}',
-                type: "POST",
-                success: function (data) {
-                    alert('Returns ' + data[0].results+' Rows');
-                }
-            });
-        });
-
-    });
-
-
-</script>
+    </script>
+</x-app-layout>

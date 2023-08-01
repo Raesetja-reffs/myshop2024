@@ -1,6 +1,28 @@
-@extends('layouts.app')
+<x-app-layout>
 
-@section('content')
+    <x-slot name="header">
+        {{ __('Route Planner') }}
+    </x-slot>
+
+    <x-slot name="breadcrum">
+        <!--begin::Item-->
+        <li class="breadcrumb-item text-muted">
+            <a href="{{ route('home') }}" class="text-muted text-hover-primary">
+                Home </a>
+        </li>
+        <!--end::Item-->
+        <!--begin::Item-->
+        <li class="breadcrumb-item">
+            <span class="bullet bg-gray-300 w-5px h-2px"></span>
+        </li>
+        <!--end::Item-->
+
+        <!--begin::Item-->
+        <li class="breadcrumb-item text-dark">
+            Route Planner </li>
+        <!--end::Item-->
+    </x-slot>
+
     <div class="container" style="width: 100%;">
 
         <div class="row">
@@ -165,7 +187,7 @@
         <button id="printTruckSheet" class="btn-sm btn-success">Print TruckSheet</button>
     </div>
 
-@endsection
+
 <style>
     .onDrag {
         height: 26px !important;
@@ -754,3 +776,5 @@
 
 
 </script>
+
+</x-app-layout>

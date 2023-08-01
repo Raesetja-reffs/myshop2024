@@ -1,12 +1,28 @@
-@extends('layouts.app')
+<x-app-layout>
 
-@section('content')
-    <html>
-    <head>
+    <x-slot name="header">
+        {{ __('Customer Specials') }}
+    </x-slot>
 
+    <x-slot name="breadcrum">
+        <!--begin::Item-->
+        <li class="breadcrumb-item text-muted">
+            <a href="{{ route('home') }}" class="text-muted text-hover-primary">
+                Home </a>
+        </li>
+        <!--end::Item-->
+        <!--begin::Item-->
+        <li class="breadcrumb-item">
+            <span class="bullet bg-gray-300 w-5px h-2px"></span>
+        </li>
+        <!--end::Item-->
 
+        <!--begin::Item-->
+        <li class="breadcrumb-item text-dark">
+            Customer Specials </li>
+        <!--end::Item-->
+    </x-slot>
 
-    </head>
     <div class="col-lg-12"  style="background: white;    font-family: 'Helvetica Neue', arial, sans-serif;">
 
         <fieldset class="well">
@@ -98,7 +114,6 @@
             <button id="savenewspecials" class="btn btn-success w-100 my-2">Save Data</button>
         </div>
     </div>
-
     <div class="col-lg-11" id="afterFilter">
 
         <div id="gridContainer" style="     width:100%;height:62%">
@@ -153,15 +168,13 @@
         </div>
     </div>
 
-
-    @endsection
     <style>
 
         .dx-datagrid-table{
             font-size:10px;
         }
     </style>
-    <script src="{{ asset('js/jquery-2.2.3.min.js') }}"></script>
+
     <script>
         var today = new Date();
         var dd = String(today.getDate()).padStart(2, '0');
@@ -260,8 +273,8 @@
                     // window.location = '{!!url("/export")!!}/'+$('#custheadid').val();
                     window.open('{!!url("/dialogtoimportspecials")!!}/' + $('#customerId').val()+"/"+ $('#custheadid').val() + "/" +$('#dateFrom').val()+ "/" + $('#dateFrom').val(), "Contract Id" + $('#custheadid').val(), "location=1,status=1,scrollbars=1, width=500,height=500");
                     $('#importexcel').css('background-color','green');}
-//
-//showDialogWithoutClose('#uploaddocument',400,400);
+                //
+                //showDialogWithoutClose('#uploaddocument',400,400);
             });
 
 
@@ -2000,3 +2013,5 @@
 
 
     </script>
+
+</x-app-layout>
