@@ -3,7 +3,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="{{ asset('css/jquery.flexdatalist.min.css') }}" rel="stylesheet"  type='text/css'>
-    <link rel="stylesheet" href="{{ asset('css/jquery-ui2.min.css') }}" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('css/jquery-ui.min.css') }}" type="text/css" />
     <script src="{{ asset('js/jquery-2.2.3.min.js') }}"></script>
     <script src="{{ asset('js/jquery-ui.js') }}"></script>
 

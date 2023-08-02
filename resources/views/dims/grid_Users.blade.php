@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="{{ asset('css/ag_css.css') }}">
     <link rel="stylesheet" href="{{ asset('css/ag_cc_theme.css') }}">
     <link href="{{ asset('css/jquery.dataTables.min.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('css/jquery-ui2.min.css') }}" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('css/jquery-ui.min.css') }}" type="text/css" />
     <script src="{{ asset('js/jquery.dialogextend.js') }}"></script>
     <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('js/dataTables.select.min.js') }}"></script>

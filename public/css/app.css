@@ -135,3 +135,17 @@ input.row_selectedYellowish {background-color:#91ff00 !important;}
 tr.row_selected td{
     background-color:red !important;
 }
+
+/* if you want change the side menu background color start
+#kt_aside {
+    background-color: #e6f7ff !important;
+    background-color: #228b22 !important;
+}
+.aside-menu .menu-item .menu-link:hover,
+.aside-dark .menu .menu-item.here>.menu-link,
+.aside-dark .menu .menu-item.show>.menu-link,
+.aside-dark .menu .menu-item.hover>.menu-link:not(.disabled):not(.active)
+{
+    background-color: grey !important;
+}
+if you want change the side menu background color end*/

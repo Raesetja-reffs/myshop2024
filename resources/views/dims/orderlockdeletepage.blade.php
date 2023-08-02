@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/20.1.7/css/dx.common.css">
     <link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/20.1.7/css/dx.light.css">
 
-    <link rel="stylesheet" href="{{ asset('css/jquery-ui2.min.css') }}" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('css/jquery-ui.min.css') }}" type="text/css" />
     <script src="{{ asset('js/jquery-ui.js') }}"></script>
     <!-- DevExtreme library -->
     <script type="text/javascript" src="https://cdn3.devexpress.com/jslib/20.1.7/js/dx.all.js"></script>
@@ -33,7 +33,7 @@
 
 </div>
 <script>
-    
+
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -46,10 +46,10 @@
         var clickTimer, lastRowClickedId;
         $(document).ready(function() {
 
-            
-        
-        
-                
+
+
+
+
                // console.log($('#RouteName').val());
             $.ajax({
                 url: '{!!url("/getOrderLocksForDeletePageData")!!}',
@@ -60,7 +60,7 @@
                     $(function(){
 
                             $("#gridContainer").dxDataGrid({
-                                
+
                                 dataSource:data,
 
                                 showBorders: true,
@@ -96,7 +96,7 @@
 
                                 ] ,
                                 onRowRemoved: function(e) {
-                                    console.log(e.key.OrderId); 
+                                    console.log(e.key.OrderId);
                                     $.ajax({
                                         url:'{!!url("/deleteDataForOrderLockPage")!!}',
                                         type: "POST",
@@ -107,8 +107,8 @@
                                             console.log(e.key.OrderId);
                                         }
                                     });
-                                    
-                                    
+
+
                                 }
                             });
                         });

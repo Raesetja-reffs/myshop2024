@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/20.1.7/css/dx.common.css">
     <link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/20.1.7/css/dx.light.css">
 
-    <link rel="stylesheet" href="{{ asset('css/jquery-ui2.min.css') }}" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('css/jquery-ui.min.css') }}" type="text/css" />
     <script src="{{ asset('js/jquery-ui.js') }}"></script>
     <!-- DevExtreme library -->
     <script type="text/javascript" src="https://cdn3.devexpress.com/jslib/20.1.7/js/dx.all.js"></script>
@@ -74,10 +74,10 @@ From<input type="date" id="date"> <button class="" id="getdata">Submit</button>
                             enabled: false
                         }
                         ,columnWidth:200,
-                        columnAutoWidth:true,  
+                        columnAutoWidth:true,
                         export: {
                         enabled: true
-                        },     
+                        },
                         onExporting(e) {
                             const workbook = new ExcelJS.Workbook();
                             const worksheet = workbook.addWorksheet('bireport');
@@ -93,7 +93,7 @@ From<input type="date" id="date"> <button class="" id="getdata">Submit</button>
                             });
                             e.cancel = true;
                         },
-                        allowColumnResizing: true, 
+                        allowColumnResizing: true,
                         columnResizingMode: "nextColumn",
                         columns: [
                             {
@@ -144,7 +144,7 @@ From<input type="date" id="date"> <button class="" id="getdata">Submit</button>
                                 dataField: "Phase",
                                 caption: "Phase"
 
-                            }, 
+                            },
                             {
                                 width: 100,
                                 dataField: "Number Of Stops",
@@ -256,7 +256,7 @@ From<input type="date" id="date"> <button class="" id="getdata">Submit</button>
 
                             }
 
-                        ] 
+                        ]
                     });
 
                 }

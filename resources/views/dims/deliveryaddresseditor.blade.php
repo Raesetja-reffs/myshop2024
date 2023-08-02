@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/20.1.7/css/dx.common.css">
     <link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/20.1.7/css/dx.light.css">
 
-    <link rel="stylesheet" href="{{ asset('css/jquery-ui2.min.css') }}" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('css/jquery-ui.min.css') }}" type="text/css" />
     <script src="{{ asset('js/jquery-ui.js') }}"></script>
     <!-- DevExtreme library -->
     <script type="text/javascript" src="https://cdn3.devexpress.com/jslib/20.1.7/js/dx.all.js"></script>
@@ -60,7 +60,7 @@
         }
 
     });
-    
+
     var jArrayRoute = JSON.stringify({!! json_encode($routes) !!});
     var routeinfo = $.map(JSON.parse(jArrayRoute), function (item) {
         return {
@@ -185,11 +185,11 @@
                                   if(e.parentType === "dataRow" && e.dataField === "RoutePost"){
                                    e.editorOptions.onValueChanged = function(ev){
                                     console.log(ev);
-                                  let selectedItem = ev.component.option('selectedItem'); 
-                                e.setValue(selectedItem);  
+                                  let selectedItem = ev.component.option('selectedItem');
+                                e.setValue(selectedItem);
                                 }
                                 }
-                            
+
                             },
 
                                 onInitNewRow: function(e) {

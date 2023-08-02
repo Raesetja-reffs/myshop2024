@@ -2,7 +2,7 @@
 <html>
 <head>
     <!-- ... -->
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>     <link rel="stylesheet" href="{{ asset('css/jquery-ui2.min.css') }}" type="text/css" />
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>     <link rel="stylesheet" href="{{ asset('css/jquery-ui.min.css') }}" type="text/css" />
     <script src="{{ asset('js/jquery-2.2.3.min.js') }}"></script>
     <script src="{{ asset('js/jquery-ui.js') }}"></script>
     <script src="{{ asset('js/jquery.flexdatalist.min.js') }}"></script>

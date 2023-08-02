@@ -2,7 +2,7 @@
 <html>
 <head>
     <!-- ... -->
-    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>     <link rel="stylesheet" href="{{ asset('css/jquery-ui2.min.css') }}" type="text/css" />
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>     <link rel="stylesheet" href="{{ asset('css/jquery-ui.min.css') }}" type="text/css" />
     <script src="{{ asset('js/jquery-2.2.3.min.js') }}"></script>
     <script src="{{ asset('js/jquery-ui.js') }}"></script>
     <script src="{{ asset('js/jquery.flexdatalist.min.js') }}"></script>
@@ -30,18 +30,18 @@
 
 </div>
     <div id="updateMessage" style="width: 30%">
-        
+
         <h2>Message Information</h2>
-        
+
         <label class="form-control">Message ID</label><br>
         <input id="MessageID" class="form-control" style="    width: 90%;"><br>
 
         <label class="form-control">Message Header</label><br>
         <input id="MessageHeader" class="form-control" style="    width: 90%;"><br>
-        
+
         <label class="form-control">Message</label><br>
         <input type="text" id="Message" class="form-control" style="    width: 90%;">
-        
+
         <button style="background: green;padding: 10px;float: right;color: white;font-weight: 900;margin-right: 10%;margin-top: 14px;" id="updateMessagebtn">Update</button>
 
     </div>
@@ -61,7 +61,7 @@
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-            
+
                 $('#updateMessagebtn').click(function () {
                     $.ajax({
                         url: '{!!url("/updateMessage")!!}',
@@ -79,7 +79,7 @@
                 });
 
 
-          
+
             $(function(){
                 $("#gridContainer").dxDataGrid({
                     dataSource:'{!!url("/getMessageGrid")!!}',

@@ -7,7 +7,7 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/ag_css.css') }}">
     <link rel="stylesheet" href="{{ asset('css/ag_cc_theme.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/jquery-ui2.min.css') }}" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('css/jquery-ui.min.css') }}" type="text/css" />
     <link href="{{ asset('css/excel-bootstrap-table-filter-style.css') }}" rel="stylesheet"  type='text/css'>
     <style>
         .rag-red {
@@ -59,8 +59,8 @@
         <th style="color:#61ff13;font-size: 25px;font-family: sans-serif;font-weight: 900;">Dispatch Area</th>
         <th style="color:#61ff13;font-size: 25px;font-family: sans-serif;font-weight: 900;">Time Spent</th>
         <th style="color:#61ff13;font-size: 25px;font-family: sans-serif;font-weight: 900;">Amount</th>
-       
-        
+
+
 
         </thead>
         <tbody style="font-size: 16px;font-family: sans-serif;font-weight: 900;">
@@ -101,7 +101,7 @@
                             <td>{{$val2->Travelling}}</td>
                             <td>{{$val2->routeAmaount}}</td>
 							<?php $amountTotal = $amountTotal + $val2->routeAmaount ; ?>
-                            
+
                         </tr>
 
                         @endforeach
@@ -117,8 +117,8 @@
                             <td></td>
                             <td></td>
                             <td style="color: green;">{{$amountTotal}}</td>
-							
-                            
+
+
                         </tr>
         </tbody>
     </table>

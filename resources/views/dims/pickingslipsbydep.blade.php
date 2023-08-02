@@ -6,11 +6,11 @@
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	
-    <!-- ... -->
-  
 
-    <link rel="stylesheet" href="{{ asset('css/jquery-ui2.min.css') }}" type="text/css" />
+    <!-- ... -->
+
+
+    <link rel="stylesheet" href="{{ asset('css/jquery-ui.min.css') }}" type="text/css" />
     <script src="{{ asset('js/jquery-ui.js') }}"></script>
     <!-- DevExtreme library -->
 
@@ -35,7 +35,7 @@ table, th, td {
                 <div id="callListDialog" title="Call List">
                     <div class="col-lg-12">
                         <form>
-                            
+
                             <div class="form-group col-md-3">
                                 <label class="control-label" for="deldate"  style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Delivery Date</label>
                                 <input type="text" class="form-control input-sm col-xs-1" id="deldate" style="font-size: 10px;color:black;font-weight:900">
@@ -56,7 +56,7 @@ table, th, td {
 									@endforeach
                                 </select>
                             </div>
-							
+
 							<div class="form-group col-md-3">
                                 <label class="control-label" for="dept"  style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Department</label>
                                 <select class="form-control input-sm col-xs-1"  style="color:black;font-weight:900" name="dept" id="dept">
@@ -99,9 +99,9 @@ table, th, td {
         </div>
     </div>
 
- 
+
 <script>
- 
+
 
 
     var callists = '';
@@ -124,7 +124,7 @@ table, th, td {
             changeYear: true,
             dateFormat: "dd-mm-yy" //this option for allowing user to select from year range
         });
-       
+
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -148,12 +148,12 @@ table, th, td {
 		});
 		$('#printselected').click(function(){
 			var valuesProd = new Array();
-            
+
             $.each($("input[name='caseProd[]']:checked"),
                 function () {
                     var data = $(this).parents('tr:eq(0)');
                     valuesProd.push({ 'orderId':$(data).find('td:eq(1)').text()});
-                    
+
                 });
 			$.ajax({
             url: '{!!url("/printselectedCustomers")!!}',
@@ -164,7 +164,7 @@ table, th, td {
 				routeid: $('#routeToFilterWith').val(),
                 ordertypeid: $('#ordertype').val(),
                 deliverydate: $('#deldate').val()
-                 
+
             },
             success: function (data) {
                 console.debug("data saved");
@@ -172,8 +172,8 @@ table, th, td {
             }
         });
 		});
-        
-        
+
+
     });
     function productsOnOrder()
     {
@@ -194,7 +194,7 @@ table, th, td {
                     trHTML += '<tr role="row" class="fast_removeCallList"  style="font-size: 13px;color:black"><td>' +
                         value.StoreName + '</td><td>' +
                         $.trim(value.OrderId) + '</td><td>' +
-                         
+
                         '<input type="checkbox"  name="caseProd[]" style="width:18px;height:15px !important" value="' + value.OrderId + '" ></td><td>' +
                         '</tr>';
 
@@ -203,7 +203,7 @@ table, th, td {
             }
         });
     }
-     
+
 
 </script>
 </body>

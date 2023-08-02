@@ -4,7 +4,7 @@
     <script src="{{ asset('js/ag_grid.js') }}"></script>
     <link rel="stylesheet" href="{{ asset('css/ag_css.css') }}">
     <link rel="stylesheet" href="{{ asset('css/ag_cc_theme.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/jquery-ui2.min.css') }}" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('css/jquery-ui.min.css') }}" type="text/css" />
     <style>
         .rag-red {
             background-color: #f00f0c;

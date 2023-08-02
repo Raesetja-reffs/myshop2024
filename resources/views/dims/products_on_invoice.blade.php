@@ -6,7 +6,7 @@
     <script src="{{ asset('js/jquery-ui.js') }}"></script>
     <link rel="stylesheet" href="{{ asset('css/ag_css.css') }}">
     <link rel="stylesheet" href="{{ asset('css/ag_cc_theme.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/jquery-ui2.min.css') }}" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('css/jquery-ui.min.css') }}" type="text/css" />
     <link href="{{ asset('css/jquery.flexdatalist.min.css') }}" rel="stylesheet"  type='text/css'>
     <script src="{{ asset('js/jquery.flexdatalist.min.js') }}"></script>
     <style>
