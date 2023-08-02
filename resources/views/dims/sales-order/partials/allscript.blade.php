@@ -707,7 +707,6 @@
                             resizable: false,
 
                             buttons: {
-
                                 Yes: {
                                     text: "Yes",
                                     class: "btn btn-success btn-sm",
@@ -958,7 +957,7 @@
             });
             $('#dialog').show();
             $("#dialog").dialog({
-                height: 600,
+                height: 700,
                 width: 1100,
                 containment: false
             }).dialogExtend({
@@ -2892,13 +2891,21 @@
                     modal: true,
                     containment: false,
                     buttons: {
-                        "Ignore": function() {
-                            dialog.dialog('close');
+                        "Ignore": {
+                            text: "Ignore",
+                            class: "btn btn-success btn-sm",
+                            click: function() {
+                                dialog.dialog('close');
+                            }
                         },
-                        "CANCEL": function() {
-                            $('#inputCustAcc').val('');
-                            $('#inputCustName').val('');
-                            dialog.dialog('close');
+                        "CANCEL": {
+                            text: "CANCEL",
+                            class: "btn btn-primary btn-sm",
+                            click: function() {
+                                $('#inputCustAcc').val('');
+                                $('#inputCustName').val('');
+                                dialog.dialog('close');
+                            }
                         }
                     }
                 });
@@ -2984,13 +2991,21 @@
                     modal: true,
                     containment: false,
                     buttons: {
-                        "Ignore": function() {
-                            dialog.dialog('close');
+                        "Ignore": {
+                            text: "Ignore",
+                            class: "btn btn-success btn-sm",
+                            click: function() {
+                                dialog.dialog('close');
+                            }
                         },
-                        "CANCEL": function() {
-                            $('#inputCustAcc').val('');
-                            $('#inputCustName').val('');
-                            dialog.dialog('close');
+                        "CANCEL": {
+                            text: "CANCEL",
+                            class: "btn btn-primary btn-sm",
+                            click: function() {
+                                $('#inputCustAcc').val('');
+                                $('#inputCustName').val('');
+                                dialog.dialog('close');
+                            }
                         }
                     }
                 });
@@ -3428,20 +3443,26 @@
                 modal: true,
                 containment: false,
                 buttons: {
-                    Yes: function() {
-                        $('#reprintAuth').show();
-                        showDialog('#reprintAuth', '65%', 300);
-                        $(this).dialog("close");
-                        $('#doAuthReprint').click(function() {
-                            authReprintsOnTabletLoading();
-
-                        });
-
+                    Yes: {
+                        text: "Yes",
+                        class: "btn btn-success btn-sm",
+                        click: function() {
+                            $('#reprintAuth').show();
+                            showDialog('#reprintAuth', '65%', 300);
+                            $(this).dialog("close");
+                            $('#doAuthReprint').click(function() {
+                                authReprintsOnTabletLoading();
+                            });
+                        }
                     },
-                    No: function() {
-                        $(this).dialog("close");
-                        $("#tabletLoadingDocDetails").dialog('close');
-                        //disableOnFinish();
+                    No: {
+                        text: "No",
+                        class: "btn btn-primary btn-sm",
+                        click: function() {
+                            $(this).dialog("close");
+                            $("#tabletLoadingDocDetails").dialog('close');
+                            //disableOnFinish();
+                        }
                     }
                 }
             });
@@ -3484,16 +3505,17 @@
                                             modal: true,
                                             containment: false,
                                             buttons: {
-                                                "Okay": function() {
-                                                    dialogalreadydone
-                                                        .dialog(
-                                                        'close');
+                                                "Okay": {
+                                                    text: "Okay",
+                                                    class: "btn btn-success btn-sm",
+                                                    click: function() {
+                                                        dialogalreadydone.dialog('close');
+                                                    }
                                                 }
                                             }
                                         });
                                     } else {
-                                        $("#table > tbody:last").children()
-                                    .remove();
+                                        $("#table > tbody:last").children().remove();
                                         dialog.dialog('close');
                                         generateALine2();
                                     }
@@ -3547,10 +3569,13 @@
                                     modal: true,
                                     containment: false,
                                     buttons: {
-                                        "Okay": function() {
-                                            dialog.dialog('close');
+                                        "Okay": {
+                                            text: "Okay",
+                                            class: "btn btn-success btn-sm",
+                                            click: function() {
+                                                dialog.dialog('close');
+                                            }
                                         },
-
                                     }
                                 });
                             }
@@ -3592,8 +3617,12 @@
                                 modal: true,
                                 containment: false,
                                 buttons: {
-                                    "Okay": function() {
-                                        dialog.dialog('close');
+                                    "Okay": {
+                                        text: "Okay",
+                                        class: "btn btn-success btn-sm",
+                                        click: function() {
+                                            dialog.dialog('close');
+                                        }
                                     }
                                 }
                             });
@@ -3707,44 +3736,50 @@
                 modal: true,
                 containment: false,
                 buttons: {
-                    Yes: function() {
+                    Yes: {
+                        text: "Yes",
+                        class: "btn btn-success btn-sm",
+                        click: function() {
+                            $.ajax({
+                                url: '{!! url('/printAdjustmentDispatch') !!}',
+                                type: "POST",
+                                data: {
+                                    orderId: $('#orderIds').val(),
+                                    message: $('#dispatchMessage').val(),
+                                    prodLines: productsLinesOnPicking,
+                                    orderNo: $('#orderNumberOnDispatch').val(),
+                                    awaiting: $('#awaitingStockOnDispatchOrPickingForm')
+                                        .val()
+                                },
+                                success: function(dataDetails) {
 
-                        $.ajax({
-                            url: '{!! url('/printAdjustmentDispatch') !!}',
-                            type: "POST",
-                            data: {
-                                orderId: $('#orderIds').val(),
-                                message: $('#dispatchMessage').val(),
-                                prodLines: productsLinesOnPicking,
-                                orderNo: $('#orderNumberOnDispatch').val(),
-                                awaiting: $('#awaitingStockOnDispatchOrPickingForm')
-                                    .val()
-                            },
-                            success: function(dataDetails) {
-
-                                if (!$.isEmptyObject(dataDetails)) {
+                                    if (!$.isEmptyObject(dataDetails)) {
 
 
-                                    $('.fast_remove_backOrder').remove();
-                                    dialog.dialog('close');
-                                    $('#dispatchQuantityForm').dialog('close');
+                                        $('.fast_remove_backOrder').remove();
+                                        dialog.dialog('close');
+                                        $('#dispatchQuantityForm').dialog('close');
+                                    }
                                 }
-                            }
-                        });
-
-                    },
-                    No: function() {
-                        //Change the dispatch qty
-                        adjustQuantingOnPickingForm($('#orderIds').val(), $(
-                                '#dispatchMessage').val(), '{!! url('/adjustDispatch') !!}',
-                            $('#inputCustAcc').val());
-                        $('.fast_remove').remove();
-
-                        $('#orderIds').val('');
-                        if (($('#orderIds').val()).length < 1) {
-                            dialog.dialog('close');
+                            });
                         }
-                        $('#dispatchQuantityForm').dialog('close');
+                    },
+                    No: {
+                        text: "No",
+                        class: "btn btn-primary btn-sm",
+                        click: function() {
+                            //Change the dispatch qty
+                            adjustQuantingOnPickingForm($('#orderIds').val(), $(
+                                    '#dispatchMessage').val(), '{!! url('/adjustDispatch') !!}',
+                                $('#inputCustAcc').val());
+                            $('.fast_remove').remove();
+
+                            $('#orderIds').val('');
+                            if (($('#orderIds').val()).length < 1) {
+                                dialog.dialog('close');
+                            }
+                            $('#dispatchQuantityForm').dialog('close');
+                        }
                     }
                 }
             });
@@ -3995,8 +4030,12 @@
                                             modal: true,
                                             containment: false,
                                             buttons: {
-                                                "Okay": function() {
-                                                    dialog.dialog('close');
+                                                "Okay": {
+                                                    text: "Okay",
+                                                    class: "btn btn-success btn-sm",
+                                                    click: function() {
+                                                        dialog.dialog('close');
+                                                    }
                                                 }
                                             }
                                         });
@@ -4054,16 +4093,20 @@
                     modal: true,
                     containment: false,
                     buttons: {
-
-                        "Okay": function() {
-
-                            dialog.dialog('close');
+                        "Okay": {
+                            text: "Okay",
+                            class: "btn btn-success btn-sm",
+                            click: function() {
+                                dialog.dialog('close');
+                            }
                         },
-                        "Cancel": function() {
-
-                            dialog.dialog('close');
+                        "Cancel": {
+                            text: "Cancel",
+                            class: "btn btn-primary btn-sm",
+                            click: function() {
+                                dialog.dialog('close');
+                            }
                         }
-
                     }
                 });
             } else { //$('#orderId').val()
@@ -4534,10 +4577,13 @@
                                         modal: true,
                                         containment: false,
                                         buttons: {
-                                            "Okay": function() {
-                                                dialog.dialog('close');
+                                            "Okay": {
+                                                text: "Okay",
+                                                class: "btn btn-success btn-sm",
+                                                click: function() {
+                                                    dialog.dialog('close');
+                                                }
                                             }
-
                                         }
                                     });
                                     if (hassplitorder == "LTRUE") {
@@ -6048,10 +6094,14 @@
                                 modal: true,
                                 containment: false,
                                 buttons: {
-                                    "Okay": function() {
-                                        $('#boozeChecked').val('true');
-                                        $('#'.$cellProdQuant).focus();
-                                        dialog.dialog('close');
+                                    "Okay": {
+                                        text: "Okay",
+                                        class: "btn btn-success btn-sm",
+                                        click: function() {
+                                            $('#boozeChecked').val('true');
+                                            $('#'.$cellProdQuant).focus();
+                                            dialog.dialog('close');
+                                        }
                                     }
                                 }
                             });
@@ -6455,9 +6505,13 @@
                     modal: true,
                     containment: true,
                     buttons: {
-                        "Okay": function() {
-                            $this.find(".back").val(origingback);
-                            dialog.dialog('close');
+                        "Okay": {
+                            text: "Okay",
+                            class: "btn btn-success btn-sm",
+                            click: function() {
+                                $this.find(".back").val(origingback);
+                                dialog.dialog('close');
+                            }
                         }
                     }
                 });
@@ -7572,8 +7626,12 @@
                                 modal: true,
                                 containment: false,
                                 buttons: {
-                                    "Okay": function() {
-                                        dialog.dialog('close');
+                                    "Okay": {
+                                        text: "Okay",
+                                        class: "btn btn-success btn-sm",
+                                        click: function() {
+                                            dialog.dialog('close');
+                                        }
                                     }
                                 }
                             });
@@ -7674,8 +7732,12 @@
                                 modal: true,
                                 containment: false,
                                 buttons: {
-                                    "Okay": function() {
-                                        dialog.dialog('close');
+                                    "Okay": {
+                                        text: "Okay",
+                                        class: "btn btn-success btn-sm",
+                                        click: function() {
+                                            dialog.dialog('close');
+                                        }
                                     }
                                 }
                             });
@@ -7800,8 +7862,12 @@
                                 modal: true,
                                 containment: false,
                                 buttons: {
-                                    "Okay": function() {
-                                        dialog.dialog('close');
+                                    "Okay": {
+                                        text: "Okay",
+                                        class: "btn btn-success btn-sm",
+                                        click: function() {
+                                            dialog.dialog('close');
+                                        }
                                     }
                                 }
                             });
@@ -7962,9 +8028,12 @@
                     modal: true,
                     containment: false,
                     buttons: {
-                        "Okay": function() {
-                            dialog.dialog('close');
-
+                        "Okay": {
+                            text: "Okay",
+                            class: "btn btn-success btn-sm",
+                            click: function() {
+                                dialog.dialog('close');
+                            }
                         }
                     }
                 });
@@ -8537,31 +8606,39 @@
                 modal: true,
                 containment: false,
                 buttons: {
-                    Yes: function() {
-                        orderLock('{!! url('/restFullOrderLock') !!}', orderidChange);
-                        orderUnLock('{!! url('/clearAllLocksRestFull') !!}');
-                        $('#inputCustName').val('');
-                        $('#inputCustAcc').val('');
-                        $('#awaitingStockOnDispatchOrPickingForm').val('');
-                        $('#orderIds').val(orderidChange);
-                        $('#DeliveryDate').val('');
-                        $('#totalEx').val('');
-                        $('#tot' +
-                            '' +
-                            '' +
-                            '' +
-                            'alInc').val('');
-                        arrayOfCustomerInfo[0] = '';
-                        arrayOfCustomerInfo[1] = '';
-                        arrayOfCustomerInfo[2] = '';
-                        //makeLines(orderidChange);
-                        makeALineWithOrderID(orderidChange, '#tableDispatch tbody',
-                            '{!! url('/onCheckOrderHeaderDetails') !!}', '{!! url('/contactDetailsOnOrder') !!}',
-                            arrayOfCustomerInfo);
-                        dialog.dialog('close');
+                    Yes: {
+                        text: "Yes",
+                        class: "btn btn-success btn-sm",
+                        click: function() {
+                            orderLock('{!! url('/restFullOrderLock') !!}', orderidChange);
+                            orderUnLock('{!! url('/clearAllLocksRestFull') !!}');
+                            $('#inputCustName').val('');
+                            $('#inputCustAcc').val('');
+                            $('#awaitingStockOnDispatchOrPickingForm').val('');
+                            $('#orderIds').val(orderidChange);
+                            $('#DeliveryDate').val('');
+                            $('#totalEx').val('');
+                            $('#tot' +
+                                '' +
+                                '' +
+                                '' +
+                                'alInc').val('');
+                            arrayOfCustomerInfo[0] = '';
+                            arrayOfCustomerInfo[1] = '';
+                            arrayOfCustomerInfo[2] = '';
+                            //makeLines(orderidChange);
+                            makeALineWithOrderID(orderidChange, '#tableDispatch tbody',
+                                '{!! url('/onCheckOrderHeaderDetails') !!}', '{!! url('/contactDetailsOnOrder') !!}',
+                                arrayOfCustomerInfo);
+                            dialog.dialog('close');
+                        }
                     },
-                    No: function() {
-                        dialog.dialog('close');
+                    No: {
+                        text: "No",
+                        class: "btn btn-primary btn-sm",
+                        click: function() {
+                            dialog.dialog('close');
+                        }
                     }
                 }
             });
@@ -8829,16 +8906,20 @@
                     modal: true,
                     containment: false,
                     buttons: {
-
-                        "Okay": function() {
-
-                            dialog.dialog('close');
+                        "Okay": {
+                            text: "Okay",
+                            class: "btn btn-success btn-sm",
+                            click: function() {
+                                dialog.dialog('close');
+                            }
                         },
-                        "Cancel": function() {
-
-                            dialog.dialog('close');
+                        "Cancel": {
+                            text: "Cancel",
+                            class: "btn btn-primary btn-sm",
+                            click: function() {
+                                dialog.dialog('close');
+                            }
                         }
-
                     }
                 });
             } else { //$('#orderId').val()
@@ -8895,12 +8976,13 @@
             modal: true,
             containment: false,
             buttons: {
-
-                "Okay": function() {
-                    dialog.dialog('close');
+                "Okay": {
+                    text: "Okay",
+                    class: "btn btn-success btn-sm",
+                    click: function() {
+                        dialog.dialog('close');
+                    }
                 }
-
-
             }
         });
         var orderlines = new Array();
@@ -8999,16 +9081,20 @@
                                     modal: true,
                                     containment: false,
                                     buttons: {
-
-                                        "Okay": function() {
-
-                                            dialog.dialog('close');
+                                        "Okay": {
+                                            text: "Okay",
+                                            class: "btn btn-success btn-sm",
+                                            click: function() {
+                                                dialog.dialog('close');
+                                            }
                                         },
-                                        "Cancel": function() {
-
-                                            dialog.dialog('close');
+                                        "Cancel": {
+                                            text: "Cancel",
+                                            class: "btn btn-primary btn-sm",
+                                            click: function() {
+                                                dialog.dialog('close');
+                                            }
                                         }
-
                                     }
                                 });
                             } else { //$('#orderId').val()
@@ -9035,8 +9121,12 @@
                                     modal: true,
                                     containment: false,
                                     buttons: {
-                                        "Okay": function() {
-                                            dialog.dialog('close');
+                                        "Okay": {
+                                            text: "Okay",
+                                            class: "btn btn-success btn-sm",
+                                            click: function() {
+                                                dialog.dialog('close');
+                                            }
                                         },
 
                                     }
@@ -9053,10 +9143,13 @@
                             modal: true,
                             containment: false,
                             buttons: {
-                                "Okay": function() {
-                                    dialog.dialog('close');
+                                "Okay": {
+                                    text: "Okay",
+                                    class: "btn btn-success btn-sm",
+                                    click: function() {
+                                        dialog.dialog('close');
+                                    }
                                 },
-
                             }
                         });
                     }
@@ -9078,10 +9171,13 @@
                                     modal: true,
                                     containment: false,
                                     buttons: {
-                                        "Okay": function() {
-                                            dialog.dialog('close');
+                                        "Okay": {
+                                            text: "Okay",
+                                            class: "btn btn-success btn-sm",
+                                            click: function() {
+                                                dialog.dialog('close');
+                                            }
                                         },
-
                                     }
                                 });
                             } else {
@@ -9119,8 +9215,12 @@
                                 modal: true,
                                 containment: false,
                                 buttons: {
-                                    "Okay": function() {
-                                        disableOnFinish();
+                                    "Okay": {
+                                        text: "Okay",
+                                        class: "btn btn-success btn-sm",
+                                        click: function() {
+                                            disableOnFinish();
+                                        }
                                     },
 
                                 }
@@ -9139,10 +9239,13 @@
                                 modal: true,
                                 containment: false,
                                 buttons: {
-                                    "Okay": function() {
-                                        dialog.dialog('close');
+                                    "Okay": {
+                                        text: "Okay",
+                                        class: "btn btn-success btn-sm",
+                                        click: function() {
+                                            dialog.dialog('close');
+                                        }
                                     },
-
                                 }
                             });
                         } else {
@@ -9161,10 +9264,13 @@
                                 modal: true,
                                 containment: false,
                                 buttons: {
-                                    "Okay": function() {
-                                        dialog.dialog('close');
+                                    "Okay": {
+                                        text: "Okay",
+                                        class: "btn btn-success btn-sm",
+                                        click: function() {
+                                            dialog.dialog('close');
+                                        }
                                     },
-
                                 }
                             });
                         } else {
@@ -9218,10 +9324,13 @@
                                 modal: true,
                                 containment: false,
                                 buttons: {
-                                    "Okay": function() {
-                                        dialog.dialog('close');
+                                    "Okay": {
+                                        text: "Okay",
+                                        class: "btn btn-success btn-sm",
+                                        click: function() {
+                                            dialog.dialog('close');
+                                        }
                                     },
-
                                 }
                             });
                         } else {
@@ -9611,10 +9720,13 @@
                             modal: true,
                             containment: false,
                             buttons: {
-                                "Okay": function() {
-                                    dialog.dialog('close');
+                                "Okay": {
+                                    text: "Okay",
+                                    class: "btn btn-success btn-sm",
+                                    click: function() {
+                                        dialog.dialog('close');
+                                    }
                                 },
-
                             }
                         });
                 } else {
@@ -9701,10 +9813,13 @@
                             modal: true,
                             containment: false,
                             buttons: {
-                                "Okay": function() {
-                                    dialog.dialog('close');
+                                "Okay": {
+                                    text: "Okay",
+                                    class: "btn btn-success btn-sm",
+                                    click: function() {
+                                        dialog.dialog('close');
+                                    }
                                 },
-
                             }
                         });
                 } else {
@@ -10006,10 +10121,13 @@
                                 modal: true,
                                 containment: false,
                                 buttons: {
-                                    "Okay": function() {
-                                        dialog.dialog('close');
+                                    "Okay": {
+                                        text: "Okay",
+                                        class: "btn btn-success btn-sm",
+                                        click: function() {
+                                            dialog.dialog('close');
+                                        }
                                     },
-
                                 }
                             });
                     } else {

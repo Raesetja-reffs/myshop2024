@@ -47,6 +47,7 @@
     <script src="{{ asset('js/jquery.dialogextend.js') }}"></script>
     <script src="{{ asset('js/jquery.pleaseWait.js') }}"></script>
     <script src="{{ asset('js/dx.all.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.1.1/exceljs.min.js"></script>
     <!-- end: Page level JS -->
     <script src="{{ asset('js/commonScript.js') }}"></script>
     <script src="{{ asset('js/app.js') }}"></script>

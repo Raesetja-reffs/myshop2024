@@ -7,7 +7,7 @@
     <div class="aside-logo flex-column-auto" id="kt_aside_logo">
         <!--begin::Logo-->
         <a href="{{ route('home') }}">
-            <img alt="Logo" src="{{ asset('images/Logo-01.png') }}" class="h-15px logo" />
+            <img alt="Logo" src="{{ asset('images/Logo-01.png') }}" class="logo" style="width: 100%;background-color: white;padding: 0 10px;" />
         </a>
         <!--end::Logo-->
 
@@ -98,16 +98,4 @@
         </div>
     </div>
     <!--end::Aside menu-->
-
-    <!--begin::Footer-->
-    <div class="aside-footer flex-column-auto pb-7 px-5" id="kt_aside_footer">
-        <a href="https://preview.keenthemes.com/html/metronic/docs" class="btn btn-custom btn-primary w-100"
-            data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss-="click"
-            title="200+ in-house components and 3rd-party plugins">
-            <span class="btn-label">
-                Docs & Components
-            </span>
-            <i class="ki-outline ki-document btn-icon fs-2"></i> </a>
-    </div>
-    <!--end::Footer-->
 </div>
