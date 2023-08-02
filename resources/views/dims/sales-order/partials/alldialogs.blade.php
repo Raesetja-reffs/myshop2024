@@ -328,19 +328,7 @@
 
 @include('dims.sales-order.partials.authonholdaccount')
 
-<div title="Additional Cost" id="addcostdialog">
-    <table class="table2 table-bordered" id="additionalcost">
-        <thead>
-            <tr>
-                <th>Item Code</th>
-                <th>Item Description</th>
-                <th>QTY</th>
-                <th>Price</th>
-                <th>Total</th>
-            </tr>
-        </thead>
-    </table>
-</div>
+@include('dims.sales-order.partials.addcostdialog')
 
 <div title="ITEMS WITH ZERO COST" id="authItemsWithzerocosts">
     <h2>PLEASE AUTHORIZE ITEMS WITH ZERO COST</h2>

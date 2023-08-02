@@ -6919,7 +6919,7 @@
             $('#addcostdialog').show();
             $("#addcostdialog").dialog({
                 height: 450,
-                width: 400,
+                width: 600,
                 containment: false
             }).dialogExtend({
                 "closable": true, // enable/disable close button
@@ -6961,26 +6961,22 @@
                     delDate: $('#inputDeliveryDate').val(),
                 },
                 success: function(data) {
-
                     console.debug(data);
                     var trHTML = '';
                     var trHTMLSellingPrice = '';
-
                     $('#additionalcost tbody').empty();
                     $.each(data, function(key, value) {
-                        trHTMLSellingPrice +=
-                            '<tr style="font-size: 10px;color:black"><td>' +
-                            value.itemcode + '</td><td>' +
-                            value.itemdescription + '</td><td>' +
-                            parseFloat(prodQty_) + '</td><td>' +
-                            value.Price + '</td><td>' +
-                            parseFloat(prodQty_ * value.Price) +
-                            '</td></tr>';
+                        trHTMLSellingPrice += `
+                            <tr>
+                                <td>${value.itemcode}</td>
+                                <td>${value.itemdescription}</td>
+                                <td>${parseFloat(prodQty_)}</td>
+                                <td>${value.Price}</td>
+                                <td>${parseFloat(prodQty_ * value.Price)}</td>
+                            </tr>
+                        `;
                     });
-
-                    $('#additionalcost').append(trHTMLSellingPrice);
-
-
+                    $('#additionalcost tbody').append(trHTMLSellingPrice);
                 }
             });
         }
