@@ -37,8 +37,8 @@
                 @foreach ($menuItems as $menuItem)
                     <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
                         @if (isset($menuItem['href']))
-                            <a class="menu-link" href="{{ $subMenuItem['href'] }}"
-                                onclick="window.open(this.href, '{{ $subMenuItem['windowopen']['name'] }}','left=20,top=20,width={{ $subMenuItem['windowopen']['width'] }},height={{ $subMenuItem['windowopen']['height'] }},toolbar=1,resizable=0'); return false;">
+                            <a class="menu-link" href="{{ $menuItem['href'] }}"
+                                onclick="window.open(this.href, '{{ $menuItem['windowopen']['name'] }}','left=20,top=20,width={{ $menuItem['windowopen']['width'] }},height={{ $menuItem['windowopen']['height'] }},toolbar=1,resizable=0'); return false;">
                                 <span class="menu-icon">
                                     <span class="{{ $menuItem['icon'] }}"></span>
                                 </span>
