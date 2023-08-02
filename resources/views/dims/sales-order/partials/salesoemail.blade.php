@@ -75,8 +75,12 @@
                                     modal: true,
                                     containment: false,
                                     buttons: {
-                                        "Okay": function() {
-                                            dialog.dialog('close');
+                                        "Okay": {
+                                            text: "Okay",
+                                            class: "btn btn-success btn-sm",
+                                            click: function() {
+                                                dialog.dialog('close');
+                                            }
                                         }
                                     }
                                 });
