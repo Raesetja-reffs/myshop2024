@@ -958,7 +958,7 @@
             $('#dialog').show();
             $("#dialog").dialog({
                 height: 700,
-                width: 1100,
+                width: 1350,
                 containment: false
             }).dialogExtend({
                 "closable": true, // enable/disable close button

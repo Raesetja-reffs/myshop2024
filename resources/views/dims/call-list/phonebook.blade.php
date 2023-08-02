@@ -333,9 +333,13 @@
                     var dialog = $('<p>Special Removed</p>').dialog({
                         height: 200, width: 700, modal: true, containment: false,
                         buttons: {
-                            "OKAY": function () {
-                                $this.closest('tr').remove();
-                                dialog.dialog('close');
+                            "OKAY": {
+                                text: "OKAY",
+                                class: "btn btn-success btn-sm",
+                                click: function () {
+                                    $this.closest('tr').remove();
+                                    dialog.dialog('close');
+                                }
                             }
                         }
                     });
