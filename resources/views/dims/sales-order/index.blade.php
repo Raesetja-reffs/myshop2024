@@ -36,6 +36,22 @@
     }
 
     ?>
+    <x-slot name="salestotalorder">
+        <table class="table flex-end w-400px mt-5">
+            <tr>
+                <td class="p-1">No.Orders Today</td>
+                <td class="p-1">Order Val</td>
+                <td class="p-1">Avg Ord Val</td>
+            </tr>
+            @foreach ($userperformance as $value)
+                <tr>
+                    <td class="p-1">{{ $value->NoOfOrders }}</td>
+                    <td class="p-1">{{ round($value->OrderValue, 2) }}</td>
+                    <td class="p-1">{{ round($value->AvgOrderValue, 2) }}</td>
+                </tr>
+            @endforeach
+        </table>
+    </x-slot>
     @include('dims.sales-order.partials.searchbar')
     @include('dims.sales-order.partials.order-details')
     @include('dims.sales-order.partials.order-listing')

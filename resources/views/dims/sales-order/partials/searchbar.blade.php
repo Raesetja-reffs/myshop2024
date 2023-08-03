@@ -1,6 +1,6 @@
 <div class="card mb-5 mt-5">
     <div class="card-body">
-        <div class="row">
+        {{-- <div class="row">
             <div class="col-md-9 col-sm-12">
                 <!-- Empty left column -->
             </div>
@@ -24,7 +24,7 @@
                     </table>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
         <div class="row">
             <div class="col-md-3 col-sm-12">

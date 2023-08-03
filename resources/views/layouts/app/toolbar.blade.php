@@ -1,5 +1,12 @@
 <!--begin::Toolbar-->
 <div class="toolbar" id="kt_toolbar">
+    <!--begin::This is for mobile screen-->
+    @if (isset($salestotalorder))
+        <div class="d-flex d-sm-none w-300px ms-6">
+            {{ $salestotalorder }}
+        </div>
+    @endif
+    <!--end::This is for mobile screen-->
     <!--begin::Container-->
     <div id="kt_toolbar_container" class=" container-fluid  d-flex flex-stack">
 
@@ -30,5 +37,12 @@
         <!--end::Page title-->
     </div>
     <!--end::Container-->
+    <!--begin::This is for full screen-->
+    @if (isset($salestotalorder))
+        <div class="d-none d-sm-flex">
+            {{ $salestotalorder }}
+        </div>
+    @endif
+    <!--end::This is for full screen-->
 </div>
 <!--end::Toolbar-->
