@@ -1,12 +1,12 @@
 $(document).ready(function() {
-    // On hover, toggle the "active" class
-    // $(document).on("mouseenter", ".flexdatalist-results li", function() {
-    //     $(this).addClass("active");
-    // });
+    //On hover, toggle the "active" class
+    $(document).on("mouseenter", ".flexdatalist-results li", function() {
+        $(this).addClass("active");
+    });
 
-    // $(document).on("mouseleave", ".flexdatalist-results li", function() {
-    //     $(this).removeClass("active");
-    // });
+    $(document).on("mouseleave", ".flexdatalist-results li", function() {
+        $(this).removeClass("active");
+    });
 
     $.ui.dialog.prototype.options.open = function() {
         $(this).closest(".ui-dialog")
