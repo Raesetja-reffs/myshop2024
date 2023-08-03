@@ -244,12 +244,13 @@
                         {
                             dataField: "Description",
                             caption: "Item",
-                            width: 100,
+                            width: 200,
                             cellTemplate: function(cellElement, cellInfo) {
                                 console.debug("column");
                                 console.debug(cellInfo.column);
 
                                 cellElement.addClass('custom-font');
+                                cellElement.attr('title', cellInfo.text)
 
                                 cellElement.text(cellInfo.text);
                             }
