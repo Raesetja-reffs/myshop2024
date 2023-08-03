@@ -13,7 +13,7 @@
         <!--begin::Mobile logo-->
         <div class="d-flex align-items-center flex-grow-1 flex-lg-grow-0">
             <a href="{{ route('home') }}" class="d-lg-none">
-                <img alt="Logo" src="{{ asset('images/Logo-01.png') }}" class="h-25px" />
+                <img alt="Logo" src="{{ asset('images/Logo-01.png') }}" class="h-25px" style="background-color: white;padding: 0 10px;" />
             </a>
         </div>
         <!--end::Mobile logo-->
@@ -25,6 +25,14 @@
             <!--end::Navbar-->
             <!--begin::Toolbar wrapper-->
             <div class="topbar d-flex align-items-stretch flex-shrink-0">
+                <!--begin::Current DateTime Display-->
+                <div class="d-none d-sm-flex align-items-center px-3 me-n3">
+                    <a class="" href="javascript:void(0);" id="current_datetime_display">
+                        <span class="menu-title" style="color: white">
+                        </span>
+                    </a>
+                </div>
+                <!--end::Current DateTime Display-->
                 <!--begin::User-->
                 <div class="d-flex align-items-stretch" id="kt_header_user_menu_toggle">
                     <!--begin::Menu wrapper-->
