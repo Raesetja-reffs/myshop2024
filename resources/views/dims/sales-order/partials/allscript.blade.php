@@ -9068,7 +9068,7 @@
         $('#productwithzerocost').show();
         $.each(data, function(key, value) {
             trHTML +=
-                '<tr style="font-size: 12px;color: black;background: lightgrey;font-family: Roboto;font-weight: normal" >' +
+                '<tr style="background: lightgrey;" >' +
                 '<td style="">' + value.PastelCode + '</td>' +
                 '<td style="">' + value.PastelDescription + '</td>' +
 

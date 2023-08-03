@@ -243,38 +243,7 @@
 
 @include('dims.sales-order.partials.addcostdialog')
 
-<div title="ITEMS WITH ZERO COST" id="authItemsWithzerocosts">
-    <h2>PLEASE AUTHORIZE ITEMS WITH ZERO COST</h2>
-    <form>
-        <div class="form-group  col-md-4" style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">
-            <label class="control-label" for="zerocostmanagername"
-                style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Name</label><br>
-            <input class="" id="zerocostmanagername" name="zerocostmanagername"
-                style="height:30px;font-size: 10px;" autocomplete="off" value="-">
-        </div>
-        <div class="form-group  col-md-4" style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">
-            <label class="control-label" for="zerocostmanagerpassword"
-                style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">PassWord</label><br>
-            <input type="password" name="zerocostmanagerpassword" class="" id="zerocostmanagerpassword"
-                style="height:30px;font-size: 10px;" autocomplete="off" value="-">
-        </div><br>
-        <div>
-            <button type="button" id="doAuthZerocost" class="btn-success btn-xs pull-right"
-                style="margin-top: 29px;margin-right: 15px;">Authorise</button>
-        </div>
-        <div class="form-group  col-md-12">
-            <table>
-                <tbody id="productwithzerocost">
-
-                </tbody>
-            </table>
-
-            <button type="button" id="cancelzerocostdialod" class="btn-danger btn-xs pull-right"
-                style="margin-top: 29px;margin-right: 15px;">Cancel</button>
-
-        </div>
-    </form>
-</div>
+@include('dims.sales-order.partials.authitemswithzerocosts')
 
 <div title="Item having less stock" id="itemoutofstock">
     <h2>These lines exceeds the available qty.</h2>
