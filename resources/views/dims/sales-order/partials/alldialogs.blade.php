@@ -245,33 +245,7 @@
 
 @include('dims.sales-order.partials.authitemswithzerocosts')
 
-<div title="Item having less stock" id="itemoutofstock">
-    <h2>These lines exceeds the available qty.</h2>
-    <form>
-        <div class="form-group  col-md-12">
-            <table class="table2 table-bordered  dataTable">
-                <thead>
-                    <tr>
-                        <td>Item Code</td>
-                        <td>Item Name</td>
-                        <td>Ordered</td>
-                        <td>Available</td>
-                        <td>On Hand</td>
-                        <td>Back</td>
-                        <td>Select</td>
-                    </tr>
-                </thead>
-                <tbody id="griditemoutofstock">
-
-                </tbody>
-            </table>
-            <button type="button" id="cancelsplitorder" class="btn-danger btn-xs pull-left"
-                style="margin-top: 29px;margin-right: 15px;">Cancel</button>
-            <button type="button" id="splitorder" class="btn-danger btn-xs pull-right"
-                style="margin-top: 29px;margin-right: 15px;">SPILT </button>
-        </div>
-    </form>
-</div>
+@include('dims.sales-order.partials.itemoutofstock')
 
 <div title="Zero Pricing" id="itemseithzeropricing">
     <h2>These lines have zero pricing, please authorize.</h2>
