@@ -23,61 +23,68 @@
         <!--end::Item-->
     </x-slot>
 
-    <div class="col-lg-12"  style="background: white;">
-        <h1>Adding New Group Specials</h1>
-        <fieldset class="well">
-            <legend class="well-legend">Filters</legend>
+    <div class="card mb-3 mt-5">
+        <div class="card-body">
             <form>
-                <div class="form-group  col-md-3"  style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">
-                    <label class="control-label" for="inputCustAcc"  style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Group ID</label>
-                    <input type="text" name="custCode" class="form-control input-sm col-xs-1" id="inputCustAcc" style="background:grey;height:22px;font-size: 10px;font-weight: 900;    color: black;" readonly>
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4>Filters</h4>
+                    </div>
                 </div>
-
-                <div class="form-group col-md-3"  style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">
-                    <label class="control-label" for="inputCustName"  style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Group Name</label>
-                    <input type="text" name="custDescription" class="form-control input-sm col-xs-1" id="inputCustName" style="height:22px;font-size: 10px;font-weight: 900;    color: black;">
+                <div class="row">
+                    <div class="col-md-2">
+                        <label for="inputCustAcc">Group ID</label>
+                        <input type="text" name="custCode" class="form-control" id="inputCustAcc" readonly>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="inputCustName">Group Name</label>
+                        <input type="text" name="custDescription" class="form-control" id="inputCustName">
+                    </div>
+                    <div class="col-md-2 itCanHide">
+                        <label for="dateFrom">Date From</label>
+                        <input type="text" class="form-control" id="dateFrom">
+                    </div>
+                    <div class="col-md-2">
+                        <label for="dateTo">Date To</label>
+                        <input type="text" class="form-control" id="dateTo">
+                    </div>
+                    <div class="col-md-2">
+                        <button type="button" id="submitFiltersOnCustSpecial" class="btn btn-primary btn-sm mt-md-6">Submit</button>
+                    </div>
                 </div>
-                <div class="form-group col-md-3 itCanHide"  style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">
-                    <label class="control-label" for="dateFrom"  style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Date From</label>
-                    <input type="text" class="form-control input-sm col-xs-1" id="dateFrom" style="font-weight: 900;    color: black;font-size: 13px;">
-                </div>
-                <div class="form-group col-md-3 "  style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">
-                    <label class="control-label" for="dateTo"  style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Date To</label>
-                    <input type="text" class="form-control input-sm col-xs-1" id="dateTo" style="font-weight: 900;    color: black;font-size: 13px;">
-
-                </div>
-
-                <button type="button" id="submitFiltersOnCustSpecial" class="btn-xs btn-primary">Submit</button>
             </form>
-        </fieldset>
-    </div>
-    <div class="col-lg-12" id="afterFilter">
-        <div class="col-lg-12" style="background: white;height: 60%;overflow-y: scroll">
-
-            <button class="btn-success btn-xs" id="addLine">Add Line</button>
-            <table id ="tblCreateNewSpecial" class="table table-bordered table-condensed">
-                <thead>
-                <tr style="font-size: 12px;">
-                    <td>Code</td>
-                    <td>Description</td>
-                    <td>DtFrom</td>
-                    <td>DtTo</td>
-                    <td>Price</td>
-                    <td>Cost</td>
-                    <td>Current GP</td>
-                    <td>Cost Created</td>
-                    <td>Available</td>
-                    <td>Instock</td>
-                    <td>Actions</td>
-                </tr>
-                </thead>
-                <tbody></tbody>
-
-            </table>
-
         </div>
-        <div class="col-lg-12" style="background: white;">
-            <button id="doneCreating" class="btn-xs btn-success">Done</button>
+    </div>
+    <div class="card" id="afterFilter">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12 mb-3">
+                    <button class="btn btn-success btn-sm" id="addLine">Add Line</button>
+                </div>
+                <div class="col-md-12" style="height: 60%;overflow-y: scroll">
+                    <table id ="tblCreateNewSpecial" class="table table-bordered table-condensed">
+                        <thead>
+                            <tr>
+                                <td>Code</td>
+                                <td>Description</td>
+                                <td>DtFrom</td>
+                                <td>DtTo</td>
+                                <td>Price</td>
+                                <td>Cost</td>
+                                <td>Current GP</td>
+                                <td>Cost Created</td>
+                                <td>Available</td>
+                                <td>Instock</td>
+                                <td>Actions</td>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <div class="col-md-12">
+                    <button id="doneCreating" class="btn btn-success btn-sm">Done</button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -89,9 +96,11 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
-        $( document ).on( 'focus', ':input', function(){
-            $( this ).attr( 'autocomplete', 'off' );
+
+        $(document).on('focus', ':input', function(){
+            $(this).attr('autocomplete', 'off');
         });
+
         var finalDataProduct = $.map(JSON.parse(jArray), function (item) {
             return {
                 value: item.PastelCode,
@@ -105,8 +114,8 @@
                 Alcohol: item.Alcohol,
                 Available: parseFloat(item.Available).toFixed(2)
             }
-
         });
+
         var finalDataProductDescription = $.map(JSON.parse(jArray), function (item) {
             return {
                 value: item.PastelDescription,
@@ -120,15 +129,13 @@
                 Alcohol: item.Alcohol,
                 Available: parseFloat(item.Available).toFixed(2)
             }
-
         });
-        var finalData =$.map(JSON.parse(jArrayCustomer), function(item) {
 
+        var finalData =$.map(JSON.parse(jArrayCustomer), function(item) {
             return {
                 GroupName:item.GroupName,
                 GroupId:item.GroupId,
             }
-
         });
 
         $(document).ready(function() {
@@ -155,18 +162,15 @@
                 data: finalData
             });
             inputGroupAccount.on('select:flexdatalist', function (event, data) {
-
                 $('#inputCustAcc').val(data.GroupId);
                 $('#inputCustName').val(data.GroupName);
             });
 
 
             $('#addLine').click(function(){
-
                 generateALine2();
             });
             generateALine2();
-
             $(".dateTo").datepicker({
                 changeMonth: true,//this option for allowing user to select month
                 changeYear: true, //this option for allowing user to select from year range
@@ -182,14 +186,12 @@
                 $this.closest('tr').remove();
             });
 
-
             $('#doneCreating').click(function()
             {
                 var productsLinesOnPicking = new Array();
                 $('#tblCreateNewSpecial > tbody  > tr').each(function() {
                     // var data = $(this);
                     // var orderDetailID = $(this).closest('tr').find('#theOrdersDetailsId').val();
-
                     if (($(this).closest('tr').find('.theProductCode_').val()).length > 0 && ($(this).closest('tr').find('.prodDescription_').val()).length > 0 ) {
                         productsLinesOnPicking.push({
                             'productCode': $(this).closest('tr').find('.theProductCode_').val(),
@@ -235,11 +237,8 @@
             //showDialog('#tempDeliveryAddressOnTheFly','50%',250);
             $('#submitFiltersOnCustSpecial').click(function(){
                 if (($.trim($('#dateFrom').val())).length > 7 && ($.trim($('#dateTo').val())).length > 7){
-
-
                     $('#afterFilter').show();
                     //Select * between this date for this customer
-
                     $.ajax({
                         url: '{!!url("/customerGroupByDateOrContract")!!}',
                         type: "POST",
@@ -247,7 +246,6 @@
                             groupId: $('#inputCustAcc').val(),
                             dateFrom: $('#dateFrom').val(),
                             dateTo:  $('#dateTo').val()
-
                         },
                         success: function (data) {
                             var trHTML ="";
@@ -286,7 +284,6 @@
                         removeSpecial: $thisVal
                     },
                     success: function (data) {
-
                         var dialog = $('<p>Special Removed</p>').dialog({
                             height: 200, width: 700, modal: true, containment: false,
                             buttons: {
@@ -355,11 +352,8 @@
         });
         function generateALine2()
         {
-
             // $( "#table" ).colResizable({ disable : true });
-
             //calculator();
-
             var contractFrom = $('#dateFrom').val();
             var contractTo = $('#dateTo').val();
             var tokenId=Math.floor(Math.pow(10, 9-1) + Math.random() * 9 * Math.pow(10, 9-1));
@@ -386,7 +380,6 @@
                     $('#prodDescription_' + tokenId).focus();
                 }
             }
-
 
             $('input').on('click keyup' ,function(){
                 // $('input').click(function(){
