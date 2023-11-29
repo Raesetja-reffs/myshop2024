@@ -1,5 +1,5 @@
 <div class="col-md-4 col-sm-12 hidebody">
-    <div class="card">
+    <div class="card scroll h-500px">
         <div class="card-body">
             <div class="row mb-3">
                 <div class="col-md-4 ps-3 mb-3">

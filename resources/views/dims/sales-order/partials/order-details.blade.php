@@ -1,9 +1,9 @@
-<div class="row">
+<div class="row mb-3">
     <div class="col-md-8 col-sm-12 hidebody">
-        <div class="card">
+        <div class="card h-500px">
             <div class="card-body">
                 <div class="row mb-3">
-                    <div class="col-md-8">
+                    <div class="col-md-6 pe-0">
                         <button type="button" id="button_row"
                             class="btn btn-success btn-sm ps-3 pe-3 mb-2 mb-md-0">Add</button>
                         <button type="button" id="copythisorder" class="btn btn-primary btn-sm ps-2 pe-2 mb-2 mb-md-0"
@@ -19,16 +19,22 @@
                             style="display:none;">
                         <input type="checkbox" id="checkboxCode" class="form-check-input mt-2 mb-2 mb-md-0"
                             style="display:none;">
+                    </div>
+                    <div class="col-md-2 ps-0">
                         <input type="text" id="customeronhold"
-                            class="form-control float-end mb-2 mb-md-0 mt-0 mt-md-2" style="color:red;font-weight:900;"
+                            class="form-control float-end mb-2 mb-md-0" style="color:red;font-weight:900;"
                             readonly>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-2">
                         <!-- Search input aligned to the right -->
                         <input type="text" class="form-control mb-2" id="customerpricelist"
                             style="font-weight: 900;">
+                    </div>
+                    <div class="col-md-2">
                         <button class="btn btn-danger btn-sm ps-1 pe-1" id="deleteAllLines">Delete All
                             Lines</button>
+                    </div>
+                    <div class="col-md-2">
                         @if ($userActions != 0)
                             <button type="button" id="button_user_actions" class="btn btn-info btn-sm ps-1 pe-1">User
                                 Actions</button>
@@ -37,7 +43,7 @@
                 </div>
 
                 <div class="row mb-3 mt-6">
-                    <div class="table-responsive">
+                    <div class="table-responsive scroll h-400px">
                         <table id="table" class="table table-bordered table-condensed table-hover">
                             <thead>
                                 <tr>
@@ -61,218 +67,6 @@
                     </div>
                 </div>
 
-                <div class="row mb-3 mt-6">
-                    <div class="col-md-6">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <h6 id="numberOfLines" style="margin-bottom: 0px !important;" class="hidebody">
-                                    0 Line Item(s)</h6>
-                            </div>
-                            <div class="col-md-12 mb-2">
-                                <label for="messagebox">Message</label>
-                                <input type="text" name="message" id="messagebox" class="form-control"
-                                    value="">
-                            </div>
-                            <div class="col-md-12 mb-2">
-                                <label for="orederNumber">Order Number</label><br>
-                                <input type="text" name="orederNumber" class="form-control" id="orederNumber"
-                                    maxlength="25" style="font-weight: 900;color: black;" autocomplete="new-password"
-                                    value="" readonly>
-                                <div class="form-group mt-2">
-                                    <span id="characters"></span>/25
-                                    <button id="advancedorderNumber" class="btn btn-info btn-sm ps-1 pe-1">Advanced
-                                        Order No</button>
-                                </div>
-                                <input type="hidden" name="hiddenDeliveryAddressId" id="hiddenDeliveryAddressId">
-                                <input type="hidden" name="address1hidden" id="address1hidden">
-                                <input type="hidden" name="address2hidden" id="address2hidden">
-                                <input type="hidden" name="address3hidden" id="address3hidden">
-                                <input type="hidden" name="address4hidden" id="address4hidden">
-                                <input type="hidden" name="address5hidden" id="address5hidden">
-                            </div>
-                            <div class="col-md-12 mb-2">
-                                <label for="orederNumber">
-                                    Delivery Address
-                                </label>
-                                <div style="display: none;">
-                                    <button class="btn btn-warning btn-sm ps-1 pe-1" id="changeDeliveryAddress"
-                                        type="button">Change</button>
-                                    <button class="btn btn-warning btn-sm ps-1 pe-1" id="makeNewDelivAddress"
-                                        type="button">New</button>
-                                </div>
-                                <i class="fa fa-plus-square cursor-pointer" aria-hidden="true" id="addANewDelvAddressOnModal"></i>
-                                <textarea id="customerSelectedDelDate" class="form-control" style="" readonly></textarea>
-                                <i style="" id="tempDelivAddressClosethis">Press <a href="javascript:void(0);"
-                                        id="tempDelivAddress">here</a> to create a temp delivery address </i>
-                                <button class="btn btn-warning btn-sm ps-1 pe-1 mt-1"
-                                    id="changeDeliveryAddressOnNotInvoiced">Change Delivery Address</button>
-                            </div>
-                            <div class="col-md-12 mb-2">
-                                <button class="btn btn-success btn-sm ps-1 pe-1" id="addTheSalesMan"
-                                    type="button">Salesman</button>
-                            </div>
-                            <div class="col-md-12 mb-2">
-                                <div class="align-items-center d-flex">
-                                    <label class="form-check-label" for="authoriseblockedorder">On Hold:&nbsp;</label>
-                                    <input type="checkbox" class="custom-checkbox-sm" id="authoriseblockedorder">
-                                    <input type="hidden" id="marginandpriceauthbycustomer">
-                                </div>
-                            </div>
-                            <div class="col-md-12 mb-2">
-                                <button type="button" id="finishOrder"
-                                    class="btn btn-primary btn-sm hidebody">Finish</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="row">
-                            <div class="col-md-12 mb-1">
-                                &nbsp;
-                            </div>
-                            <div class="col-md-12 mb-2">
-                                <label for="notification">Special Notification</label>
-                                <select id="notification" class="form-control form-select">
-                                    <option value="2">Normal</option>
-                                    <option value="1">Low</option>
-                                    <option value="3">High</option>
-                                </select>
-                            </div>
-                            <div class="col-md-12 mb-2">
-                                <h5 id="availableOnTheFly"> </h5>
-                                <input type="hidden" id="instockGlobal">
-                            </div>
-                            <div class="col-md-12 mb-2">
-                                <label>Line Extra Info</label>
-                                <div class="row text-danger">
-                                    <div class="col-md-4">
-                                        <label>L.Margin</label>
-                                        <input id="linemargins" class="form-control text-danger">
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label>L.Total (Exc)</label>
-                                        <input id="linetotalex" class="form-control text-danger">
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label>L.Total (Inc)</label>
-                                        <input id="linetotalInc" class="form-control text-danger">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12 mb-2">
-                                <label>Totals</label><br>
-                                <label>Add.Cst:</label>
-                                <input id="totaddidtionalcst" class="form-control">
-                            </div>
-                            <div class="col-md-12 mb-2">
-                                <label>Totals</label>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <label>Exc</label>
-                                        <input id="totalEx" class="form-control">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label>Inc</label>
-                                        <input id="totalInc" class="form-control">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12 mb-2">
-                                <label>Order Disc Totals</label>
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <label>Tot(Inc)</label>
-                                        <input id="totalInOrder" class="form-control">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12 mb-2">
-                                <label>Total Margin %</label>
-                                <input type="text" id="totalmargin" class="form-control" readonly>
-                            </div>
-                            <div class="col-md-12 mb-2">
-                                <label>Discount %</label>
-                                <input type="text" id="dicPercHeader" class="form-control"
-                                    onkeypress="return isFloatNumber(this,event)" readonly>
-                            </div>
-                            @if ($printinvoices != '0')
-                                <div class="col-md-12 mb-2">
-                                    <button id="invoiceNow" name="invoiceNow"
-                                        class="btn btn-danger btn-sm">Print</button>
-                                </div>
-                            @endif
-                            <div class="col-md-12 mb-2">
-                                <button id="reprintInvoice" name="reprintInvoice"
-                                    class="btn btn-success btn-sm">Re-Print</button>
-                            </div>
-                            <div class="col-md-12 mb-2">
-                                <p id="creditLimitWarningMessage"
-                                    style="color:red;font-family: monospace;    font-size: 12px;">
-                                </p>
-                                <input type="hidden" name="creditLimitApproved" id="creditLimitApproved"
-                                    value="">
-                                <input type="hidden" name="creditLimitStutusMesg" id="creditLimitStutusMesg"
-                                    value="">
-                                <input type="text" name="boozeLisence" id="boozeLisence" class="form-control"
-                                    value="" readonly>
-                                <input type="hidden" name="boozeChecked" id="boozeChecked" value="">
-                            </div>
-                            <div class="col-md-12 mb-2">
-                                <div class="align-items-center d-flex">
-                                    <input type="checkbox" class="custom-checkbox-sm" name="awaitingStock"
-                                        id="awaitingStock" value="">&nbsp;
-                                    <label class="form-check-label" for="awaitingStock">Awaiting Stock</label>
-                                </div>
-                            </div>
-                            <div class="col-md-12 mb-2">
-                                <div class="align-items-center d-flex">
-                                    <input type="checkbox" class="custom-checkbox-sm" name="treatAsQuote"
-                                        id="treatAsQuote">&nbsp;
-                                    <label class="form-check-label" for="treatAsQuote">Treat As Quotation</label>
-                                </div>
-                            </div>
-                            <div class="col-md-12 mb-2">
-                                <label class="form-label">Contact Details:</label>
-                                <div class="row">
-                                    <div class="col-md-12 mb-2">
-                                        <div class="form-group row">
-                                            <label for="contactCellOnDispatch" class="col-sm-3 form-label">Contact
-                                                Cell</label>
-                                            <div class="col-sm-9">
-                                                <input id="contactCellOnDispatch" class="form-control">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12 mb-2">
-                                        <div class="form-group row">
-                                            <label for="contactPersonOnDispatch"
-                                                class="col-sm-3 form-label">Buyer</label>
-                                            <div class="col-sm-9">
-                                                <input id="contactPersonOnDispatch" class="form-control">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12 mb-2">
-                                        <div class="form-group row">
-                                            <label for="telOnDispatch" class="col-sm-3 form-label">Buyer
-                                                Tel/Cell</label>
-                                            <div class="col-sm-9">
-                                                <input id="telOnDispatch" class="form-control">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <button class="btn btn-success btn-sm" id="updatecontactsontheorder">Update
-                                            Contacts</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12 mb-2">
-                                <h5 id="nbNotes" style="color:red;"></h5>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <div class="row mb-3">
                     <div class="col-md-12">
                         <button type="button" id="printPDFPickIndOrder" class="btn btn-warning btn-sm mb-2 mb-md-0"
@@ -290,3 +84,205 @@
     </div>
     @include('dims.sales-order.partials.order-details-right-side')
 </div>
+<div class="row">
+    <div class="col-md-12 hidebody">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-1 mt-md-6">
+                        <h6 id="numberOfLines" style="margin-bottom: 0px !important;" class="hidebody">
+                            0 Line Item(s)</h6>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="messagebox">Message</label>
+                        <input type="text" name="message" id="messagebox" class="form-control"
+                            value="">
+                    </div>
+                    <div class="col-md-2">
+                        <label for="orederNumber">Order Number</label><br>
+                        <input type="text" name="orederNumber" class="form-control" id="orederNumber"
+                            maxlength="25" style="font-weight: 900;color: black;" autocomplete="new-password"
+                            value="" readonly>
+                        <div class="form-group mt-2">
+                            <span id="characters"></span>/25
+                            <button id="advancedorderNumber" class="btn btn-info btn-sm ps-1 pe-1">Advanced
+                                Order No</button>
+                        </div>
+                        <input type="hidden" name="hiddenDeliveryAddressId" id="hiddenDeliveryAddressId">
+                        <input type="hidden" name="address1hidden" id="address1hidden">
+                        <input type="hidden" name="address2hidden" id="address2hidden">
+                        <input type="hidden" name="address3hidden" id="address3hidden">
+                        <input type="hidden" name="address4hidden" id="address4hidden">
+                        <input type="hidden" name="address5hidden" id="address5hidden">
+                    </div>
+                    <div class="col-md-2">
+                        <label for="orederNumber">
+                            Delivery Address
+                        </label>
+                        <div style="display: none;">
+                            <button class="btn btn-warning btn-sm ps-1 pe-1" id="changeDeliveryAddress"
+                                type="button">Change</button>
+                            <button class="btn btn-warning btn-sm ps-1 pe-1" id="makeNewDelivAddress"
+                                type="button">New</button>
+                        </div>
+                        <i class="fa fa-plus-square cursor-pointer" aria-hidden="true" id="addANewDelvAddressOnModal"></i>
+                        <textarea id="customerSelectedDelDate" class="form-control" style="" readonly></textarea>
+                        <i style="" id="tempDelivAddressClosethis">Press <a href="javascript:void(0);"
+                                id="tempDelivAddress">here</a> to create a temp delivery address </i>
+                        <button class="btn btn-warning btn-sm ps-1 pe-1 mt-1"
+                            id="changeDeliveryAddressOnNotInvoiced">Change Delivery Address</button>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="notification">Special Notification</label>
+                        <select id="notification" class="form-control form-select">
+                            <option value="2">Normal</option>
+                            <option value="1">Low</option>
+                            <option value="3">High</option>
+                        </select>
+                        <h5 id="availableOnTheFly"> </h5>
+                        <input type="hidden" id="instockGlobal">
+                    </div>
+                    <div class="col-md-1 mt-md-6">
+                        <button class="btn btn-success btn-sm ps-1 pe-1" id="addTheSalesMan"
+                            type="button">Salesman</button>
+                    </div>
+                    <div class="col-md-1 mt-md-8">
+                        <div class="align-items-center d-flex">
+                            <label class="form-check-label" for="authoriseblockedorder">On Hold:&nbsp;</label>
+                            <input type="checkbox" class="custom-checkbox-sm" id="authoriseblockedorder">
+                            <input type="hidden" id="marginandpriceauthbycustomer">
+                        </div>
+                    </div>
+                    <div class="col-md-1 mt-md-6">
+                        <button type="button" id="finishOrder"
+                            class="btn btn-primary btn-sm hidebody">Finish</button>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-3">
+                        <label>Line Extra Info</label>
+                        <div class="row text-danger">
+                            <div class="col-md-4">
+                                <label>L.Margin</label>
+                                <input id="linemargins" class="form-control text-danger">
+                            </div>
+                            <div class="col-md-4">
+                                <label>L.Total (Exc)</label>
+                                <input id="linetotalex" class="form-control text-danger">
+                            </div>
+                            <div class="col-md-4">
+                                <label>L.Total (Inc)</label>
+                                <input id="linetotalInc" class="form-control text-danger">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label>Totals</label><br>
+                        <label>Add.Cst:</label>
+                        <input id="totaddidtionalcst" class="form-control">
+                    </div>
+                    <div class="col-md-2">
+                        <label>Totals</label>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Exc</label>
+                                <input id="totalEx" class="form-control">
+                            </div>
+                            <div class="col-md-6">
+                                <label>Inc</label>
+                                <input id="totalInc" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label>Order Disc Totals</label>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label>Tot(Inc)</label>
+                                <input id="totalInOrder" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-1 mt-md-6">
+                        <label>Total Margin %</label>
+                        <input type="text" id="totalmargin" class="form-control" readonly>
+                    </div>
+                    <div class="col-md-1 mt-md-6">
+                        <label>Discount %</label>
+                        <input type="text" id="dicPercHeader" class="form-control"
+                            onkeypress="return isFloatNumber(this,event)" readonly>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    @if ($printinvoices != '0')
+                        <div class="col-md-1 mt-md-6">
+                            <button id="invoiceNow" name="invoiceNow"
+                                class="btn btn-danger btn-sm">Print</button>
+                        </div>
+                    @endif
+                    <div class="col-md-1 mt-md-6">
+                        <button id="reprintInvoice" name="reprintInvoice"
+                            class="btn btn-success btn-sm">Re-Print</button>
+                    </div>
+                    <div class="col-md-1 mt-md-3">
+                        <p id="creditLimitWarningMessage"
+                            style="color:red;font-family: monospace;    font-size: 12px;">
+                        </p>
+                        <input type="hidden" name="creditLimitApproved" id="creditLimitApproved"
+                            value="">
+                        <input type="hidden" name="creditLimitStutusMesg" id="creditLimitStutusMesg"
+                            value="">
+                        <input type="text" name="boozeLisence" id="boozeLisence" class="form-control"
+                            value="" readonly>
+                        <input type="hidden" name="boozeChecked" id="boozeChecked" value="">
+                    </div>
+                    <div class="col-md-3 mt-md-8">
+                        <div class="align-items-center d-flex">
+                            <input type="checkbox" class="custom-checkbox-sm" name="awaitingStock"
+                                id="awaitingStock" value="">&nbsp;
+                            <label class="form-check-label" for="awaitingStock">Awaiting Stock</label>
+                            <input type="checkbox" class="custom-checkbox-sm ms-3" name="treatAsQuote"
+                                id="treatAsQuote">&nbsp;
+                            <label class="form-check-label" for="treatAsQuote">Treat As Quotation</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="contactCellOnDispatch">Contact
+                                        Cell</label>
+                                    <input id="contactCellOnDispatch" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="contactPersonOnDispatch">Buyer</label>
+                                    <input id="contactPersonOnDispatch" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label for="telOnDispatch">Buyer Tel/Cell</label>
+                                    <div class="">
+                                        <input id="telOnDispatch" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mt-md-6">
+                                <button class="btn btn-success btn-sm" id="updatecontactsontheorder">Update
+                                    Contacts</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-12 mb-2">
+                        <h5 id="nbNotes" style="color:red;"></h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

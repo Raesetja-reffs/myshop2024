@@ -4855,7 +4855,7 @@
         var tokenId = new Date().valueOf();
         var $row = $(`
             <tr id="new_row_ajax${tokenId}" class="fast_remove">
-                <td>
+                <td class="text-center">
                     <input type="hidden" id="title_${tokenId}" class="title" value="${isAuthMyLine}" />
                     <input type="hidden" id="theOrdersDetailsId" value="" />
                     <input type="hidden" id ="taxCode${tokenId}" value="" class="taxCodes" />
@@ -4871,8 +4871,8 @@
                     <input type="hidden" id ="strBulkUnit${tokenId }" value="" class="strBulkUnit" />
                     <input type="hidden" id ="productmarginauth${tokenId }" value="0" class="productmarginauth" />
                     <input type="hidden" id ="stockmanagement${tokenId }" value="0" class="stockmanagement" />
-                    <button type="button" id="cancelThis" class="btn btn-danger btn-sm cancel">
-                        Cancel
+                    <button type="button" id="cancelThis" class="btn btn-icon btn-danger btn-sm btn-sm-icon cancel">
+                        <i class="bi bi-trash3-fill fs-4"></i>
                     </button>
                 </td>
                 <td contenteditable="false">

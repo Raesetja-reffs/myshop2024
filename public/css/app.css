@@ -75,6 +75,12 @@
     padding-top: 6px !important;
 }
 
+.btn.btn-sm-icon {
+    font-size: 9.35px;
+    padding-bottom: 0 !important;
+    padding-top: 0 !important;
+}
+
 .hidden_row {
     display: none;
 }
@@ -149,3 +155,8 @@ tr.row_selected td{
     background-color: grey !important;
 }
 if you want change the side menu background color end*/
+
+.scrollable-tbody {
+    max-height: 400px;
+    overflow-y: auto;
+  }

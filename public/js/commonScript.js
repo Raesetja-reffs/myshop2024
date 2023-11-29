@@ -197,7 +197,7 @@ function readyMadeLineOrderLine(tag,prodDesc,prodCodes,prodQty,price,cost,instoc
     var tokenId=new Date().valueOf();
     var $row = $(`
         <tr id="new_row_ajax${tokenId}" class="fast_remove">
-            <td>
+            <td class="text-center">
                 <input type="hidden" id="title_${tokenId}" class="title" value ="${titles}"/>
                 <input type="hidden" id="theOrdersDetailsId" value=""/>
                 <input type="hidden" id ="taxCode${tokenId}" value ="${tax}" class="taxCodes"/>
@@ -211,8 +211,8 @@ function readyMadeLineOrderLine(tag,prodDesc,prodCodes,prodQty,price,cost,instoc
                 <input type="hidden" id ="unitWeight${tokenId}" class="unitWeight" value="${UnitWeight}"/>
                 <input type="hidden" id ="strBulkUnit${tokenId}" class="strBulkUnit" value="${strBulkUnit}"/>
                 <input type="hidden" id ="prohibited_${tokenId}" value ="${prohib}" class="prohibited"/>
-                <button type="button" id="cancelThis" class="btn btn-danger btn-sm cancel">
-                    Cancel
+                <button type="button" id="cancelThis" class="btn btn-icon btn-danger btn-sm btn-sm-icon cancel">
+                    <i class="bi bi-trash3-fill fs-4"></i>
                 </button>
             </td>
             <td contenteditable="false">
