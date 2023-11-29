@@ -396,7 +396,7 @@
         $('#popTransaction').hide();
         $('#popLessStock').hide();
         $('#popZeroStock').hide();
-        $('#edit_row').hide();
+        //$('#edit_row').hide();
         $('#authDropDownsClosedRoutePass').hide(); //authFinishOrder
         $('#createOrderOnCallList').hide();
         $('#copyOrdersBtn').hide();
@@ -4935,9 +4935,9 @@
         if (!$('.lst').is(":focus")) {
             $('#prodCode_' + tokenId).focus();
 
-            if ($('#checkboxDescription').is(':checked')) {
-                $('#prodDescription_' + tokenId).focus();
-            }
+            // if ($('#checkboxDescription').is(':checked')) {
+            //     $('#prodDescription_' + tokenId).focus();
+            // }
         }
 
         /* $('.col2 ').on('click keyup' ,function(){

@@ -3,7 +3,7 @@
         <div class="card h-500px">
             <div class="card-body">
                 <div class="row mb-3">
-                    <div class="col-md-6 pe-0">
+                    <div class="col-md-5 pe-0">
                         <button type="button" id="button_row"
                             class="btn btn-success btn-sm ps-3 pe-3 mb-2 mb-md-0">Add</button>
                         <button type="button" id="copythisorder" class="btn btn-primary btn-sm ps-2 pe-2 mb-2 mb-md-0"
@@ -13,30 +13,22 @@
                             Excel</button>
                         <button type="button" id="pdfexportorder" class="btn btn-primary btn-sm ps-2 pe-2 mb-2 mb-md-0"
                             style="">Export To PDF</button>
-                        <button type="button" id="edit_row"
-                            class="btn btn-success btn-sm ps-3 pe-3 mb-2 mb-md-0">Edit</button>
-                        <input type="checkbox" id="checkboxDescription" class="form-check-input mt-2 mb-2 mb-md-0"
-                            style="display:none;">
-                        <input type="checkbox" id="checkboxCode" class="form-check-input mt-2 mb-2 mb-md-0"
-                            style="display:none;">
                     </div>
-                    <div class="col-md-2 ps-0">
+                    <div class="col-md-2 pe-0">
                         <input type="text" id="customeronhold"
                             class="form-control float-end mb-2 mb-md-0" style="color:red;font-weight:900;"
                             readonly>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-2 pe-0">
                         <!-- Search input aligned to the right -->
                         <input type="text" class="form-control mb-2" id="customerpricelist"
                             style="font-weight: 900;">
                     </div>
-                    <div class="col-md-2">
-                        <button class="btn btn-danger btn-sm ps-1 pe-1" id="deleteAllLines">Delete All
+                    <div class="col-md-3 pe-0">
+                        <button class="btn btn-danger btn-sm ps-2 pe-2" id="deleteAllLines">Delete All
                             Lines</button>
-                    </div>
-                    <div class="col-md-2">
                         @if ($userActions != 0)
-                            <button type="button" id="button_user_actions" class="btn btn-info btn-sm ps-1 pe-1">User
+                            <button type="button" id="button_user_actions" class="btn btn-info btn-sm ps-2 pe-2">User
                                 Actions</button>
                         @endif
                     </div>
