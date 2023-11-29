@@ -28,7 +28,7 @@
         h3 {color:blue;}
         h4 {color:orange;}
         td{color:orange;}
-        tbody{background-color:black;}
+        /* tbody{background-color:black;} */
 
 
         input[type=text], select {

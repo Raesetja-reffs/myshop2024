@@ -1,6 +1,27 @@
-@extends('layouts.app')
+<x-app-layout>
 
-@section('content')
+    <x-slot name="header">
+        {{ __('Route Planner') }}
+    </x-slot>
+
+    <x-slot name="breadcrum">
+        <!--begin::Item-->
+        <li class="breadcrumb-item text-muted">
+            <a href="{{ route('home') }}" class="text-muted text-hover-primary">
+                Home </a>
+        </li>
+        <!--end::Item-->
+        <!--begin::Item-->
+        <li class="breadcrumb-item">
+            <span class="bullet bg-gray-300 w-5px h-2px"></span>
+        </li>
+        <!--end::Item-->
+
+        <!--begin::Item-->
+        <li class="breadcrumb-item text-dark">
+            Route Planner </li>
+        <!--end::Item-->
+    </x-slot>
 
     <?php
     if ((Auth::guest())){
@@ -149,670 +170,667 @@
         <button id="doneWithTruckSheetMasterData" class="btn-success btn-md center-block">Submit</button>
     </div>
 
-@endsection
+    <style>
+        .modal{
+            z-index: 9999 !important;
+        }
+        .dx-datagrid {
+            max-height: calc(80vh - 63px)  !important;
+        }
+        .dx-datagrid-filter-row {
+            height: 50px;
+        }
+        .dx-datagrid, .dx-datagrid-headers, .dx-datagrid-rowsview, .dx-datagrid-rowsview table {
+            font-size: 11px; /* Change the font size to the desired size */
+        }
+    </style>
 
-<style>
-    .modal{
-        z-index: 9999 !important;
-    }
-    .dx-datagrid {
-        max-height: calc(80vh - 63px)  !important;
-    }
-    .dx-datagrid-filter-row {
-        height: 50px;
-    }
-    .dx-datagrid, .dx-datagrid-headers, .dx-datagrid-rowsview, .dx-datagrid-rowsview table {
-        font-size: 11px; /* Change the font size to the desired size */
-    }
-</style>
+    <script>
+        //backgroudcolorOffloadedHighNotification is GREEN therefore NOTIFICATION IS THREE
+        //lockedbackgroudcolor is LAVENDER therefore it is ON CREDIT HOLD
+        //backgroudcolor is RED therefore   it is A BACKORDER
+        var jArrayOrderTypes = JSON.stringify({!! json_encode($orderTypes) !!});
+        var jArraydelivDates = JSON.stringify({!! json_encode($delivDates) !!});
+        var jArraydelivroutes = JSON.stringify({!! json_encode($routes) !!});
+        var jArraydDrivers = JSON.stringify({!! json_encode($drivers) !!});
+        var jArraydtrucks = JSON.stringify({!! json_encode($trucks) !!});
 
-<script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
-<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js" integrity="sha256-xLD7nhI62fcsEZK2/v8LsBcb4lG7dgULkuXoXB/j91c=" crossorigin="anonymous"></script>
+        var computerName = '<?php echo gethostname() ?>';
+        var loggedIn = '{{ auth()->check() ? 'true' : 'false' }}';
 
-<script>
-    //backgroudcolorOffloadedHighNotification is GREEN therefore NOTIFICATION IS THREE
-    //lockedbackgroudcolor is LAVENDER therefore it is ON CREDIT HOLD
-    //backgroudcolor is RED therefore   it is A BACKORDER
-    var jArrayOrderTypes = JSON.stringify({!! json_encode($orderTypes) !!});
-    var jArraydelivDates = JSON.stringify({!! json_encode($delivDates) !!});
-    var jArraydelivroutes = JSON.stringify({!! json_encode($routes) !!});
-    var jArraydDrivers = JSON.stringify({!! json_encode($drivers) !!});
-    var jArraydtrucks = JSON.stringify({!! json_encode($trucks) !!});
+        $(document).ready(function() {
+            //$('#routePlanningPopUp').hide();
+            $('#orderListing').hide();
+            $('#pricing').hide();
+            $('#callList').hide();
+            $('#copyOrdersBtn').hide();
+            $('#tabletLoadingApp').hide();
+            $('#salesQuotebtn').hide();
+            $('#afterFiltering').hide();
+            $('#updateSorting').hide();
+            $('#popUpForNewTruckControlSheetHeader').hide();
+            $('#messageNB').hide();
+            $('#straightForwardPrintThtTruckControlId').hide();
+            $('#instantPrint').hide();
+            $('#trucSheetViewPopUp').hide();
+            $('#popupmoveThis').hide();
+            $('#pricingOnCustomer').hide();
+            $('#salesOnOrder').hide();
+            $('#posCashUp').hide();
+            $('#salesInvoiced').hide();
+            $('#confirmMove').hide();
+            $("#creditOnHold").hide();
 
-    var computerName = '<?php echo gethostname() ?>';
-    var loggedIn = '{{ auth()->check() ? 'true' : 'false' }}';
+            var toAppendOrderTypes = '';
+            $.each(JSON.parse(jArrayOrderTypes),function(i,o){
+                toAppendOrderTypes += '<option value="'+o.OrderTypeId+'">'+o.OrderType+'</option>';
+            });
+            $('#orderTypesTabletLoadingonPlanning').append(toAppendOrderTypes);
 
-    $(document).ready(function() {
-        //$('#routePlanningPopUp').hide();
-        $('#orderListing').hide();
-        $('#pricing').hide();
-        $('#callList').hide();
-        $('#copyOrdersBtn').hide();
-        $('#tabletLoadingApp').hide();
-        $('#salesQuotebtn').hide();
-        $('#afterFiltering').hide();
-        $('#updateSorting').hide();
-        $('#popUpForNewTruckControlSheetHeader').hide();
-        $('#messageNB').hide();
-        $('#straightForwardPrintThtTruckControlId').hide();
-        $('#instantPrint').hide();
-        $('#trucSheetViewPopUp').hide();
-        $('#popupmoveThis').hide();
-        $('#pricingOnCustomer').hide();
-        $('#salesOnOrder').hide();
-        $('#posCashUp').hide();
-        $('#salesInvoiced').hide();
-        $('#confirmMove').hide();
-        $("#creditOnHold").hide();
+            var Odate = new Date();
+            var newODate = $.datepicker.formatDate('dd-mm-yy', new Date(Odate));
 
-        var toAppendOrderTypes = '';
-        $.each(JSON.parse(jArrayOrderTypes),function(i,o){
-            toAppendOrderTypes += '<option value="'+o.OrderTypeId+'">'+o.OrderType+'</option>';
+            $('#lplan').click(function(){
+                window.open('{!!url("/ligisticsplan")!!}/'+newODate, 'SAMPLEV', "location=1,status=1,scrollbars=1, width=1500,height=850");
+            });
+
+            $('#reprinting').click(function(){
+
+                window.open('{!!url("/reprinting")!!}', 'Re-Print Route', "location=1,status=1,scrollbars=1, width=1500,height=850");
+            });
+
+            var toAppendRecentTruckIdFilter = '<option value=""></option>';
+
+            $('#recentTruckIDOnPrintButton').append(toAppendRecentTruckIdFilter);
+            $('#rouTabletLoadingtesonPlanning').multiselect({
+                columns: 1,
+                placeholder: 'Select Route(s)',
+                selectAll: true
+            });
+
+
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $('#suggestions').click(function(){
+                var orderType =$('#orderTypesTabletLoadingonPlanning').val();
+                var routeId =$('#rouTabletLoadingtesonPlanning').val();
+                if(orderType !='-99' && routeId !='-99'){
+                    window.open('{!!url("/routePlannerSuggestions")!!}/'+$('#deliveryDatesonPlanning').val()+'/'+$('#orderTypesTabletLoadingonPlanning').val()+'/'+$('#rouTabletLoadingtesonPlanning').val()+'/'+$('#statusRoutePlanner').val());
+                }
+            });
+
+            $('#getOrders').click(function(){
+                getMultiRoutSelected();
+            });
+
+            $('#notifypickers').click(function(){
+
+                $.ajax({
+                    url: '{!!url("/notifypickers")!!}',
+                    type: "POST",
+                    data: {
+                        routeId: $('#rouTabletLoadingtesonPlanning').val(),
+                        deliveryDate: $('#deliveryDatesonPlanning').val(),
+                        OrderType: $('#orderTypesTabletLoadingonPlanning').val(),
+                        dateTo: $('#deliveryDatesonPlanning2').val()
+
+                    },
+                    success: function (data) {
+
+                        var dialog = $('<p><strong style="color:black"> <i>You Have Nofitied the Pickers to Pick </i>'+data+'</strong></p>').dialog({
+                            height: 200, width: 900, modal: true, containment: false,
+                            buttons: {
+                                "Okay": function () {
+                                    dialog.dialog('close');
+                                },
+
+                            }
+                        });
+                    }
+                });
+
+            });
+
+            $('#tabletLoadingGoonProducts').click(function(){
+                if (($('#deliveryDatesonPlanning').val()).length > 6)
+                {
+                    window.open('{!!url("/listallProductsRoutePlanner")!!}/'+$('#deliveryDatesonPlanning').val()+'/'+$('#orderTypesTabletLoadingonPlanning').val()+'/'+$('#rouTabletLoadingtesonPlanning').val(), "products", "width=760, height=500, scrollbars=yes")
+
+                }
+                else {
+                    alert("Please select Date")
+                }
+
+            });
+
+            $("#deliveryDatesonPlanning,#deliveryDatesonPlanning2,#delDateChange").datepicker({
+                changeMonth: true,//this option for allowing user to select month
+                changeYear: true,
+                dateFormat: 'yy-mm-dd'
+            });
+
+            // This function sequences the order
+            $('#setSequence').click(function(){
+                // This function sets the sequence of the Route!
+                var allGridItems =  $("#gridContainer").dxDataGrid("getDataSource").items();
+                var sortedOrderIds = new Array();
+
+                var seq = 0;
+
+                allGridItems.forEach((element, index, value) => {
+                    sortedOrderIds.push({
+                        'index':seq,
+                        'orderId':element["OrderId"]
+                    });
+                    seq += 1;
+                });
+
+                // console.debug(sortedOrderIds);
+
+                $.ajax({
+                    url: '{!!url("/sequencingTheStops")!!}',
+                    type: "POST",
+                    data: {ordersToStop:sortedOrderIds},
+
+                    success: function (data) {
+                        alert(data.count+' Stops being Sequenced');
+                        location.reload();
+                    }
+                });
+            });
+
+            // This Does a print preview of the route sequence
+            $('#printPriview').click(function(){
+                window.open( '{!!url("/routePlannerPrintPreview")!!}/'+$('#deliveryDatesonPlanning').val()+'/'+$('#deliveryDatesonPlanning2').val()+'/'+$('#orderTypesTabletLoadingonPlanning').val()+'/'+$('#rouTabletLoadingtesonPlanning').val()+'/'+$('#statusRoutePlanner').val(), "PREVIEW", "location=1,status=1,scrollbars=1, width=1200,height=850");
+            });
+
+            $('#invoicesnotprinting').click(function(){
+                window.open( '{!!url("/invoicesnotprinting")!!}', "Invoices Not printed", "location=1,status=1,scrollbars=1, width=1200,height=850");
+            });
+            $('#ligisticsplan').click(function(){
+                var Odate = new Date();
+                var newODate = $.datepicker.formatDate('dd-mm-yy', new Date(Odate));
+                window.open( '{!!url("/ligisticsplan")!!}/'+newODate, "ligisticsplan", "location=1,status=1,scrollbars=1, width=1200,height=850");
+            });
+
+            //The main big function !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            $('#moveSelectedOrders').on('click',function(){
+                var valuesProd = new Array();
+                // Get a reference to the dxDataGrid control
+                var dataGridInstance = $('#gridContainer').dxDataGrid('instance');
+
+                // Get the collection of selected rows
+                var selectedRows = dataGridInstance.getSelectedRowsData();
+
+                // Loop through the collection of selected rows
+                $.each(selectedRows, function(index, row) {
+                    // console.log(row);
+                    valuesProd.push({'orderId':row.OrderId})
+                });
+
+                showDialog('#popupmoveThis','60%',220);
+                $('#submitChanges').click(function(){
+                    $.ajax({
+                        url: '{!!url("/moveTheOrderArray")!!}',
+                        type: "POST",
+                        data: {
+                            orderTypeId:$('#deliveryTypeRun').val(),
+                            routeId:$('#eRouteName').val(),
+                            orderId:valuesProd,
+                            delivDate:$('#delDateChange').val()
+                        },
+                        success: function (data) {
+                            console.log(data);
+                            // showDialog('#confirmMove','60%',220);
+                            alert("These Lines Have been Moved")
+                            window.location = '{!!url("/routePlannerExtParam")!!}/'+$('#deliveryDatesonPlanning').val()+'/'+$('#orderTypesTabletLoadingonPlanning').val()+'/1085/'+$('#statusRoutePlanner').val();
+                        }
+                    });
+                });
+
+            });
+            //The main big function !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
         });
-        $('#orderTypesTabletLoadingonPlanning').append(toAppendOrderTypes);
 
-        var Odate = new Date();
-        var newODate = $.datepicker.formatDate('dd-mm-yy', new Date(Odate));
+        function showDialog(tag,width,height){
+            $( tag ).dialog({height: height, modal: false,
+                width: width,containment: false}).dialogExtend({
+                "closable" : true, // enable/disable close button
+                "maximizable" : false, // enable/disable maximize button
+                "minimizable" : true, // enable/disable minimize button
+                "collapsable" : true, // enable/disable collapse button
+                "dblclick" : "collapse", // set action on double click. false, 'maximize', 'minimize', 'collapse'
+                "titlebar" : false, // false, 'none', 'transparent'
+                "minimizeLocation" : "right", // sets alignment of minimized dialogues
+                "icons" : { // jQuery UI icon class
+                    "close" : "ui-icon-circle-close",
+                    "maximize" : "ui-icon-circle-plus",
+                    "minimize" : "ui-icon-circle-minus",
+                    "collapse" : "ui-icon-triangle-1-s",
+                    "restore" : "ui-icon-bullet"
+                },
+                "load" : function(evt, dlg){ }, // event
+                "beforeCollapse" : function(evt, dlg){ }, // event
+                "beforeMaximize" : function(evt, dlg){ }, // event
+                "beforeMinimize" : function(evt, dlg){ }, // event
+                "beforeRestore" : function(evt, dlg){ }, // event
+                "collapse" : function(evt, dlg){  }, // event
+                "maximize" : function(evt, dlg){ }, // event
+                "minimize" : function(evt, dlg){  }, // event
+                "restore" : function(evt, dlg){  } // event
+            });
+        }
 
-        $('#lplan').click(function(){
-            window.open('{!!url("/ligisticsplan")!!}/'+newODate, 'SAMPLEV', "location=1,status=1,scrollbars=1, width=1500,height=850");
-        });
-
-        $('#reprinting').click(function(){
-
-            window.open('{!!url("/reprinting")!!}', 'Re-Print Route', "location=1,status=1,scrollbars=1, width=1500,height=850");
-        });
-
-        var toAppendRecentTruckIdFilter = '<option value=""></option>';
-
-        $('#recentTruckIDOnPrintButton').append(toAppendRecentTruckIdFilter);
-        $('#rouTabletLoadingtesonPlanning').multiselect({
-            columns: 1,
-            placeholder: 'Select Route(s)',
-            selectAll: true
-        });
-
-
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-
-        $('#suggestions').click(function(){
-            var orderType =$('#orderTypesTabletLoadingonPlanning').val();
-            var routeId =$('#rouTabletLoadingtesonPlanning').val();
-            if(orderType !='-99' && routeId !='-99'){
-                window.open('{!!url("/routePlannerSuggestions")!!}/'+$('#deliveryDatesonPlanning').val()+'/'+$('#orderTypesTabletLoadingonPlanning').val()+'/'+$('#rouTabletLoadingtesonPlanning').val()+'/'+$('#statusRoutePlanner').val());
-            }
-        });
-
-        $('#getOrders').click(function(){
-            getMultiRoutSelected();
-        });
-
-        $('#notifypickers').click(function(){
-
+        function getMultiRoutSelected(){
+            var massTotal = 0;
+            var orderval = 0;
+            // Perform actions after the data grid has finished loading
+            $('#massroute').val(0);
+            $('#orderval').val(0);
+            getMassAndRVal();
             $.ajax({
-                url: '{!!url("/notifypickers")!!}',
+                url: '{!!url("/getRouteDataMultiSelected")!!}',
                 type: "POST",
                 data: {
                     routeId: $('#rouTabletLoadingtesonPlanning').val(),
                     deliveryDate: $('#deliveryDatesonPlanning').val(),
                     OrderType: $('#orderTypesTabletLoadingonPlanning').val(),
-                    dateTo: $('#deliveryDatesonPlanning2').val()
-
+                    dateTo: $('#deliveryDatesonPlanning2').val(),
+                    status: $('#statusRoutePlanner').val()
                 },
                 success: function (data) {
-
-                    var dialog = $('<p><strong style="color:black"> <i>You Have Nofitied the Pickers to Pick </i>'+data+'</strong></p>').dialog({
-                        height: 200, width: 900, modal: true, containment: false,
-                        buttons: {
-                            "Okay": function () {
-                                dialog.dialog('close');
-                            },
-
-                        }
-                    });
-                }
-            });
-
-        });
-
-        $('#tabletLoadingGoonProducts').click(function(){
-            if (($('#deliveryDatesonPlanning').val()).length > 6)
-            {
-                window.open('{!!url("/listallProductsRoutePlanner")!!}/'+$('#deliveryDatesonPlanning').val()+'/'+$('#orderTypesTabletLoadingonPlanning').val()+'/'+$('#rouTabletLoadingtesonPlanning').val(), "products", "width=760, height=500, scrollbars=yes")
-
-            }
-            else {
-                alert("Please select Date")
-            }
-
-        });
-
-        $("#deliveryDatesonPlanning,#deliveryDatesonPlanning2,#delDateChange").datepicker({
-            changeMonth: true,//this option for allowing user to select month
-            changeYear: true,
-            dateFormat: 'yy-mm-dd'
-        });
-
-        // This function sequences the order
-        $('#setSequence').click(function(){
-            // This function sets the sequence of the Route!
-            var allGridItems =  $("#gridContainer").dxDataGrid("getDataSource").items();
-            var sortedOrderIds = new Array();
-
-            var seq = 0;
-
-            allGridItems.forEach((element, index, value) => {
-                sortedOrderIds.push({
-                    'index':seq,
-                    'orderId':element["OrderId"]
-                });
-                seq += 1;
-            });
-
-            // console.debug(sortedOrderIds);
-
-            $.ajax({
-                url: '{!!url("/sequencingTheStops")!!}',
-                type: "POST",
-                data: {ordersToStop:sortedOrderIds},
-
-                success: function (data) {
-                    alert(data.count+' Stops being Sequenced');
-                    location.reload();
-                }
-            });
-        });
-
-        // This Does a print preview of the route sequence
-        $('#printPriview').click(function(){
-            window.open( '{!!url("/routePlannerPrintPreview")!!}/'+$('#deliveryDatesonPlanning').val()+'/'+$('#deliveryDatesonPlanning2').val()+'/'+$('#orderTypesTabletLoadingonPlanning').val()+'/'+$('#rouTabletLoadingtesonPlanning').val()+'/'+$('#statusRoutePlanner').val(), "PREVIEW", "location=1,status=1,scrollbars=1, width=1200,height=850");
-        });
-
-        $('#invoicesnotprinting').click(function(){
-            window.open( '{!!url("/invoicesnotprinting")!!}', "Invoices Not printed", "location=1,status=1,scrollbars=1, width=1200,height=850");
-        });
-        $('#ligisticsplan').click(function(){
-            var Odate = new Date();
-            var newODate = $.datepicker.formatDate('dd-mm-yy', new Date(Odate));
-            window.open( '{!!url("/ligisticsplan")!!}/'+newODate, "ligisticsplan", "location=1,status=1,scrollbars=1, width=1200,height=850");
-        });
-
-        //The main big function !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        $('#moveSelectedOrders').on('click',function(){
-            var valuesProd = new Array();
-            // Get a reference to the dxDataGrid control
-            var dataGridInstance = $('#gridContainer').dxDataGrid('instance');
-
-            // Get the collection of selected rows
-            var selectedRows = dataGridInstance.getSelectedRowsData();
-
-            // Loop through the collection of selected rows
-            $.each(selectedRows, function(index, row) {
-                // console.log(row);
-                valuesProd.push({'orderId':row.OrderId})
-            });
-
-            showDialog('#popupmoveThis','60%',220);
-            $('#submitChanges').click(function(){
-                $.ajax({
-                    url: '{!!url("/moveTheOrderArray")!!}',
-                    type: "POST",
-                    data: {
-                        orderTypeId:$('#deliveryTypeRun').val(),
-                        routeId:$('#eRouteName').val(),
-                        orderId:valuesProd,
-                        delivDate:$('#delDateChange').val()
-                    },
-                    success: function (data) {
-                        console.log(data);
-                        // showDialog('#confirmMove','60%',220);
-                        alert("These Lines Have been Moved")
-                        window.location = '{!!url("/routePlannerExtParam")!!}/'+$('#deliveryDatesonPlanning').val()+'/'+$('#orderTypesTabletLoadingonPlanning').val()+'/1085/'+$('#statusRoutePlanner').val();
-                    }
-                });
-            });
-
-        });
-        //The main big function !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-    });
-
-    function showDialog(tag,width,height){
-        $( tag ).dialog({height: height, modal: false,
-            width: width,containment: false}).dialogExtend({
-            "closable" : true, // enable/disable close button
-            "maximizable" : false, // enable/disable maximize button
-            "minimizable" : true, // enable/disable minimize button
-            "collapsable" : true, // enable/disable collapse button
-            "dblclick" : "collapse", // set action on double click. false, 'maximize', 'minimize', 'collapse'
-            "titlebar" : false, // false, 'none', 'transparent'
-            "minimizeLocation" : "right", // sets alignment of minimized dialogues
-            "icons" : { // jQuery UI icon class
-                "close" : "ui-icon-circle-close",
-                "maximize" : "ui-icon-circle-plus",
-                "minimize" : "ui-icon-circle-minus",
-                "collapse" : "ui-icon-triangle-1-s",
-                "restore" : "ui-icon-bullet"
-            },
-            "load" : function(evt, dlg){ }, // event
-            "beforeCollapse" : function(evt, dlg){ }, // event
-            "beforeMaximize" : function(evt, dlg){ }, // event
-            "beforeMinimize" : function(evt, dlg){ }, // event
-            "beforeRestore" : function(evt, dlg){ }, // event
-            "collapse" : function(evt, dlg){  }, // event
-            "maximize" : function(evt, dlg){ }, // event
-            "minimize" : function(evt, dlg){  }, // event
-            "restore" : function(evt, dlg){  } // event
-        });
-    }
-
-    function getMultiRoutSelected(){
-        var massTotal = 0;
-        var orderval = 0;
-        // Perform actions after the data grid has finished loading
-        $('#massroute').val(0);
-        $('#orderval').val(0);
-        getMassAndRVal();
-        $.ajax({
-            url: '{!!url("/getRouteDataMultiSelected")!!}',
-            type: "POST",
-            data: {
-                routeId: $('#rouTabletLoadingtesonPlanning').val(),
-                deliveryDate: $('#deliveryDatesonPlanning').val(),
-                OrderType: $('#orderTypesTabletLoadingonPlanning').val(),
-                dateTo: $('#deliveryDatesonPlanning2').val(),
-                status: $('#statusRoutePlanner').val()
-            },
-            success: function (data) {
-                // console.log(data);
-                $("#gridContainer").dxDataGrid({
-                    dataSource:data, //as json
-                    hoverStateEnabled: true,
-                    showBorders: true,
-                    allowColumnResizing: true,
-                    columnAutoWidth: true,
-                    filterRow: { visible: true },
-                    // filterPanel: { visible: true },
-                    headerFilter: { visible: true },
-                    scrolling: {
-                        rowRenderingMode: 'infinite',
-                    },
-                    paging: true,
-                    loadPanel: {
-                        enabled: true,
-                        shadingColor: "rgba(0,0,0,0.4)",
-                        shading: true,
-                        showIndicator: true,
-                        text: "Loading..."
-                    },
-                    timeout: 60000,
-                    paging:{
-                        pageSize: Number.MAX_SAFE_INTEGER,
-                    },
-                    pager: {
-                        visible: true,
-                        allowedPageSizes: [5, 10, 20, 50, 'all'],
-                        showPageSizeSelector: true,
-                        showInfo: true,
-                        showNavigationButtons: true,
-                    },
-                    editing: {
-                        mode: 'batch',
-                        // allowUpdating: true,
-                        // allowDeleting: true,
-                    },
-                    selection: {
-                        mode: 'multiple',
-                    },
-                    rowDragging: {
-                        allowReordering: true,
-                        showDragIcons: false,
-                        onReorder(e) {
-                            const visibleRows = e.component.getVisibleRows();
-                            const toIndex = data.findIndex((item) => item.OrderId === visibleRows[e.toIndex].data.OrderId);
-                            const fromIndex = data.findIndex((item) => item.OrderId === e.itemData.OrderId);
-
-                            data.splice(fromIndex, 1);
-                            data.splice(toIndex, 0, e.itemData);
-
-                            e.component.refresh();
+                    // console.log(data);
+                    $("#gridContainer").dxDataGrid({
+                        dataSource:data, //as json
+                        hoverStateEnabled: true,
+                        showBorders: true,
+                        allowColumnResizing: true,
+                        columnAutoWidth: true,
+                        filterRow: { visible: true },
+                        // filterPanel: { visible: true },
+                        headerFilter: { visible: true },
+                        scrolling: {
+                            rowRenderingMode: 'infinite',
                         },
-                    },
-                    export: {
-                        enabled: true
-                    },
-                    onExporting(e) {
-                        const workbook = new ExcelJS.Workbook();
-                        const worksheet = workbook.addWorksheet('routeplanner');
+                        paging: true,
+                        loadPanel: {
+                            enabled: true,
+                            shadingColor: "rgba(0,0,0,0.4)",
+                            shading: true,
+                            showIndicator: true,
+                            text: "Loading..."
+                        },
+                        timeout: 60000,
+                        paging:{
+                            pageSize: Number.MAX_SAFE_INTEGER,
+                        },
+                        pager: {
+                            visible: true,
+                            allowedPageSizes: [5, 10, 20, 50, 'all'],
+                            showPageSizeSelector: true,
+                            showInfo: true,
+                            showNavigationButtons: true,
+                        },
+                        editing: {
+                            mode: 'batch',
+                            // allowUpdating: true,
+                            // allowDeleting: true,
+                        },
+                        selection: {
+                            mode: 'multiple',
+                        },
+                        rowDragging: {
+                            allowReordering: true,
+                            showDragIcons: false,
+                            onReorder(e) {
+                                const visibleRows = e.component.getVisibleRows();
+                                const toIndex = data.findIndex((item) => item.OrderId === visibleRows[e.toIndex].data.OrderId);
+                                const fromIndex = data.findIndex((item) => item.OrderId === e.itemData.OrderId);
 
-                        DevExpress.excelExporter.exportDataGrid({
-                            component: e.component,
-                            worksheet,
-                            autoFilterEnabled: true,
-                            customizeCell(options) {
-                                const { gridCell } = options;
-                                const { excelCell } = options;
-                               /* if (options.gridCell.data.Backorder === 1) {
-                                    options.backgroundColor = "red"; // Set the fill color here
-                                }
-                                if (options.gridCell.data.Locked === 1) {
-                                    options.backgroundColor = "#9b9bdc"; // Set the fill color here
-                                }
-                                if (options.gridCell.data.intNotification === 3) {
-                                    options.backgroundColor = "rgba(4, 255, 31, 0.54)"; // Set the fill color here
-                                }*/
+                                data.splice(fromIndex, 1);
+                                data.splice(toIndex, 0, e.itemData);
 
-                                if (gridCell.rowType === 'data') {
+                                e.component.refresh();
+                            },
+                        },
+                        export: {
+                            enabled: true
+                        },
+                        onExporting(e) {
+                            const workbook = new ExcelJS.Workbook();
+                            const worksheet = workbook.addWorksheet('routeplanner');
 
-                                    if (gridCell.data.Locked == "1") {
-                                        console.debug(gridCell.data.Locked);
+                            DevExpress.excelExporter.exportDataGrid({
+                                component: e.component,
+                                worksheet,
+                                autoFilterEnabled: true,
+                                customizeCell(options) {
+                                    const { gridCell } = options;
+                                    const { excelCell } = options;
+                                /* if (options.gridCell.data.Backorder === 1) {
+                                        options.backgroundColor = "red"; // Set the fill color here
+                                    }
+                                    if (options.gridCell.data.Locked === 1) {
                                         options.backgroundColor = "#9b9bdc"; // Set the fill color here
-                                        if (gridCell.column.dataField === 'StoreName') {
-                                            excelCell.fill = {   fgColor: { argb: '9b9bdc' } };
-                                        }
                                     }
-                                    /*if (gridCell.column.dataField === 'Phone') {
-                                        excelCell.value = parseInt(gridCell.value, 10);
-                                        excelCell.numFmt = '[<=9999999]###-####;(###) ###-####';
-                                    }
-                                    if (gridCell.column.dataField === 'Website') {
-                                        excelCell.value = { text: gridCell.value, hyperlink: gridCell.value };
-                                        excelCell.font = { color: { argb: 'FF0000FF' }, underline: true };
-                                        excelCell.alignment = { horizontal: 'left' };
+                                    if (options.gridCell.data.intNotification === 3) {
+                                        options.backgroundColor = "rgba(4, 255, 31, 0.54)"; // Set the fill color here
                                     }*/
-                                }
 
-                            },
-                        }).then(() => {
-                            workbook.xlsx.writeBuffer().then((buffer) => {
-                                saveAs(new Blob([buffer], { type: 'application/octet-stream' }), 'routeplanner.xlsx');
+                                    if (gridCell.rowType === 'data') {
+
+                                        if (gridCell.data.Locked == "1") {
+                                            console.debug(gridCell.data.Locked);
+                                            options.backgroundColor = "#9b9bdc"; // Set the fill color here
+                                            if (gridCell.column.dataField === 'StoreName') {
+                                                excelCell.fill = {   fgColor: { argb: '9b9bdc' } };
+                                            }
+                                        }
+                                        /*if (gridCell.column.dataField === 'Phone') {
+                                            excelCell.value = parseInt(gridCell.value, 10);
+                                            excelCell.numFmt = '[<=9999999]###-####;(###) ###-####';
+                                        }
+                                        if (gridCell.column.dataField === 'Website') {
+                                            excelCell.value = { text: gridCell.value, hyperlink: gridCell.value };
+                                            excelCell.font = { color: { argb: 'FF0000FF' }, underline: true };
+                                            excelCell.alignment = { horizontal: 'left' };
+                                        }*/
+                                    }
+
+                                },
+                            }).then(() => {
+                                workbook.xlsx.writeBuffer().then((buffer) => {
+                                    saveAs(new Blob([buffer], { type: 'application/octet-stream' }), 'routeplanner.xlsx');
+                                });
                             });
-                        });
-                        e.cancel = true;
-                    },
-
-                    columns: [
-                        {
-                            dataField: "OrderDate",
-                            caption: "Order Date",
-                        },{
-                            dataField: "DeliveryDate",
-                            caption: "Delivery date",
-                        },{
-                            dataField: "Route",
-                            caption: "Route",
-                        },{
-                            dataField: "StoreName",
-                            caption: "Customer",
-                            cellTemplate: function(container, options) {
-                                    container.css('background-color', '#f8ff18'); // Set background color to green
-                                    container.text(options.data.StoreName);
-                            }
-                        },{
-                            dataField: "InvoiceNo",
-                            caption: "Invoice No",
-                        },{
-                            dataField: "OrderId",
-                            caption: "Order ID",
-                        },{
-                            dataField: "OrderType",
-                            caption: "Del Type",
-                        },{
-                            dataField: "DeliverySequence",
-                            caption: "Seq",
-                        },{
-                            dataField: "Mass",
-                            caption: "Mass",
-                        },{
-                            dataField: "OrderValue",
-                            caption: "Order Val",
-                            customizeText: function(cellInfo) {
-                                return Number(cellInfo.value).toFixed(2);
-                            }
-                        },{
-                            dataField: "deliveryAddress1",
-                            caption: "Address",
-                        },{
-                            dataField: "optionalField",
-                            caption: "Notes",
-                        },{
-                            dataField: "tTime",
-                            caption: "On Hold",
-                        }
-                    ],
-                    onRowUpdating: function(e){
-                    },
-                    onRowRemoving: function(e) {
-                    },
-                    onRowPrepared(e) {
-
-                        if (e.rowType == 'data' && e.data.intNotification ==3) {
-                            e.rowElement.css('background',  'rgba(4, 255, 31, 0.54)');
-                        }
-                        if (e.rowType == 'data' && e.data.Locked ==1) {
-                            e.rowElement.css('background', '#9b9bdc');
-                        }
-                        if (e.rowType == 'data' && e.data.Backorder ==1) {
-                            e.rowElement.css('background', 'red');
-                        }
-                        if (e.rowType == 'data'){
-                            massTotal = parseFloat(massTotal) + parseFloat(e.data.Mass);
-                            orderval = parseFloat(orderval) + parseFloat(e.data.OrderValue);
-
-                        }
-
-
-
-
-                    },
-                    onSelectionChanged: function(e) {
-                        var selectedRows = e.selectedRowsData;
-                        $('#totalorders').text("STOPS: "+selectedRows.length);
-                    },
-                    onRowDblClick: function (e) {
-                        console.debug("Order Id");
-                        console.debug(e);
-                        var orderId =  e.data.OrderId;
-                        window.open('{!!url("/productontheminiorderform")!!}/'+orderId, "OrderId", "width=760, height=500, scrollbars=yes")
-
-                    },
-                    onContentReady: function(e) {
-                        // Perform actions after the data grid has finished loading
-                    }
-                });
-            }
-        });
-    }
-
-    function Selectallcheckbox(element,orderid){
-
-        //url = sendCommunicationForCreditControl
-        /*if(element == "1")
-        {
-            $("#creditOnHold").show();
-            showDialog("#creditOnHold", 400 ,400);
-
-            $("#reportOnHold").click(function(){
-
-                    $.ajax({
-                        url:  ,
-                        type: "GET",
-                        data:{
-                            orderID:orderid
+                            e.cancel = true;
                         },
-                        success: function(data){
 
+                        columns: [
+                            {
+                                dataField: "OrderDate",
+                                caption: "Order Date",
+                            },{
+                                dataField: "DeliveryDate",
+                                caption: "Delivery date",
+                            },{
+                                dataField: "Route",
+                                caption: "Route",
+                            },{
+                                dataField: "StoreName",
+                                caption: "Customer",
+                                cellTemplate: function(container, options) {
+                                        container.css('background-color', '#f8ff18'); // Set background color to green
+                                        container.text(options.data.StoreName);
+                                }
+                            },{
+                                dataField: "InvoiceNo",
+                                caption: "Invoice No",
+                            },{
+                                dataField: "OrderId",
+                                caption: "Order ID",
+                            },{
+                                dataField: "OrderType",
+                                caption: "Del Type",
+                            },{
+                                dataField: "DeliverySequence",
+                                caption: "Seq",
+                            },{
+                                dataField: "Mass",
+                                caption: "Mass",
+                            },{
+                                dataField: "OrderValue",
+                                caption: "Order Val",
+                                customizeText: function(cellInfo) {
+                                    return Number(cellInfo.value).toFixed(2);
+                                }
+                            },{
+                                dataField: "deliveryAddress1",
+                                caption: "Address",
+                            },{
+                                dataField: "optionalField",
+                                caption: "Notes",
+                            },{
+                                dataField: "tTime",
+                                caption: "On Hold",
+                            }
+                        ],
+                        onRowUpdating: function(e){
+                        },
+                        onRowRemoving: function(e) {
+                        },
+                        onRowPrepared(e) {
+
+                            if (e.rowType == 'data' && e.data.intNotification ==3) {
+                                e.rowElement.css('background',  'rgba(4, 255, 31, 0.54)');
+                            }
+                            if (e.rowType == 'data' && e.data.Locked ==1) {
+                                e.rowElement.css('background', '#9b9bdc');
+                            }
+                            if (e.rowType == 'data' && e.data.Backorder ==1) {
+                                e.rowElement.css('background', 'red');
+                            }
+                            if (e.rowType == 'data'){
+                                massTotal = parseFloat(massTotal) + parseFloat(e.data.Mass);
+                                orderval = parseFloat(orderval) + parseFloat(e.data.OrderValue);
+
+                            }
+
+
+
+
+                        },
+                        onSelectionChanged: function(e) {
+                            var selectedRows = e.selectedRowsData;
+                            $('#totalorders').text("STOPS: "+selectedRows.length);
+                        },
+                        onRowDblClick: function (e) {
+                            console.debug("Order Id");
+                            console.debug(e);
+                            var orderId =  e.data.OrderId;
+                            window.open('{!!url("/productontheminiorderform")!!}/'+orderId, "OrderId", "width=760, height=500, scrollbars=yes")
+
+                        },
+                        onContentReady: function(e) {
+                            // Perform actions after the data grid has finished loading
                         }
                     });
-
+                }
             });
+        }
 
+        function Selectallcheckbox(element,orderid){
 
-        }*/
+            //url = sendCommunicationForCreditControl
+            /*if(element == "1")
+            {
+                $("#creditOnHold").show();
+                showDialog("#creditOnHold", 400 ,400);
 
-    }
+                $("#reportOnHold").click(function(){
 
-    function printDoc(url,docType,docID,isDeliveryNote,invoiceNumber){
-        $.ajax({
-            url: url ,
-            type: "POST",
-            data:{DocType:docType,DocId:docID,PrintDeliveryNote:isDeliveryNote,invoiceNumber:invoiceNumber},
-            success: function(data){
+                        $.ajax({
+                            url:  ,
+                            type: "GET",
+                            data:{
+                                orderID:orderid
+                            },
+                            success: function(data){
 
-            }
-        });
-    }
-
-    function truckControlSheetHeaderOnFiltering(truckControlId){
-        $.ajax({
-            url: '{!!url("/getTruckControlSheetHeaderByTruckId")!!}',
-            type: "POST",
-            data: {
-                truckControlID: truckControlId
-            },
-            success: function (data) {
-                $('#truckName').prepend('<option value="'+data[0].TruckId+'" selected="selected">'+data[0].TruckName+'</option>');
-                $('#driver').prepend('<option value="'+data[0].DriverId+'" selected="selected">'+data[0].DriverName+'</option>');
-                $('#assistant').prepend('<option value="'+data[0].assistantId+'" selected="selected">'+data[0].Assistant+'</option>');
-                $('#dateCreateForControlSheet').val(data[0].DateCreated);
-                $('#delvDateForControlSheet').val(data[0].DeliveryDate);
-            }
-        });
-    }
-
-    function truckControlSheetDetails(truckControlId){
-        $.ajax({
-            url: '{!!url("/truckControlSheetDetails")!!}',
-            type: "GET",
-            data: {
-                truckControlID: truckControlId
-            },
-            success: function (data) {
-                var trHTML = '';
-                // $('.onDrag').remove();
-                $.each(data, function (key, value) {
-                    trHTML += '<tr role="row" class="onDrag2"  style="font-size: 9px;color:black;height: 26px;"><td>' +
-                        value.DeliveryDate + '</td><td>' +
-                        value.Route + '</td><td>' +
-                        value.StoreName + '</td><td>' +
-                        value.InvoiceNo + '</td><td>' +
-                        value.OrderId + '</td><td  style="font-weight:900">' +
-                        value.OrderValue + '</td><td>' +
-                        value.DeliverySequence + '</td><td>' +
-                        '</tr>';
-                });
-                $('#sequenced').append(trHTML);
-            }
-        });
-    }
-    function getMassAndRVal(){
-        $.ajax({
-            url: '{!!url("/getRouteMassOnPlanner")!!}',
-            type: "GET",
-            data: {
-                dateFrom: $('#deliveryDatesonPlanning').val(),
-                dateTo:  $('#deliveryDatesonPlanning2').val()
-            },
-            success: function (data) {
-                var trHTML = '';
-                // $('.onDrag').remove();
-                console.debug("___________mass");
-
-                $.each(data, function (key, value) {
-                    console.debug( value.Mass);
-                    $('#massroute').val(value.Mass);
-                    $('#orderval').val(value.randVal);
+                            }
+                        });
 
                 });
 
-            }
-        });
-    }
 
-    /**
-     * Log data into tblManagementConsole
-     * @param url
-     * @param ConsoleTypeId
-     * @param Importance
-     * @param Message
-     * @param Reviewed
-     * @param OrderId
-     * @param productid
-     * @param CustomerId
-     * @param OldQty
-     * @param NewQty
-     * @param OldPrice
-     * @param NewPrice
-     * @param ReferenceNo
-     * @param DocType
-     *  @param machine
-     * @param DocNumber
-     * @param ReturnId
-     */
-    function consoleManagement(url,ConsoleTypeId,Importance,Message,Reviewed,OrderId,productid,CustomerId,OldQty,NewQty,OldPrice,NewPrice,ReferenceNo,DocType,machine,DocNumber,ReturnId){
-        $.ajax({
-            url:url,
-            type: "POST",
-            data:{ConsoleTypeId:ConsoleTypeId,
-                Importance:Importance,
-                Message:Message,
-                Reviewed:Reviewed,
-                OrderId:OrderId,
-                productid:productid,
-                CustomerId:CustomerId,
-                OldQty:OldQty,
-                NewQty:NewQty,
-                ReviewedUserId:0,
-                OldPrice:OldPrice,
-                NewPrice:NewPrice,
-                ReferenceNo:ReferenceNo,
-                DocType:DocType,
-                DocNumber:DocNumber,
-                machine:machine,
-                ReturnId:ReturnId,
+            }*/
 
-            },
-            success: function(data){
-                //dd(data);
-                //Try to use web sql
-            }});
+        }
 
-    }
+        function printDoc(url,docType,docID,isDeliveryNote,invoiceNumber){
+            $.ajax({
+                url: url ,
+                type: "POST",
+                data:{DocType:docType,DocId:docID,PrintDeliveryNote:isDeliveryNote,invoiceNumber:invoiceNumber},
+                success: function(data){
 
-    function consoleManagementAuths(url,ConsoleTypeId,Importance,Message,Reviewed,OrderId,productid,CustomerId,OldQty,NewQty,OldPrice,NewPrice,ReferenceNo,DocType,machine,DocNumber,ReturnId,userId,userName){
-        $.ajax({
-            url:url,
-            type: "POST",
-            data:{ConsoleTypeId:ConsoleTypeId,
-                Importance:Importance,
-                Message:Message,
-                Reviewed:Reviewed,
-                OrderId:OrderId,
-                productid:productid,
-                CustomerId:CustomerId,
-                OldQty:OldQty,
-                NewQty:NewQty,
-                ReviewedUserId:0,
-                OldPrice:OldPrice,
-                NewPrice:NewPrice,
-                ReferenceNo:ReferenceNo,
-                DocType:DocType,
-                DocNumber:DocNumber,
-                machine:machine,
-                ReturnId:ReturnId,
-                userId:userId,
-                userName:userName,
+                }
+            });
+        }
 
-            },
-            success: function(data){
-                // dd(data);
-                //Try to use web sql
-            }});
+        function truckControlSheetHeaderOnFiltering(truckControlId){
+            $.ajax({
+                url: '{!!url("/getTruckControlSheetHeaderByTruckId")!!}',
+                type: "POST",
+                data: {
+                    truckControlID: truckControlId
+                },
+                success: function (data) {
+                    $('#truckName').prepend('<option value="'+data[0].TruckId+'" selected="selected">'+data[0].TruckName+'</option>');
+                    $('#driver').prepend('<option value="'+data[0].DriverId+'" selected="selected">'+data[0].DriverName+'</option>');
+                    $('#assistant').prepend('<option value="'+data[0].assistantId+'" selected="selected">'+data[0].Assistant+'</option>');
+                    $('#dateCreateForControlSheet').val(data[0].DateCreated);
+                    $('#delvDateForControlSheet').val(data[0].DeliveryDate);
+                }
+            });
+        }
 
-    }
+        function truckControlSheetDetails(truckControlId){
+            $.ajax({
+                url: '{!!url("/truckControlSheetDetails")!!}',
+                type: "GET",
+                data: {
+                    truckControlID: truckControlId
+                },
+                success: function (data) {
+                    var trHTML = '';
+                    // $('.onDrag').remove();
+                    $.each(data, function (key, value) {
+                        trHTML += '<tr role="row" class="onDrag2"  style="font-size: 9px;color:black;height: 26px;"><td>' +
+                            value.DeliveryDate + '</td><td>' +
+                            value.Route + '</td><td>' +
+                            value.StoreName + '</td><td>' +
+                            value.InvoiceNo + '</td><td>' +
+                            value.OrderId + '</td><td  style="font-weight:900">' +
+                            value.OrderValue + '</td><td>' +
+                            value.DeliverySequence + '</td><td>' +
+                            '</tr>';
+                    });
+                    $('#sequenced').append(trHTML);
+                }
+            });
+        }
+        function getMassAndRVal(){
+            $.ajax({
+                url: '{!!url("/getRouteMassOnPlanner")!!}',
+                type: "GET",
+                data: {
+                    dateFrom: $('#deliveryDatesonPlanning').val(),
+                    dateTo:  $('#deliveryDatesonPlanning2').val()
+                },
+                success: function (data) {
+                    var trHTML = '';
+                    // $('.onDrag').remove();
+                    console.debug("___________mass");
 
-</script>
+                    $.each(data, function (key, value) {
+                        console.debug( value.Mass);
+                        $('#massroute').val(value.Mass);
+                        $('#orderval').val(value.randVal);
+
+                    });
+
+                }
+            });
+        }
+
+        /**
+         * Log data into tblManagementConsole
+         * @param url
+         * @param ConsoleTypeId
+         * @param Importance
+         * @param Message
+         * @param Reviewed
+         * @param OrderId
+         * @param productid
+         * @param CustomerId
+         * @param OldQty
+         * @param NewQty
+         * @param OldPrice
+         * @param NewPrice
+         * @param ReferenceNo
+         * @param DocType
+         *  @param machine
+         * @param DocNumber
+         * @param ReturnId
+         */
+        function consoleManagement(url,ConsoleTypeId,Importance,Message,Reviewed,OrderId,productid,CustomerId,OldQty,NewQty,OldPrice,NewPrice,ReferenceNo,DocType,machine,DocNumber,ReturnId){
+            $.ajax({
+                url:url,
+                type: "POST",
+                data:{ConsoleTypeId:ConsoleTypeId,
+                    Importance:Importance,
+                    Message:Message,
+                    Reviewed:Reviewed,
+                    OrderId:OrderId,
+                    productid:productid,
+                    CustomerId:CustomerId,
+                    OldQty:OldQty,
+                    NewQty:NewQty,
+                    ReviewedUserId:0,
+                    OldPrice:OldPrice,
+                    NewPrice:NewPrice,
+                    ReferenceNo:ReferenceNo,
+                    DocType:DocType,
+                    DocNumber:DocNumber,
+                    machine:machine,
+                    ReturnId:ReturnId,
+
+                },
+                success: function(data){
+                    //dd(data);
+                    //Try to use web sql
+                }});
+
+        }
+
+        function consoleManagementAuths(url,ConsoleTypeId,Importance,Message,Reviewed,OrderId,productid,CustomerId,OldQty,NewQty,OldPrice,NewPrice,ReferenceNo,DocType,machine,DocNumber,ReturnId,userId,userName){
+            $.ajax({
+                url:url,
+                type: "POST",
+                data:{ConsoleTypeId:ConsoleTypeId,
+                    Importance:Importance,
+                    Message:Message,
+                    Reviewed:Reviewed,
+                    OrderId:OrderId,
+                    productid:productid,
+                    CustomerId:CustomerId,
+                    OldQty:OldQty,
+                    NewQty:NewQty,
+                    ReviewedUserId:0,
+                    OldPrice:OldPrice,
+                    NewPrice:NewPrice,
+                    ReferenceNo:ReferenceNo,
+                    DocType:DocType,
+                    DocNumber:DocNumber,
+                    machine:machine,
+                    ReturnId:ReturnId,
+                    userId:userId,
+                    userName:userName,
+
+                },
+                success: function(data){
+                    // dd(data);
+                    //Try to use web sql
+                }});
+
+        }
+
+    </script>
+
+</x-app-layout>
