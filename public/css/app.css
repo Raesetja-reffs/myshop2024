@@ -159,4 +159,12 @@ if you want change the side menu background color end*/
 .scrollable-tbody {
     max-height: 400px;
     overflow-y: auto;
-  }
+}
+.fixed-parent {
+    position: fixed;
+    background-color: black; /* Adjust background color as needed */
+    z-index: 1000; /* Set z-index to ensure it appears above other elements */
+    bottom: 10px;
+    padding: 5px;
+    width: 93%;
+}

@@ -274,25 +274,26 @@
         </div>
     </div>
 </div>
-<div class="row">
-    <div class="col-md-12 hidebody">
-        <div class="card">
-            <div class="card-body">
-                <div class="d-flex justify-content-end">
-                    {{-- <button type="button" id="printPDFPickIndOrder" class="btn btn-warning btn-sm ms-2"
+<div class="row fixed-parent hidebody">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-6">
+                {{-- <button type="button" id="printPDFPickIndOrder" class="btn btn-warning btn-sm ms-2"
                         style="display:none">Print Picking Slip</button> --}}
-                    <button type="button" id="abilityToEmailOrder" class="btn btn-warning btn-sm ms-2"
-                        style="">Email Order</button>
-                    {{-- <button type="button" id="copyThisOrder" class="btn btn-warning btn-sm ms-2"
+                <button type="button" id="abilityToEmailOrder" class="btn btn-warning btn-sm ms-2"
+                    style="">Email Order</button>
+                {{-- <button type="button" id="copyThisOrder" class="btn btn-warning btn-sm ms-2"
                         style="display:none">Copy Order</button> --}}
-                    {{-- <button type="button" id="printDocument" class="btn btn-primary btn-sm ms-2"
+                {{-- <button type="button" id="printDocument" class="btn btn-primary btn-sm ms-2"
                         style="display:none;">Print</button> --}}
-                    @if ($printinvoices != '0')
-                        <button id="invoiceNow" name="invoiceNow" class="btn btn-danger btn-sm ms-2">Print</button>
-                    @endif
-                    <button id="reprintInvoice" name="reprintInvoice" class="btn btn-success btn-sm ms-2">Re-Print</button>
-                    <button type="button" id="finishOrder" class="btn btn-primary btn-sm hidebody ms-2">Finish</button>
-                </div>
+                @if ($printinvoices != '0')
+                    <button id="invoiceNow" name="invoiceNow" class="btn btn-danger btn-sm ms-2">Print</button>
+                @endif
+                <button id="reprintInvoice" name="reprintInvoice"
+                    class="btn btn-success btn-sm ms-2">Re-Print</button>
+            </div>
+            <div class="col-md-6">
+                <button type="button" id="finishOrder" class="btn btn-primary btn-sm hidebody ms-2">Finish</button>
             </div>
         </div>
     </div>
