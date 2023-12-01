@@ -186,4 +186,6 @@ return [
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 
+    'js_version' => '1701440353',
+    'css_version' => '1701440353',
 ];
