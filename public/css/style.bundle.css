@@ -28189,7 +28189,7 @@ textarea.form-control-lg {
   --bs-lg:992px;
   --bs-xl:1200px;
   --bs-xxl:1400px;
-  --bs-scrollbar-size: 5px;
+  --bs-scrollbar-size: 10px;
   --bs-scrollbar-overlay-size: 19px;
   --bs-scrollbar-overlay-space: 7px;
   --bs-white-bg-rgb: 255, 255, 255;
