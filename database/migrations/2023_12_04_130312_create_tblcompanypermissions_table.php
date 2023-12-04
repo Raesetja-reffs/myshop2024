@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tblcompanypermissions', function (Blueprint $table) {
+        Schema::create('tblCompanyPermissions', function (Blueprint $table) {
             $table->id('intAutoId');
             $table->integer('intCompanyRoleId');
             $table->integer('intCompanyId')->default(0);
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tblcompanypermissions');
+        Schema::dropIfExists('tblCompanyPermissions');
     }
 };

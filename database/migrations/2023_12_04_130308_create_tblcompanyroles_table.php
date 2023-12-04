@@ -11,13 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tblcompanyroles', function (Blueprint $table) {
+        Schema::create('tblCompanyRoles', function (Blueprint $table) {
             $table->id('intAutoId');
             $table->string('strPermissionAbv', 10);
             $table->string('strPermissionName', 100);
+            $table->string('strSlug', 100);
             $table->string('strGroupName', 100);
+            $table->mediumText('strDescription');
             $table->timestamps();
-            $table->index(['strPermissionAbv', 'strPermissionName', 'strGroupName']);
+            $table->index(['strPermissionAbv', 'strPermissionName', 'strGroupName', 'strSlug']);
         });
     }
 
@@ -26,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tblcompanyroles');
+        Schema::dropIfExists('tblCompanyRoles');
     }
 };

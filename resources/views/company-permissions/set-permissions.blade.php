@@ -26,6 +26,7 @@
         <div class="col-md-12 mt-5">
             <div class="card">
                 <div class="card-body">
+                    <x-input-label class="mb-3" for="app_id" :value="__('App Role Selection')" />
                     <div class="row">
                         @if ($companyRoles->isEmpty())
                             <div class="col-12 d-flex align-items-center justify-content-center">
@@ -41,11 +42,11 @@
                                                 name="appRoles[{{ $companyRole->id }}]" type="checkbox"
                                                 class='form-check-input' :value="1" :checkboxValue="old(
                                                     'appRoles[{{ $companyRole->id }}]',
-                                                    in_array($companyRole->id, $companyAppRoles),
+                                                    in_array($companyRole->id, $companyPermissions),
                                                 )" required
                                                 autofocus autocomplete="role{{ $companyRole->id }}" />
                                             <span></span>
-                                            {{ $companyRole->name }}
+                                            {{ $companyRole->strPermissionName }}
                                         </x-input-label>
                                     </div>
                                 </div>
