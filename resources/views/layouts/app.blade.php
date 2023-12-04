@@ -53,9 +53,14 @@
     <script src="{{ asset('js/app.js?v=' . config('app.js_version')) }}"></script>
 </head>
 
+@php $sidebaropenValue = 'on'; @endphp
+@if (isset($sidebaropen))
+    @php $sidebaropenValue = ''; @endphp
+@endif
+
 <body id="kt_body"
     class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled toolbar-fixed toolbar-tablet-and-mobile-fixed aside-enabled aside-fixed"
-    style="--kt-toolbar-height:55px;--kt-toolbar-height-tablet-and-mobile:55px" data-kt-aside-minimize="on">
+    style="--kt-toolbar-height:55px;--kt-toolbar-height-tablet-and-mobile:55px" data-kt-aside-minimize="{{ $sidebaropenValue }}">
     <!--begin::Theme mode setup on page load-->
     @include('layouts.theme-mode')
     <!--end::Theme mode setup on page load-->

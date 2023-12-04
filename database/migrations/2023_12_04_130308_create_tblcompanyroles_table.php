@@ -11,14 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('laravel_users', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
+        Schema::create('tblcompanyroles', function (Blueprint $table) {
+            $table->id('intAutoId');
+            $table->string('strPermissionAbv', 10);
+            $table->string('strPermissionName', 100);
+            $table->string('strGroupName', 100);
             $table->timestamps();
+            $table->index(['strPermissionAbv', 'strPermissionName', 'strGroupName']);
         });
     }
 
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('laravel_users');
+        Schema::dropIfExists('tblcompanyroles');
     }
 };
