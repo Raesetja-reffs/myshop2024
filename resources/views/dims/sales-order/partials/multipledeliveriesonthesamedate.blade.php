@@ -21,7 +21,7 @@
     </div>
 </div>
 <script>
-    function multipleDeliveriesOnTheSameDateShowPopUp(data) {
+    function multipleDeliveriesOnTheSameDateShowPopUp(data, dialog) {
         $('#multipleDeliveriesOnTheSameDate').show();
         $("#multipleDeliveriesOnTheSameDate")
             .dialog({

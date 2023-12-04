@@ -1445,7 +1445,7 @@
                                         }
                                         var $row = $(`
                                             <tr id="new_row_ajax${tokenId}" class="fast_remove">
-                                                <td>
+                                                <td class="text-center">
                                                     <input type="hidden" id="title_${tokenId}" class="title" value="" />
                                                     <input type="hidden" id="theOrdersDetailsId" value="${valueDetails.OrderDetailId}" />
                                                     <input type="hidden" id ="taxCode${tokenId}" value="${valueDetails.Tax}" class="taxCodes" />
@@ -1460,8 +1460,8 @@
                                                     <input type="hidden" id ="strBulkUnit${tokenId}" value="" class="strBulkUnit" />
                                                     <input type="hidden" id ="prohibited_${tokenId}" value="" class="prohibited" />
                                                     <input type="hidden" id ="productmarginauth${tokenId}" value="1" class="productmarginauth" />
-                                                    <button type="button" id="deleteaLine" value="${valueDetails.OrderDetailId}" class="getOrderDetailLine btn btn-danger btn-sm">
-                                                        Delete
+                                                    <button type="button" id="deleteaLine" value="${valueDetails.OrderDetailId}" class="getOrderDetailLine btn btn-icon btn-danger btn-sm btn-sm-icon">
+                                                        <i class="bi bi-trash3-fill fs-4"></i>
                                                     </button>
                                                 </td>
                                                 <td contenteditable="false">
@@ -1757,7 +1757,8 @@
                             '<p>Sorry there is already an order for that delivery date,please click <strong style="color:#356a1b">YES</strong> to add another , <strong style="color:red">NO</strong> to view the existing order or <strong style="color:blue">CANCEL</strong> to restart the process</p>'
                             ).dialog({
                             height: 200,
-                            width: 700,
+                            width: "auto",
+                            maxWidth: 700,
                             buttons: {
                                 "Yes": {
                                     text: "Yes",
@@ -1771,7 +1772,7 @@
                                     text: "No",
                                     class: "btn btn-danger btn-sm",
                                     click: function() {
-                                        multipleDeliveriesOnTheSameDateShowPopUp(data);
+                                        multipleDeliveriesOnTheSameDateShowPopUp(data, dialog);
                                     }
                                 },
                                 "Cancel": {
@@ -9479,7 +9480,7 @@
                     }
                     var $row = $(`
                         <tr id="new_row_ajax${tokenId}" class="fast_remove">
-                            <td>
+                            <td class="text-center">
                                 <input type="hidden" id="title_${tokenId}" class="title" value="" />
                                 <input type="hidden" id="theOrdersDetailsId" value="${valueDetails.OrderDetailId}" />
                                 <input type="hidden" id ="taxCode${tokenId}" value="${valueDetails.Tax}" class="taxCodes" />
@@ -9494,8 +9495,8 @@
                                 <input type="hidden" id ="strBulkUnit${tokenId}" value="" class="strBulkUnit" />
                                 <input type="hidden" id ="prohibited_${tokenId}" value="" class="prohibited" />
                                 <input type="hidden" id ="productmarginauth${tokenId}" value="1" class="productmarginauth" />
-                                <button type="button" id="deleteaLine" value="${valueDetails.OrderDetailId}" class="getOrderDetailLine btn btn-danger btn-sm">
-                                    Delete
+                                <button type="button" id="deleteaLine" value="${valueDetails.OrderDetailId}" class="getOrderDetailLine btn btn-icon btn-danger btn-sm btn-sm-icon">
+                                    <i class="bi bi-trash3-fill fs-4"></i>
                                 </button>
                             </td>
                             <td contenteditable="false">
@@ -9596,7 +9597,7 @@
                     }
                     var $row = $(`
                         <tr id="new_row_ajax${tokenId}" class="fast_remove">
-                            <td>
+                            <td class="text-center">
                                 <input type="hidden" id="title_${tokenId}" class="title" value="" />
                                 <input type="hidden" id="theOrdersDetailsId" value="${valueDetails.OrderDetailId}" />
                                 <input type="hidden" id ="taxCode${tokenId}" value="${valueDetails.Tax}" class="taxCodes" />
@@ -9611,8 +9612,8 @@
                                 <input type="hidden" id ="strBulkUnit${tokenId}" value="" class="strBulkUnit" />
                                 <input type="hidden" id ="prohibited_${tokenId}" value="" class="prohibited" />
                                 <input type="hidden" id ="productmarginauth${tokenId}" value="1" class="productmarginauth" />
-                                <button type="button" id="deleteaLine" value="${valueDetails.OrderDetailId}" class="getOrderDetailLine btn btn-danger btn-sm">
-                                    Delete
+                                <button type="button" id="deleteaLine" value="${valueDetails.OrderDetailId}" class="getOrderDetailLine btn btn-icon btn-danger btn-sm btn-sm-icon">
+                                    <i class="bi bi-trash3-fill fs-4"></i>
                                 </button>
                             </td>
                             <td contenteditable="false">
