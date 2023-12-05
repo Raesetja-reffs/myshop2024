@@ -13,14 +13,20 @@ class CompanyPermissionController extends Controller
      */
     public function setPermissions()
     {
-        $data = CompanyRole::orderBy('strPermissionName', 'desc')->get();
+        $data = CompanyRole::orderBy('strGroupName', 'asc')
+            ->orderBy('strPermissionName', 'desc')
+            ->get();
         $companyRoles = [];
         if ($data) {
             foreach ($data as $record) {
                 $companyRoles[$record['strGroupName']][] = $record;
             }
         }
-        $companyPermissions = [];
+        $companyPermissions = CompanyPermission::where('intCompanyId', 0)
+            ->where('bitActive', 1)
+            ->select('intCompanyRoleId')
+            ->pluck('intCompanyRoleId')
+            ->toArray();
 
         return view('company-permissions.set-permissions', compact('companyRoles', 'companyPermissions'));
     }
@@ -28,10 +34,25 @@ class CompanyPermissionController extends Controller
     /**
      * This function is used for save the company permissions
      */
-    public function savePermissions()
+    public function savePermissions(Request $request)
     {
-        $permissions = [];
+        if ($request->has('companyRoles')) {
+            foreach ($request->get('companyRoles') as $roleId => $value) {
+                $isExist = CompanyPermission::where('intCompanyId', $request->get('intCompanyId'))
+                    ->where('intCompanyRoleId', $roleId)
+                    ->first();
+                if ($isExist) {
+                    $isExist->update(['bitActive' => $value]);
+                } else {
+                    CompanyPermission::create([
+                        'intCompanyId' => $request->get('intCompanyId'),
+                        'intCompanyRoleId' => $roleId,
+                        'bitActive' => $value,
+                    ]);
+                }
+            }
+        }
 
-        return view('company-permissions.show', compact('permissions'));
+        return redirect()->route('company-permissions.set-permissions')->with('success', 'Company Permissions has been successfully saved.');
     }
 }

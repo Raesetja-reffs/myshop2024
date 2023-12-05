@@ -38,7 +38,11 @@
                     <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
                         @if (isset($menuItem['href']))
                             <a class="menu-link" href="{{ $menuItem['href'] }}"
-                                onclick="window.open(this.href, '{{ $menuItem['windowopen']['name'] }}','left=20,top=20,width={{ $menuItem['windowopen']['width'] }},height={{ $menuItem['windowopen']['height'] }},toolbar=1,resizable=0'); return false;">
+                                @if (isset($menuItem['windowopen']))
+                                    onclick="window.open(this.href, '{{ $menuItem['windowopen']['name'] }}','left=20,top=20,width={{ $menuItem['windowopen']['width'] }},height={{ $menuItem['windowopen']['height'] }},toolbar=1,resizable=0'); return false;"
+                                @else
+                                    onclick="window.location.href = '{{ $menuItem['href'] }}'; return false;"
+                                @endif>
                                 <span class="menu-icon">
                                     <span class="{{ $menuItem['icon'] }}"></span>
                                 </span>

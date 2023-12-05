@@ -9,4 +9,16 @@ class CompanyPermission extends Model
 {
     use HasFactory;
     protected $table = 'tblCompanyPermissions';
+    protected $primaryKey = 'intAutoId';
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'intCompanyRoleId',
+        'intCompanyId',
+        'bitActive',
+    ];
 }

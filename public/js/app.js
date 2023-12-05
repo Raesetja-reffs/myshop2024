@@ -19,11 +19,14 @@ $(document).ready(function() {
     // Call the function initially and then update every second
     dims24_updateDateTime();
     setInterval(dims24_updateDateTime, 1000);
+    $(document).on('click', 'form button[type="submit"]', function() {
+        $(this).attr("data-kt-indicator", "on");
+    });
 });
 
 function showAlert(type, message) {
     $("#kt_content_container").prepend(`
-        <div class="alert alert-${type} d-flex align-items-center p-2">
+        <div class="alert alert-${type} d-flex align-items-center p-1 mt-5 mb-0">
             <i class="ki-outline  ki-shield-tick fs-2hx text-${type} me-2"></i>
             <div class="d-flex flex-column">
                 <h4 class="mb-1 text-${type}">${message}</h4>

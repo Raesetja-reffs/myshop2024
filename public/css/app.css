@@ -176,3 +176,6 @@ if you want change the side menu background color end*/
         height: 500px !important;
     }
 }
+.btn-height-auto {
+    height: auto;
+}

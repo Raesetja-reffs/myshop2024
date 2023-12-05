@@ -9,6 +9,7 @@ class CompanyRole extends Model
 {
     use HasFactory;
     protected $table = 'tblCompanyRoles';
+    protected $primaryKey = 'intAutoId';
 
     /**
      * The attributes that are mass assignable.
