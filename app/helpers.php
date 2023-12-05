@@ -405,7 +405,7 @@ if (!function_exists('getMenuItems')) {
                 ]
             ],
             [
-                'name' => 'ONLINE',
+                'name' => 'E-Commerce',
                 'icon' => 'fa mi-smartphone',
                 'submenuitems' => [
                     [

@@ -44,7 +44,7 @@
                                     onclick="window.location.href = '{{ $menuItem['href'] }}'; return false;"
                                 @endif>
                                 <span class="menu-icon">
-                                    <span class="{{ $menuItem['icon'] }}"></span>
+                                    <i class="{{ $menuItem['icon'] }}"></i>
                                 </span>
                                 <span class="menu-title">{{ $menuItem['name'] }}</span>
                             </a>
