@@ -168,3 +168,11 @@ if you want change the side menu background color end*/
     padding: 5px;
     width: 93%;
 }
+.sales-order-item-listing {
+    height: 550px !important;
+}
+@media (min-width: 1410px) {
+    .sales-order-item-listing {
+        height: 500px !important;
+    }
+}
