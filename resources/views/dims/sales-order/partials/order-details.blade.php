@@ -1,34 +1,39 @@
 <div class="row mb-3">
     <div class="col-md-8 col-sm-12 hidebody">
-        <div class="card h-500px">
+        <div class="card sales-order-item-listing">
             <div class="card-body">
-                <div class="row mb-3">
+                <div class="row">
                     <div class="col-md-5 pe-0">
-                        <button type="button" id="button_row"
-                            class="btn btn-success btn-sm ps-3 pe-3 mb-2 mb-md-0">Add</button>
-                        <button type="button" id="copythisorder" class="btn btn-primary btn-sm ps-2 pe-2 mb-2 mb-md-0"
-                            style="">Copy Order</button>
-                        <button type="button" id="excelexportorder"
-                            class="btn btn-primary btn-sm ps-2 pe-2 mb-2 mb-md-0" style="">Export To
-                            Excel</button>
-                        <button type="button" id="pdfexportorder" class="btn btn-primary btn-sm ps-2 pe-2 mb-2 mb-md-0"
-                            style="">Export To PDF</button>
+                        <button type="button" id="button_row" class="btn btn-success btn-sm ps-3 pe-3 mb-1">
+                            Add
+                        </button>
+                        <button type="button" id="copythisorder" class="btn btn-primary btn-sm ps-2 pe-2 mb-1">
+                            Copy Order
+                        </button>
+                        <button type="button" id="excelexportorder" class="btn btn-primary btn-sm ps-2 pe-2 mb-1">
+                            Export To Excel
+                        </button>
+                        <button type="button" id="pdfexportorder" class="btn btn-primary btn-sm ps-2 pe-2 mb-1">
+                            Export To PDF
+                        </button>
                     </div>
                     <div class="col-md-2 pe-0">
-                        <input type="text" id="customeronhold" class="form-control float-end mb-2 mb-md-0"
+                        <input type="text" id="customeronhold" class="form-control float-end mb-1"
                             style="color:red;font-weight:900;" readonly>
                     </div>
                     <div class="col-md-2 pe-0">
                         <!-- Search input aligned to the right -->
-                        <input type="text" class="form-control mb-2" id="customerpricelist"
+                        <input type="text" class="form-control mb-1" id="customerpricelist"
                             style="font-weight: 900;">
                     </div>
                     <div class="col-md-3 pe-0">
-                        <button class="btn btn-danger btn-sm ps-2 pe-2" id="deleteAllLines">Delete All
-                            Lines</button>
+                        <button class="btn btn-danger btn-sm ps-2 pe-2 mb-1" id="deleteAllLines">
+                            Delete All Lines
+                        </button>
                         @if ($userActions != 0)
-                            <button type="button" id="button_user_actions" class="btn btn-info btn-sm ps-2 pe-2">User
-                                Actions</button>
+                            <button type="button" id="button_user_actions" class="btn btn-info btn-sm ps-2 pe-2 mb-1">
+                                User Actions
+                            </button>
                         @endif
                     </div>
                 </div>
@@ -77,8 +82,7 @@
                             <div class="row">
                                 <div class="col-md-8"></div>
                                 <div class="col-md-4">
-                                    <h6 id="numberOfLines" style="margin-bottom: 0px !important;"
-                                        class="hidebody mt-md-8">
+                                    <h6 id="numberOfLines" style="margin-bottom: 0px !important;" class="hidebody mt-md-8">
                                         0 Line Item(s)
                                     </h6>
                                 </div>

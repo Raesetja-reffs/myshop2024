@@ -2,27 +2,29 @@
     <div class="card scroll h-500px">
         <div class="card-body">
             <div class="row mb-3">
-                <div class="col-md-4 ps-3 mb-3">
+                <div class="col-md-5">
                     <label for="routeName" class="form-label">Route</label>
                     <input type="button" id="routeonabutton" class="btn btn-primary btn-sm form-control"
                         value="TEST LONG ROUTE IF">
                     <select class="form-control form-select" name="routeName" id="routeName" style="display:none;">
                     </select>
                 </div>
-                <div class="col-md-2 p-0 pe-3 ps-3 ps-md-0 mb-3">
+                <div class="col-md-3">
                     <label for="creditLimit" class="form-label">CR Limit</label>
                     <input type="text" class="form-control" id="creditLimit" readonly>
                 </div>
-                <div class="col-md-3 p-0 pe-3 ps-3 ps-md-0 mb-3">
+                <div class="col-md-4">
                     <label for="balDue" class="form-label">BalDue</label>
                     <input type="text" class="form-control" id="balDue" readonly>
                 </div>
-                <div class="col-md-3 p-0 pe-3 ps-3 ps-md-0 mb-3">
+            </div>
+            <div class="row mb-3">
+                <div class="col-md-5">
                     <label for="headerWh" class="form-label">WH</label>
                     <select id="headerWh" class="form-control form-select">
                     </select>
                 </div>
-                <div class="col-md-4 p-0 pe-3 ps-3 mb-3" id="deprecated_cangeDate">
+                <div class="col-md-5" id="deprecated_cangeDate">
                     <label for="changeDelvDate" class="form-label">Delv Date</label>
                     <input type="text" class="form-control" id="changeDelvDate">
                 </div>
