@@ -526,9 +526,11 @@ $salesMonthToDate = DB::connection('sqlsrv3')
         return view('dims/useractionsbydate');
     }
     public function getAwaitingStock(){
+        $this->authorize('isAllowCompanyPermission', ['App\Models\CompanyPermission', 'isallowawaitingproducts']);
         return view('dims/awaitingstockreport');
     }
     public function getAwaitingStockbycustomer(){
+        $this->authorize('isAllowCompanyPermission', ['App\Models\CompanyPermission', 'isallowawaitingorders']);
         return view('dims/awaitingstockbycustomer');
     }
     public function jsonawaitingstock(Request $request){

@@ -30,11 +30,13 @@ ORDER BY [GROUP 2],[GROUP 3] ,Description_1 ");
     }
     public function qtyadjustmentsstagingimoveit()
     {
+        $this->authorize('isAllowCompanyPermission', ['App\Models\CompanyPermission', 'isallowqtyadjstage']);
         return view('wims/stagingimoveitadjustments');
 
     }
     public function qtyadjustmentspicking()
     {
+        $this->authorize('isAllowCompanyPermission', ['App\Models\CompanyPermission', 'isallowqtyadjpicking']);
         return view('wims/qtyadjustonpicking');
 
     }

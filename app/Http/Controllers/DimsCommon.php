@@ -1025,6 +1025,7 @@ class DimsCommon extends Controller
 
     public function overallspecials()
     {
+        $this->authorize('isAllowCompanyPermission', ['App\Models\CompanyPermission', 'isallowoverallspecials']);
         //
         $queryCustomers =DB::connection('sqlsrv3')->table("vwTestTblCustomers" )->select('CustomerId','StoreName','CustomerPastelCode','CreditLimit','BalanceDue','UserField5','Email','Routeid','Discount','OtherImportantNotes','strRoute')->where('StatusId',1)->orderBy('CustomerPastelCode','ASC')->get();
         $queryProducts =DB::connection('sqlsrv3')->table("viewActiveProductWithVat" )->select('ProductId','PastelCode','PastelDescription','UnitSize','Tax','Cost','QtyInStock','Margin','Alcohol','Available','PurchOrder')->orderBy('PastelDescription','ASC')->distinct()->get();
@@ -1729,6 +1730,7 @@ class DimsCommon extends Controller
 
     public function customersalespage()
     {
+        $this->authorize('isAllowCompanyPermission', ['App\Models\CompanyPermission', 'isallowcustomersalestrend']);
         return view('dims/customersalescomparison');
     }
     public function customersalesJson($datefrom1,$dateto1,$datefrom2,$dateto2)
@@ -2097,7 +2099,7 @@ class DimsCommon extends Controller
 
     public function backorders()
     {
-
+        $this->authorize('isAllowCompanyPermission', ['App\Models\CompanyPermission', 'isallowremoteorders']);
         return view('dims/backorders');
     }
 

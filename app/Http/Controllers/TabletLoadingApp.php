@@ -982,6 +982,7 @@ and  cast(dteDeliveryDate as date) = cast(tdd.DeliveryDate as date)
         return view('dims/loadingreport');
     }
     public function getDriverBIReport(){
+        $this->authorize('isAllowCompanyPermission', ['App\Models\CompanyPermission', 'isallowdriverbireport']);
         return view('dims/driverbireport');
     }
     public function driverbireportget(Request $request){
