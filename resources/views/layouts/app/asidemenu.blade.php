@@ -83,7 +83,9 @@
                                                     </a>
                                                 @elseif (isset($subMenuItem['target']))
                                                     <a class="menu-link" href="{{ $subMenuItem['href'] }}"
-                                                        target="{{ $subMenuItem['target'] }}">
+                                                        target="{{ $subMenuItem['target'] }}"
+                                                        @if (isset($subMenuItem['id'])) id="{{ $subMenuItem['id'] }}" @endif
+                                                    >
                                                         <span class="menu-icon">
                                                             <span class="{{ $subMenuItem['icon'] }}"></span>
                                                         </span>

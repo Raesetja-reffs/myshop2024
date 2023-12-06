@@ -350,9 +350,10 @@ if (!function_exists('getMenuItems')) {
                     [
                         'name' => 'Logistics Plan',
                         'icon' => 'fa mi-routeplan',
-                        'href' => url("/logisticsplan"),
+                        'href' => url("/ligisticsplan"),
                         'target' => '_blank',
                         'permission_slug' => 'isallowlogisticsplan',
+                        'id' => 'logisticsplan',
                     ],
                     [
                         'name' => 'Drivers',

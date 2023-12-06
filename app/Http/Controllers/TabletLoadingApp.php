@@ -737,6 +737,7 @@ class TabletLoadingApp extends Controller
     }
     public function liveFleetDeliveries()
     {
+        $this->authorize('isAllowCompanyPermission', ['App\Models\CompanyPermission', 'isallowdeliverycurrentstats']);
         $Date = (new \DateTime())->format('Y-m-d');
       //  $Date='2019-07-05';
         $livebulk = DB::connection('sqlsrv3')
@@ -789,6 +790,7 @@ class TabletLoadingApp extends Controller
     }
     public function ligisticsplan($dates)
     {
+        $this->authorize('isAllowCompanyPermission', ['App\Models\CompanyPermission', 'isallowlogisticsplan']);
         $Date = (new \DateTime($dates))->format('Y-m-d');
         //$Date='2019-07-05';
         $livebulk = DB::connection('sqlsrv3')

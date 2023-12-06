@@ -174,7 +174,7 @@ class DriversController extends Controller
     {
        $routes=  DB::connection('sqlsrv3')
             ->select("Select Routeid, Route from tblRoutes");
-        
+
        $deliveryaddress=  DB::connection('sqlsrv3')
        ->select("Select * from viewCustomerDeliveryAddress");
         return view('dims/deliveryaddresseditor')->with('deliveryaddress',$deliveryaddress)
@@ -269,6 +269,7 @@ public function updateDeliveryAddressesGrid(Request $request){
     }
     public function driverspdfdocs()
     {
+        $this->authorize('isAllowCompanyPermission', ['App\Models\CompanyPermission', 'isallowimoveitpod']);
         $sessionUserId = Auth::user()->UserID;
         $pdfdocs = DB::connection('sqlsrv3')
             ->select(" Exec spGetPDFdocs $sessionUserId"); //WHERE ID = ''
@@ -490,6 +491,7 @@ dbo.fnRouteLoader($routingId) as strLoadedBy,bitCashUpCheckedIt cashdealtwithit
     }
     public function driversperformancereport()
     {
+        $this->authorize('isAllowCompanyPermission', ['App\Models\CompanyPermission', 'isallowdriversreport']);
         return view('dims/drivers_report');
     }
     public function getNoOfDelPerCustomer($date1,$date2)
@@ -500,6 +502,7 @@ dbo.fnRouteLoader($routingId) as strLoadedBy,bitCashUpCheckedIt cashdealtwithit
     }
     public function noOfStops()
     {
+        $this->authorize('isAllowCompanyPermission', ['App\Models\CompanyPermission', 'isallownumberofdeliveries']);
         return view('dims/numberofdeliveries_report');
     }
     public function creditRequisitionByRoutingId($routingId)
