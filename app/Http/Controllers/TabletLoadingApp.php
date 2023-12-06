@@ -748,7 +748,7 @@ class TabletLoadingApp extends Controller
     }
     public function routePlannerSuggestions($deliveryDate,$OrderType,$routeId,$status)
     {
-
+        $this->authorize('isAllowCompanyPermission', ['App\Models\CompanyPermission', 'isallowrouteoptomo']);
         $array = array();
         $getInvoicesOnRoute = DB::connection('sqlsrv3')
             ->select("EXEC spGetStopsToOptimize '" . $deliveryDate . "','".$OrderType."'," . $routeId . ",'" . $status."'" );

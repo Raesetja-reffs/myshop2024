@@ -111,7 +111,9 @@
                 <button id="printPriview" class="btn btn-primary btn-lg btn-block text-wrap" style="margin-left:0px !important; height:50px;">PREVIEW</button>
 
                 <button id="notifypickers" class="btn btn-primary btn-lg btn-block text-wrap" style="margin-left:0px !important; height:50px;">NOTIFY PICKERS</button>
-                <button id="suggestions" class="btn btn-primary btn-lg btn-block text-wrap" style="margin-left:0px !important; height:50px;">ROUTE OPTOM</button>
+                @can('isAllowCompanyPermission', ['App\Models\CompanyPermission', 'isallowrouteoptomo'])
+                    <button id="suggestions" class="btn btn-primary btn-lg btn-block text-wrap" style="margin-left:0px !important; height:50px;">ROUTE OPTOM</button>
+                @endcan
             <hr>
                 <button id="reprinting" class="btn btn-primary btn-lg btn-block text-wrap" style="margin-left:0px !important; height:50px;">REPRINT ROUTES</button>
                 <button id="invoicesnotprinting" class="btn btn-danger btn-lg btn-block text-wrap" style="margin-left:0px !important; height:50px;">Not Printing</button>

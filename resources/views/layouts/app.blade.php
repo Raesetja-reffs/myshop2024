@@ -20,6 +20,7 @@
 
     <!-- begin: Page level CSS -->
     <link href="{{ asset('css/jquery-ui.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('css/jquery.multiselect.css') }}" rel="stylesheet" type="text/css" />
     <!-- end: Page level CSS -->
 
     <!--end::Global Stylesheets Bundle-->
@@ -43,6 +44,7 @@
     <script src="{{ asset('js/contextMenu.js') }}"></script>
     <script src="{{ asset('js/jquery.flexdatalist.js') }}"></script>
     <script src="{{ asset('js/jquery.mcautocomplete.js') }}"></script>
+    <script src="{{ asset('js/jquery.multiselect.js') }}"></script>
     <script src="{{ asset('js/datatables.bundle.js') }}"></script>
     <script src="{{ asset('js/jquery.dialogextend.js') }}"></script>
     <script src="{{ asset('js/jquery.pleaseWait.js') }}"></script>

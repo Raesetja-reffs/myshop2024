@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\CompanyPermission;
 
 class User extends Authenticatable
 {
@@ -45,6 +46,8 @@ class User extends Authenticatable
         'Password' => 'hashed',
     ];
 
+    protected $companyPermissions = [];
+
     /**
      * Get the password for the user.
      *
@@ -53,5 +56,27 @@ class User extends Authenticatable
     public function getAuthPassword()
     {
         return $this->strField6;
+    }
+
+    /**
+     * This function is used for check the company permission
+     * @param string $companyRoleSlug
+     */
+    public function checkCompanyPermission($companyRoleSlug)
+    {
+        if (!$this->companyPermissions) {
+            $this->companyPermissions = CompanyPermission::where('intCompanyId', 0)
+                ->where('bitActive', 1)
+                ->join('tblCompanyRoles', 'tblCompanyRoles.intAutoId', '=', 'tblCompanyPermissions.intCompanyRoleId')
+                ->select('tblCompanyRoles.strSlug', 'tblCompanyPermissions.bitActive')
+                ->pluck('bitActive', 'strSlug')
+                ->toArray();
+        }
+
+        if (isset($this->companyPermissions[$companyRoleSlug]) && $this->companyPermissions[$companyRoleSlug] == 1) {
+            return true;
+        }
+
+        return false;
     }
 }

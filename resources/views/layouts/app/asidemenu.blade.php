@@ -35,54 +35,68 @@
                 @php $menuItems = getMenuItems(); @endphp
 
                 @foreach ($menuItems as $menuItem)
-                    <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
-                        @if (isset($menuItem['href']))
-                            <a class="menu-link" href="{{ $menuItem['href'] }}"
-                                @if (isset($menuItem['windowopen']))
-                                    onclick="window.open(this.href, '{{ $menuItem['windowopen']['name'] }}','left=20,top=20,width={{ $menuItem['windowopen']['width'] }},height={{ $menuItem['windowopen']['height'] }},toolbar=1,resizable=0'); return false;"
-                                @else
-                                    onclick="window.location.href = '{{ $menuItem['href'] }}'; return false;"
-                                @endif>
-                                <span class="menu-icon">
-                                    <i class="{{ $menuItem['icon'] }}"></i>
+                    @if (!isset($menuItem['permission_slug']) ||
+                        (
+                            isset($menuItem['permission_slug']) &&
+                            auth()->user()->can('isAllowCompanyPermission', ['App\Models\CompanyPermission', $menuItem['permission_slug']])
+                        )
+                    )
+                        <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
+                            @if (isset($menuItem['href']))
+                                <a class="menu-link" href="{{ $menuItem['href'] }}"
+                                    @if (isset($menuItem['windowopen']))
+                                        onclick="window.open(this.href, '{{ $menuItem['windowopen']['name'] }}','left=20,top=20,width={{ $menuItem['windowopen']['width'] }},height={{ $menuItem['windowopen']['height'] }},toolbar=1,resizable=0'); return false;"
+                                    @else
+                                        onclick="window.location.href = '{{ $menuItem['href'] }}'; return false;"
+                                    @endif>
+                                    <span class="menu-icon">
+                                        <i class="{{ $menuItem['icon'] }}"></i>
+                                    </span>
+                                    <span class="menu-title">{{ $menuItem['name'] }}</span>
+                                </a>
+                            @else
+                                <span class="menu-link">
+                                    <span class="menu-icon">
+                                        <i class="{{ $menuItem['icon'] }}"></i>
+                                    </span>
+                                    <span class="menu-title">{{ $menuItem['name'] }}</span>
+                                    <span class="menu-arrow"></span>
                                 </span>
-                                <span class="menu-title">{{ $menuItem['name'] }}</span>
-                            </a>
-                        @else
-                            <span class="menu-link">
-                                <span class="menu-icon">
-                                    <i class="{{ $menuItem['icon'] }}"></i>
-                                </span>
-                                <span class="menu-title">{{ $menuItem['name'] }}</span>
-                                <span class="menu-arrow"></span>
-                            </span>
-                        @endif
-                        @if (isset($menuItem['submenuitems']))
-                            <div class="menu-sub menu-sub-accordion">
-                                @foreach ($menuItem['submenuitems'] as $subMenuItem)
-                                    <div class="menu-item">
-                                        @if (isset($subMenuItem['windowopen']))
-                                            <a class="menu-link" href="{{ $subMenuItem['href'] }}"
-                                                onclick="window.open(this.href, '{{ $subMenuItem['windowopen']['name'] }}','left=20,top=20,width={{ $subMenuItem['windowopen']['width'] }},height={{ $subMenuItem['windowopen']['height'] }},toolbar=1,resizable=0'); return false;">
-                                                <span class="menu-icon">
-                                                    <span class="{{ $subMenuItem['icon'] }}"></span>
-                                                </span>
-                                                <span class="menu-title">{{ $subMenuItem['name'] }}</span>
-                                            </a>
-                                        @elseif (isset($subMenuItem['target']))
-                                            <a class="menu-link" href="{{ $subMenuItem['href'] }}"
-                                                target="{{ $subMenuItem['target'] }}">
-                                                <span class="menu-icon">
-                                                    <span class="{{ $subMenuItem['icon'] }}"></span>
-                                                </span>
-                                                <span class="menu-title">{{ $subMenuItem['name'] }}</span>
-                                            </a>
+                            @endif
+                            @if (isset($menuItem['submenuitems']))
+                                <div class="menu-sub menu-sub-accordion">
+                                    @foreach ($menuItem['submenuitems'] as $subMenuItem)
+                                        @if (!isset($subMenuItem['permission_slug']) ||
+                                            (
+                                                isset($subMenuItem['permission_slug']) &&
+                                                auth()->user()->can('isAllowCompanyPermission', ['App\Models\CompanyPermission', $subMenuItem['permission_slug']])
+                                            )
+                                        )
+                                            <div class="menu-item">
+                                                @if (isset($subMenuItem['windowopen']))
+                                                    <a class="menu-link" href="{{ $subMenuItem['href'] }}"
+                                                        onclick="window.open(this.href, '{{ $subMenuItem['windowopen']['name'] }}','left=20,top=20,width={{ $subMenuItem['windowopen']['width'] }},height={{ $subMenuItem['windowopen']['height'] }},toolbar=1,resizable=0'); return false;">
+                                                        <span class="menu-icon">
+                                                            <span class="{{ $subMenuItem['icon'] }}"></span>
+                                                        </span>
+                                                        <span class="menu-title">{{ $subMenuItem['name'] }}</span>
+                                                    </a>
+                                                @elseif (isset($subMenuItem['target']))
+                                                    <a class="menu-link" href="{{ $subMenuItem['href'] }}"
+                                                        target="{{ $subMenuItem['target'] }}">
+                                                        <span class="menu-icon">
+                                                            <span class="{{ $subMenuItem['icon'] }}"></span>
+                                                        </span>
+                                                        <span class="menu-title">{{ $subMenuItem['name'] }}</span>
+                                                    </a>
+                                                @endif
+                                            </div>
                                         @endif
-                                    </div>
-                                @endforeach
-                            </div>
-                        @endif
-                    </div>
+                                    @endforeach
+                                </div>
+                            @endif
+                        </div>
+                    @endif
                 @endforeach
                 <!--begin:Menu item-->
                 <div class="menu-item">

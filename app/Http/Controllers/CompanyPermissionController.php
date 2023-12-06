@@ -14,7 +14,6 @@ class CompanyPermissionController extends Controller
     public function setPermissions()
     {
         $data = CompanyRole::orderBy('strGroupName', 'asc')
-            ->orderBy('strPermissionName', 'desc')
             ->get();
         $companyRoles = [];
         if ($data) {

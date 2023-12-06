@@ -128,7 +128,8 @@ if (!function_exists('getMenuItems')) {
                             'name' => 'getAwaitingStock',
                             'width' => 1500,
                             'height' => 1250,
-                        ]
+                        ],
+                        'permission_slug' => 'isallowawaitingorders',
                     ],
                     [
                         'name' => 'Awaiting Products',
@@ -138,7 +139,8 @@ if (!function_exists('getMenuItems')) {
                             'name' => 'getAwaitingStockgetAwaitingStock',
                             'width' => 1250,
                             'height' => 1250,
-                        ]
+                        ],
+                        'permission_slug' => 'isallowawaitingproducts',
                     ],
                     [
                         'name' => 'Remote Orders',
@@ -148,7 +150,8 @@ if (!function_exists('getMenuItems')) {
                             'name' => 'backorders',
                             'width' => 900,
                             'height' => 900,
-                        ]
+                        ],
+                        'permission_slug' => 'isallowremoteorders',
                     ],
                     [
                         'name' => 'Customer Sales Trend Report',
@@ -158,7 +161,8 @@ if (!function_exists('getMenuItems')) {
                             'name' => 'salescustomers',
                             'width' => 1200,
                             'height' => 950,
-                        ]
+                        ],
+                        'permission_slug' => 'isallowcustomersalestrend',
                     ],
                     [
                         'name' => 'Customer Groups',
@@ -168,7 +172,7 @@ if (!function_exists('getMenuItems')) {
                             'name' => 'groups',
                             'width' => 1250,
                             'height' => 1250,
-                        ]
+                        ],
                     ],
                     [
                         'name' => 'IsellIt',
@@ -178,7 +182,8 @@ if (!function_exists('getMenuItems')) {
                             'name' => 'briefcase',
                             'width' => 1650,
                             'height' => 900,
-                        ]
+                        ],
+                        'permission_slug' => 'isallowisellit',
                     ],
                     [
                         'name' => 'Sales Order/Quote',
@@ -220,7 +225,8 @@ if (!function_exists('getMenuItems')) {
                             'name' => 'overallspecials',
                             'width' => 1250,
                             'height' => 1250,
-                        ]
+                        ],
+                        'permission_slug' => 'isallowoverallspecials',
                     ],
                     [
                         'name' => 'Customer Specials',
@@ -286,7 +292,8 @@ if (!function_exists('getMenuItems')) {
                             'name' => 'reports',
                             'width' => 1500,
                             'height' => 1000,
-                        ]
+                        ],
+                        'permission_slug' => 'isallowdriverbireport',
                     ],
                     [
                         'name' => 'Qty Adj Picking',
@@ -296,7 +303,8 @@ if (!function_exists('getMenuItems')) {
                             'name' => 'qtyadjustmentspicking',
                             'width' => 1250,
                             'height' => 1250,
-                        ]
+                        ],
+                        'permission_slug' => 'isallowqtyadjpicking',
                     ],
                     [
                         'name' => 'Qty Adj Stage',
@@ -306,7 +314,8 @@ if (!function_exists('getMenuItems')) {
                             'name' => 'qtyadjustmentsstagingimoveit',
                             'width' => 1250,
                             'height' => 1250,
-                        ]
+                        ],
+                        'permission_slug' => 'isallowqtyadjstage',
                     ],
                     [
                         'name' => 'Transfers',
@@ -316,7 +325,8 @@ if (!function_exists('getMenuItems')) {
                             'name' => 'transfersstatus',
                             'width' => 1600,
                             'height' => 999,
-                        ]
+                        ],
+                        'permission_slug' => 'isallowtransfers',
                     ]
                 ]
             ],
@@ -334,13 +344,15 @@ if (!function_exists('getMenuItems')) {
                         'name' => 'Drivers Report',
                         'icon' => 'fa mi-driversreport',
                         'href' => url("/driversperformancereport"),
-                        'target' => '_blank'
+                        'target' => '_blank',
+                        'permission_slug' => 'isallowdriversreport',
                     ],
                     [
                         'name' => 'Logistics Plan',
                         'icon' => 'fa mi-routeplan',
                         'href' => url("/logisticsplan"),
-                        'target' => '_blank'
+                        'target' => '_blank',
+                        'permission_slug' => 'isallowlogisticsplan',
                     ],
                     [
                         'name' => 'Drivers',
@@ -380,7 +392,8 @@ if (!function_exists('getMenuItems')) {
                             'name' => 'routes',
                             'width' => 1250,
                             'height' => 1250,
-                        ]
+                        ],
+                        'permission_slug' => 'isallowimoveitpod',
                     ],
                     [
                         'name' => 'Delivery Current Stats',
@@ -390,7 +403,8 @@ if (!function_exists('getMenuItems')) {
                             'name' => 'fleet',
                             'width' => 1500,
                             'height' => 1250,
-                        ]
+                        ],
+                        'permission_slug' => 'isallowdeliverycurrentstats',
                     ],
                     [
                         'name' => 'Number Of Deliveries',
@@ -400,7 +414,8 @@ if (!function_exists('getMenuItems')) {
                             'name' => 'noofdel',
                             'width' => 1500,
                             'height' => 1250,
-                        ]
+                        ],
+                        'permission_slug' => 'isallownumberofdeliveries',
                     ]
                 ]
             ],
@@ -428,7 +443,8 @@ if (!function_exists('getMenuItems')) {
                             'height' => 900,
                         ]
                     ]
-                ]
+                ],
+                'permission_slug' => 'isallowecommerce',
             ],
             [
                 'name' => 'Company Permissions',
