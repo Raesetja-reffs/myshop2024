@@ -23,14 +23,17 @@
         <!--end::Item-->
     </x-slot>
 
-    <div class="container" style="width: 100%;">
-
-        <div class="row">
-            <button id="startPlanning" class="btn-success btn-md center-block" style="margin-top: 20px;width: 103px;padding: 28px;">START</button>
-            <button id="ordersNotCorrect" class="btn-success btn-md center-block" style="display:none;margin-top: 20px;width: 103px;">ROUTES DIFFERENCES</button>
-            <button id="tripSheetInfo" class="btn-success btn-md center-block" style="margin-top: 20px;width: 103px;">Trip Sheets Information</button>
-            <button id="visualise" class="btn-success btn-md center-block" style="display:none;margin-top: 20px;width: 103px;padding: 28px;">Search</button>
-            <button id="printTruckSheet" class="btn-success btn-md center-block" style="display:none;margin-top: 20px;width: 103px;padding: 28px;">Print</button>
+    <div class="row mt-5">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body d-flex justify-content-between">
+                    <button id="startPlanning" class="btn btn-success btn-auto-height">START</button>
+                    <button id="ordersNotCorrect" class="btn btn-success btn-auto-height" style="display:none;">ROUTES DIFFERENCES</button>
+                    <button id="tripSheetInfo" class="btn btn-success btn-auto-height">Trip Sheets Information</button>
+                    <button id="visualise" class="btn btn-success btn-auto-height" style="display:none;">Search</button>
+                    <button id="printTruckSheet" class="btn btn-success btn-auto-height" style="display:none;">Print</button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -64,14 +67,11 @@
                             <input name="mass" class="form-control input-sm col-xs-1" id="mass" style="color:blue;font-size:15px;font-weight: 900;" >
                         </fieldset>
                     </form>
-
                 </div>
-
             </div>
-
         </div>
-        <div class="col-lg-12">
 
+        <div class="col-lg-12">
             <div class="row tabbable">
                 <div class="col-xs-12" id="theunsequencedInfo" >
 

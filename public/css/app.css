@@ -176,7 +176,7 @@ if you want change the side menu background color end*/
         height: 500px !important;
     }
 }
-.btn-height-auto {
+.btn-auto-height{
     height: auto;
 }
 .ms-options-wrap > .ms-options {
