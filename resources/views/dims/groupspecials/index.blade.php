@@ -23,34 +23,10 @@
         <!--end::Item-->
     </x-slot>
 
-    <div class="col-lg-12"  style="background: white;">
-        <button class="btn-md btn-success" id="pleaseAddNewCust" >Please Add New Group Special</button>
-        <fieldset class="well">
-            <legend class="well-legend">Filters</legend>
-            <form>
-                <div class="form-group  col-md-3"  style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">
-                    <label class="control-label" for="inputCustAcc"  style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Group ID</label>
-                    <input type="text" name="custCode" class="form-control input-sm col-xs-1" id="inputCustAcc" style="background:grey;height:22px;font-size: 10px;font-weight: 900;    color: black;" readonly>
-                </div>
+    @include('dims.groupspecials.partials.searchbar')
 
-                <div class="form-group col-md-3"  style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">
-                    <label class="control-label" for="inputCustName"  style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Group Name</label>
-                    <input type="text" name="custDescription" class="form-control input-sm col-xs-1" id="inputCustName" style="height:22px;font-size: 10px;font-weight: 900;    color: black;">
-                </div>
-                <div class="form-group col-md-3 itCanHide"  style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">
-                    <label class="control-label" for="dateFrom"  style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Date From</label>
-                    <input type="text" class="form-control input-sm col-xs-1" id="dateFrom" style="font-weight: 900;    color: black;font-size: 13px;">
-                </div>
-                <div class="form-group col-md-3 "  style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">
-                    <label class="control-label" for="dateTo"  style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Date To</label>
-                    <input type="text" class="form-control input-sm col-xs-1" id="dateTo" style="font-weight: 900;    color: black;font-size: 13px;">
+    @include('dims.groupspecials.partials.listing')
 
-                </div>
-
-                <button type="button" id="submitFiltersOnCustSpecial" class="btn-xs btn-primary">Submit</button>
-            </form>
-        </fieldset>
-    </div>
     <div class="col-lg-12" id="afterFilter">
         <div class="col-lg-12" style="overflow: scroll;height:650px;">
             <h5 id="specialslink"></h5>
