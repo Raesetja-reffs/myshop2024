@@ -23,19 +23,19 @@ class CreateDriversCashOffReceiptsTable extends Migration
             $table->string('strAccountToPost', 255)->nullable();
             $table->integer('strCashControlAccount')->nullable();
             $table->date('dteDocDate')->nullable();
-            $table->money('decCash')->nullable();
-            $table->money('decChq')->nullable();
             $table->boolean('bitExported')->default(false);
             $table->string('strExportReference', 255)->nullable();
-            $table->money('decInvoiceAmount')->nullable();
             $table->integer('intOwnerId')->nullable();
             $table->integer('intUserId')->nullable();
 
-            $table->primary('intID');
             $table->index(['strDocNumber', 'strCustomerCode']);
 
             $table->timestamps();
         });
+
+        DB::statement('ALTER TABLE DriversCashOffReceipts ADD decCash MONEY NULL');
+        DB::statement('ALTER TABLE DriversCashOffReceipts ADD decChq MONEY NULL');
+        DB::statement('ALTER TABLE DriversCashOffReceipts ADD decInvoiceAmount MONEY NULL');
     }
 
     /**

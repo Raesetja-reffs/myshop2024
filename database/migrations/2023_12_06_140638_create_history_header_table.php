@@ -14,8 +14,7 @@ class CreateHistoryHeaderTable extends Migration
     public function up()
     {
         Schema::create('HistoryHeader', function (Blueprint $table) {
-            $table->id();
-            $table->smallInteger('DocumentType')->nullable();
+            $table->smallInteger('DocumentType')->nullable()->default(1);
             $table->string('DocumentNumber', 8)->nullable();
             $table->string('CustomerCode', 6)->nullable();
             $table->datetime('DocumentDate')->nullable();
@@ -60,14 +59,10 @@ class CreateHistoryHeaderTable extends Migration
             $table->string('ExportRef', 4)->nullable();
             $table->integer('ExportNum')->nullable();
             $table->string('Emailed', 1)->nullable();
-            $table->boolean('CurrentYear')->default(true);
+            $table->boolean('CurrentYear')->default(1);
 
             $table->timestamps();
         });
-
-        // Add default constraint values
-        DB::statement("ALTER TABLE HistoryHeader ADD CONSTRAINT DF_HistoryHeader_DocumentType DEFAULT 1 FOR DocumentType");
-        DB::statement("ALTER TABLE HistoryHeader ADD CONSTRAINT DF_HistoryHeader_CurrentYear DEFAULT 1 FOR CurrentYear");
     }
 
     /**

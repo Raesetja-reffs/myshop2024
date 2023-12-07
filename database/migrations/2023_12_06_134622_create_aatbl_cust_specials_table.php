@@ -17,10 +17,11 @@ class CreateAatblCustSpecialsTable extends Migration
             $table->string('CustomerCode', 20)->nullable();
             $table->string('ItemCode', 20)->nullable();
             $table->string('ExpDate', 20)->nullable();
-            $table->money('Qty01')->nullable();
-            $table->money('Price01')->nullable();
             $table->timestamps();
         });
+
+        DB::statement('ALTER TABLE aatblCustSpecials ADD Qty01 MONEY NULL');
+        DB::statement('ALTER TABLE aatblCustSpecials ADD Price01 MONEY NULL');
     }
 
     /**

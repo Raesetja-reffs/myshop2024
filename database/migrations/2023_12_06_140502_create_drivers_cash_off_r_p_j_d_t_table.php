@@ -21,14 +21,14 @@ class CreateDriversCashOffRPJDTTable extends Migration
             $table->string('strLineAccount', 255)->nullable();
             $table->string('strAccountDescription', 255)->nullable();
             $table->string('strType', 255)->nullable();
-            $table->money('decAmount')->nullable();
             $table->integer('intUserId')->nullable();
 
             $table->foreign('intJournalID')->references('intJournalID')->on('DriversCashOffRPJ')->onDelete('cascade');
 
-            $table->primary('intID');
             $table->timestamps();
         });
+
+        DB::statement('ALTER TABLE DriversCashOffRPJDT ADD decAmount MONEY NULL');
     }
 
     /**

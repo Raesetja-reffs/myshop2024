@@ -34,11 +34,12 @@ class CreateApastelcustTable extends Migration
             $table->string('UserDefined04', 16)->nullable();
             $table->string('UserDefined05', 16)->nullable();
             $table->integer('PriceRegime')->nullable();
-            $table->money('Balance')->nullable();
             $table->string('Category', 50)->nullable();
-            $table->money('Discount')->nullable();
             $table->timestamps();
         });
+
+        DB::statement('ALTER TABLE apastelcust ADD Balance MONEY NULL');
+        DB::statement('ALTER TABLE apastelcust ADD Discount MONEY NULL');
     }
 
     /**

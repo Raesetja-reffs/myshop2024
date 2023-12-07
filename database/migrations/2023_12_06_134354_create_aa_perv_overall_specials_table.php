@@ -15,12 +15,13 @@ class CreateAaPervOverallSpecialsTable extends Migration
     {
         Schema::create('aaPervOverallSpecials', function (Blueprint $table) {
             $table->string('ItemCode', 20)->nullable();
-            $table->money('PriceIncl')->nullable();
-            $table->money('PriceExcl')->nullable();
             $table->date('StartDate')->nullable();
             $table->date('EndDate')->nullable();
             $table->timestamps();
         });
+
+        DB::statement('ALTER TABLE aaPervOverallSpecials ADD PriceIncl MONEY NULL');
+        DB::statement('ALTER TABLE aaPervOverallSpecials ADD PriceExcl MONEY NULL');
     }
 
     /**

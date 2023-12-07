@@ -33,10 +33,6 @@ class CreateCreditNoteHeaderTable extends Migration
             $table->string('HeaderDiscount', 50)->default(0);
             $table->timestamps();
         });
-
-        // Add default constraint values
-        DB::statement("ALTER TABLE CreditNoteHeader ADD CONSTRAINT DF_CreditNoteHeader_intFlag DEFAULT 0 FOR intFlag");
-        DB::statement("ALTER TABLE CreditNoteHeader ADD CONSTRAINT DF_CreditNoteHeader_HeaderDiscount3 DEFAULT 0 FOR HeaderDiscount");
     }
 
     /**

@@ -14,7 +14,6 @@ class CreateHistoryLinesTable extends Migration
     public function up()
     {
         Schema::create('HistoryLines', function (Blueprint $table) {
-            $table->id();
             $table->smallInteger('UserId')->nullable();
             $table->smallInteger('DocumentType')->nullable();
             $table->string('DocumentNumber', 8)->nullable();
@@ -61,13 +60,10 @@ class CreateHistoryLinesTable extends Migration
             $table->float('CaseLotQty')->nullable();
             $table->float('CaseLotRatio')->nullable();
             $table->integer('CostSyncDone')->nullable();
-            $table->boolean('CurrentYear')->default(true);
+            $table->boolean('CurrentYear')->default(1);
 
             $table->timestamps();
         });
-
-        // Add default constraint values
-        DB::statement("ALTER TABLE HistoryLines ADD CONSTRAINT DF_HistoryLines_CurrentYear DEFAULT 1 FOR CurrentYear");
     }
 
     /**
