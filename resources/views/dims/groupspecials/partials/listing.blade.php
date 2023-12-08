@@ -1,4 +1,4 @@
-<div class="row mt-3">
+<div class="row mt-3" id="afterFilter">
     <div class="col-lg-12">
         <div class="card">
             <div class="card-header">
@@ -45,12 +45,12 @@
 <script>
     $(document).ready(function() {
         $('#deleteSelected').hide();
-        $('#checkall').on('click', function() {
+        $(document).on('click', '#checkall', function(e) {
             $($("input[name='checkproduct[]']")).each(function() {
                 $(this).prop('checked', $('#checkall').prop('checked'));
             });
         });
-        $('#deleteSelected').click(function() {
+        $(document).on('click', '#deleteSelected', function(e) {
             var valuesProd = new Array();
             var groupName = $('#inputCustAcc').val();
             $.each($("input[name='checkproduct[]']:checked"),
@@ -122,44 +122,19 @@
             $(this).addClass('row_selected');
             $('#popUpdateLine').show();
             setTimeout(() => {
-                showDialog('#popUpdateLine', '60%', 450);
+                showDialog('#popUpdateLine', '60%', 620);
             }, 50);
             var rowOnOrder = $(this).closest("tr");
-            $('#specialIdUpdate').val(rowOnOrder.find('td:eq(0)').text());
-            $('#itemCode').val(rowOnOrder.find('td:eq(2)').text());
-            $('#itemDescription').val(rowOnOrder.find('td:eq(3)').text());
-            $('#specialFrom').val(rowOnOrder.find('td:eq(4)').text());
-            $('#hiddenSpecaialFrom').val(rowOnOrder.find('td:eq(4)').text());
-            $('#specialTo').val(rowOnOrder.find('td:eq(5)').text());
-            $('#hiddenSpecaialTo').val(rowOnOrder.find('td:eq(5)').text());
-            $('#specialPrice').val(rowOnOrder.find('td:eq(6)').text());
-            $('#specialCost').val(rowOnOrder.find('td:eq(7)').text());
-            $('#specialGp').val(rowOnOrder.find('td:eq(8)').text());
-            $('#updateTheSpecuial').click(function() {
-                $.ajax({
-                    url: '{!! url('/updategGroupSpecialLine') !!}',
-                    type: "POST",
-                    data: {
-                        itemCode: $('#itemCode').val(),
-                        specialIdUpdate: $('#specialIdUpdate').val(),
-                        itemDescription: $('#itemDescription').val(),
-                        specialFrom: $('#specialFrom').val(),
-                        specialTo: $('#specialTo').val(),
-                        specialPrice: $('#specialPrice').val(),
-                        specialCost: $('#specialCost').val(),
-                        specialGp: $('#specialGp').val()
-                    },
-                    success: function(data) {
-                        $('#updatedspecials').show();
-                        showDialog('#updatedspecials', 380, 100);
-                        $('#btnspecialUpdated').click(function() {
-                            $('#popUpdateLine').dialog('close');
-                            $('#updatedspecials').dialog('close');
-                            $('#submitFiltersOnCustSpecial').click();
-                        });
-                    }
-                });
-            });
+            $('#specialIdUpdate').val(rowOnOrder.find('td:eq(1)').text());
+            $('#itemCode').val(rowOnOrder.find('td:eq(3)').text());
+            $('#itemDescription').val(rowOnOrder.find('td:eq(4)').text());
+            $('#specialFrom').val(rowOnOrder.find('td:eq(5)').text());
+            $('#hiddenSpecaialFrom').val(rowOnOrder.find('td:eq(5)').text());
+            $('#specialTo').val(rowOnOrder.find('td:eq(6)').text());
+            $('#hiddenSpecaialTo').val(rowOnOrder.find('td:eq(6)').text());
+            $('#specialPrice').val(rowOnOrder.find('td:eq(7)').text());
+            $('#specialCost').val(rowOnOrder.find('td:eq(8)').text());
+            $('#specialGp').val(rowOnOrder.find('td:eq(9)').text());
         });
     });
 </script>

@@ -457,9 +457,6 @@
             modal: false,
             width: width,
             containment: false,
-            open: function(event, ui) {
-                $(".general-loader").hide();
-            }
         }).dialogExtend({
             "closable": true, // enable/disable close button
             "maximizable": false, // enable/disable maximize button
@@ -485,13 +482,6 @@
             "minimize": function(evt, dlg) {}, // event
             "restore": function(evt, dlg) {} // event
         });
-        $.ui.dialog.prototype.options.open = function() {
-            $(this).closest(".ui-dialog")
-            .find(".ui-dialog-titlebar-close")
-            .html("<span style='margin: 0px;' class='ui-icon ui-icon-circle-close' title='close'></span>");
-            $(this).closest(".ui-dialog")
-            .find(".ui-dialog-titlebar-close").css({"border-radius": "2px", "height": "18px", "border": "1px solid #c5c5c5"});
-        };
     }
 
     function dateReturn(dates) {

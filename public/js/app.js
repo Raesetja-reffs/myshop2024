@@ -9,6 +9,7 @@ $(document).ready(function() {
     });
 
     $.ui.dialog.prototype.options.open = function() {
+        $(".general-loader").hide();
         $(this).closest(".ui-dialog")
         .find(".ui-dialog-titlebar-close")
         .html("<span style='margin: 0px;' class='ui-icon ui-icon-circle-close' title='close'></span>");

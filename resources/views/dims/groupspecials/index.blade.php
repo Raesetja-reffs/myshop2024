@@ -83,53 +83,20 @@
         </div>
     </div>
 
-    <div id="popUpdateLine" title="Please Update">
-        <div class="col-lg-12">
-            <label class="control-label" for="specialIdUpdate"
-                style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Special Id</label><br>
-            <input type="text" class="form-control input-sm col-xs-1" id="specialIdUpdate"
-                style="font-weight: 900;    color: black;font-size: 13px;" readonly><br>
-            <input type="hidden" class="form-control input-sm col-xs-1" id="hiddenSpecaialFrom">
-            <input type="hidden" class="form-control input-sm col-xs-1" id="hiddenSpecaialTo">
-            <label class="control-label" for="itemCode"
-                style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Code</label><br>
-            <input type="text" class="form-control input-sm col-xs-1" id="itemCode"
-                style="font-weight: 900;    color: black;font-size: 13px;" readonly><br>
-            <label class="control-label" for="itemDescription"
-                style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Description</label><br>
-            <input type="text" class="form-control input-sm col-xs-1" id="itemDescription"
-                style="font-weight: 900;    color: black;font-size: 13px;" readonly><br>
-            <label class="control-label" for="specialFrom"
-                style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Date From</label><br>
-            <input type="text" class="form-control input-sm col-xs-1" id="specialFrom"
-                style="font-weight: 900;    color: black;font-size: 13px;"><br>
-            <label class="control-label" for="specialTo"
-                style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Date To</label><br>
-            <input type="text" class="form-control input-sm col-xs-1" id="specialTo"
-                style="font-weight: 900;    color: black;font-size: 13px;"><br>
-            <label class="control-label" for="specialPrice"
-                style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Special Price</label><br>
-            <input type="text" class="form-control input-sm col-xs-1" id="specialPrice"
-                style="font-weight: 900;    color: black;font-size: 13px;"><br>
-            <label class="control-label" for="specialCost"
-                style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Special Cost</label><br>
-            <input type="text" class="form-control input-sm col-xs-1" id="specialCost"
-                style="font-weight: 900;    color: black;font-size: 13px;" readonly><br>
-            <label class="control-label" for="specialGp"
-                style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">GP</label><br>
-            <input type="text" class="form-control input-sm col-xs-1" id="specialGp"
-                style="font-weight: 900;    color: black;font-size: 13px;" readonly><br>
-        </div>
-        <div class="col-lg-12">
-            <button id="updateTheSpecuial" class="btn-md btn-success">Update the Specials</button>
-        </div>
-
-    </div>
+    @include('dims.groupspecials.partials.popUpdateLine')
 
     <div id="updatedspecials" title="Specials Updated">
-        <button id="btnspecialUpdated" class="btn btn-success btn-sm">
-            OKAY
-        </button>
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <button id="btnspecialUpdated" class="btn btn-success btn-sm">
+                            OKAY
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     @include('dims.groupspecials.partials.extedingspecial')
 
