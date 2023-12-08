@@ -1,19 +1,18 @@
 <div class="row mt-3" id="afterFilter">
     <div class="col-lg-12">
-        <div class="card">
-            <div class="card-header">
+        <div class="card smaller-card">
+            <div class="card-header p-5">
                 <h3 class="card-title">Current Specials</h3>
                 <div class="card-toolbar">
                     <div id="specialslink"></div>
                     <button id="extend" class="btn btn-primary btn-sm mb-1 mb-sm-0 me-1">Extend Specials</button>
                     <button id="bulkediting" class="btn btn-success btn-sm mb-1 mb-sm-0 me-1">Bulk Editing</button>
-                    <button id="deleteSelected" class="btn btn-danger btn-sm mb-1 mb-sm-0">Delete Selected</button>
+                    <button id="deleteSelected" class="btn btn-danger btn-sm mb-1 mb-sm-0">Delete (<span class="deleteselectedcount">0</span>) Selected</button>
                 </div>
             </div>
             <div class="card-body">
-                <div class="table-responsive scroll h-400px">
-                    <table id ="tblCreatedCustomerSpecials" class="table table-bordered table-condensed"
-                        style="font-family: sans-serif;">
+                <div class="table-responsive scroll h-350px">
+                    <table id ="tblCreatedCustomerSpecials" class="table table-bordered table-condensed table-with-smaller-padding">
                         <thead>
                             <tr>
                                 <th>
@@ -45,10 +44,14 @@
 <script>
     $(document).ready(function() {
         $('#deleteSelected').hide();
+        $(document).on('change', 'input[name="checkproduct[]"]', function(e) {
+            setCheckboxSelectedCount();
+        });
         $(document).on('click', '#checkall', function(e) {
             $($("input[name='checkproduct[]']")).each(function() {
                 $(this).prop('checked', $('#checkall').prop('checked'));
             });
+            setCheckboxSelectedCount();
         });
         $(document).on('click', '#deleteSelected', function(e) {
             var valuesProd = new Array();
@@ -113,10 +116,16 @@
             });
         });
         $(document).on('click', '#tblCreatedCustomerSpecials tbody tr', function(e) {
+            if (clickeventExcludeOnSomeTd(e)) {
+                return true;
+            }
             $("#tblCreatedCustomerSpecials tbody tr").removeClass('row_selected');
             $(this).addClass('row_selected');
         });
         $(document).on('dblclick', '#tblCreatedCustomerSpecials tbody tr', function(e) {
+            if (clickeventExcludeOnSomeTd(e)) {
+                return true;
+            }
             $(".general-loader").show();
             $("#tblCreatedCustomerSpecials tbody tr").removeClass('row_selected');
             $(this).addClass('row_selected');
@@ -137,4 +146,16 @@
             $('#specialGp').val(rowOnOrder.find('td:eq(9)').text());
         });
     });
+    function setCheckboxSelectedCount()
+    {
+        $('.deleteselectedcount').text($('input[name="checkproduct[]"]:checked').length);
+    }
+    function clickeventExcludeOnSomeTd(e)
+    {
+        if ($(e.target).closest('td.excluded-td').length) {
+            return true;
+        }
+
+        return false;
+    }
 </script>

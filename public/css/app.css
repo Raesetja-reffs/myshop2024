@@ -188,3 +188,36 @@ if you want change the side menu background color end*/
     border-color: var(--bs-gray-300);
     opacity: 1;
 }
+.table-with-smaller-padding td, .table-with-smaller-padding th {
+    padding: 0.25rem 0.25rem; /* Adjust the padding level as needed */
+}
+.table-with-smaller-padding .btn-sm-icon {
+    height: 22px !important;
+    width: 22px !important;
+}
+.table-with-smaller-padding .btn-sm-icon i{
+    font-size: 1.15rem !important;
+}
+.table-with-smaller-padding .custom-checkbox-sm{
+    width: 1.25rem !important;
+    height: 1.25rem !important;
+}
+table.table-with-smaller-padding{
+    font-size: 0.95rem !important;
+}
+.card.smaller-card .card-header {
+    min-height: 50px;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+.card.smaller-card .card-header .card-title{
+    font-size: 1.15rem !important;
+}
+.card.smaller-card .card-header {
+    min-height: 50px;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+.card.smaller-card .card-body {
+    padding-top: 0.5rem !important;
+}

@@ -42,6 +42,7 @@
         $('#afterFilter').hide();
         $('#submitFiltersOnCustSpecial').click(function() {
             if (($.trim($('#dateFrom').val())).length > 7 && ($.trim($('#dateTo').val())).length > 7) {
+                $(".general-loader").show();
                 $('#afterFilter').show();
                 //Select * between this date for this customer
                 $('#specialslink').empty();
@@ -83,8 +84,8 @@
 
                         $.each(data, function(key, value) {
                             trHTML += `
-                                <tr class="remthisLine" style="font-size: 11px;color:black;">
-                                    <td>
+                                <tr class="remthisLine">
+                                    <td class="excluded-td">
                                         <input type="checkbox" name="checkproduct[]" value="${value.PastelCode}" class="custom-checkbox-sm">
                                     </td>
                                     <td>${value.SpecialGroupid}</td>
@@ -99,8 +100,7 @@
                                     <td style="display: none;">${parseFloat(value.CostPrice).toFixed(2)}</td>
                                     <td>${parseFloat(value.Available).toFixed(2)}</td>
                                     <td>${parseFloat(value.Instock).toFixed(2)}</td>
-                                    <td>${parseFloat(value.CostPrice).toFixed(2)}</td>
-                                    <td>
+                                    <td class="excluded-td">
                                         <button class="btn btn-icon btn-danger btn-sm btn-sm-icon remove_special_product_line" value="${value.SpecialGroupid}">
                                             <i class="bi bi-trash3-fill fs-4"></i>
                                         </button>
@@ -110,6 +110,7 @@
                             $('#specialId').val(value.SpecialHeaderId);
                         });
                         $('#tblCreatedCustomerSpecials tbody').append(trHTML);
+                        $(".general-loader").hide();
                     }
                 });
             } else {

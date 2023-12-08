@@ -21,6 +21,10 @@
     $(document).ready(function() {
         $('#extedingspecial').hide();
         $('#extend').click(function() {
+            if ($("input[name='checkproduct[]']:checked").length <= 0) {
+                alert("Please select at least one product to extending group specials");
+                return true;
+            }
             $('#extedingspecial').show();
             showDialog('#extedingspecial', '50%', 250);
         });

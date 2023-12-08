@@ -213,7 +213,7 @@ if (!function_exists('getMenuItems')) {
                         'href' => url("/groupspecials"),
                         'windowopen' => [
                             'name' => 'roupspecials',
-                            'width' => 1250,
+                            'width' => 1300,
                             'height' => 1250,
                         ]
                     ],
