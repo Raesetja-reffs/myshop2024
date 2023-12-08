@@ -53,8 +53,8 @@
 }
 
 .custom-checkbox-sm {
-    width: 15px;
-    height: 15px;
+    width: 20px;
+    height: 20px;
 }
 
 .flexdatalist-results .highlight{
@@ -181,4 +181,10 @@ if you want change the side menu background color end*/
 }
 .ms-options-wrap > .ms-options {
     position: inherit;
+}
+.form-control:read-only {
+    color: var(--bs-gray-500);
+    background-color: var(--bs-gray-200);
+    border-color: var(--bs-gray-300);
+    opacity: 1;
 }
