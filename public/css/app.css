@@ -169,13 +169,13 @@ if you want change the side menu background color end*/
     width: 93%;
 }
 .sales-order-item-listing {
-    height: 550px !important;
+    height: 450px !important;
 }
-@media (min-width: 1410px) {
+/* @media (min-width: 1410px) {
     .sales-order-item-listing {
-        height: 500px !important;
+        height: 450px !important;
     }
-}
+} */
 .btn-auto-height{
     height: auto;
 }
@@ -188,25 +188,25 @@ if you want change the side menu background color end*/
     border-color: var(--bs-gray-300);
     opacity: 1;
 }
-.table-with-smaller-padding td, .table-with-smaller-padding th {
-    padding: 0.25rem 0.25rem; /* Adjust the padding level as needed */
+.table td, .table th {
+    padding: 0.25rem 0.25rem !important;/* Adjust the padding level as needed */
 }
-.table-with-smaller-padding .btn-sm-icon {
+.table .btn-sm-icon {
     height: 22px !important;
     width: 22px !important;
 }
-.table-with-smaller-padding .btn-sm-icon i{
+.table .btn-sm-icon i{
     font-size: 1.15rem !important;
 }
-.table-with-smaller-padding .custom-checkbox-sm{
+.table .custom-checkbox-sm{
     width: 1.25rem !important;
     height: 1.25rem !important;
 }
-table.table-with-smaller-padding{
+.table{
     font-size: 0.95rem !important;
 }
 .card.smaller-card .card-header {
-    min-height: 50px;
+    min-height: 50px !important;
     padding-top: 0 !important;
     padding-bottom: 0 !important;
 }
@@ -220,4 +220,73 @@ table.table-with-smaller-padding{
 }
 .card.smaller-card .card-body {
     padding-top: 0.5rem !important;
+}
+.form-control {
+    height: 25px;
+    padding: 0.375rem 0.75rem;
+    font-size: 0.95rem !important;
+    line-height: 1;
+}
+.btn.btn-sm {
+    font-size: 0.95rem !important;
+    padding-bottom: 20px !important;
+    padding-top: 3px !important;
+}
+.btn {
+    height: 25px;
+}
+.btn.btn-sm-icon {
+    font-size: 0.95rem !important;
+    padding-bottom: 0 !important;
+    padding-top: 0 !important;
+}
+.custom-checkbox-sm{
+    width: 1.25rem !important;
+    height: 1.25rem !important;
+}
+label {
+    font-size: 0.95rem !important;
+}
+.card .card-body {
+    padding: 0.75rem 0.75rem;
+}
+#kt_header {
+    height: 50px;
+}
+#kt_toolbar {
+    height: 45px;
+}
+@media (min-width: 992px) {
+    .header-fixed.toolbar-fixed .toolbar {
+        top: 50px;
+    }
+    .header-fixed.toolbar-fixed .wrapper {
+        padding-top: calc(48px + 48px);
+    }
+}
+.container-xxl {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.form-label {
+    margin-bottom: 0;
+}
+@media (max-width: 991.98px) {
+    .content {
+        padding: 0 0;
+    }
+}
+#routeonabutton {
+    padding-top: 5px !important;
+    font-size: 0.75rem !important;
+    padding-bottom: 5px !important;
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+}
+.nav-tabs {
+    font-size: 0.95rem !important;
+}
+.flexdatalist-results li {
+    padding: 3px 10px !important;
+    font-size: 0.95rem !important;
 }

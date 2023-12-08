@@ -11,8 +11,8 @@
                 </div>
             </div>
             <div class="card-body">
-                <div class="table-responsive scroll h-350px">
-                    <table id ="tblCreatedCustomerSpecials" class="table table-bordered table-condensed table-with-smaller-padding">
+                <div class="table-responsive scroll h-400px">
+                    <table id ="tblCreatedCustomerSpecials" class="table table-bordered table-condensed">
                         <thead>
                             <tr>
                                 <th>

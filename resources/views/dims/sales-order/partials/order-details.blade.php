@@ -1,4 +1,4 @@
-<div class="row mb-3">
+<div class="row mb-2">
     <div class="col-md-8 col-sm-12 hidebody">
         <div class="card sales-order-item-listing">
             <div class="card-body">
@@ -39,7 +39,7 @@
                 </div>
 
                 <div class="row mb-3 mt-3">
-                    <div class="table-responsive scroll h-375px">
+                    <div class="table-responsive scroll h-350px">
                         <table id="table" class="table table-bordered table-condensed table-hover">
                             <thead>
                                 <tr>
@@ -297,7 +297,7 @@
                     class="btn btn-success btn-sm ms-2">Re-Print</button>
             </div>
             <div class="col-md-6">
-                <button type="button" id="finishOrder" class="btn btn-primary btn-sm hidebody ms-2">Finish</button>
+                <button type="button" id="finishOrder" class="btn btn-primary btn-sm hidebody ms-2 mt-1">Finish</button>
             </div>
         </div>
     </div>

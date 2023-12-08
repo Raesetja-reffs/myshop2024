@@ -1,35 +1,33 @@
 <div class="col-md-4 col-sm-12 hidebody">
-    <div class="card scroll h-500px">
+    <div class="card scroll h-450px">
         <div class="card-body">
-            <div class="row mb-3">
-                <div class="col-md-5">
+            <div class="row mb-1">
+                <div class="col-md-3 pe-0">
                     <label for="routeName" class="form-label">Route</label>
                     <input type="button" id="routeonabutton" class="btn btn-primary btn-sm form-control"
                         value="TEST LONG ROUTE IF">
                     <select class="form-control form-select" name="routeName" id="routeName" style="display:none;">
                     </select>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-3 pe-0">
                     <label for="creditLimit" class="form-label">CR Limit</label>
                     <input type="text" class="form-control" id="creditLimit" readonly>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3 pe-0">
                     <label for="balDue" class="form-label">BalDue</label>
                     <input type="text" class="form-control" id="balDue" readonly>
                 </div>
-            </div>
-            <div class="row mb-3">
-                <div class="col-md-5">
+                <div class="col-md-3 pe-0">
                     <label for="headerWh" class="form-label">WH</label>
                     <select id="headerWh" class="form-control form-select">
                     </select>
                 </div>
-                <div class="col-md-5" id="deprecated_cangeDate">
+                <div class="col-md-12" id="deprecated_cangeDate">
                     <label for="changeDelvDate" class="form-label">Delv Date</label>
                     <input type="text" class="form-control" id="changeDelvDate">
                 </div>
             </div>
-            <div class="row mb-3">
+            <div class="row">
                 <div class="col-md-12">
                     <ul class="nav nav-tabs">
                         <li class="nav-item">
@@ -48,7 +46,7 @@
 
                     <div class="tab-content fs-8">
                         <div class="tab-pane fade show active" id="content1">
-                            <div class="row mt-3">
+                            <div class="row mt-1">
                                 <div class="col-md-12">
                                     <div class="table-responsive">
                                         <table class="search-table table table-striped table-bordered table-hover"
@@ -78,9 +76,9 @@
                             </div>
                         </div>
                         <div class="tab-pane fade" id="content2">
-                            <div class="row mt-3">
+                            <div class="row mt-1">
                                 <div class="col-md-12" style="height: 350px;overflow-y:auto;">
-                                    <h6>Customer Special Pricing</h6>
+                                    <h6 class="fs-7">Customer Special Pricing</h6>
                                     <div class="table-responsive">
                                         <table id="customerSpecials" class="table table-bordered table-hover"
                                             style="width: 100%;">
@@ -100,9 +98,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row mt-3">
+                            <div class="row mt-1">
                                 <div class="col-md-12" style="height: 350px;overflow-y:auto;">
-                                    <h6 class="pt-2">Group Special Pricing</h6>
+                                    <h6 class="fs-7">Group Special Pricing</h6>
                                     <div class="table-responsive">
                                         <table id="groupSpecials" class="table table-bordered table-hover"
                                             style="width: 100%;">
@@ -124,7 +122,7 @@
                             </div>
                         </div>
                         <div class="tab-pane fade" id="content3">
-                            <div class="row mt-3">
+                            <div class="row mt-1">
                                 <div class="col-md-12" style="height: 400px;overflow-y:auto;">
                                     <div class="table-responsive">
                                         <table id="pastInvoices" class="table table-bordered table-hover">
@@ -144,7 +142,7 @@
                             </div>
                         </div>
                         <div class="tab-pane fade" id="content4">
-                            <div class="row mt-3">
+                            <div class="row mt-1">
                                 <div class="col-md-12">
                                     <div id="gridbackorders" style="max-width: 100% !important">
                                     </div>
