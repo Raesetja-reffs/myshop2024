@@ -182,7 +182,7 @@ if you want change the side menu background color end*/
 .ms-options-wrap > .ms-options {
     position: inherit;
 }
-.form-control:read-only {
+.form-control[readonly] {
     color: var(--bs-gray-500);
     background-color: var(--bs-gray-200);
     border-color: var(--bs-gray-300);

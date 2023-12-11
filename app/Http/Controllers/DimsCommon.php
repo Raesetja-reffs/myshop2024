@@ -1315,7 +1315,7 @@ class DimsCommon extends Controller
         $statement = "Select";
         $queryCustomers =  DB::connection('sqlsrv3')
             ->select("EXEC spGetCustomerGroups '".$statement."'");
-        return view('dims/add_new_group_special')
+        return view('dims/addnewgroupspecial/index')
             ->with('products',$queryProducts)
             ->with('customers',$queryCustomers);
 
