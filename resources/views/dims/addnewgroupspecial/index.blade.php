@@ -349,44 +349,45 @@
             var contractTo = $('#dateTo').val();
             var tokenId = Math.floor(Math.pow(10, 9 - 1) + Math.random() * 9 * Math.pow(10, 9 - 1));
             var $row = $(`
-            <tr id="new_row_ajax${tokenId}" class="fast_remove">
-                <td contenteditable="false">
-                    <input name="theProductCode" id ="prodCode_${tokenId}" class="theProductCode_ set_autocomplete inputs form-control" style="width: 100px;">
-                </td>
-                <td contenteditable="false">
-                    <input name="prodDescription_" id ="prodDescription_${tokenId}" class="prodDescription_ set_autocomplete inputs form-control" style="width: 300px;">
-                </td>
-                <td contenteditable="false">
-                    <input type="text" name="dateFrom" id ="dateFrom${tokenId}" value="${contractFrom}" class="dateFrom resize-input-inside inputs form-control">
-                </td>
-                <td contenteditable="false">
-                    <input type="text" name="dateTo" id ="dateTo${tokenId}" value= "${contractTo}" class="dateTo resize-input-inside form-control">
-                </td>
-                <td contenteditable="false">
-                    <input type="text" name="prodPrice_" id ="prodPrice_${tokenId}" onkeypress="return isFloatNumber(this,event)" class="prodPrice_ resize-input-inside inputs form-control" style="font-weight: 800;width: 100%;" >
-                </td>
-                <td contenteditable="false">
-                    <input type="text" name="cost_" id ="cost_${tokenId}" onkeypress="return isFloatNumber(this,event)" class="cost_ resize-input-inside inputs form-control" style="font-weight: 800;width: 100%;" readonly >
-                </td>
-                <td contenteditable="false">
-                    <input type="text" name="gp_" id ="gp_${tokenId}" onkeypress="return isFloatNumber(this,event)" class="gp_ resize-input-inside inputs form-control" style="font-weight: 800;width: 100%;" readonly>
-                </td>
-                <td contenteditable="false">
-                    <input type="text" name="costCreated_" id ="costCreated_${tokenId}" onkeypress="return isFloatNumber(this,event)" class="costCreated_ resize-input-inside inputs form-control" style="font-weight: 800;width: 100%;" readonly>
-                </td>
-                <td contenteditable="false">
-                    <input type="text" name="available" id ="available${tokenId}" onkeypress="return isFloatNumber(this,event)" class="available resize-input-inside inputs form-control" style="font-weight: 800;width: 100%;" readonly>
-                </td>
-                <td contenteditable="false">
-                    <input type="text" name="instock" id ="instock${tokenId}" onkeypress="return isFloatNumber(this,event)" class="instock resize-input-inside inputs form-control" style="font-weight: 800;width: 100%;" readonly>
-                </td>
-                <td class="text-center">
-                    <button type="button" id="cancelThis" class="btn btn-icon btn-danger btn-sm btn-sm-icon cancel delete_table_row">
-                        <i class="bi bi-trash3-fill fs-4"></i>
-                    </button>
-                </td>
-            </tr>
-        `);
+                <tr id="new_row_ajax${tokenId}" class="fast_remove">
+                    <td contenteditable="false">
+                        <input name="theProductCode" id ="prodCode_${tokenId}" class="theProductCode_ set_autocomplete inputs form-control" style="width: 100px;">
+                    </td>
+                    <td contenteditable="false">
+                        <input name="prodDescription_" id ="prodDescription_${tokenId}" class="prodDescription_ set_autocomplete inputs form-control" style="width: 300px;">
+                    </td>
+                    <td contenteditable="false">
+                        <input type="text" name="dateFrom" id ="dateFrom${tokenId}" value="${contractFrom}" class="dateFrom resize-input-inside inputs form-control">
+                    </td>
+                    <td contenteditable="false">
+                        <input type="text" name="dateTo" id ="dateTo${tokenId}" value= "${contractTo}" class="dateTo resize-input-inside form-control">
+                    </td>
+                    <td contenteditable="false">
+                        <input type="text" name="prodPrice_" id ="prodPrice_${tokenId}" onkeypress="return isFloatNumber(this,event)" class="prodPrice_ resize-input-inside inputs form-control" style="font-weight: 800;width: 100%;" >
+                    </td>
+                    <td contenteditable="false">
+                        <input type="text" name="cost_" id ="cost_${tokenId}" onkeypress="return isFloatNumber(this,event)" class="cost_ resize-input-inside inputs form-control" style="font-weight: 800;width: 100%;" readonly>
+                    </td>
+                    <td contenteditable="false">
+                        <input type="text" name="gp_" id ="gp_${tokenId}" onkeypress="return isFloatNumber(this,event)" class="gp_ resize-input-inside inputs form-control" style="font-weight: 800;width: 100%;" readonly>
+                    </td>
+                    <td contenteditable="false">
+                        <input type="text" name="costCreated_" id ="costCreated_${tokenId}" onkeypress="return isFloatNumber(this,event)" class="costCreated_ resize-input-inside inputs form-control" style="font-weight: 800;width: 100%;" readonly>
+                    </td>
+                    <td contenteditable="false">
+                        <input type="text" name="available" id ="available${tokenId}" onkeypress="return isFloatNumber(this,event)" class="available resize-input-inside inputs form-control" style="font-weight: 800;width: 100%;" readonly>
+                    </td>
+                    <td contenteditable="false">
+                        <input type="text" name="instock" id ="instock${tokenId}" onkeypress="return isFloatNumber(this,event)" class="instock resize-input-inside inputs form-control" style="font-weight: 800;width: 100%;" readonly>
+                    </td>
+                    <td class="text-center">
+                        <button type="button" id="cancelThis" class="btn btn-icon btn-danger btn-sm btn-sm-icon cancel delete_table_row">
+                            <i class="bi bi-trash3-fill fs-4"></i>
+                        </button>
+                    </td>
+                </tr>
+            `);
+
             $('#tblCreateNewSpecial tbody').append($row).trigger('addRows', [$row, false]);
             if (!$('.lst').is(":focus")) {
                 $('#prodCode_' + tokenId).focus().click();
@@ -395,6 +396,7 @@
                     $('#prodDescription_' + tokenId).focus().click();
                 }
             }
+
             $(".dateTo,.dateFrom").datepicker({
                 changeMonth: true, //this option for allowing user to select month
                 changeYear: true, //this option for allowing user to select from year range

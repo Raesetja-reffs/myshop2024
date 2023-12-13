@@ -112,7 +112,7 @@ public function createnewcustomercontract(Request $request){
         $queryCustomers =DB::connection('sqlsrv3')->table("viewtblCustomers" )->select('CustomerId','StoreName','CustomerPastelCode','CreditLimit','BalanceDue','UserField5','Email','Routeid','Discount','OtherImportantNotes','strRoute')->orderBy('CustomerPastelCode','ASC')->get();
         $queryProducts =DB::connection('sqlsrv3')->table("viewActiveProductWithVat" )->select('ProductId','PastelCode','PastelDescription','UnitSize','Tax','Cost','QtyInStock','Margin','Alcohol','Available','PurchOrder')->orderBy('PastelDescription','ASC')->distinct()->get();
 
-        return view('dims/add_new_customer_special_kf')
+        return view('dims/addnewcustomerspecialkf/index')
                 ->with('customers',$queryCustomers)->with('products',$queryProducts);
     }
     public function getCustomerAvgQty(Request $request){
