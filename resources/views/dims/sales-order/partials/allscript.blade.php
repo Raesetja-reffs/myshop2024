@@ -4934,7 +4934,8 @@
         });
 
         if (!$('.lst').is(":focus")) {
-            $('#prodCode_' + tokenId).focus();
+            $('#prodDescription_' + tokenId).click();
+            $('#prodCode_' + tokenId).focus().click();
 
             // if ($('#checkboxDescription').is(':checked')) {
             //     $('#prodDescription_' + tokenId).focus();

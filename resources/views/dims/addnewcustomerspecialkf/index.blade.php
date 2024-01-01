@@ -28,16 +28,12 @@
     @include('dims.addnewcustomerspecialkf.partials.listing')
 
     <div class="col-lg-11" id="afterFilter">
-
-        <div id="gridContainer" style="     width:100%;height:62%">
+        <div id="gridContainer" style="width:100%;height:62%">
         </div>
-
-
         <div title="Items having duplicate specials. Press Yes to push the products, No closes the dialog"
             id="duplicatespecials">
             <h2>These lines have duplicate specials.</h2>
             <form>
-
                 <div class="form-group  col-md-12">
                     <table class="table2 table-bordered  dataTable">
                         <thead>
@@ -54,37 +50,10 @@
 
                         </tbody>
                     </table>
-
-                </div>
-            </form>
-
-        </div>
-        <div title="Copy Contract" id="dialogcopycontracts">
-            <h3>Copy Contract From </h3>
-            <form>
-                <div class="col-md-12">
-                    <div class="form-group  col-md-12" style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">
-                        <label class="control-label" for="custcodeto"
-                            style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Enter Contact ID You Want To
-                            Copy From</label>
-                        <input class="form-control input-sm col-md-4 auto-complete-off" name="entercontracts"
-                            id="entercontracts" style="height:30px;font-size: 10px;"></input>
-                    </div>
-                    <div class="col-md-12">
-                        <button type="button" id="validateConTractId" class="btn-warning btn-xs pull-right"
-                            style="margin-top: 29px;margin-right: 15px;">Validate The Contract ID</button>
-
-                    </div>
-                    <div class="col-md-12" id="messagevalidatingthecontract">
-
-                    </div>
-                    <div class="col-md-12">
-                        <button type="button" id="finalisecopy" class="btn-success btn-xs pull-right"
-                            style="margin-top: 29px;margin-right: 15px;">Finalise Copying</button>
-                    </div>
                 </div>
             </form>
         </div>
+        @include('dims.addnewcustomerspecialkf.partials.alldialog')
     </div>
 
     <style>
@@ -174,22 +143,27 @@
                         if($('#custheadid').val() == "-99" && dFrom.length < 8 && dateTo.length < 8  )
             */
             $('#importexcel').click(function() {
-
-
                 var dFromImporting = $('#dateFrom').val();
                 var dFromExporting = $('#dateTo').val();
-                if ($("#custheadid").val() == "-99" || dFromImporting.length < 8 || dFromExporting.length <
-                    8) {
-                    var dialog = $(
-                        '<p><strong style="color:red">Contract ID Empty or Dates not selected yet</strong></p>'
-                    ).dialog({
+                if ($("#custheadid").val() == "-99" || dFromImporting.length < 8 || dFromExporting.length < 8) {
+                    var dialog = $(`
+                        <p>
+                            <strong style="color:red">
+                                Contract ID Empty or Dates not selected yet
+                            </strong>
+                        </p>
+                    `).dialog({
                         height: 200,
                         width: 700,
                         modal: true,
                         containment: false,
                         buttons: {
-                            "Okay": function() {
-                                dialog.dialog('close');
+                            Okay: {
+                                text: "Yes",
+                                class: "btn btn-success btn-sm",
+                                click: function() {
+                                    dialog.dialog('close');
+                                }
                             }
                         }
                     });
@@ -343,77 +317,94 @@
 
             });
             $('#deletelines').click(function() {
-                var dialog = $(
-                    '<p><strong style="color:red">Are you sure you want to delete all lines?</strong></p>'
-                ).dialog({
+                var dialog = $(`
+                    <p>
+                        <strong style="color:red">
+                            Are you sure you want to delete all lines?
+                        </strong>
+                    </p>
+                `).dialog({
                     height: 200,
                     width: 700,
                     modal: true,
                     containment: false,
                     buttons: {
-                        "Yes": function() {
-                            $.ajax({
-                                url: '{!! url('/deletecontractlines') !!}',
-                                type: "POST",
-                                data: {
-                                    contractid: $('#custheadid').val(),
+                        Yes: {
+                            text: "Yes",
+                            class: "btn btn-success btn-sm",
+                            click: function() {
+                                $.ajax({
+                                    url: '{!! url('/deletecontractlines') !!}',
+                                    type: "POST",
+                                    data: {
+                                        contractid: $('#custheadid').val(),
 
-                                },
-                                success: function(data) {
-                                    $('.dx-datagrid-table tbody').empty();
-                                }
-                            });
-                            dialog.dialog('close');
+                                    },
+                                    success: function(data) {
+                                        $('.dx-datagrid-table tbody').empty();
+                                    }
+                                });
+                                dialog.dialog('close');
+                            }
                         },
-                        "No": function() {
-                            dialog.dialog('close');
+                        No: {
+                            text: "No",
+                            class: "btn btn-primary btn-sm",
+                            click: function() {
+                                dialog.dialog('close');
+                            }
                         }
                     }
                 });
-
-
-
             });
+
             $('#deleteall').click(function() {
-
-
-                var dialog = $(
-                    '<p><strong style="color:red">Are you sure you want to delete the whole contract?</strong></p>'
-                ).dialog({
+                var dialog = $(`
+                    <p>
+                        <strong style="color:red">
+                            Are you sure you want to delete the whole contract?
+                        </strong>
+                    </p>
+                `).dialog({
                     height: 200,
                     width: 700,
                     modal: true,
                     containment: false,
                     buttons: {
-                        "Yes": function() {
-                            $.ajax({
-                                url: '{!! url('/deleteALLBasedContract') !!}',
-                                type: "POST",
-                                data: {
-                                    contractid: $('#custheadid').val(),
+                        Yes: {
+                            text: "Yes",
+                            class: "btn btn-success btn-sm",
+                            click: function() {
+                                $.ajax({
+                                    url: '{!! url('/deleteALLBasedContract') !!}',
+                                    type: "POST",
+                                    data: {
+                                        contractid: $('#custheadid').val(),
 
-                                },
-                                success: function(data) {
-                                    $('#tblCreateNewSpecial tbody').empty();
-                                    location.reload();
-                                }
-                            });
-                            dialog.dialog('close');
+                                    },
+                                    success: function(data) {
+                                        $('#tblCreateNewSpecial tbody').empty();
+                                        location.reload();
+                                    }
+                                });
+                                dialog.dialog('close');
+                            }
                         },
-                        "No": function() {
-                            dialog.dialog('close');
+                        No: {
+                            text: "No",
+                            class: "btn btn-primary btn-sm",
+                            click: function() {
+                                dialog.dialog('close');
+                            }
                         }
                     }
                 });
-
-
-
-
             });
-            $('#addnewline').click(function() {
 
+            $('#addnewline').click(function() {
                 generateALine2();
             });
+
             $("#dateFrom,#dateTo").datepicker({
                 changeMonth: true, //this option for allowing user to select month
                 changeYear: true, //this option for allowing user to select from year range
@@ -483,7 +474,6 @@
 
             });
             $('#copyContractIntoLines').click(function() {
-
                 //copy contract
                 var dFrom = $('#dateFrom').val();
                 var dateTo = $('#dateTo').val();
@@ -499,7 +489,6 @@
                         width: 700,
                         buttons: {
                             "OK": function() {
-
                                 dialog.dialog('close');
                             }
                         }
@@ -507,9 +496,8 @@
                 } else {
                     $('#entercontracts').val("");
                     $('#dialogcopycontracts').show();
-                    showDialogWithoutClose('#dialogcopycontracts', 400, 400);
+                    showDialogWithoutClose('#dialogcopycontracts', 400, 250);
                 }
-
             });
             $('#finalisecopy').click(function() {
 
@@ -955,27 +943,35 @@
 
             $('#doneCreating').click(function() {
                 var dialog = $(
-                    '<p> <strong style="color:red">Please ensure that you have pressed the save icon on your special data sheet. </strong></p>'
+                    `<p>
+                        <strong style="color:red">
+                            Please ensure that you have pressed the save icon on your special data sheet.
+                        </strong>
+                    </p>`
                 ).dialog({
                     height: 200,
                     width: 700,
                     buttons: {
-                        "YES I DID": function() {
-                            PressDone();
-                            dialog.dialog('close');
+                        Yes: {
+                            text: "YES I DID",
+                            class: "btn btn-success btn-sm",
+                            click: function() {
+                                PressDone();
+                                dialog.dialog('close');
+                            }
                         },
-                        "CANCEL": function() {
-                            dialog.dialog('close');
-                        }
+                        Cancel: {
+                            text: "CANCEL",
+                            class: "btn btn-primary btn-sm",
+                            click: function() {
+                                dialog.dialog('close');
+                            }
+                        },
                     }
                 });
 
 
             });
-
-
-
-
         });
 
         function marginCalculator(cost, onCellVal) {
