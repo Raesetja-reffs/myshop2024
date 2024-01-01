@@ -297,9 +297,9 @@ public function createnewcustomercontract(Request $request){
         $queryCustomers =DB::connection('sqlsrv3')->table("viewtblCustomers" )->select('CustomerId','StoreName','CustomerPastelCode')->orderBy('CustomerPastelCode','ASC')->get();
         $queryProducts =DB::connection('sqlsrv3')->table("viewtblProducts" )->select('ProductId','PastelDescription','PastelCode')->orderBy('PastelCode','ASC')->get();
 
-        return view('dims/search_customer_special_kf')
-        ->with('customers',$queryCustomers)
-        ->with('products',$queryProducts);
+        return view('dims/searchcustomerspecialkf/index')
+            ->with('customers',$queryCustomers)
+            ->with('products',$queryProducts);
     }
     public function getCurrentSpecialsSearch(Request $request){
         $customers = $request->get('customers');
