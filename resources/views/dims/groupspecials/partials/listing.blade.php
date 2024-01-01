@@ -106,9 +106,13 @@
                         modal: true,
                         containment: false,
                         buttons: {
-                            "OKAY": function() {
-                                $this.closest('tr').remove();
-                                dialog.dialog('close');
+                            OKAY: {
+                                text: "OKAY",
+                                class: "btn btn-success btn-sm",
+                                click: function() {
+                                    $this.closest('tr').remove();
+                                    dialog.dialog('close');
+                                }
                             }
                         }
                     });

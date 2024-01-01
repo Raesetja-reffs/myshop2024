@@ -23,120 +23,10 @@
         <!--end::Item-->
     </x-slot>
 
-    <div class="col-lg-12"  style="background: white;height: 0px;">
-      <h1 style="text-align:center;">Overall Special</h1>
-        <fieldset class="well">
-            <legend class="well-legend">Filters</legend>
-            <form>
-                <div class="form-group  col-md-3"  style="display:none;margin-bottom: 0px;font-weight: 700;font-size: 11px;">
-                    <label class="control-label" for="inputCustAcc"  style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Group ID</label>
-                    <input type="text" name="custCode" class="form-control input-sm col-xs-1" id="inputCustAcc" style="background:grey;height:22px;font-size: 10px;font-weight: 900;    color: black;" readonly>
-                </div>
+    @include('dims.overallspecial.partials.searchbar')
 
-                <div class="form-group col-md-3"  style="display:none;margin-bottom: 0px;font-weight: 700;font-size: 11px;">
-                    <label class="control-label" for="inputCustName"  style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Group Name</label>
-                    <input type="text" name="custDescription" class="form-control input-sm col-xs-1" id="inputCustName" style="height:22px;font-size: 10px;font-weight: 900;    color: black;">
-                </div>
-                <div class="form-group col-md-3 itCanHide"  style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">
-                    <label class="control-label" for="dateFrom"  style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Date From</label>
-                    <input type="text" class="form-control input-sm col-xs-1" id="dateFrom" style="font-weight: 900;    color: black;font-size: 13px;">
-                </div>
-                <div class="form-group col-md-3 "  style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">
-                    <label class="control-label" for="dateTo"  style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Date To</label>
-                    <input type="text" class="form-control input-sm col-xs-1" id="dateTo" style="font-weight: 900;    color: black;font-size: 13px;">
+    @include('dims.overallspecial.partials.listing')
 
-                </div>
-
-                <button type="button" id="submitFiltersOnCustSpecial" class="btn-xs btn-primary">Submit</button>
-            </form>
-        </fieldset>
-    </div>
-    <div class="col-lg-12" id="afterFilter">
-        <h5 id="specialslink"></h5>
-
-        <div class="col-lg-12" style=" height: 35%;">
-            <h4>Please start adding new products below.</h4><select id="specialType">
-                @foreach($overallspecialtypes as $val)
-                <option value="{{$val->intOverallSpecialTypeId}}">{{$val->strOverallSpecialType}}</option>
-
-                    @endforeach
-            </select>
-            <select id="locations">
-                @foreach($locations as $val)
-                <option value="{{$val->ID}}">{{$val->Warehouse}}</option>
-                    @endforeach
-            </select>
-            <fieldset class="well" style="display:none;">
-                <legend class="well-legend">Filters</legend>
-                <form>
-                    <div class="form-group col-md-3 itCanHide"  style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">
-                        <label class="control-label" for="dateFrom"  style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Date From</label>
-                        <input type="text" class="form-control input-sm col-xs-1" id="dateFrom" style="font-weight: 900;    color: black;font-size: 13px;">
-                    </div>
-                    <div class="form-group col-md-3 "  style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">
-                        <label class="control-label" for="dateTo"  style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Date To</label>
-                        <input type="text" class="form-control input-sm col-xs-1" id="dateTo" style="font-weight: 900;    color: black;font-size: 13px;">
-
-                    </div>
-
-                    <button type="button" id="createnewSpecial" class="btn-xs btn-success">Create</button>
-                </form>
-            </fieldset>
-            <button class="btn-success btn-xs" id="addLine">Add Line</button>
-            <div class="col-lg-12" style="background: white;height: 60%;overflow-y: scroll; overflow-x: auto;">
-                <table id ="tblCreateNewSpecial" class="table colResizable table-bordered table-condensed">
-                    <thead>
-                        <tr style="font-size: 12px;">
-                            <th class="col-2">Code</th>
-                            <th class="col-4">Description</th>
-                            <th>From</th>
-                            <th>To</th>
-                            <th>Price</th>
-                            <th>Cost</th>
-                            <th>Curr GP</th>
-                            <th>Cost Created</th>
-                            <th></th>
-
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                    </tbody>
-
-                </table>
-
-            </div>
-            <div class="col-lg-12" style="background: white;">
-                <button id="doneCreating" class="btn-xs btn-success">Done</button>
-            </div>
-        </div>
-        <div class="col-lg-12">
-            <h4>Current Specials</h4>
-            <table id ="tblCreatedCustomerSpecials" class="table table-bordered table-condensed" style="font-family: sans-serif;" tabindex=0>
-                <thead>
-                <tr style="font-size: 12px;">
-                    <td>ID</td>
-                    <td>Ref</td>
-                    <td>Code</td>
-                    <td>Description</td>
-                    <td>Date From</td>
-                    <td>Date To</td>
-                    <td>Price</td>
-                    <td>Cost</td>
-                    <td>Current GP</td>
-                    <td style="display: none;">Cost Created</td>
-                    <td >Special Type</td>
-                    <td >Location</td>
-                    <td>Actions</td>
-
-                </tr>
-                </thead>
-                <tbody></tbody>
-
-            </table>
-
-        </div>
-    </div>
     <div id="popUpdateLine" title="Please Update">
         <div class="col-lg-12" >
             <label class="control-label" for="specialIdUpdate"  style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Special Id</label><br>
@@ -163,14 +53,12 @@
         </div>
 
     </div>
+
     <div id="updatedspecials" title="Specials Updated" >
         <button id="btnspecialUpdated" class="btn-md btn-success">OKAY</button>
     </div>
 
     <style>
-        .table td, .table th {
-            white-space: nowrap; /* Prevent text wrapping in table cells */
-        }
     </style>
 
     <script>
@@ -262,12 +150,6 @@
             });
 
 
-            $('#addLine').click(function(){
-
-                generateALine2();
-            });
-
-
             $(".dateTo").datepicker({
                 changeMonth: true,//this option for allowing user to select month
                 changeYear: true, //this option for allowing user to select from year range
@@ -282,53 +164,6 @@
                 var $this = $(this);
                 $this.closest('tr').remove();
             });
-
-
-            $('#doneCreating').click(function()
-            {
-                var productsLinesOnPicking = new Array();
-                $('#tblCreateNewSpecial > tbody  > tr').each(function() {
-                    // var data = $(this);
-                    // var orderDetailID = $(this).closest('tr').find('#theOrdersDetailsId').val();
-
-                    if (($(this).closest('tr').find('.theProductCode_').val()).length > 0 && ($(this).closest('tr').find('.prodDescription_').val()).length > 0 ) {
-                        productsLinesOnPicking.push({
-                            'productCode': $(this).closest('tr').find('.theProductCode_').val(),
-                            'desc': $(this).closest('tr').find('.prodDescription_').val(),
-                            'price': $(this).closest('tr').find('.prodPrice_').val(),
-                            'dateFrom': $(this).closest('tr').find('.dateFrom').val(),
-                            'dateTo': $(this).closest('tr').find('.dateTo').val(),
-                            'cost_': $(this).closest('tr').find('.cost_').val(),
-                            'gp_': $(this).closest('tr').find('.gp_').val(),
-                            'costCreated_': $(this).closest('tr').find('.costCreated_').val(),
-                            'specialType': $('#specialType').val(),
-                            'locations': $('#locations').val()
-                        });
-                    }
-                });
-                $.ajax({
-                    url: '{!!url("/createOverallSpecials")!!}',
-                    type: "POST",
-                    data: {
-                        customerCode: 99,
-                        orderDetails: productsLinesOnPicking,
-                        contractDateFrom:$('#dateFrom').val(),
-                        contractDateTo:$('#dateTo').val()
-                    },
-                    success: function (data) {
-                        var dialog = $('<p>Done</p>').dialog({
-                            height: 200, width: 700, modal: true, containment: false,
-                            buttons: {
-                                "OKAY": function () {
-                                    dialog.dialog('close');
-                                    $('#submitFiltersOnCustSpecial').click();
-
-                                }
-                            }
-                        });
-                    }
-                });
-            });
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -337,7 +172,6 @@
         //showDialog('#tempDeliveryAddressOnTheFly','50%',250);
             $('#submitFiltersOnCustSpecial').click(function(){
                 if (($.trim($('#dateFrom').val())).length > 7 && ($.trim($('#dateTo').val())).length > 7){
-
                     $('#specialslink').empty();
                     generateALine2();
                     $('#afterFilter').show();
@@ -346,7 +180,15 @@
 
                     console.debug('********'+from);
                     console.debug('******** dateTo'+dateTo);
-                    $('#specialslink').append("<a href={!!url('/overallSpecailJasper')!!}/"+from+'/'+dateTo+" target=blank style= background: red;color: white;font-weight: 900;padding: 3px;>Spread sheet</a>");
+                    $('#specialslink').append("");
+                    $('#specialslink').append(`
+                        <a href="{!!url('/overallSpecailJasper')!!}/${from}/${dateTo}"
+                            target="blank"
+                            class="btn btn-primary btn-sm mb-1 mb-sm-0 me-1"
+                        >
+                            Spread sheet
+                        </a>
+                    `);
 
                     //Select * between this date for this customer
 
@@ -363,22 +205,27 @@
                             $('.remthisLine').remove();
 
                             $.each(data, function (key,value) {
-                                trHTML += '<tr  class="remthisLine" style="font-size: 11px;color:black;"><td>' +
-                                    value.Specialid + '</td><td>' +
-                                    value.SpecialHeaderId + '</td><td>' +
-                                    value.PastelCode + '</td><td>' +
-                                    value.PastelDescription+ '</td><td>' +
-                                    value.Date+'</td><td>' +
-                                    value.DateTo + '</td><td>'+
-                                    parseFloat(value.Price).toFixed(2) + '</td><td>'+
-                                    parseFloat(value.Cost).toFixed(2) + '</td><td>'+
-                                    parseFloat(value.GP).toFixed(2) + '</td><td  style="display: none;">'+
-                                    parseFloat(value.CostPrice).toFixed(2) + '</td>'+
-                                    '</td><td>'+
-                                    value.strOverallSpecialType + '</td>'+
-                                    '</td><td>'+
-                                    value.locationName + '</td>'+
-                                    '<td><button class="btn-sx" value="' +value.Specialid +'">Delete</button></td></tr>';
+                                trHTML += `
+                                    <tr class="remthisLine">
+                                        <td>${value.Specialid}</td>
+                                        <td>${value.SpecialHeaderId}</td>
+                                        <td>${value.PastelCode}</td>
+                                        <td>${value.PastelDescription}</td>
+                                        <td>${value.Date}</td>
+                                        <td>${value.DateTo}</td>
+                                        <td>${parseFloat(value.Price).toFixed(2)}</td>
+                                        <td>${parseFloat(value.Cost).toFixed(2)}</td>
+                                        <td>${parseFloat(value.GP).toFixed(2)}</td>
+                                        <td style="display: none;">${parseFloat(value.CostPrice).toFixed(2)}</td>
+                                        <td>${value.strOverallSpecialType}</td>
+                                        <td>${value.locationName}</td>
+                                        <td class="text-center">
+                                            <button class="btn btn-icon btn-danger btn-sm btn-sm-icon remove_current_special_product_line" value="${value.Specialid}">
+                                                <i class="bi bi-trash3-fill fs-4"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                `;
                                 $('#specialId').val( value.SpecialHeaderId);
                             });
 
@@ -390,9 +237,9 @@
                 }
             });
 
-            $('#tblCreatedCustomerSpecials').on('click', 'button', function (e) {
+            $(document).on('click', '.remove_current_special_product_line', function(e) {
                 var $this = $(this);
-                var $thisVal = $(this).val();
+                var $thisVal = $(this).attr("value");
                 $.ajax({
                     url: '{!!url("/removeOverallSpecial")!!}',
                     type: "POST",
@@ -400,13 +247,16 @@
                         removeSpecial: $thisVal
                     },
                     success: function (data) {
-
                         var dialog = $('<p>Special Removed</p>').dialog({
                             height: 200, width: 700, modal: true, containment: false,
                             buttons: {
-                                "OKAY": function () {
-                                    $this.closest('tr').remove();
-                                    dialog.dialog('close');
+                                OKAY: {
+                                    text: "OKAY",
+                                    class: "btn btn-success btn-sm",
+                                    click: function() {
+                                        $this.closest('tr').remove();
+                                        dialog.dialog('close');
+                                    }
                                 }
                             }
                         });
@@ -472,157 +322,54 @@
             var contractFrom = $('#dateFrom').val();
             var contractTo = $('#dateTo').val();
             var tokenId=Math.floor(Math.pow(10, 9-1) + Math.random() * 9 * Math.pow(10, 9-1));
-            var $row = $('<tr id="new_row_ajax'+tokenId+'" class="fast_remove" style="font-weight: 600;font-size: 11px;">' +
-                // Code
-                '<td contenteditable="false" class="col-sm-1"><input name="theProductCode" id ="prodCode_'+tokenId+'" class="theProductCode_ set_autocomplete inputs"></td>' +
+            var $row = $(`
+                <tr id="new_row_ajax${tokenId}" class="fast_remove">
+                    <td contenteditable="false">
+                        <input name="theProductCode" id="prodCode_${tokenId}" class="theProductCode_ set_autocomplete inputs form-control" style="width: 200px;">
+                    </td>
+                    <td contenteditable="false">
+                        <input name="prodDescription_" id="prodDescription_${tokenId}" class="prodDescription_ set_autocomplete inputs form-control" style="width: 300px;">
+                    </td>
+                    <td contenteditable="false">
+                        <input type="text" name="dateFrom" id="dateFrom${tokenId}" value="${contractFrom}" title="in stock" class="dateFrom resize-input-inside inputs form-control">
+                    </td>
+                    <td contenteditable="false">
+                        <input type="text" name="dateTo" id="dateTo${tokenId}" value="${contractTo}" class="dateTo resize-input-inside inputs form-control">
+                    </td>
+                    <td contenteditable="false">
+                        <input type="text" name="prodPrice_" id="prodPrice_${tokenId}" onkeypress="return isFloatNumber(this,event)" class="prodPrice_ resize-input-inside inputs lst form-control" style="font-weight: 800;">
+                    </td>
+                    <td contenteditable="false">
+                        <input type="text" name="cost_" id="cost_${tokenId}" onkeypress="return isFloatNumber(this,event)" class="cost_ resize-input-inside inputs form-control" style="font-weight: 800;" readonly>
+                    </td>
+                    <td contenteditable="false">
+                        <input type="text" name="gp_" id="gp_${tokenId}" onkeypress="return isFloatNumber(this,event)" class="gp_ resize-input-inside inputs form-control" style="font-weight: 800;" readonly>
+                    </td>
+                    <td contenteditable="false">
+                        <input type="text" name="costCreated_" id ="costCreated_${tokenId}" onkeypress="return isFloatNumber(this,event)" class="costCreated_ resize-input-inside inputs form-control" style="font-weight: 800;" readonly>
+                    </td>
+                    <td class="text-center">
+                        <button type="button" id="cancelThis" class="btn btn-icon btn-danger btn-sm btn-sm-icon cancel delete_table_row">
+                            <i class="bi bi-trash3-fill fs-4"></i>
+                        </button>
+                    </td>
+                </tr>
+            `);
 
-                // Description
-                '<td contenteditable="false" class="col-md-5"><input name="prodDescription_" id ="prodDescription_'+tokenId+'" class="prodDescription_ set_autocomplete inputs" tabindex="-1"></td>' +
-
-                // Date From
-                '<td  contenteditable="false" class="col-md-2"><input type="text" name="dateFrom" id ="dateFrom'+tokenId+'" value= "'+contractFrom+'"  title="in stock" class="dateFrom resize-input-inside inputs"></td>' +
-
-                // Date To
-                '<td contenteditable="false" class="col-md-2"><input type="text" name="dateTo"  id ="dateTo'+tokenId+'" value= "'+contractTo+'" class="dateTo resize-input-inside inputs"></td>' +
-
-                // Price
-                '<td contenteditable="false"><input type="text" name="prodPrice_" id ="prodPrice_'+tokenId+'" onkeypress="return isFloatNumber(this,event)" class="prodPrice_ resize-input-inside inputs lst" style="font-weight: 800;width: 100%;" ></td>' +
-
-                // Cost
-                '<td contenteditable="false"><input type="text" name="cost_" id ="cost_'+tokenId+'" onkeypress="return isFloatNumber(this,event)" class="cost_ resize-input-inside inputs" style="font-weight: 800;width: 100%;" readonly ></td>' +
-
-                // GP
-                '<td contenteditable="false"><input type="text" name="gp_" id ="gp_'+tokenId+'" onkeypress="return isFloatNumber(this,event)" class="gp_ resize-input-inside inputs" style="font-weight: 800;width: 100%;" readonly></td>' +
-
-                // Cost Created
-                '<td contenteditable="false"><input type="text" name="costCreated_" id ="costCreated_'+tokenId+'" onkeypress="return isFloatNumber(this,event)" class="costCreated_ resize-input-inside inputs" style="font-weight: 800;width: 100%;" readonly></td>'+
-
-                // Button
-                '<td><button type="button" id="cancelThis" class="btn-danger btn-xs cancel" style="height: 16px;padding: 0px 5px;font-size: 9px;">x</button></td></tr>');
             $('#tblCreateNewSpecial tbody').append( $row ).trigger('addRows', [ $row, false ]);
-
-            if(!$('.lst').is(":focus"))
-            {
-                $('#prodCode_' + tokenId).focus();
+            if (!$('.lst').is(":focus")) {
+                $('#prodCode_' + tokenId).focus().click();
 
                 if ($('#checkboxDescription').is(':checked')) {
-                    $('#prodDescription_' + tokenId).focus();
+                    $('#prodDescription_' + tokenId).focus().click();
                 }
             }
 
-
-            $('input').on('click keyup' ,function(){
-                // $('input').click(function(){
-                var ID = $(this).attr('id');
-                var jID = '#'+ID;
-                var x = ID.indexOf("_");
-                var get_token_number = ID.substring(x+1,ID.length);
-
-                if ($(this).hasClass("prodDescription_") && $(this).hasClass("set_autocomplete")) {
-                    var columnsD = [{name: 'PastelDescription', minWidth:'230px',valueField: 'PastelDescription'},
-                        {name: 'PastelCode', minWidth: '90px',valueField: 'PastelCode'}
-                        ,{name: 'Available', minWidth:'20px',valueField: 'Available'}];
-                    $(""+jID+"").mcautocomplete({
-                        source: finalDataProductDescription,
-                    /*  source: function(req, response) {
-                            var re = $.ui.autocomplete.escapeRegex(req.term);
-                            var matcher = new RegExp("^" + re, "i");
-                            response($.grep(finalDataProductDescription, function(item) {
-                                return matcher.test(item.value);
-                            }));
-                        },*/
-                        columns:columnsD,
-                        autoFocus: true,
-                        minlength: 2,
-                        delay: 0,
-                        multiple: true,
-                        multipleSeparator: ",",
-                        select:function (e, ui) {
-                            var n = ID.indexOf("_");
-                            var token_number = ID.substring(n + 1, ID.length);
-
-                            if(ui.item.PastelCode == "MISC2" || ui.item.PastelDescription == "MISC - NOTE" || ui.item.PastelDescription =="MISC" || ui.item.PastelCode =="misc")
-                            {
-                                $('#prodQty_'+token_number).val('0');
-                                $('#prodPrice_'+token_number).val('0');
-                            }
-                            $('#prodDescription_' + token_number).val(ui.item.PastelDescription);
-                            $('#prodCode_' + token_number).val(ui.item.PastelCode);
-
-                            $('#taxCode' + token_number).val(ui.item.Tax);
-                            $('#cost_' + token_number).val(ui.item.Cost);
-
-                            $.ajaxSetup({
-                                headers: {
-                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                                }
-                            });
-
-                        }
-                    });
-
-                }
-
-                if ($(this).hasClass("theProductCode_") && $(this).hasClass("set_autocomplete")) {
-                    var columnsC = [{name: 'PastelCode', minWidth: '90px',valueField: 'PastelCode'},
-                        {name: 'PastelDescription', minWidth:'230px',valueField: 'PastelDescription'}
-                        ,
-                        {name: 'Available', minWidth:'20px',valueField: 'Available'}];
-                    $("" + jID + "").mcautocomplete({
-                        source: finalDataProduct,
-                        /*source: function(req, response) {
-                            var re = $.ui.autocomplete.escapeRegex(req.term);
-                            var matcher = new RegExp("^" + re, "i");
-                            response($.grep(finalDataProduct, function(item) {
-                                return matcher.test(item.value);
-                            }));
-                        },*/
-                        columns:columnsC,
-                        minlength: 1,
-                        autoFocus: true,
-                        delay: 0,
-                        select:function (e, ui) {
-
-                            var n = ID.indexOf("_");
-                            var token_number = ID.substring(n + 1, ID.length);
-                            if(ui.item.PastelCode == "MISC2" || ui.item.PastelDescription == "MISC - NOTE" || ui.item.PastelDescription =="MISC" || ui.item.PastelCode =="misc")
-                            {
-                                $('#prodQty_'+token_number).val('0');
-                                $('#prodPrice_'+token_number).val('0');
-                            }
-                            $('#prodDescription_' + token_number).val(ui.item.PastelDescription);
-                            $('#prodCode_' + token_number).val(ui.item.PastelCode);
-                            //checkIfOrderHasMultipleProducts(ui.item.extra,token_number);
-                            //$('#inStock_' + token_number).val(ui.item.QtyInStock);
-                            $('#taxCode' + token_number).val(ui.item.Tax);
-                            $('#cost_' + token_number).val(ui.item.Cost);
-                            // $('#prodQty_' + token_number).attr('title', 'In Stock ' + parseFloat(ui.item.QtyInStock).toFixed(3));
-
-                            $.ajaxSetup({
-                                headers: {
-                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                                }
-                            });
-
-                        }
-
-                    });
-                }
-                //calculator();
-            });
             $(".dateTo,.dateFrom").datepicker({
                 changeMonth: true,//this option for allowing user to select month
                 changeYear: true, //this option for allowing user to select from year range
                 dateFormat: 'dd-mm-yy'
             });
-            $('#tblCreateNewSpecial').on('click', 'button', function (e) {
-                var $this = $(this);
-                var $thisVal = $(this).val();
-                $this.closest('tr').remove();
-
-
-            });
-
         }
         $(document).on('keydown', '.inputs', function(e) {
             var code = (e.keyCode ? e.keyCode : e.which);
@@ -641,21 +388,14 @@
             var prodPriceClosest = closesttr.find(".prodPrice_").val();
             if ( (code == 34 || code == 13 || code == 39 ) && $.trim(prodClosest.length) > 0 && prodDescClosest.length > 0 &&  prodPriceClosest.length > 0) {
                 generateALine2();
-
             }
         });
         $(document).on('keyup', '.lst', function(e) {
             var code = (e.keyCode ? e.keyCode : e.which);
             if (code == 13 || code == 9) {
-                    var index = $('.inputs').index(this);
-
-                    $('.lst').eq(index).focus();
-                    generateALine2();
-
-
-
-
-
+                var index = $('.inputs').index(this);
+                $('.lst').eq(index).focus();
+                generateALine2();
             }
         });
         function marginCalculator(cost,onCellVal)

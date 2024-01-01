@@ -363,22 +363,22 @@
                         <input type="text" name="dateTo" id ="dateTo${tokenId}" value= "${contractTo}" class="dateTo resize-input-inside form-control">
                     </td>
                     <td contenteditable="false">
-                        <input type="text" name="prodPrice_" id ="prodPrice_${tokenId}" onkeypress="return isFloatNumber(this,event)" class="prodPrice_ resize-input-inside inputs form-control" style="font-weight: 800;width: 100%;" >
+                        <input type="text" name="prodPrice_" id ="prodPrice_${tokenId}" onkeypress="return isFloatNumber(this,event)" class="prodPrice_ resize-input-inside inputs form-control" style="font-weight: 800;">
                     </td>
                     <td contenteditable="false">
-                        <input type="text" name="cost_" id ="cost_${tokenId}" onkeypress="return isFloatNumber(this,event)" class="cost_ resize-input-inside inputs form-control" style="font-weight: 800;width: 100%;" readonly>
+                        <input type="text" name="cost_" id ="cost_${tokenId}" onkeypress="return isFloatNumber(this,event)" class="cost_ resize-input-inside inputs form-control" style="font-weight: 800;" readonly>
                     </td>
                     <td contenteditable="false">
-                        <input type="text" name="gp_" id ="gp_${tokenId}" onkeypress="return isFloatNumber(this,event)" class="gp_ resize-input-inside inputs form-control" style="font-weight: 800;width: 100%;" readonly>
+                        <input type="text" name="gp_" id ="gp_${tokenId}" onkeypress="return isFloatNumber(this,event)" class="gp_ resize-input-inside inputs form-control" style="font-weight: 800;" readonly>
                     </td>
                     <td contenteditable="false">
-                        <input type="text" name="costCreated_" id ="costCreated_${tokenId}" onkeypress="return isFloatNumber(this,event)" class="costCreated_ resize-input-inside inputs form-control" style="font-weight: 800;width: 100%;" readonly>
+                        <input type="text" name="costCreated_" id ="costCreated_${tokenId}" onkeypress="return isFloatNumber(this,event)" class="costCreated_ resize-input-inside inputs form-control" style="font-weight: 800;" readonly>
                     </td>
                     <td contenteditable="false">
-                        <input type="text" name="available" id ="available${tokenId}" onkeypress="return isFloatNumber(this,event)" class="available resize-input-inside inputs form-control" style="font-weight: 800;width: 100%;" readonly>
+                        <input type="text" name="available" id ="available${tokenId}" onkeypress="return isFloatNumber(this,event)" class="available resize-input-inside inputs form-control" style="font-weight: 800;" readonly>
                     </td>
                     <td contenteditable="false">
-                        <input type="text" name="instock" id ="instock${tokenId}" onkeypress="return isFloatNumber(this,event)" class="instock resize-input-inside inputs form-control" style="font-weight: 800;width: 100%;" readonly>
+                        <input type="text" name="instock" id ="instock${tokenId}" onkeypress="return isFloatNumber(this,event)" class="instock resize-input-inside inputs form-control" style="font-weight: 800;" readonly>
                     </td>
                     <td class="text-center">
                         <button type="button" id="cancelThis" class="btn btn-icon btn-danger btn-sm btn-sm-icon cancel delete_table_row">

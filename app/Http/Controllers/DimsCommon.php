@@ -1031,7 +1031,7 @@ class DimsCommon extends Controller
         $queryProducts =DB::connection('sqlsrv3')->table("viewActiveProductWithVat" )->select('ProductId','PastelCode','PastelDescription','UnitSize','Tax','Cost','QtyInStock','Margin','Alcohol','Available','PurchOrder')->orderBy('PastelDescription','ASC')->distinct()->get();
         $strOverallSpecialType =DB::connection('sqlsrv3')->table("tblOverallSpecialTypes" )->select('intOverallSpecialTypeId','strOverallSpecialType')->orderBy('intOverallSpecialTypeId','ASC')->get();
         $locations = DB::connection('sqlsrv3')->select("select * from tblLocations");
-        return view('dims/overallspecial')
+        return view('dims/overallspecial/index')
                 ->with('products',$queryProducts)
                 ->with('overallspecialtypes',$strOverallSpecialType)->with('locations',$locations)
                 ->with('customers',$queryCustomers);

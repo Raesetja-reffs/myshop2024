@@ -39,6 +39,7 @@
 
     <!-- begin: Page level JS -->
     <script src="{{ asset('js/jquery-2.2.3.min.js') }}"></script>
+    <script src="{{ asset('js/colResizable-1.6.min.js') }}"></script>
     <script src="{{ asset('js/jquery-ui.js') }}"></script>
     <script src="{{ asset('js/jquery.tippop.min.js') }}"></script>
     <script src="{{ asset('js/contextMenu.js') }}"></script>
