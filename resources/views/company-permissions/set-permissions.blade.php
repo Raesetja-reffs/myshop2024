@@ -44,13 +44,13 @@
                                     @foreach ($group as $companyRole)
                                         <div class="col-3 mb-5">
                                             <div class="form-group">
-                                                <x-input-label for="role{{ $companyRole->intAutoId }}">
+                                                <x-input-label for="role{{ $companyRole->intAutoId }}" class="d-flex align-items-center">
                                                     <input type="hidden" name="companyRoles[{{ $companyRole->intAutoId }}]"
                                                         value="0">
                                                     <x-text-input id="role{{ $companyRole->intAutoId }}"
                                                         name="companyRoles[{{ $companyRole->intAutoId }}]"
                                                         type="checkbox"
-                                                        class='form-check-input'
+                                                        class='form-check-input custom-checkbox-sm d-flex align-items-center me-1'
                                                         :value="1"
                                                         :checkboxValue="old(
                                                             'companyRoles[{{ $companyRole->intAutoId }}]',
