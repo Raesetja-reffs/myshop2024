@@ -229,7 +229,7 @@ class ExternalFunctions extends Controller
     public function webstore()
     {
         $this->authorize('isAllowCompanyPermission', ['App\Models\CompanyPermission', 'isallowecommerce']);
-        return view('dims/webstore');
+        return view('dims/webstore/index');
     }
     public function synchwebstore()
     {

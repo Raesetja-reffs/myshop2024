@@ -23,32 +23,44 @@
         <!--end::Item-->
     </x-slot>
 
-    <div class="col-lg-12" >
-        <button id="products" class="btn-md btn-success" style="    padding: 11px;    width: 200px;">Sync Products</button>
-    </div>
-    <div class="col-lg-12" >
-        <button id="stock" class="btn-md btn-success" style="    padding: 11px;    width: 200px;">Sync Stock Available</button>
-    </div>
-    <div class="col-lg-12">
-        <button id="customers" class="btn-md btn-success" style="    padding: 11px;    width: 200px;">Sync Customers</button>
-    </div>
-    <div class="col-lg-12" >
-        <button id="orderpattern" class="btn-md btn-success" style="    padding: 11px;    width: 200px;">Sync Order Pattern</button>
-    </div>
-    <div class="col-lg-12" >
-        <button id="pricelists" class="btn-md btn-primary" style="    padding: 11px;    width: 200px;">Sync Price List Names</button>
-    </div>
-    <div class="col-lg-12" >
-        <button id="pricelistsprices" class="btn-md btn-success" style="    padding: 11px;    width: 200px;">Sync Price List Prices</button>
-    </div>
-    <div class="col-lg-12" >
-        <button id="custspecials" class="btn-md btn-success" style="    padding: 11px;    width: 200px;">Sync Customer Specials</button>
-    </div>
-    <div class="col-lg-12" >
-        <button id="groupspecials" class="btn-md btn-success" style="    padding: 11px;    width: 200px;">Sync Group Specials</button>
-    </div>
-    <div class="col-lg-12" >
-        <button id="overall" class="btn-md btn-success" style="    padding: 11px;    width: 200px;">Sync Overall Specials</button>
+    <div class="row mt-3">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="d-flex flex-wrap">
+                            <button id="products" type="button" class="btn btn-success btn-sm mt-md-6 mb-2 me-2">
+                                Sync Products
+                            </button>
+                            <button id="stock" type="button" class="btn btn-success btn-sm mt-md-6 mb-2 me-2">
+                                Sync Stock Available
+                            </button>
+                            <button id="customers" type="button" class="btn btn-success btn-sm mt-md-6 mb-2 me-2">
+                                Sync Customers
+                            </button>
+                            <button id="orderpattern" type="button" class="btn btn-success btn-sm mt-md-6 mb-2 me-2">
+                                Sync Order Pattern
+                            </button>
+                            <button id="pricelists" type="button" class="btn btn-success btn-sm mt-md-6 mb-2 me-2">
+                                Sync Price List Names
+                            </button>
+                            <button id="pricelistsprices" type="button" class="btn btn-success btn-sm mt-md-6 mb-2 me-2">
+                                Sync Price List Prices
+                            </button>
+                            <button id="custspecials" type="button" class="btn btn-success btn-sm mt-md-6 mb-2 me-2">
+                                Sync Customer Specials
+                            </button>
+                            <button id="groupspecials" type="button" class="btn btn-success btn-sm mt-md-6 mb-2 me-2">
+                                Sync Group Specials
+                            </button>
+                            <button id="overall" type="button" class="btn btn-success btn-sm mt-md-6 mb-2 me-2">
+                                Sync Overall Specials
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
