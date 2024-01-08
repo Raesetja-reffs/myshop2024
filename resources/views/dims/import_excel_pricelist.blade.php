@@ -5,7 +5,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="{{ asset('js/ag_grid.js') }}"></script>
     <script src="{{ asset('js/ag_grid_excel.js') }}"></script>
-    <script src="{{ asset('public/js/jquery-2.2.3.min.js') }}"></script>
+    <script src="{{ asset('js/jquery-2.2.3.min.js') }}"></script>
     <script src="{{ asset('js/jquery-ui.js') }}"></script>
     <link rel="stylesheet" href="{{ asset('css/ag_css.css') }}">
     <link rel="stylesheet" href="{{ asset('css/ag_cc_theme.css') }}">
