@@ -2,6 +2,7 @@
 <html>
 <head>
     <script src="{{ asset('js/ag_grid.js') }}"></script>
+    <script src="{{ asset('js/jquery-2.2.3.min.js') }}"></script>
     <script src="{{ asset('js/jquery-ui.js') }}"></script>
     <link rel="stylesheet" href="{{ asset('css/ag_css.css') }}">
     <link rel="stylesheet" href="{{ asset('css/ag_cc_theme.css') }}">
@@ -145,9 +146,6 @@
 </div>
 
 <div id="myGrid" style="height: 700px;width:95%;" class="ag-theme-balham"></div>
-
-<script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
-<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js" integrity="sha256-xLD7nhI62fcsEZK2/v8LsBcb4lG7dgULkuXoXB/j91c=" crossorigin="anonymous"></script>
 <script type="text/javascript" charset="utf-8">
 
     $( document ).on( 'focus', ':input', function(){
