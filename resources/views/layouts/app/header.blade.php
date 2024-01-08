@@ -55,15 +55,17 @@
                                 <!--end::Avatar-->
 
                                 <!--begin::Username-->
-                                <div class="d-flex flex-column">
-                                    <div class="fw-bold d-flex align-items-center fs-5">
-                                        {{ auth()->user()->UserName }}
-                                    </div>
+                                @if (auth()->user())
+                                    <div class="d-flex flex-column">
+                                        <div class="fw-bold d-flex align-items-center fs-5">
+                                            {{ auth()->user()->UserName }}
+                                        </div>
 
-                                    <a href="javascript:void(0);" class="fw-semibold text-muted text-hover-primary fs-7">
-                                        {{ auth()->user()->Email }}
-                                    </a>
-                                </div>
+                                        <a href="javascript:void(0);" class="fw-semibold text-muted text-hover-primary fs-7">
+                                            {{ auth()->user()->Email }}
+                                        </a>
+                                    </div>
+                                @endif
                                 <!--end::Username-->
                             </div>
                         </div>

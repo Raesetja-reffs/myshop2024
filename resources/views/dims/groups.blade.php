@@ -203,6 +203,7 @@
             });
 
             $("#add").click(function() {
+                $(".general-loader").show();
                 $.ajax({
                     url: '{!!url("/addGroup")!!}',
                     type: "POST",
@@ -219,6 +220,8 @@
                     success: function (data) {
                         location.reload(true);
                     }
+                }).always(function() {
+                    $(".general-loader").hide();
                 });
             });
 
@@ -254,6 +257,7 @@
             });
 
             $("#edit").click(function() {
+                $(".general-loader").show();
                 $.ajax({
                     url: '{!!url("/editGroup")!!}',
                     type: "POST",
@@ -270,10 +274,13 @@
                     success: function (data) {
                         location.reload(true);
                     }
+                }).always(function() {
+                    $(".general-loader").hide();
                 });
             });
 
             $("#delete").click(function() {
+                $(".general-loader").show();
                 $.ajax({
                     url: '{!!url("/deleteGroup")!!}',
                     type: "POST",
@@ -290,6 +297,8 @@
                     success: function (data) {
                         location.reload(true);
                     }
+                }).always(function() {
+                    $(".general-loader").hide();
                 });
             });
         });

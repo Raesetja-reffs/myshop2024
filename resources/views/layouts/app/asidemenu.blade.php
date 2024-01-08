@@ -37,7 +37,7 @@
                 @foreach ($menuItems as $menuItem)
                     @if (!isset($menuItem['permission_slug']) ||
                         (
-                            isset($menuItem['permission_slug']) &&
+                            isset($menuItem['permission_slug']) && auth()->user() &&
                             auth()->user()->can('isAllowCompanyPermission', ['App\Models\CompanyPermission', $menuItem['permission_slug']])
                         )
                     )
@@ -68,7 +68,7 @@
                                     @foreach ($menuItem['submenuitems'] as $subMenuItem)
                                         @if (!isset($subMenuItem['permission_slug']) ||
                                             (
-                                                isset($subMenuItem['permission_slug']) &&
+                                                isset($subMenuItem['permission_slug']) && auth()->user() &&
                                                 auth()->user()->can('isAllowCompanyPermission', ['App\Models\CompanyPermission', $subMenuItem['permission_slug']])
                                             )
                                         )
