@@ -175,9 +175,10 @@
                     success: function (data)
                     {
                         location.reload(true);
+                    },
+                    error: function(xhr){
+                        $(".general-loader").hide();
                     }
-                }).always(function() {
-                    $(".general-loader").hide();
                 });
             });
 
@@ -221,9 +222,10 @@
                     success: function (data)
                     {
                         location.reload(true);
+                    },
+                    error: function(xhr){
+                        $(".general-loader").hide();
                     }
-                }).always(function() {
-                    $(".general-loader").hide();
                 });
             });
 
@@ -242,9 +244,10 @@
                     success: function (data)
                     {
                         location.reload(true);
+                    },
+                    error: function(xhr){
+                        $(".general-loader").hide();
                     }
-                }).always(function() {
-                    $(".general-loader").hide();
                 });
             });
         });
