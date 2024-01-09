@@ -239,7 +239,7 @@ class JasperReports extends Controller
         // dd($companyInfo);
 
         return view('dims/printorderdelnote')->with('Logo', $Logo)->with('companyInfo', $companyInfo)->with('soldTo', $soldTo)->with('shippedTo', $shippedTo)->with('docNo', $docNo)->with('deliveryDate', $deliveryDate)->with('createdBy', $createdBy)->with('orderNumber', $orderNumber)->with('orderheader', $orderheader)->with('ID', $ID)->with('footer', $footer)->with('header', $header)->with('subTotal', $subTotal)->with('vat', $vat)->with('total', $total)->with('currency', $currency);
-    
+
     }
     public function FreshOrders()
     {
@@ -323,46 +323,27 @@ class JasperReports extends Controller
 
     public function groupSpecailJasper($datefrom,$dateto,$groupid)
     {
-        $input = public_path('/reports/groupspecials.jasper');
-        $jdbc_dir = public_path('/drivers');//Please make sure you put mssql drivers in here otherwise u will get an error
-        $output = public_path('/reports');
+        $UserID = Auth::user()->UserID;
 
-        $ext = "xlsx";
+        $groupDetails = DB::connection('sqlsrv3')
+            ->select("select * from tblGroups where GroupId=?", [$groupid]);
+        $entityName = '';
+        if ($groupDetails && isset($groupDetails[0])) {
+            $entityName = $groupDetails[0]->GroupName;
+        }
+        $groupSpecialData = DB::connection('sqlsrv3')->select("EXEC [spGroupSpecialFilter] ?,?,?,?", array($groupid,$datefrom,$dateto,$UserID));
+        $getCompanyDetails = DB::connection('sqlsrv3')
+            ->select("select * from tblAppCompanyDetails where intLocationID=1");
+        $companyDetails = [];
+        if ($getCompanyDetails) {
+            foreach ($getCompanyDetails as $value) {
+                if ($value->strHtmlTagName) {
+                    $companyDetails[$value->strHtmlTagName] = $value->strHtml;
+                }
+            }
+        }
 
-        $options = [
-            'format' => ['xlsx'],//csv
-            'locale' => 'en',
-            'params' => [
-                'datefrom'=>$datefrom,
-                'dateto'=>$dateto,
-                'groupid'=>$groupid
-            ],
-            'db_connection' => [
-                'driver' => 'generic', //mysql, postgres, oracle, generic (jdbc)
-                'username' => 'sa',
-                'password' => 'linx123',
-                'host' => 'localhost',
-                'database' => 'linxdbDIMS',
-                'port' => '1433',
-                'jdbc_driver' => 'com.microsoft.sqlserver.jdbc.SQLServerDriver',
-                'jdbc_url' => 'jdbc:sqlserver://localhost:1433;databaseName=linxdbDIMS',
-                'jdbc_dir' => $jdbc_dir
-
-            ]
-
-        ];
-
-        $jasper = new PHPJasper;
-//$time =time();
-        $jasper->process(
-            $input,
-            $output,
-            $options
-        // )->output();
-        )->execute();
-
-        // dd($jasper);
-        return response()->file($output.'/groupspecials.'.$ext);
+        return view('dims/groupspecailjasper', compact('entityName', 'groupSpecialData', 'companyDetails'));
     }
 
 }
