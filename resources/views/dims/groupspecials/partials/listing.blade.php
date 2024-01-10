@@ -82,8 +82,12 @@
                         modal: true,
                         containment: false,
                         buttons: {
-                            "OKAY": function() {
-                                location.reload(true);
+                            OKAY: {
+                                text: "OKAY",
+                                class: "btn btn-success btn-sm",
+                                click: function() {
+                                    location.reload(true);
+                                }
                             }
                         }
                     });

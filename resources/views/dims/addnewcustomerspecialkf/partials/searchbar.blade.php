@@ -33,7 +33,7 @@
                         <div class="col-md-2 mb-2">
                             <button type="button" id="submitFiltersOnCreatingCustSpecial"
                                 class="btn btn-success btn-sm mt-md-6">
-                                Submit
+                                Search
                             </button>
                         </div>
                     </div>
@@ -42,8 +42,3 @@
         </div>
     </div>
 </div>
-<script>
-    $(document).ready(function() {
-
-    });
-</script>

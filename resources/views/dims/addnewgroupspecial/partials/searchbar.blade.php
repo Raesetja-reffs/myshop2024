@@ -28,7 +28,7 @@
                         <div class="col-md-2 mb-2">
                             <button type="button" id="submitFiltersOnCustSpecial"
                                 class="btn btn-success btn-sm mt-md-6">
-                                Submit
+                                Search
                             </button>
                         </div>
                     </div>

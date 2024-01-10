@@ -27,9 +27,7 @@
                         </div>
                         <div class="col-md-4 mb-2">
                             <button type="button" id="submitFiltersOnCustSpecial"
-                                class="btn btn-success btn-sm mt-md-6">Submit</button>
-                            <button type="button" id="pleaseAddNewCust" class="btn btn-primary btn-sm mt-md-6">Please
-                                Add New Group Special</button>
+                                class="btn btn-success btn-sm mt-md-6">Search</button>
                         </div>
                     </div>
                 </form>

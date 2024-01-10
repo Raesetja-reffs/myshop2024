@@ -82,6 +82,19 @@
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            beforeSend: function(xhr) {
+                $(".general-loader").show();
+            },
+            complete: function(xhr, status) {
+                $(".general-loader").hide();
+            },
+            error: function(xhr, status, error) {
+                message = error;
+                if (xhr.responseJSON && xhr.responseJSON.message) {
+                    message = xhr.responseJSON.message;
+                }
+                showAlert('danger', message, 10000);
             }
         });
         var finalDataProduct = $.map(JSON.parse(jArray), function(item) {

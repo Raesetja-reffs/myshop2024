@@ -231,9 +231,6 @@
                         }
                     });
                 }
-            })
-            .always(function() {
-                $(".general-loader").hide();
             });
         });
     });

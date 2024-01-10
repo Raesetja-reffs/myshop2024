@@ -25,7 +25,7 @@ $(document).ready(function() {
     });
 });
 
-function showAlert(type, message) {
+function showAlert(type, message, timeout = 3000) {
     $("#kt_content_container").prepend(`
         <div class="alert alert-${type} d-flex align-items-center p-1 mt-5 mb-0">
             <i class="ki-outline  ki-shield-tick fs-2hx text-${type} me-2"></i>
@@ -41,7 +41,7 @@ function showAlert(type, message) {
         if ($("#kt_content_container").find('div.alert.alert-' + type).length > 0) {
             $("#kt_content_container").find('div.alert.alert-' + type).remove();
         }
-    }, 3000, type);
+    }, timeout, type);
 }
 function dims24_updateDateTime() {
     var currentDateTime = new Date();
