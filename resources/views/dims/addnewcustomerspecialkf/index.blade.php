@@ -476,12 +476,12 @@
                         contractId: end
                     },
                     success: function(data) {
-
-                        $('#dateFrom').val($.datepicker.formatDate('yy-mm-dd', new Date(data[0]
-                            .DateFrom)));
-                        $('#dateTo').val($.datepicker.formatDate('yy-mm-dd', new Date(data[0]
-                            .DateTo)));
-
+                        if (data.length > 0) {
+                            $('#dateFrom').val($.datepicker.formatDate('yy-mm-dd', new Date(data[0]
+                                .DateFrom)));
+                            $('#dateTo').val($.datepicker.formatDate('yy-mm-dd', new Date(data[0]
+                                .DateTo)));
+                        }
                     }
                 });
 
@@ -525,10 +525,13 @@
                         height: 200,
                         width: 700,
                         buttons: {
-                            "OK": function() {
-
-                                dialog.dialog('close');
-                            }
+                            OK: {
+                                text: "OK",
+                                class: "btn btn-success btn-sm",
+                                click: function() {
+                                    dialog.dialog('close');
+                                }
+                            },
                         }
                     });
                 } else {
@@ -1547,9 +1550,13 @@
                             modal: true,
                             containment: false,
                             buttons: {
-                                "OKAY": function() {
-                                    location.reload(true);
-                                    dialog.dialog('close');
+                                OKAY: {
+                                    text: "OKAY",
+                                    class: "btn btn-success btn-sm",
+                                    click: function() {
+                                        location.reload(true);
+                                        dialog.dialog('close');
+                                    }
                                 }
                             }
                         });
@@ -1639,9 +1646,13 @@
                                     modal: true,
                                     containment: false,
                                     buttons: {
-                                        "OKAY": function() {
-                                            location.reload(true);
-                                            dialog.dialog('close');
+                                        OKAY: {
+                                            text: "OKAY",
+                                            class: "btn btn-success btn-sm",
+                                            click: function() {
+                                                location.reload(true);
+                                                dialog.dialog('close');
+                                            }
                                         }
                                     }
                                 });
