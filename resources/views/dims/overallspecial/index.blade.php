@@ -28,34 +28,62 @@
     @include('dims.overallspecial.partials.listing')
 
     <div id="popUpdateLine" title="Please Update">
-        <div class="col-lg-12" >
-            <label class="control-label" for="specialIdUpdate"  style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Special Id</label><br>
-            <input type="text"  class="form-control input-sm col-xs-1" id="specialIdUpdate" style="font-weight: 900;    color: black;font-size: 13px;" readonly><br>
-            <input type="hidden"  class="form-control input-sm col-xs-1" id="hiddenSpecaialFrom" >
-            <input type="hidden"  class="form-control input-sm col-xs-1" id="hiddenSpecaialTo" >
-            <label class="control-label" for="itemCode"  style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Code</label><br>
-            <input type="text"  class="form-control input-sm col-xs-1" id="itemCode" style="font-weight: 900;    color: black;font-size: 13px;" readonly><br>
-            <label class="control-label" for="itemDescription"  style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Description</label><br>
-            <input type="text"  class="form-control input-sm col-xs-1" id="itemDescription" style="font-weight: 900;    color: black;font-size: 13px;" readonly><br>
-            <label class="control-label" for="specialFrom"  style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Date From</label><br>
-            <input type="text"  class="form-control input-sm col-xs-1" id="specialFrom" style="font-weight: 900;    color: black;font-size: 13px;" ><br>
-            <label class="control-label" for="specialTo"  style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Date To</label><br>
-            <input type="text"  class="form-control input-sm col-xs-1" id="specialTo" style="font-weight: 900;    color: black;font-size: 13px;"><br>
-            <label class="control-label" for="specialPrice"  style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Special Price</label><br>
-            <input type="text"  class="form-control input-sm col-xs-1" id="specialPrice" style="font-weight: 900;    color: black;font-size: 13px;" ><br>
-            <label class="control-label" for="specialCost"  style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Special Cost</label><br>
-            <input type="text"  class="form-control input-sm col-xs-1" id="specialCost" style="font-weight: 900;    color: black;font-size: 13px;" readonly><br>
-            <label class="control-label" for="specialGp"  style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">GP</label><br>
-            <input type="text"  class="form-control input-sm col-xs-1" id="specialGp" style="font-weight: 900;    color: black;font-size: 13px;" readonly><br>
-        </div>
-        <div class="col-lg-12" >
-            <button id="updateTheSpecuial" class="btn-md btn-success">Update the Specials</button>
-        </div>
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12 mb-3">
+                        <label for="specialIdUpdate">Special Id</label>
+                        <input type="text" id="specialIdUpdate" class="form-control" readonly>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <input type="hidden"  class="form-control" id="hiddenSpecaialFrom" >
+                        <input type="hidden"  class="form-control" id="hiddenSpecaialTo" >
 
+                        <label for="itemCode">Code</label>
+                        <input type="text" id="itemCode" class="form-control" readonly>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label for="itemDescription">Description</label>
+                        <input type="text" class="form-control" id="itemDescription" readonly>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label for="specialFrom">Date From</label>
+                        <input type="text" class="form-control" id="specialFrom">
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label for="specialTo">Date To</label>
+                        <input type="text" class="form-control" id="specialTo">
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label for="specialPrice">Special Price</label>
+                        <input type="text" class="form-control" id="specialPrice">
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label for="specialCost">Special Cost</label>
+                        <input type="text" class="form-control" id="specialCost" readonly>
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label for="specialGp">GP</label>
+                        <input type="text" class="form-control" id="specialGp" readonly>
+                    </div>
+                    <div class="col-md-12">
+                        <button id="updateTheSpecuial" class="btn btn-success btn-sm">Update the Specials</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div id="updatedspecials" title="Specials Updated" >
-        <button id="btnspecialUpdated" class="btn-md btn-success">OKAY</button>
+    <div id="updatedspecials" title="Specials Updated">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <button id="btnspecialUpdated" class="btn btn-success btn-sm">OKAY</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <style>
@@ -242,7 +270,7 @@
                                 $('#specialId').val( value.SpecialHeaderId);
                             });
 
-                            $('#tblCreatedCustomerSpecials').append(trHTML);
+                            $('#tblCreatedCustomerSpecials tbody').append(trHTML);
                         }
                     });
                 }else {
@@ -288,7 +316,7 @@
                 $("#tblCreatedCustomerSpecials tbody tr").removeClass('row_selected');
                 $(this).addClass('row_selected');
                 $('#popUpdateLine').show();
-                showDialog('#popUpdateLine','60%',450);
+                showDialog('#popUpdateLine', '40%', 560);
                 var rowOnOrder =  $(this).closest("tr");
 
                 $('#specialIdUpdate').val(rowOnOrder.find('td:eq(0)').text());
@@ -318,7 +346,7 @@
                         success: function (data) {
 
                             $('#updatedspecials').show();
-                            showDialog('#updatedspecials',380,100);
+                            showDialog('#updatedspecials',380,120);
                             $('#btnspecialUpdated').click(function(){
                                 $('#popUpdateLine').dialog('close');
                                 $('#updatedspecials').dialog('close');

@@ -33,96 +33,112 @@
     }
     ?>
 
-    <!-- Route Planner Info Goes Here -->
-    <div id="routePlanningPopUp">
-        <!-- Left Div -->
-        <div class="col-lg-11" style="height:88%;">
-            <div class="col-lg-12 d-inline-flex justify-content-center py-3 bg-light">
-                <div class="col-lg-4">
-                    <label class="form-label" for="deliveryDatesonPlanning" >From</label>
-                    <input name="deliveryDatesonPlanning" class="form-control" id="deliveryDatesonPlanning" value="{{$selectedDelivDate}}" style="height:36px !important;">
-                    <label class="form-label" for="deliveryDatesonPlanning2" >To</label>
-                    <input name="deliveryDatesonPlanning2" class="form-control" id="deliveryDatesonPlanning2" value="{{$selectedDelivDate}}" style="height:36px !important;">
-                </div>
-
-                <div class="col-lg-4">
-                    <div class="">
-                        <label class="form-label" for="orderTypesTabletLoadingonPlanning" >Delivery Type</label>
-                        <select name="orderTypesTabletLoadingonPlanning" class="form-select" id="orderTypesTabletLoadingonPlanning" style="height:36px !important;">
-
-                            @foreach($orderTypeSelected  as $values)
-                                <option value="{{$values->OrderTypeId}}">{{$values->OrderType}}</option>
-                            @endforeach
-                            <option value="-99">All</option>
-
-                        </select>
-
-                        <label class="form-label" for="rouTabletLoadingtesonPlanning" >Route</label>
-                        <select  id="rouTabletLoadingtesonPlanning" class="form-select" name="multicheckbox[]" multiple="multiple" style="height:36px !important;">
-
-                            @foreach($routes as $values)
-                                <option value="{{$values->Routeid}}">{{$values->Route}}</option>
-                            @endforeach
-
-                        </select>
-                    </div>
-                </div>
-
-                <div class="col-lg-4">
-                    <div class="">
-                        <label class="form-label" for="statusRoutePlanner">Status @if (Auth::guest()) [<i style="color:red;">LOGGED OUT</i>] @endif</label>
-                        <select  id="statusRoutePlanner" class="form-select" style="height:36px !important;">
-
-                            {{-- @if ($status == 1)
-                                <option value="1">Invoiced</option>
-                            @else
-                                <option value="0">Not Invoiced</option>
-                            @endif
-                            @if ($status == 3)
+    <div class="row mt-3" id="routePlanningPopUp">
+        <div class="col-lg-10">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 mb-2">
+                            <label for="deliveryDatesonPlanning">From</label>
+                            <input type="text" name="deliveryDatesonPlanning" class="form-control" id="deliveryDatesonPlanning" value="{{$selectedDelivDate}}">
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <label for="orderTypesTabletLoadingonPlanning">Delivery Type</label>
+                            <select name="orderTypesTabletLoadingonPlanning" class="form-control form-select" id="orderTypesTabletLoadingonPlanning">
+                                @foreach($orderTypeSelected  as $values)
+                                    <option value="{{$values->OrderTypeId}}">
+                                        {{$values->OrderType}}
+                                    </option>
+                                @endforeach
+                                <option value="-99">All</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <label for="statusRoutePlanner">
+                                Status @if (Auth::guest()) [<i style="color:red;">LOGGED OUT</i>] @endif
+                            </label>
+                            <select id="statusRoutePlanner" class="form-control form-select">
                                 <option value="3">All</option>
-                            @endif --}}
-                            <option value="3">All</option>
-                            <option value="0">Not Invoiced</option>
-                            <option value="1">Invoiced</option>
-                        </select>
-                        <div style="display: flex">
-                            <div> <label class="form-label">Mass</label><input type="number" class="form-control" style="font-size: 17px;" id="massroute" value="0" /> </div>
-                            <div><label class="form-label">Order Val</label><input type="number" class="form-control" id="orderval" style="font-size: 17px;" value="0" /> </div>
+                                <option value="0">Not Invoiced</option>
+                                <option value="1">Invoiced</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 mb-2">
+                            <label for="deliveryDatesonPlanning2" >To</label>
+                            <input type="text" name="deliveryDatesonPlanning2" class="form-control" id="deliveryDatesonPlanning2" value="{{$selectedDelivDate}}">
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <label for="rouTabletLoadingtesonPlanning" >Route</label>
+                            <select name="multicheckbox[]" class="form-control form-select" id="rouTabletLoadingtesonPlanning" multiple="multiple">
+                                @foreach($routes as $values)
+                                    <option value="{{$values->Routeid}}">
+                                        {{$values->Route}}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-2 mb-2">
+                            <label class="form-label">Mass</label>
+                            <input type="number" class="form-control" id="massroute" value="0"/>
+                        </div>
+                        <div class="col-md-2 mb-2">
+                            <label class="form-label">Order Val</label>
+                            <input type="number" class="form-control" id="orderval" value="0"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div id="gridContainer" class="col-md-12">
                         </div>
                     </div>
                 </div>
             </div>
-
-            <!-- Grid -->
-            <div id="gridContainer" class="col-lg-12"></div>
-
         </div>
+        <div class="col-lg-2">
+            <div class="card">
+                <div class="card-body">
+                    <h1 id="totalorders" class="align-middle w-100 my-3">STOPS: 0</h1>
 
-        <!-- Right Div -->
-        <div class="col-lg-1 bg-light flex-column" >
-            <h1 id="totalorders" class="align-middle w-100 my-3">STOPS: 0</h1>
+                    <button type="button" id="getOrders" class="btn btn-success btn-auto-height w-100">
+                        GET ORDERS
+                    </button>
 
-            <button type="button" id="getOrders" class="btn btn-success btn-lg btn-block text-wrap" style="margin-left:0px !important; height:60px;">GET ORDERS</button>
+                    @if($routeplanner !="0")
+                        <hr>
+                        <button id="moveSelectedOrders" class="btn btn-primary btn-auto-height w-100 mb-2">
+                            MOVE ORDERS
+                        </button>
+                        <button id="setSequence" class="btn btn-primary btn-auto-height w-100 mb-2">
+                            SET SEQUENCE
+                        </button>
+                        <button id="printPriview" class="btn btn-primary btn-auto-height w-100 mb-2">
+                            PREVIEW
+                        </button>
+                        <button id="notifypickers" class="btn btn-primary btn-auto-height w-100 mb-2">
+                            NOTIFY PICKERS
+                        </button>
+                        @can('isAllowCompanyPermission', ['App\Models\CompanyPermission', 'isallowrouteoptomo'])
+                            <button id="suggestions" class="btn btn-primary btn-auto-height w-100">
+                                ROUTE OPTOM
+                            </button>
+                        @endcan
 
-            @if($routeplanner !="0")
-                <hr>
-                <button id="moveSelectedOrders" class="btn btn-primary btn-lg btn-block text-wrap" style="margin-left:0px !important; height:60px;">MOVE ORDERS</button>
-                <button id="setSequence" class="btn btn-primary btn-lg btn-block text-wrap" style="margin-left:0px !important; height:50px;">SET SEQUENCE</button>
-                <button id="printPriview" class="btn btn-primary btn-lg btn-block text-wrap" style="margin-left:0px !important; height:50px;">PREVIEW</button>
+                        <hr>
+                        <button id="reprinting" class="btn btn-primary btn-auto-height w-100 mb-2">
+                            REPRINT ROUTES
+                        </button>
+                        <button id="invoicesnotprinting" class="btn btn-danger btn-auto-height w-100">
+                            Not Printing
+                        </button>
 
-                <button id="notifypickers" class="btn btn-primary btn-lg btn-block text-wrap" style="margin-left:0px !important; height:50px;">NOTIFY PICKERS</button>
-                @can('isAllowCompanyPermission', ['App\Models\CompanyPermission', 'isallowrouteoptomo'])
-                    <button id="suggestions" class="btn btn-primary btn-lg btn-block text-wrap" style="margin-left:0px !important; height:50px;">ROUTE OPTOM</button>
-                @endcan
-            <hr>
-                <button id="reprinting" class="btn btn-primary btn-lg btn-block text-wrap" style="margin-left:0px !important; height:50px;">REPRINT ROUTES</button>
-                <button id="invoicesnotprinting" class="btn btn-danger btn-lg btn-block text-wrap" style="margin-left:0px !important; height:50px;">Not Printing</button>
-                <hr>
-                <button id="ligisticsplan" class="btn btn-primary btn-lg btn-block text-wrap" style="margin-left:0px !important; height:50px;">Logistics Plan</button>
-
-            @endif
-
-
+                        <hr>
+                        <button id="ligisticsplan" class="btn btn-primary btn-auto-height w-100">
+                            Logistics Plan
+                        </button>
+                    @endif
+                </div>
+            </div>
         </div>
     </div>
 
@@ -249,11 +265,25 @@
                 placeholder: 'Select Route(s)',
                 selectAll: true
             });
+            $(".ms-options-wrap button").addClass('form-control');
 
 
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                beforeSend: function(xhr) {
+                    $(".general-loader").show();
+                },
+                complete: function(xhr, status) {
+                    $(".general-loader").hide();
+                },
+                error: function(xhr, status, error) {
+                    message = error;
+                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                        message = xhr.responseJSON.message;
+                    }
+                    showAlert('danger', message, 10000);
                 }
             });
 

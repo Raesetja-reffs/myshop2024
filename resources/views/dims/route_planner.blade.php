@@ -23,7 +23,7 @@
         <!--end::Item-->
     </x-slot>
 
-    <div class="row mt-5">
+    <div class="row mt-3">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body d-flex justify-content-between">
