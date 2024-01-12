@@ -51,6 +51,7 @@
         overflow-y: scroll
         } */
     </style>
+
     <div class="card mt-5">
         <div class="card-body">
             <div class="row">
@@ -109,31 +110,33 @@
     <div id="editPickingTeam" title="Please Edit Picking Team Information" style="background-color: #F1F1F2;">
         <div class="card">
             <div class="card-body">
-                <div class="row">
-                    <div class="col-md-12">
-                        <p>Edit Screen</p>
+                <form>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p>Edit Screen</p>
+                        </div>
+                        <div class="col-md-12">
+                            <h2 id="updatemessage"></h2>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <input type="hidden" class="form-control" id="PickingTeamIdEdit" placeholder="Enter a Name You want to add" required>
+                            <label for="PickingTeamEdit">Picking Team</label>
+                            <input type="text" class="form-control" id="PickingTeamEdit" placeholder="Enter a Picking Team" required>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label for="CommisionEdit">Commision</label>
+                            <input type="text" class="form-control" id="CommisionEdit" placeholder="Enter a Commision" required>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label for="PickingSlipPathEdit">Picking Slip Path</label>
+                            <input type="text" class="form-control" id="PickingSlipPathEdit" placeholder="Enter a Picking Slip Path" required>
+                        </div>
+                        <div class="col-md-12">
+                            <button class="btn btn-primary btn-sm" type="submit" id="edit">UPDATE</button>
+                            <button class="btn btn-danger btn-sm" type="submit" id="delete">DELETE</button>
+                        </div>
                     </div>
-                    <div class="col-md-12">
-                        <h2 id="updatemessage"></h2>
-                    </div>
-                    <div class="col-md-12 mb-3">
-                        <input type="hidden" class="form-control" id="PickingTeamIdEdit" placeholder="Enter a Name You want to add" required>
-                        <label for="PickingTeamEdit">Picking Team</label>
-                        <input type="text" class="form-control" id="PickingTeamEdit" placeholder="Enter a Picking Team" required>
-                    </div>
-                    <div class="col-md-12 mb-3">
-                        <label for="CommisionEdit">Commision</label>
-                        <input type="text" class="form-control" id="CommisionEdit" placeholder="Enter a Commision" required>
-                    </div>
-                    <div class="col-md-12 mb-3">
-                        <label for="PickingSlipPathEdit">Picking Slip Path</label>
-                        <input type="text" class="form-control" id="PickingSlipPathEdit" placeholder="Enter a Picking Slip Path" required>
-                    </div>
-                    <div class="col-md-12">
-                        <button class="btn btn-primary btn-sm" type="submit" id="edit">UPDATE</button>
-                        <button class="btn btn-danger btn-sm" type="submit" id="delete">DELETE</button>
-                    </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>
@@ -157,6 +160,19 @@
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                beforeSend: function(xhr) {
+                    $(".general-loader").show();
+                },
+                complete: function(xhr, status) {
+                    $(".general-loader").hide();
+                },
+                error: function(xhr, status, error) {
+                    message = error;
+                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                        message = xhr.responseJSON.message;
+                    }
+                    showAlert('danger', message, 10000);
                 }
             });
 

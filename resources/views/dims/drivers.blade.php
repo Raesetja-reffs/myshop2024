@@ -19,19 +19,20 @@
 
         <!--begin::Item-->
         <li class="breadcrumb-item text-dark">
-            Drivers </li>
+            Drivers
+        </li>
         <!--end::Item-->
     </x-slot>
 
     <style>
-        h2{color:red;}
+        /* h2{color:red;}
         h3 {color:blue;}
         h4 {color:orange;}
-        td{color:orange;}
+        td{color:orange;} */
         /* tbody{background-color:black;} */
 
 
-        input[type=text], select {
+        /* input[type=text], select {
             width: 100%;
             padding: 12px 20px;
             margin: 8px 0;
@@ -49,124 +50,103 @@
             margin: 0;
             padding: 0;
             overflow-y: scroll
-        }
-
-
-
+        } */
     </style>
 
-
-	<div class="container" style="width: 100%;">
-		<div class="form-group row add">
-
-
-
-			<div class="col-lg-12" >
-
-				<div class="col-lg-4">
-
-					<form>
-						<fieldset class="well">
-							<legend class="well-legend">Add Screen</legend>
-							<div class="form-group ">
-								<label class="control-label" for=  "DriverName" style="margin-bottom: 2px;font-weight: 700;font-size: 11px;"><h4>Driver Name</h4></label>
-								<input type="text" class="form-control input-sm col-s-2" id="DriverName" style="font-size: 12px;font-family: sans-serif;font-weight: 900;" placeholder="Enter a Name You Want To Add" required>
-							</div>
-							<div class="form-group ">
-								<label class="control-label" for="GLCode"  style="margin-bottom: 2px;font-weight: 700;font-size: 11px;"><h4>Driver GL Code</h4></label>
-
-								@if(count($glCode)>0)
-									<select id="glCode">
-										<option value="0">-- PLease Choose GL Code--</option>
-										@foreach($glCode as $values)
-											<option value="{{$values->GLCode}}">{{$values->GLCode}}</option>
-										@endforeach
-									</select>
-							@endif
-
-							<!--<input type="text" class="form-control input-sm col-s-2" id="GLCode" style="font-size: 12px;font-family: sans-serif;font-weight: 900;" placeholder="Enter a GLCode" required>-->
-							</div>
-							<button class=" btn btn-success fa fa-plus-circle" type="submit" id="add" >ADD</button>
-
-						</fieldset>
-					</form>
-
-				</div>
-				<div class="col-lg-8">
-					<div class="col-lg-12  visible-md visible-lg" >
-						<div id="Drivers" title="Drivers List">
-							<div class="col-lg-12">
-								<form>
-									<div class="table-responsive scrollable text-center">
-										<table class="table table-borderless" id="tableDriver">
-											<thead>
-											<tr>
-												<th class="text-center " ><h3>Driver ID</h3></th>
-												<th class="text-center "><h3>Driver Name</h3></th>
-												<th class="text-center "><h3>GL Codes</h3></th>
-
-											</tr>
-											</thead>
-											<tbody>
-											@foreach($readItems as $values)
-												<tr class="item{{$values->DriverId}}">
-													<td class="text-center" >{{$values->DriverId}}</td>
-													<td class="text-center" >{{$values->DriverName}}</td>
-													<td class="text-center" >{{$values->GLCode}}</td>
-												</tr>
-											@endforeach
-											</tbody>
-
-										</table>
-									</div>
-
-
-								</form>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div id="editDriver" title="Please Edit Driver Information">
-			<form>
-				<fieldset class="well">
-					<legend class="well-legend">Edit Screen</legend>
-					<div><h2 id="updatemessage">  </h2>
-					</div>
-					<div class="form-group ">
-						<label class="control-label" for="DriverNameEdit"  style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Driver Name</label>
-						<input type="text" class="form-control input-sm col-xs-1" id="DriverNameEdit" style="font-size: 12px;font-family: sans-serif;font-weight: 900;" placeholder="Enter a Name You want to add" required>
-						<input type="hidden" class="form-control input-sm col-xs-1" id="DriverIdEdit" style="font-size: 12px;font-family: sans-serif;font-weight: 900;" placeholder="Enter a Name You want to add" required>
-					</div>
-					<div class="form-group ">
-						<label class="control-label" for="GLCodeEdit"  style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Driver GL Code</label>
-                        <select id="GLCodeEdit">
-
-                            @foreach($glCode as $values)
-                                <option value="{{$values->GLCode}}">{{$values->GLCode}}</option>
-                            @endforeach
-                        </select>
+    <div class="card mt-5">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <form>
+                        <h5>Add Screen</h5>
+                        <div class="form-group mb-3">
+                            <label for="DriverName">
+                                Driver Name
+                            </label>
+                            <input type="text" class="form-control" id="DriverName" placeholder="Enter a Name You Want To Add" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="GLCode">
+                                Driver GL Code
+                            </label>
+                            @if(count($glCode)>0)
+                                <select id="glCode" class="form-control form-select">
+                                    <option value="0">-- PLease Choose GL Code--</option>
+                                    @foreach($glCode as $values)
+                                        <option value="{{$values->GLCode}}">{{$values->GLCode}}</option>
+                                    @endforeach
+                                </select>
+                            @endif
+                            <!--<input type="text" class="form-control input-sm col-s-2" id="GLCode" style="font-size: 12px;font-family: sans-serif;font-weight: 900;" placeholder="Enter a GLCode" required>-->
+                        </div>
+                        <button class="btn btn-success btn-sm w-100" type="submit" id="add">
+                            <i class="fas fa-plus-circle fs-4 me-2"></i>ADD
+                        </button>
+                    </form>
+                </div>
+                <div class="col-md-8">
+                    <div id="Drivers" title="Drivers List">
+                        <form>
+                            <div class="table-responsive scrollable overflow-y-auto" style="max-height: 480px;">
+                                <table id="tableDriver" class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Driver ID</th>
+                                            <th>Driver Name</th>
+                                            <th>GL Codes</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($readItems as $values)
+                                            <tr class="item{{$values->DriverId}}">
+                                                <td>{{$values->DriverId}}</td>
+                                                <td>{{$values->DriverName}}</td>
+                                                <td>{{$values->GLCode}}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </form>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-
-				</fieldset>
-			</form>
-			<div class="col-lg-4">
-				<button class="btn btn-primary " type="submit" id="edit">UPDATE</button>
-			</div>
-			<div class="col-lg-4">
-				<button class=" btn btn-danger "  type="submit" id="delete">DELETE</button>
-			</div>
-
-
-
-		</div>
-
-
-
-	</div>
-
+    <div id="editDriver" title="Please Edit Driver Information" style="background-color: #F1F1F2;">
+        <div class="card">
+            <div class="card-body">
+                <form>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p>Edit Screen</p>
+                        </div>
+                        <div class="col-md-12">
+                            <h2 id="updatemessage"></h2>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label for="DriverNameEdit">Driver Name</label>
+                            <input type="text" class="form-control" id="DriverNameEdit" placeholder="Enter a Name You want to add" required>
+                            <input type="hidden" class="form-control" id="DriverIdEdit" placeholder="Enter a Name You want to add" required>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label for="GLCodeEdit">Driver GL Code</label>
+                            <select id="GLCodeEdit" class="form-control form-select">
+                                @foreach($glCode as $values)
+                                    <option value="{{$values->GLCode}}">{{$values->GLCode}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-12">
+                            <button class="btn btn-primary btn-sm" type="submit" id="edit">UPDATE</button>
+                            <button class="btn btn-danger btn-sm" type="submit" id="delete">DELETE</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <script>
         $(document).ready(function(){
@@ -187,11 +167,23 @@
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                beforeSend: function(xhr) {
+                    $(".general-loader").show();
+                },
+                complete: function(xhr, status) {
+                    $(".general-loader").hide();
+                },
+                error: function(xhr, status, error) {
+                    message = error;
+                    if (xhr.responseJSON && xhr.responseJSON.message) {
+                        message = xhr.responseJSON.message;
+                    }
+                    showAlert('danger', message, 10000);
                 }
             });
 
-            $("#add").click(function()
-            {
+            $("#add").click(function() {
                 if ($('#DriverName').val() && $('#DriverName').val().trim().length > 0 ) {
                     $.ajax({
                         url: '{!!secure_url("/addItem")!!}',
@@ -208,7 +200,6 @@
                         }
                     });
                 }
-
             });
 
             $('#tableDriver tbody').on('dblclick', 'tr', function() {
@@ -219,27 +210,22 @@
                 var driverId = row.find('td:eq(0)').text();
                 var driverName = row.find('td:eq(1)').text();
                 var glCode = row.find('td:eq(2)').text();
-                showDialog('#editDriver',600,600);
+                showDialog('#editDriver', 600, 350);
                 $('#updatemessage').empty();
                 $('#DriverNameEdit').val(driverName);
                 $('#GLCodeEdit').val(glCode);
                 $('#DriverIdEdit').val(driverId);
                 $('#updatemessage').append("You are now editing the information of " + driverName+"!");
-
             });
 
             $('#tableDriver tbody').on('click', 'button', function (e) {
                 $('#deleteDriver').show();
                 var $this = $(this);
                 var row = $this.closest("button");
-                showDialog('#deleteDriver',600,600);
-
+                showDialog('#deleteDriver', 600, 400);
             });
 
-
-            $("#edit").click(function()
-            {
-
+            $("#edit").click(function() {
                 $.ajax({
                     url: '{!!secure_url("/editItem")!!}',
                     type: "POST",
@@ -254,15 +240,10 @@
                         location.reload(true);
 
                     }
-
                 });
-
-
             });
 
-            $("#delete").click(function()
-            {
-
+            $("#delete").click(function() {
                 $.ajax({
                     url: '{!!secure_url("/deleteItem")!!}',
                     type: "POST",
@@ -274,13 +255,10 @@
                     {
                         location.reload(true);
                     }
-
                 });
-
-
             });
-
         });
+
         function showDialog(tag,width,height)
         {
             $( tag ).dialog({height: height, modal: false,
@@ -310,8 +288,6 @@
                 "restore" : function(evt, dlg){  } // event
             });
         }
-
-
     </script>
 
 </x-app-layout>

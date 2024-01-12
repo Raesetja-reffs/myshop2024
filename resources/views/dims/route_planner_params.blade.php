@@ -143,32 +143,43 @@
     </div>
 
     <div id="popupmoveThis" title="Order Change">
-        <h5>Please move an order by chosing below</h5>
-        <form>
-            <div class="form-group  col-md-4" style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">
-                <label class="form-label" for="truckNameSheetMaster"  style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">Route</label>
-                <select name="eRouteName" class="form-control input-sm col-sm-1"  id="eRouteName" style="font-size: 14px;" >
-                    @foreach($routes as $value)
-                        <option value="{{$value->Routeid}}">{{$value->Route}}</option>
-                    @endforeach
-                </select>
+        <div class="card">
+            <div class="card-body">
+                <form>
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <h5>Please move an order by chosing below</h5>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label for="truckNameSheetMaster">Route</label>
+                            <select name="eRouteName" class="form-control form-select" id="eRouteName">
+                                @foreach($routes as $value)
+                                    <option value="{{$value->Routeid}}">
+                                        {{$value->Route}}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label for="deliveryTypeRun">Delivery Type(Run)</label>
+                            <select name="deliveryTypeRun" class="form-control form-select" id="deliveryTypeRun">
+                                @foreach($orderTypes as $value)
+                                    <option value="{{$value->OrderTypeId}}">
+                                        {{$value->OrderType}}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label for="delDateChange">From</label>
+                            <input name="delDateChange" class="form-control" id="delDateChange">
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <button id="submitChanges" class="btn btn-success btn-sm">submit</button>
+                        </div>
+                    </div>
+                </form>
             </div>
-            <div class="form-group  col-md-3"  style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">
-                <label class="control-label" for="deliveryTypeRun"  style="margin-bottom: 0px;font-weight: 700;font-size: 14px;">Delivery Type(Run)</label>
-                <select name="deliveryTypeRun" class="form-control input-sm col-sm-1" id="deliveryTypeRun" style="font-size: 14px;">
-                    @foreach($orderTypes as $value)
-                        <option value="{{$value->OrderTypeId}}">{{$value->OrderType}}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="form-group  col-md-2" style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">
-                <label class="control-label" for="delDateChange"  style="margin-bottom: 0px;font-weight: 700;font-size: 11px;">From</label>
-                <input name="delDateChange" class="form-control input-sm col-xs-1" id="delDateChange" >
-            </div>
-
-        </form>
-        <div class="form-group col-md-4" style="margin-bottom: 0px;font-weight: 700;font-size: 14px;">
-            <button class="btn-success btn-xs" id="submitChanges">submit</button>
         </div>
     </div>
 
@@ -404,7 +415,7 @@
                     valuesProd.push({'orderId':row.OrderId})
                 });
 
-                showDialog('#popupmoveThis','60%',220);
+                showDialog('#popupmoveThis', '60%', 350);
                 $('#submitChanges').click(function(){
                     $.ajax({
                         url: '{!!url("/moveTheOrderArray")!!}',
