@@ -63,14 +63,14 @@
     </style>
 
     <script>
-        var today = new Date();
-        var dd = String(today.getDate()).padStart(2, '0');
-        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-        var yyyy = today.getFullYear();
+        var todayDate = new Date();
+        var dd = String(todayDate.getDate()).padStart(2, '0');
+        var mm = String(todayDate.getMonth() + 1).padStart(2, '0'); //January is 0!
+        var yyyy = todayDate.getFullYear();
         var datagrids = "";
 
-        today = yyyy + '-' + mm + '-' + dd;
-        console.debug(today);
+        todayDate = yyyy + '-' + mm + '-' + dd;
+        console.log(todayDate);
         $(document).on('focus', ':input', function() {
             $(this).attr('autocomplete', 'off');
         });
@@ -1020,7 +1020,7 @@
                         type: "POST",
                         data: {
                             customerID: $('#inputCustAcc').val(),
-                            deliveryDate: today
+                            deliveryDate: todayDate
                         },
                         success: function(data_products) {
                             var added = false;
@@ -1960,7 +1960,7 @@
                 type: "POST",
                 data: {
                     customerID: $('#inputCustAcc').val(),
-                    deliveryDate: today,
+                    deliveryDate: todayDate,
                     productCode: $('#prodCode_' + token_number).val(),
                     warehouseid: 1
                 },
@@ -1979,7 +1979,7 @@
                 type: "POST",
                 data: {
                     customerID: $('#customerId').val(),
-                    deliveryDate: today,
+                    deliveryDate: todayDate,
                     productCode: $('#prodCode_' + token_number).val(),
                     warehouseid: 1
                 },
@@ -1995,7 +1995,7 @@
                 type: "POST",
                 data: {
                     customerID: $('#inputCustAcc').val(),
-                    deliveryDate: today,
+                    deliveryDate: todayDate,
                     productCode: $('#prodCode_' + token_number).val(),
                     warehouseid: 1
                 },
