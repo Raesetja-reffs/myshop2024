@@ -1,6 +1,29 @@
-@extends('layouts.app')
+<x-app-layout>
 
-@section('content')
+    <x-slot name="header">
+        {{ __('Order Types') }}
+    </x-slot>
+
+    <x-slot name="breadcrum">
+        <!--begin::Item-->
+        <li class="breadcrumb-item text-muted">
+            <a href="{{ route('home') }}" class="text-muted text-hover-primary">
+                Home </a>
+        </li>
+        <!--end::Item-->
+        <!--begin::Item-->
+        <li class="breadcrumb-item">
+            <span class="bullet bg-gray-300 w-5px h-2px"></span>
+        </li>
+        <!--end::Item-->
+
+        <!--begin::Item-->
+        <li class="breadcrumb-item text-dark">
+            Order Types
+        </li>
+        <!--end::Item-->
+    </x-slot>
+
     <div class="col-lg-12">
     <div class="col-md-4">
         <a href='{!!url("/productOnPush")!!}/{{$customerId}}' style="padding: 3px;font-weight: 900;color: white;background: black;" onclick="window.open(this.href, 'push_prod','left=20,top=20,width=1250,height=1250,toolbar=1,resizable=0'); return false;">Push Products</a>
@@ -276,200 +299,201 @@
             </div>
         </div>
     @endforeach
-@endsection
-<script src="{{ asset('js/jquery-2.2.3.min.js') }}"></script>
-<script>
-    $(document).ready(function() {
-        $('#orderListing').hide();
-        $('#pricing').hide();
-        $('#pricingOnCustomer').hide();
-        $('#callList').hide();
-        $('#tabletLoadingApp').hide();
-        $('#copyOrdersBtn').hide();
-        $('#salesOnOrder').hide();
-        $('#salesInvoiced').hide();
-        $('#posCashUp').hide();
-        getRoutes('#route','{!!url("/getCommonRoutes")!!}');
 
-        $("#dateFrom,#dateTo").datepicker({
-            changeMonth: true,//this option for allowing user to select month
-            changeYear: true, //this option for allowing user to select from year range
-            dateFormat: 'dd-mm-yy'
-        });
+    <script>
+        $(document).ready(function() {
+            $('#orderListing').hide();
+            $('#pricing').hide();
+            $('#pricingOnCustomer').hide();
+            $('#callList').hide();
+            $('#tabletLoadingApp').hide();
+            $('#copyOrdersBtn').hide();
+            $('#salesOnOrder').hide();
+            $('#salesInvoiced').hide();
+            $('#posCashUp').hide();
+            getRoutes('#route','{!!url("/getCommonRoutes")!!}');
 
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-        $('#dateFilters').click(function(){
-            $('#tblOrderListingHeader').DataTable({
-                "ajax": {
-                    url: '{!!url("/customerOrderListingHeader")!!}', "type": "POST", data: function (data) {
-                        data.customerID = $('#hiddenCustomerID').val();
-                        data.dateFrom = $('#dateFrom').val();
-                        data.dateTo = $('#dateTo').val();
-                    }
-                },
-                "processing": false,
-                "serverSide": false,
-                "stateSave": false,
-                "columns": [
-                    {"data": "OrderId", "class": "small"},
-                    {"data": "InvoiceNo", "class": "small"},
-                    {"data": "OrderNo", "class": "small"},
-                    {"data": "OrderDate", "class": "small"},
-                    {"data": "DeliveryDate", "class": "small", "bSortable": true},
-                    {"data": "valExt", "class": "small",
-                        render:function(data, type, row, meta) {
-                            // check to see if this is JSON
-                            try {
-                                var jsn = JSON.parse(data);
-                                //console.log(" parsing json" + jsn);
-                            } catch (e) {
-
-                                return jsn.data;
-                            }
-                            return parseFloat(jsn).toFixed(2);
-
-                        }},
-                    {"data": "Lines", "class": "small"}
-                ],
-                "deferRender": true,
-                "scrollY": "300",
-                "scrollCollapse": true,
-                searching: true,
-                bPaginate: false,
-                bFilter: false,
-                "LengthChange": false,
-                "info": false,
-                "ordering": true,
-                dom: 'Bfrtip',
-                buttons: [
-                    'copy', 'csv', 'excel', 'pdf'
-                ],
-
-                "bDestroy": true
+            $("#dateFrom,#dateTo").datepicker({
+                changeMonth: true,//this option for allowing user to select month
+                changeYear: true, //this option for allowing user to select from year range
+                dateFormat: 'dd-mm-yy'
             });
-        });
-        $('#basicInfo').click(function(){
-            $.ajax({
-                url: '{!!url("/updatebasicinfo")!!}',
-                type: "POST",
-                data: {
-                    hiddenCustomerID: $('#hiddenCustomerID').val(),
-                    route: $('#route').val(),
-                    status: $('#status').val(),
-                    salesrep:$('#salesman').val(),
-                    currentgp:$('#currentgp').val()
-                },
-                success: function (data) {
-                    if (data == 1)
-                    {
-                        var dialog = $('<p><strong style="color:red">Customer Basic information has been updated successfully</strong></p>').dialog({
-                            height: 200, width: 700,modal: true,containment: false,
-                            buttons: {
-                                "Okay": function () {
-                                    dialog.dialog('close');
-                                }
-                            }
-                        });
-                    }
-                    else {
-                        alert("Something went Wrong");
-                    }
 
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
             });
-        });
-        $('#bntUpdateContInfo').click(function(){
-            $.ajax({
-                url: '{!!url("/updateContactInfo")!!}',
-                type: "POST",
-                data: {
-                    hiddenCustomerID: $('#hiddenCustomerID').val(),
-                    ContactTel: $('#ContactTel').val(),
-                    CellPhone: $('#CellPhone').val(),
-                    ContactFax: $('#ContactFax').val(),
-                    ContactPerson: $('#ContactPerson').val(),
-                    Email: $('#Email').val(),
-                    strDriversAppEmail: $('#strDriversAppEmail').val()
-                },
-                success: function (data) {
-                    if (data == 1)
-                    {
-                        var dialog = $('<p><strong style="color:red">Customer Contact information has been updated successfully</strong></p>').dialog({
-                            height: 200, width: 700,modal: true,containment: false,
-                            buttons: {
-                                "Okay": function () {
-                                    dialog.dialog('close');
-                                }
-                            }
-                        });
-                    }
-                    else {
-                        alert("Something went Wrong");
-                    }
+            $('#dateFilters').click(function(){
+                $('#tblOrderListingHeader').DataTable({
+                    "ajax": {
+                        url: '{!!url("/customerOrderListingHeader")!!}', "type": "POST", data: function (data) {
+                            data.customerID = $('#hiddenCustomerID').val();
+                            data.dateFrom = $('#dateFrom').val();
+                            data.dateTo = $('#dateTo').val();
+                        }
+                    },
+                    "processing": false,
+                    "serverSide": false,
+                    "stateSave": false,
+                    "columns": [
+                        {"data": "OrderId", "class": "small"},
+                        {"data": "InvoiceNo", "class": "small"},
+                        {"data": "OrderNo", "class": "small"},
+                        {"data": "OrderDate", "class": "small"},
+                        {"data": "DeliveryDate", "class": "small", "bSortable": true},
+                        {"data": "valExt", "class": "small",
+                            render:function(data, type, row, meta) {
+                                // check to see if this is JSON
+                                try {
+                                    var jsn = JSON.parse(data);
+                                    //console.log(" parsing json" + jsn);
+                                } catch (e) {
 
-                }
+                                    return jsn.data;
+                                }
+                                return parseFloat(jsn).toFixed(2);
+
+                            }},
+                        {"data": "Lines", "class": "small"}
+                    ],
+                    "deferRender": true,
+                    "scrollY": "300",
+                    "scrollCollapse": true,
+                    searching: true,
+                    bPaginate: false,
+                    bFilter: false,
+                    "LengthChange": false,
+                    "info": false,
+                    "ordering": true,
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf'
+                    ],
+
+                    "bDestroy": true
+                });
+            });
+            $('#basicInfo').click(function(){
+                $.ajax({
+                    url: '{!!url("/updatebasicinfo")!!}',
+                    type: "POST",
+                    data: {
+                        hiddenCustomerID: $('#hiddenCustomerID').val(),
+                        route: $('#route').val(),
+                        status: $('#status').val(),
+                        salesrep:$('#salesman').val(),
+                        currentgp:$('#currentgp').val()
+                    },
+                    success: function (data) {
+                        if (data == 1)
+                        {
+                            var dialog = $('<p><strong style="color:red">Customer Basic information has been updated successfully</strong></p>').dialog({
+                                height: 200, width: 700,modal: true,containment: false,
+                                buttons: {
+                                    "Okay": function () {
+                                        dialog.dialog('close');
+                                    }
+                                }
+                            });
+                        }
+                        else {
+                            alert("Something went Wrong");
+                        }
+
+                    }
+                });
+            });
+            $('#bntUpdateContInfo').click(function(){
+                $.ajax({
+                    url: '{!!url("/updateContactInfo")!!}',
+                    type: "POST",
+                    data: {
+                        hiddenCustomerID: $('#hiddenCustomerID').val(),
+                        ContactTel: $('#ContactTel').val(),
+                        CellPhone: $('#CellPhone').val(),
+                        ContactFax: $('#ContactFax').val(),
+                        ContactPerson: $('#ContactPerson').val(),
+                        Email: $('#Email').val(),
+                        strDriversAppEmail: $('#strDriversAppEmail').val()
+                    },
+                    success: function (data) {
+                        if (data == 1)
+                        {
+                            var dialog = $('<p><strong style="color:red">Customer Contact information has been updated successfully</strong></p>').dialog({
+                                height: 200, width: 700,modal: true,containment: false,
+                                buttons: {
+                                    "Okay": function () {
+                                        dialog.dialog('close');
+                                    }
+                                }
+                            });
+                        }
+                        else {
+                            alert("Something went Wrong");
+                        }
+
+                    }
+                });
+            });
+            $('#updatePayments').click(function(){
+                $.ajax({
+                    url: '{!!url("/updatePayments")!!}',
+                    type: "POST",
+                    data: {
+                        hiddenCustomerID: $('#hiddenCustomerID').val(),
+                        pricelist: $('#pricelist').val(),
+                        creditlimit: $('#creditlimit').val(),
+                        pTerms: $('#pTerms').val()
+
+                    },
+                    success: function (data) {
+                        if (data == 1)
+                        {
+                            var dialog = $('<p><strong style="color:red">Customer Payment information has been updated successfully</strong></p>').dialog({
+                                height: 200, width: 700,modal: true,containment: false,
+                                buttons: {
+                                    "Okay": function () {
+                                        dialog.dialog('close');
+                                    }
+                                }
+                            });
+                        }
+                        else {
+                            alert("Something went Wrong");
+                        }
+
+                    }
+                });
+            });
+            $('#updateDelvAdress').click(function(){
+                $.ajax({
+                    url: '{!!url("/updateDelvAdress")!!}',
+                    type: "POST",
+                    data: {
+                        hiddenCustomerID: $('#hiddenCustomerID').val(),
+                        differentDelv: $('#differentDelv').val()
+                    },
+                    success: function (data) {
+                        if (data == 1)
+                        {
+                            var dialog = $('<p><strong style="color:red">Customer Delivery address updated successfully</strong></p>').dialog({
+                                height: 200, width: 700,modal: true,containment: false,
+                                buttons: {
+                                    "Okay": function () {
+                                        dialog.dialog('close');
+                                    }
+                                }
+                            });
+                        }
+                        else {
+                            alert("Something went Wrong");
+                        }
+
+                    }
+                });
             });
         });
-        $('#updatePayments').click(function(){
-            $.ajax({
-                url: '{!!url("/updatePayments")!!}',
-                type: "POST",
-                data: {
-                    hiddenCustomerID: $('#hiddenCustomerID').val(),
-                    pricelist: $('#pricelist').val(),
-                    creditlimit: $('#creditlimit').val(),
-                    pTerms: $('#pTerms').val()
+    </script>
 
-                },
-                success: function (data) {
-                    if (data == 1)
-                    {
-                        var dialog = $('<p><strong style="color:red">Customer Payment information has been updated successfully</strong></p>').dialog({
-                            height: 200, width: 700,modal: true,containment: false,
-                            buttons: {
-                                "Okay": function () {
-                                    dialog.dialog('close');
-                                }
-                            }
-                        });
-                    }
-                    else {
-                        alert("Something went Wrong");
-                    }
-
-                }
-            });
-        });
-        $('#updateDelvAdress').click(function(){
-            $.ajax({
-                url: '{!!url("/updateDelvAdress")!!}',
-                type: "POST",
-                data: {
-                    hiddenCustomerID: $('#hiddenCustomerID').val(),
-                    differentDelv: $('#differentDelv').val()
-                },
-                success: function (data) {
-                    if (data == 1)
-                    {
-                        var dialog = $('<p><strong style="color:red">Customer Delivery address updated successfully</strong></p>').dialog({
-                            height: 200, width: 700,modal: true,containment: false,
-                            buttons: {
-                                "Okay": function () {
-                                    dialog.dialog('close');
-                                }
-                            }
-                        });
-                    }
-                    else {
-                        alert("Something went Wrong");
-                    }
-
-                }
-            });
-        });
-    });
-</script>
+</x-app-layout>

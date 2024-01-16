@@ -19,7 +19,8 @@
 
         <!--begin::Item-->
         <li class="breadcrumb-item text-dark">
-            Trucks </li>
+            Trucks
+        </li>
         <!--end::Item-->
     </x-slot>
 
