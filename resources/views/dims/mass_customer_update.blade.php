@@ -276,15 +276,15 @@
                         <h3 class="card-title">Customer Invoice History</h3>
                         <div class="card-toolbar">
                             <div class="row">
-                                <div class="col-md-4 mb-2">
+                                <div class="col-md-3 mb-2">
                                     <label for="dateFrom">From</label>
                                     <input type="text" class="form-control" id="dateFrom">
                                 </div>
-                                <div class="col-md-4 mb-2">
+                                <div class="col-md-3 mb-2">
                                     <label for="dateTo">To</label>
                                     <input type="text" class="form-control" id="dateTo">
                                 </div>
-                                <div class="col-md-4 mb-2 d-flex">
+                                <div class="col-md-6 mb-2 d-flex justify-content-end">
                                     <button id="dateFilters" class="btn btn-primary btn-sm mt-md-6 me-1">Submit</button>
                                     <a
                                         class="btn btn-danger btn-sm mb-1 mb-sm-0 mt-md-6 me-1"

@@ -1,6 +1,29 @@
-@extends('layouts.app')
+<x-app-layout>
 
-@section('content')
+    <x-slot name="header">
+        {{ __('Push Products') }}
+    </x-slot>
+
+    <x-slot name="breadcrum">
+        <!--begin::Item-->
+        <li class="breadcrumb-item text-muted">
+            <a href="{{ route('home') }}" class="text-muted text-hover-primary">
+                Home </a>
+        </li>
+        <!--end::Item-->
+        <!--begin::Item-->
+        <li class="breadcrumb-item">
+            <span class="bullet bg-gray-300 w-5px h-2px"></span>
+        </li>
+        <!--end::Item-->
+
+        <!--begin::Item-->
+        <li class="breadcrumb-item text-dark">
+            Push Products
+        </li>
+        <!--end::Item-->
+    </x-slot>
+
     <div class="col-lg-6"  style="height:100%;background: white;height:70%;overflow-y: scroll">
         <div class="col-lg-12">
             <input type="hidden" id="customerId" value="{{$customerId}}">
@@ -55,80 +78,75 @@
         </div>
         <button class="btn-md btn-danger" id="pushTheProduct">Add To Prohibit List</button>
     </div>
-@endsection
-<script src="{{ asset('js/jquery-2.2.3.min.js') }}"></script>
-<script>
-    $(document).ready(function() {
-        $('#orderListing').hide();
-        $('#pricing').hide();
-        $('#pricingOnCustomer').hide();
-        $('#callList').hide();
-        $('#tabletLoadingApp').hide();
-        $('#copyOrdersBtn').hide();
-        $('#salesOnOrder').hide();
-        $('#salesInvoiced').hide();
-        $('#posCashUp').hide();
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
 
-        $('#pushTheProduct').click(function() {
+    <script>
+        $(document).ready(function() {
+            $('#orderListing').hide();
+            $('#pricing').hide();
+            $('#pricingOnCustomer').hide();
+            $('#callList').hide();
+            $('#tabletLoadingApp').hide();
+            $('#copyOrdersBtn').hide();
+            $('#salesOnOrder').hide();
+            $('#salesInvoiced').hide();
+            $('#posCashUp').hide();
 
-            var productsAll = $("input[name='productsAll[]']:checked").map(function () {
-                return $(this).val();
-            }).get()
-            $.ajax({
-                url: '{!!url("/insertIntoProhibitProducts")!!}',
-                type: "POST",
-                data: {
-                    productsAll: productsAll,
-                    customerId: $('#customerId').val()
+            $('#pushTheProduct').click(function() {
+                var productsAll = $("input[name='productsAll[]']:checked").map(function () {
+                    return $(this).val();
+                }).get()
+                $.ajax({
+                    url: '{!!url("/insertIntoProhibitProducts")!!}',
+                    type: "POST",
+                    data: {
+                        productsAll: productsAll,
+                        customerId: $('#customerId').val()
 
-                },
-                success: function (data) {
+                    },
+                    success: function (data) {
 
-                    var dialog = $('<p><strong>Products Added into Push List</strong></p>').dialog({
-                        height: 200, width: 700, modal: true, containment: false,
-                        buttons: {
-                            "OKAY": function () {
+                        var dialog = $('<p><strong>Products Added into Push List</strong></p>').dialog({
+                            height: 200, width: 700, modal: true, containment: false,
+                            buttons: {
+                                "OKAY": function () {
 
-                                dialog.dialog('close'); location.reload(true);
+                                    dialog.dialog('close'); location.reload(true);
 
+                                }
                             }
-                        }
-                    });
-                }
+                        });
+                    }
+                });
+            });
+            $('#removeProduct').click(function() {
+
+                var productOnPush = $("input[name='productsOnPush[]']:checked").map(function () {
+                    return $(this).val();
+                }).get()
+                $.ajax({
+                    url: '{!!url("/removeProhibitProducts")!!}',
+                    type: "POST",
+                    data: {
+                        productOnPush: productOnPush,
+                        customerId: $('#customerId').val()
+
+                    },
+                    success: function (data) {
+
+                        var dialog = $('<p><strong>Products Removed from the Push List</strong></p>').dialog({
+                            height: 200, width: 700, modal: true, containment: false,
+                            buttons: {
+                                "OKAY": function () {
+
+                                    dialog.dialog('close'); location.reload(true);
+
+                                }
+                            }
+                        });
+                    }
+                });
             });
         });
-        $('#removeProduct').click(function() {
+    </script>
 
-            var productOnPush = $("input[name='productsOnPush[]']:checked").map(function () {
-                return $(this).val();
-            }).get()
-            $.ajax({
-                url: '{!!url("/removeProhibitProducts")!!}',
-                type: "POST",
-                data: {
-                    productOnPush: productOnPush,
-                    customerId: $('#customerId').val()
-
-                },
-                success: function (data) {
-
-                    var dialog = $('<p><strong>Products Removed from the Push List</strong></p>').dialog({
-                        height: 200, width: 700, modal: true, containment: false,
-                        buttons: {
-                            "OKAY": function () {
-
-                                dialog.dialog('close'); location.reload(true);
-
-                            }
-                        }
-                    });
-                }
-            });
-        });
-    });
-</script>
+</x-app-layout>
