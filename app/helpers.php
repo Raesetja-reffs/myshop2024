@@ -109,11 +109,37 @@ if (!function_exists('getMenuItems')) {
             [
                 'name' => 'Customers',
                 'icon' => 'fa mi-customers',
-                'href' => url("/customerflexgrid"),
-                'windowopen' => [
-                    'name' => 'customerflexgrid',
-                    'width' => 1250,
-                    'height' => 1250,
+                'submenuitems' => [
+                    [
+                        'name' => 'Customer Listing',
+                        'icon' => 'fa fa-circle-question fa-lg',
+                        'href' => url("/customerflexgrid"),
+                        'windowopen' => [
+                            'name' => 'customerflexgrid',
+                            'width' => 1250,
+                            'height' => 1250,
+                        ]
+                    ],
+                    [
+                        'name' => 'Push Products',
+                        'icon' => 'fa fa-circle-question fa-lg',
+                        'href' => url("/productOnPush/0"),
+                        'windowopen' => [
+                            'name' => 'pushproducts',
+                            'width' => 1250,
+                            'height' => 1250,
+                        ]
+                    ],
+                    [
+                        'name' => 'Prohibit Products',
+                        'icon' => 'fa fa-circle-question fa-lg',
+                        'href' => url("/productOnprohibit/0"),
+                        'windowopen' => [
+                            'name' => 'prohibitproducts',
+                            'width' => 1250,
+                            'height' => 1250,
+                        ]
+                    ],
                 ]
             ],
             [
