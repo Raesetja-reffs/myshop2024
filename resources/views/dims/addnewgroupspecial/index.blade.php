@@ -30,24 +30,6 @@
     <script>
         var jArray = JSON.stringify({!! json_encode($products) !!});
         var jArrayCustomer = JSON.stringify({!! json_encode($customers) !!});
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            beforeSend: function(xhr) {
-                $(".general-loader").show();
-            },
-            complete: function(xhr, status) {
-                $(".general-loader").hide();
-            },
-            error: function(xhr, status, error) {
-                message = error;
-                if (xhr.responseJSON && xhr.responseJSON.message) {
-                    message = xhr.responseJSON.message;
-                }
-                showAlert('danger', message, 10000);
-            }
-        });
 
         $(document).on('focus', ':input', function() {
             $(this).attr('autocomplete', 'off');
@@ -130,25 +112,6 @@
             $('#tblCreateNewSpecial').on('click', 'button', function(e) {
                 var $this = $(this);
                 $this.closest('tr').remove();
-            });
-
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                beforeSend: function(xhr) {
-                    $(".general-loader").show();
-                },
-                complete: function(xhr, status) {
-                    $(".general-loader").hide();
-                },
-                error: function(xhr, status, error) {
-                    message = error;
-                    if (xhr.responseJSON && xhr.responseJSON.message) {
-                        message = xhr.responseJSON.message;
-                    }
-                    showAlert('danger', message, 10000);
-                }
             });
             //showDialog('#tempDeliveryAddressOnTheFly','50%',250);
 

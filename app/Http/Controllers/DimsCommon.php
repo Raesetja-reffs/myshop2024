@@ -878,16 +878,24 @@ class DimsCommon extends Controller
 
     public function productOnPush($customerId)
     {
-        $GetCustomerPushProducts = DB::connection('sqlsrv3')
-            ->select("EXEC spProductsOnPush ".$customerId);
+        $GetCustomerPushProducts = [];
+        $customers = [];
+        if ($customerId == 0) {
+            $customers = DB::connection('sqlsrv3')->table("viewCustomerGrid" )->select('*')->distinct()->get();
+        } else {
+            $GetCustomerPushProducts = DB::connection('sqlsrv3')
+                ->select("EXEC spProductsOnPush ".$customerId);
+        }
 
         $getAllProducts =  DB::connection('sqlsrv3')
+            //->select("SELECT PastelCode,PastelDescription,ProductId FROM viewtblProductsAndsalesQuantity where StatusId = 1 Order by PastelDescription OFFSET 0 ROWS FETCH FIRST 100 ROWS ONLY;");
             ->select("SELECT PastelCode,PastelDescription,ProductId FROM viewtblProductsAndsalesQuantity where StatusId = 1 Order by PastelDescription");
 
         return view('dims/product_on_push')
             ->with('allProducts',$getAllProducts)
             ->with('customerId',$customerId)
-            ->with('pushProducts',$GetCustomerPushProducts);
+            ->with('pushProducts',$GetCustomerPushProducts)
+            ->with('customers',$customers);
 
     }
 
@@ -895,13 +903,24 @@ class DimsCommon extends Controller
     {
         $customerId = $request->get('customerId');
         $productsAll = $request->get('productsAll');
+        $selectedCustomers = $request->get('selectedCustomers');
 
-        for($i = 0;$i < count($productsAll) ;$i++)
-        {
-            DB::connection('sqlsrv3')->table('tblProduct_Push')->insert(
-                ['CustomerId' => $customerId, 'ProductId' => $productsAll[$i]]
-            );
+        $insertEntries = [];
+        if ($customerId == 0) {
+            foreach ($selectedCustomers as $val) {
+                foreach ($productsAll as $productId) {
+                    $insertEntries[] = ['CustomerId' => $val, 'ProductId' => $productId];
+                }
+            }
+        } else {
+            foreach ($productsAll as $productId) {
+                $insertEntries[] = ['CustomerId' => $customerId, 'ProductId' => $productId];
+            }
         }
+        if (!empty($insertEntries)) {
+            DB::connection('sqlsrv3')->table('tblProduct_Push')->insert($insertEntries);
+        }
+
         return response()->json(1);
 
     }

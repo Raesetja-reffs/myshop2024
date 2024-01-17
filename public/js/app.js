@@ -1,4 +1,26 @@
 $(document).ready(function() {
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        beforeSend: function(xhr) {
+            $(".general-loader").show();
+        },
+        complete: function(xhr, status) {
+            $(".general-loader").hide();
+        },
+        error: function(xhr, status, error) {
+            if (xhr.responseJSON && xhr.responseJSON.message) {
+                message = xhr.responseJSON.message;
+            } else if(xhr.responseText && xhr.responseText) {
+                message = xhr.responseText;
+            } else {
+                message = error;
+            }
+            showAlert('danger', message, 10000);
+        }
+    });
+
     //On hover, toggle the "active" class
     $(document).on("mouseenter", ".flexdatalist-results li", function() {
         $(this).addClass("active");
@@ -72,4 +94,20 @@ function isFloatNumber(item,evt) {
         return false;
     }
     return true;
+}
+function showErrorDialog(message, showCancelButton)
+{
+    return Swal.fire({
+        html: `<p style="color:var(--bs-danger);">${message}</p>`,
+        color: '#716add',
+        icon: 'error',
+        buttonsStyling: false,
+        showCancelButton: showCancelButton,
+        confirmButtonText: 'Okay',
+        cancelButtonText: 'Cancel',
+        customClass: {
+            confirmButton: 'btn btn-primary btn-auto-height',
+            cancelButton: 'btn btn-danger btn-auto-height'
+        }
+    });
 }
