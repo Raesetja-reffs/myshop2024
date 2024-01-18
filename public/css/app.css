@@ -293,3 +293,10 @@ label {
     padding: 3px 10px !important;
     font-size: 0.95rem !important;
 }
+.show-green-info-text {
+    color: green !important;
+    font-weight: bold !important;
+}
+.background-color-yellow {
+    background-color: yellow !important;
+}

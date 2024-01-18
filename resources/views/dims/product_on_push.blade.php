@@ -24,7 +24,7 @@
         <!--end::Item-->
     </x-slot>
 
-    <div class="row">
+    <div class="row mt-3">
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
@@ -34,6 +34,7 @@
                                 <input type="hidden" id="customerId" value="{{$customerId}}">
                                 <div class="d-flex">
                                     <h4 class="me-2">All Customers</h4>
+                                    <i class="show-green-info-text">Double Click to open customer push product page</i>
                                 </div>
                                 <!--begin::Wrapper-->
                                 <div class="d-flex flex-stack">
@@ -54,7 +55,7 @@
                                 </div>
                                 <!--end::Wrapper-->
                                 <div class="table-responsive scrollable overflow-y-auto" style="max-height: 480px;">
-                                    <table class="table table-bordered stripe search-table" tabindex=0 id="generalTable">
+                                    <table class="table table-bordered stripe search-table customer-table" tabindex=0 id="generalTable">
                                         <thead>
                                             <tr>
                                                 <th class="w-10px pe-2">
@@ -69,7 +70,9 @@
                                         </thead>
                                         <tbody>
                                             @foreach($customers as $value)
-                                                <tr>
+                                                <tr
+                                                    push-product-url="{{ url('/productOnPush/' . $value->CustomerId) }}"
+                                                >
                                                     <td>
                                                         <div class="form-check form-check-sm form-check-custom form-check-solid">
                                                             <input type="checkbox" name="customers[]" class="form-check-input tableItem productsOnPush" value="{{$value->CustomerId}}">
@@ -347,6 +350,13 @@
                 } else {
                     productsDt.search($(this).val()).draw();
                 }
+            });
+            $(document).on('dblclick', '#generalTable.customer-table tbody tr', function() {
+                $(this).addClass('background-color-yellow');
+                window.open($(this).attr('push-product-url'), 'pushproducts','left=20,top=20,width=1250,height=1250,toolbar=1,resizable=0');
+                setTimeout((curobj) => {
+                    $(this).removeClass('background-color-yellow');
+                }, 500, $(this));
             });
         });
     </script>
