@@ -15,11 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string('username')->unique();
             $table->string('password');
-            $table->string('company_name');
+            $table->string('company_id');
             $table->string('erp_user_id');
             $table->string('erp_apiurl');
             $table->string('erp_apiusername');
             $table->string('erp_apipassword');
+            $table->string('erp_apiauthtoken');
             $table->rememberToken();
             $table->timestamps();
         });

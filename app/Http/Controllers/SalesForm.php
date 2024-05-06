@@ -3,15 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\DimsCommon;
+use App\Http\Middleware\AuthenticateUsersAndCentralUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Auth;
+use App\Traits\SalesFormTrait;
 
 class SalesForm extends Controller
 {
+    use SalesFormTrait;
+
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(AuthenticateUsersAndCentralUser::class);
     }
     /**
      * Display a listing of the resource.
@@ -20,33 +24,37 @@ class SalesForm extends Controller
      */
     public function index(Request $request)
     {
-       // (new DimsCommon())->clearAllUserLocks();
-//viewtblCustomers
+        if (config('app.IS_API_BASED')) {
+            $sessionUserId = auth()->guard('central_api_user')->user()->id;
+            $queryCustomers = $this->getCustomer();
+            //dd($queryCustomers);
+        } else {
+            // (new DimsCommon())->clearAllUserLocks();
+            //viewtblCustomers
 
-       $sessionUserId = Auth::user()->UserID;
-       //$sessionUserId = Auth::user()->UserID;
+            $sessionUserId = Auth::user()->UserID;
+            //$sessionUserId = Auth::user()->UserID;
 
-        if(Auth::user()->strDepartmentApp !="SALES"){
+            if(Auth::user()->strDepartmentApp !="SALES"){
 
-        }else{
-            return redirect('backorders');
+            }else{
+                return redirect('backorders');
+            }
         }
-
-
-
-       if(env('CustomerAccess') == 1){
-           $queryCustomers =DB::connection('sqlsrv3')->table("viewtblCustomers" )
-               ->join('tblAccessOnCustomers', 'viewtblCustomers.GroupId', '=', 'tblAccessOnCustomers.intGroupId')
-               ->select('CustomerId','StoreName','CustomerPastelCode','CreditLimit','BalanceDue','UserField5','Email','Routeid','Discount','OtherImportantNotes','strRoute','mnyCustomerGp','ID','Warehouse','PriceListName','CustomerOnHold','termsAndList')
-               ->where('StatusId',1)
-               ->where('intUserId',$sessionUserId)
-               ->orderBy('CustomerPastelCode','ASC')->get();
-       }else{
-           $queryCustomers =DB::connection('sqlsrv3')->table("viewtblCustomers" )
-               ->select('CustomerId','StoreName','CustomerPastelCode','CreditLimit','BalanceDue','UserField5','Email','Routeid','Discount','OtherImportantNotes','strRoute','mnyCustomerGp','ID','Warehouse','PriceListName','CustomerOnHold','termsAndList')
-               ->where('StatusId',1)
-               ->orderBy('CustomerPastelCode','ASC')->get();
-       }
+        // if(env('CustomerAccess') == 1){
+        //     $queryCustomers =DB::connection('sqlsrv3')->table("viewtblCustomers" )
+        //         ->join('tblAccessOnCustomers', 'viewtblCustomers.GroupId', '=', 'tblAccessOnCustomers.intGroupId')
+        //         ->select('CustomerId','StoreName','CustomerPastelCode','CreditLimit','BalanceDue','UserField5','Email','Routeid','Discount','OtherImportantNotes','strRoute','mnyCustomerGp','ID','Warehouse','PriceListName','CustomerOnHold','termsAndList')
+        //         ->where('StatusId',1)
+        //         ->where('intUserId',$sessionUserId)
+        //         ->orderBy('CustomerPastelCode','ASC')->get();
+        // }else{
+        //     $queryCustomers =DB::connection('sqlsrv3')->table("viewtblCustomers" )
+        //         ->select('CustomerId','StoreName','CustomerPastelCode','CreditLimit','BalanceDue','UserField5','Email','Routeid','Discount','OtherImportantNotes','strRoute','mnyCustomerGp','ID','Warehouse','PriceListName','CustomerOnHold','termsAndList')
+        //         ->where('StatusId',1)
+        //         ->orderBy('CustomerPastelCode','ASC')->get();
+        // }
+        // dd($queryCustomers);
         $queryCustomersDontCareStatus =DB::connection('sqlsrv3')->table("viewtblCustomers" )
             ->select('CustomerId','StoreName','CustomerPastelCode','CreditLimit','BalanceDue','UserField5','Email','Routeid','Discount','OtherImportantNotes','strRoute','mnyCustomerGp','ID','Warehouse','PriceListName','CustomerOnHold','termsAndList')
 
@@ -98,15 +106,20 @@ class SalesForm extends Controller
 
         $getviewWareHouseLocations= DB::connection('sqlsrv3')
             ->select("Select * from viewWareHouseLocations");
- $saleman= DB::connection('sqlsrv3')
+        $saleman= DB::connection('sqlsrv3')
             ->select("Select 0 as UserID,SalesmanDescription as UserName,SalesmanCode as strSalesmanCode from tblSalesCodes");
 
-        $GroupId = Auth::user()->GroupId;
-        $things = $this->getThings($GroupId,'Allow Call Logger');
-
-        $userPerfomance= DB::connection('sqlsrv3')
-            ->select("Exec spUserPerformance ".$sessionUserId);
-        $printinvoices = $this->getThings($GroupId,'Allow Invoice Printing');
+        if (config('app.IS_API_BASED')) {
+            $userPerfomance= DB::connection('sqlsrv3')
+                ->select("Exec spUserPerformance ".$sessionUserId);
+            $printinvoices = null;
+        } else {
+            $GroupId = Auth::user()->GroupId;
+            $things = $this->getThings($GroupId,'Allow Call Logger');
+            $userPerfomance= DB::connection('sqlsrv3')
+                ->select("Exec spUserPerformance ".$sessionUserId);
+            $printinvoices = $this->getThings($GroupId,'Allow Invoice Printing');
+        }
 
         return view('dims/sales-order/index')->with('products',$queryProducts)
             ->with('trueOrFalse',$trueFalse)

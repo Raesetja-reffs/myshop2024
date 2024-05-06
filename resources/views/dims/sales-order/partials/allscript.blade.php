@@ -57,7 +57,7 @@
     var donotshowAvailable = "<?php echo config('app.donotshowAvailable'); ?>";
     var CompanyMarginApp = "<?php echo config('app.Margin'); ?>";
     var CompanyMargin = "<?php echo config('app.Margin'); ?>";
-    var isAllowedToChangeInv = "<?php echo Auth::user()->authInvoices; ?>";
+    var isAllowedToChangeInv = "<?php echo Auth::user() ? Auth::user()->authInvoices : ''; ?>";
     var isAuthMyLine = "<?php echo env('APP_AUTHLINE'); ?>";
     var isAuthPrice = "<?php echo env('APP_AUTH_PRICE'); ?>";
     var hassplitorder = "<?php echo env('SPLITORDER'); ?>";
@@ -66,7 +66,7 @@
     var searchstring = "<?php echo env('STRING_LENGTH'); ?>";
     var isBlockDeliveryTypeChanges = "<?php echo env('APP_DELIVERYTYPE'); ?>";
     var hasBasketAuth = "<?php echo env('APP_BASKET_MARGIN'); ?>";
-    var multiLines = "<?php echo Auth::user()->intAllowMultiLines; ?>";
+    var multiLines = "<?php echo Auth::user() ? Auth::user()->intAllowMultiLines : ''; ?>";
     var linediscount = "<?php echo $discountProperty; ?>";
     // console.debug("isAuthMyLine*******"+isAuthMyLine);
     // console.debug("isBlockRouteChanges*******"+isBlockRouteChanges);
@@ -88,7 +88,7 @@
     // console.debug(jArrayCustomer);
     // var computerName = '<?php echo gethostname(); ?>';
     var computerName = '<?php echo php_uname('n'); ?>';
-    var byWho = '<?php echo Auth::user()->UserName; ?>';
+    var byWho = '<?php echo Auth::user() ? Auth::user()->UserName : ''; ?>';
     $(function() {
         $(document).keydown(function(e) {
             booze = $('#boozeLisence').val();

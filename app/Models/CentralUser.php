@@ -18,11 +18,12 @@ class CentralUser extends Authenticatable
     protected $fillable = [
         'username',
         'password',
-        'company_name',
+        'company_id',
         'erp_user_id',
         'erp_user_id',
         'erp_apiurl',
         'erp_apiusername',
         'erp_apipassword',
+        'erp_apiauthtoken',
     ];
 }

@@ -188,4 +188,5 @@ return [
 
     'js_version' => '1705500852',
     'css_version' => '1705500852',
+    'IS_API_BASED' => env('IS_API_BASED', 0)
 ];

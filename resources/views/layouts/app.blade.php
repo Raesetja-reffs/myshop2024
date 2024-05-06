@@ -167,7 +167,9 @@
         var today = new Date();
         var date = today.toISOString().substr(0, 10); // get the date in YYYY-MM-DD format
         var link = document.getElementById("logisticsplan");
-        link.href += "/" + date; // append the date as a parameter to the href attribute
+        if (link) {
+            link.href += "/" + date; // append the date as a parameter to the href attribute
+        }
     </script>
 </body>
 

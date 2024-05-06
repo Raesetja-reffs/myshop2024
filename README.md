@@ -55,6 +55,14 @@ Run the seeder for add Linx System Company
 
     php artisan db:seed LinxCompanySeeder
 
+Run the API Central Database tables
+
+    php artisan migrate --path=database/migrations/api_based_migrations
+
+Run the seeder for seed the default admin user
+
+    php artisan db:seed --class=CentralUserSeeder
+
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CompanyPermissionController;
+use App\Http\Middleware\AuthenticateUsersAndCentralUser;
 
 Route::middleware('auth')->group(function () {
     Route::get('company-permissions/set-permissions', [CompanyPermissionController::class, 'setPermissions'])->name('company-permissions.set-permissions');
