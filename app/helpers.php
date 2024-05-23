@@ -353,6 +353,12 @@ if (!function_exists('getMenuItems')) {
                             'height' => 999,
                         ],
                         'permission_slug' => 'isallowtransfers',
+                    ],
+                    [
+                        'name' => 'GRV',
+                        'icon' => 'fa mi-warehousetransfer',
+                        'href' => route('grv.dashboard'),
+                        'target' => '_blank'
                     ]
                 ]
             ],
