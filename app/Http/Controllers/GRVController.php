@@ -21,24 +21,17 @@ class GRVController extends Controller
      */
     public function notReceivedPOs()
     {
-        $pos = [
-            [
-                'customer_name' => 'Test1',
-                'type' => 1
-            ],
-            [
-                'customer_name' => 'Test2',
-                'type' => 2
-            ],
-            [
-                'customer_name' => 'Test1',
-                'type' => 1
-            ],
-            [
-                'customer_name' => 'Test2',
-                'type' => 2
-            ],
-        ];
+        $pos = [];
+        for ($i=1; $i<=10; $i++) {
+            for ($j=1; $j<=10; $j++) {
+                $pos[] = [
+                    'customer_name' => 'Supplier ' . $i,
+                    'item_code' => 'Item' . $j,
+                    'item_name' => 'Item Desc' . $j,
+                    'quantity' => rand(0, 50)
+                ];
+            }
+        }
 
         return view('grv.not-received-pos', compact('pos'));
     }
@@ -48,7 +41,25 @@ class GRVController extends Controller
      */
     public function awaitingAuth()
     {
-        return view('grv.awaiting-auth');
+        $pos = [];
+        for ($i=1; $i<=10; $i++) {
+            $items = [];
+            for ($j=1; $j<=30; $j++) {
+                $items[] = [
+                    'item_code' => 'Item' . $j,
+                    'receiver_a_qty' => rand(0, 50),
+                    'receiver_b_qty' => rand(0, 50),
+                    'final' => rand(0, 50),
+                    'variance' => rand(0, 50),
+                ];
+            }
+            $pos[] = [
+                'name' => 'POS ' . $i,
+                'items' => $items,
+            ];
+        }
+
+        return view('grv.awaiting-auth', compact('pos'));
     }
 
     /**
