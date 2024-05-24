@@ -22,8 +22,15 @@
             Not Received POs
         </li>
     </x-slot>
-    <div class="m-5">
-        <div id="gridNotReceivedPos" style="width: 100%;"></div>
+
+    <div class="row mt-3">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <div id="gridNotReceivedPos" style="width: 100%;"></div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="modal fade" tabindex="-1" id="showPosDetails">

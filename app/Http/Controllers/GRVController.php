@@ -67,7 +67,25 @@ class GRVController extends Controller
      */
     public function received()
     {
-        return view('grv.awaiting-auth');
+        $pos = [];
+        for ($i=1; $i<=10; $i++) {
+            $items = [];
+            for ($j=1; $j<=30; $j++) {
+                $items[] = [
+                    'item_code' => 'Item' . $j,
+                    'item_name' => 'Item Desc' . $j,
+                    'quantity' => rand(0, 50)
+                ];
+            }
+            $pos[] = [
+                'customer_name' => 'Supplier ' . $i,
+                'po' => 'PO' . $i,
+                'datetime' => date('Y-m-d'),
+                'items' => $items,
+            ];
+        }
+
+        return view('grv.received', compact('pos'));
     }
 
     /**
@@ -83,6 +101,13 @@ class GRVController extends Controller
      */
     public function issues()
     {
-        return view('grv.issues');
+        $issues = [];
+        for ($i=1; $i<=10; $i++) {
+            $issues[] = [
+                'name' => 'Issue no ' . $i
+            ];
+        }
+
+        return view('grv.issues', compact('issues'));
     }
 }
