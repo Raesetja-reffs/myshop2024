@@ -11,9 +11,15 @@ class GRVController extends Controller
      */
     public function dashboard()
     {
-        $notReceivedPOs = 0;
+        $countData = [
+            'notReceivedPOs' => 8,
+            'awaitingAuth' => 15,
+            'received' => 10,
+            'queries' => 2,
+            'issues' => 3,
+        ];
 
-        return view('grv.dashboard', compact('notReceivedPOs'));
+        return view('grv.dashboard', compact('countData'));
     }
 
     /**
