@@ -22,8 +22,8 @@ class GRVController extends Controller
     public function notReceivedPOs()
     {
         $pos = [];
-        for ($i=1; $i<=10; $i++) {
-            for ($j=1; $j<=10; $j++) {
+        for ($i=1; $i<=30; $i++) {
+            for ($j=1; $j<=40; $j++) {
                 $pos[] = [
                     'customer_name' => 'Supplier ' . $i,
                     'item_code' => 'Item' . $j,
@@ -93,7 +93,14 @@ class GRVController extends Controller
      */
     public function queries()
     {
-        return view('grv.queries');
+        $issues = [];
+        for ($i=1; $i<=10; $i++) {
+            $issues[] = [
+                'name' => 'Query no ' . $i
+            ];
+        }
+
+        return view('grv.queries', compact('issues'));
     }
 
     /**

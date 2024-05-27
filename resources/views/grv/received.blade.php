@@ -104,7 +104,7 @@
                 </div>
 
                 <div class="modal-body">
-                    <div class="table-responsive">
+                    <div class="table-responsive scroll h-400px">
                         <table class="table table-striped table-bordered">
                             <thead>
                                 <tr class="fw-semibold fs-6 text-gray-800 border-bottom-2 border-gray-200">
