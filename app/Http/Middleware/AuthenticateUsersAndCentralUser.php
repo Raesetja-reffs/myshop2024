@@ -20,6 +20,6 @@ class AuthenticateUsersAndCentralUser
         }
 
         // Redirect or abort to handle unauthorized access
-        return route('login');
+        return redirect()->route('login');
     }
 }
