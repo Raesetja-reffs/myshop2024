@@ -513,11 +513,6 @@
             // CustomerId,OldQty,NewQty,OldPrice,NewPrice,ReviewedUserId,ReferenceNo,DocType,DocNumber,machine,ReturnId
             consoleManagement('{!! url('/logMessageAjax') !!}', 300, 2, 'Dims Tablet Loading button Clicked',
                 0, 0, 0, 0, 0, 0, 0, 0, 'NULL', 0, computerName, 0, 0);
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
 
 
             $('#tabletLoadingGo').click(function() {
@@ -560,11 +555,6 @@
          * List Top 1000 orders and order them  by date in desc
          * */
         $('#orderListing').click(function() {
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
             otable = $('#createdOrders').DataTable({
                 "ajax": {
                     url: '{!! url('/getOrderListing') !!}',
@@ -1200,11 +1190,6 @@
             $('#changeDelvDate').hide();
             $('#deprecated_cangeDate').hide();
             //Pass the Ids
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
 
             //Order Header
             $.ajax({
@@ -2188,11 +2173,6 @@
 
 
 
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
 
                 //getTheCustomerId();
 
@@ -2819,11 +2799,6 @@
                 GLOBALPRODCODE.length > 0 &&
                 GLOBALPRICE.length > 0 &&
                 GLOBALPRODUCTDESCRIPTION.length > 0) {
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
 
                 TotalExc = TotalExc + (parseFloat(GLOBALPRICE) * parseFloat(GLOBALQUANTITY)).toFixed(2);
                 //generateALine();
@@ -2853,7 +2828,8 @@
             searchContain: true,
             visibleProperties: ["StoreName", "CustomerPastelCode"],
             searchIn: 'StoreName',
-            data: finalData
+            //data: finalData
+            url: "{{  route('sales-order.get-sales-order-customers') }}",
         });
         inputCustNames.on('select:flexdatalist', function(event, data) {
 
@@ -2955,7 +2931,8 @@
             focusFirstResult: true,
             visibleProperties: ["CustomerPastelCode", "StoreName"],
             searchIn: 'CustomerPastelCode',
-            data: finalData
+            //data: finalData
+            url: "{{  route('sales-order.get-sales-order-customers') }}",
         });
         inputCustAccount.on('select:flexdatalist', function(event, data) {
 
@@ -3260,11 +3237,6 @@
                 $('#theProductDescription').val(ui.item.extra);
                 //generateALine();
                 generateALine2();
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
                 $.ajax({
                     url: '{!! url('/getCutomerPriceOnOrderForm') !!}',
                     type: "POST",
@@ -3299,11 +3271,6 @@
                 $('#theDisc').val("0.00");
                 $('#theUnitSize').val(ui.item.unitSize);
 
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
                 $.ajax({
                     url: '{!! url('/getCutomerPriceOnOrderForm') !!}',
                     type: "POST",
@@ -4725,11 +4692,6 @@
     }
 
     function getTheCustomerId() {
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
         $.ajax({
             url: '{!! url('/custID') !!}',
             type: "POST",
@@ -5032,11 +4994,6 @@
                         GLOBALQUANTITY = $('#prodQty_' + token_number).val();
                         GLOBALDISC = $('#prodDisc_' + token_number).val();
 
-                        $.ajaxSetup({
-                            headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                            }
-                        });
                         productPrice(token_number);
 
 
@@ -5109,11 +5066,6 @@
                         }
                         // $('#prodQty_' + token_number).attr('title', 'In Stock ' + parseFloat(ui.item.QtyInStock).toFixed(3));
 
-                        $.ajaxSetup({
-                            headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                            }
-                        });
                         productPrice(token_number);
 
                     }

@@ -20,6 +20,15 @@ $(document).ready(function() {
             showAlert('danger', message, 10000);
         }
     });
+    $(document).ajaxSend(function(event, xhr, settings) {
+        console.log("Global beforeSend");
+        $(".general-loader").show();
+    });
+
+    $(document).ajaxComplete(function(event, xhr, settings) {
+        console.log("Global complete");
+        $(".general-loader").hide();
+    });
 
     //On hover, toggle the "active" class
     $(document).on("mouseenter", ".flexdatalist-results li", function() {

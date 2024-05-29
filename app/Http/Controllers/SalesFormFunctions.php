@@ -11,12 +11,16 @@ use View;
 use App;
 use PDF;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Middleware\AuthenticateUsersAndCentralUser;
+use App\Traits\SalesFormFunctionsTrait;
 
 class SalesFormFunctions extends Controller
 {
+    use SalesFormFunctionsTrait;
+
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(AuthenticateUsersAndCentralUser::class);
     }
     //returnProductPrice
     public function CustomerCode(Request $request)
@@ -348,38 +352,54 @@ class SalesFormFunctions extends Controller
         $discount = $request->get('discount');
         $OrderNo = str_replace("'", " ", $OrderNo);
         $DeliveryAddressID =0;
-        $userID =  Auth::user()->UserID;
-        //$customerID = DB::connection('sqlsrv3')->table('tblCustomers')->select('CustomerId')->where('CustomerPastelCode',$customerCode)->get();
-        //$Routeid = DB::connection('sqlsrv3')->table('tblCustomers')->select('Routeid')->where('CustomerPastelCode',$customerCode)->get();
-        //DB::beginTransaction();
+        if (config('app.IS_API_BASED')) {
+            $response = $this->apiInsertOrderHearder([
+                'CustomerCode' => $customerCode,
+                'UserID' => $customerCode,
+                'LateOrder' => $LateOrder,
+                'DeliveryDate' => $DeliveryDate,
+                'OrderDate' => $OrderDate,
+                'DeliveryAddressID' => $DeliveryAddressID,
+            ]);
+            $output['orderId'] = $response['ID'];
+            $output['counter'] = '';
+            $output['singleAddress'] = '';
+        } else {
+            $userID =  Auth::user()->UserID;
+            //$customerID = DB::connection('sqlsrv3')->table('tblCustomers')->select('CustomerId')->where('CustomerPastelCode',$customerCode)->get();
+            //$Routeid = DB::connection('sqlsrv3')->table('tblCustomers')->select('Routeid')->where('CustomerPastelCode',$customerCode)->get();
+            //DB::beginTransaction();
 
-        // $returnPastInvoices = DB::connection('sqlsrv3')->select("EXEC spCRUDOrderHeaders 0,'".$customerCode."',".$DeliveryAddressID.",'".$OrderDate."','".$DeliveryDate."',".$LateOrder.",'".$OrderNo."',0,'".$statement."'".","."'0'".","."'0'".","."'0'".","."'0'".","."'0'".","."'0'".",".$userID.",0,".$discount);
-        $returnPastInvoices = DB::connection('sqlsrv3')
-            //->select("EXEC spCRUDOrderHeaders 0,'".$customerCode."',".$DeliveryAddressID.",'".$OrderDate."','".$DeliveryDate."',".$LateOrder.",'".$OrderNo."',0,'".$statement."'".","."'0'".","."'0'".","."'0'".","."'0'".","."'0'".","."'0'".",".$userID.",0,0.0");
-            ->select('exec spCRUDOrderHeaders ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?',
-                array(0,$customerCode,$DeliveryAddressID,$OrderDate,$DeliveryDate,$LateOrder,$OrderNo,0,$statement,'0','0','0','0','0','0',$userID,0,$discount)
-            );
+            // $returnPastInvoices = DB::connection('sqlsrv3')->select("EXEC spCRUDOrderHeaders 0,'".$customerCode."',".$DeliveryAddressID.",'".$OrderDate."','".$DeliveryDate."',".$LateOrder.",'".$OrderNo."',0,'".$statement."'".","."'0'".","."'0'".","."'0'".","."'0'".","."'0'".","."'0'".",".$userID.",0,".$discount);
+            $returnPastInvoices = DB::connection('sqlsrv3')
+                //->select("EXEC spCRUDOrderHeaders 0,'".$customerCode."',".$DeliveryAddressID.",'".$OrderDate."','".$DeliveryDate."',".$LateOrder.",'".$OrderNo."',0,'".$statement."'".","."'0'".","."'0'".","."'0'".","."'0'".","."'0'".","."'0'".",".$userID.",0,0.0");
+                ->select('exec spCRUDOrderHeaders ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?',
+                    array(0,$customerCode,$DeliveryAddressID,$OrderDate,$DeliveryDate,$LateOrder,$OrderNo,0,$statement,'0','0','0','0','0','0',$userID,0,$discount)
+                );
 
 
-        if(strlen($returnPastInvoices[0]->ID > 1)){
-            (new DimsCommon())->lockOrder($returnPastInvoices[0]->ID);
+            if(strlen($returnPastInvoices[0]->ID > 1)){
+                (new DimsCommon())->lockOrder($returnPastInvoices[0]->ID);
+            }
+            $zero = 0;
+            $countAddress = DB::connection('sqlsrv3')
+                // ->select("EXEC spCrudDeliveryAddress ".$zero.",'00','00','000','000','000',00,00,'00','".$customerCode."',00,'Count'");
+                ->select('exec spCrudDeliveryAddress ?,?,?,?,?,?,?,?,?,?,?,?',
+                    array($zero,'00','00','000','000','000',00,00,'00',$customerCode,00,'Count')
+                );
+            $custSingleAddress = DB::connection('sqlsrv3')
+                ->select('exec spCrudDeliveryAddress ?,?,?,?,?,?,?,?,?,?,?,?',
+                    array($zero,'00','00','000','000','000',00,00,'00',$customerCode,00,'Select')
+                );
+
+            $output['orderId'] = $returnPastInvoices[0]->ID;
+            $output['counter'] = $countAddress[0];
+            $output['singleAddress'] = $custSingleAddress[0];
         }
-        $zero = 0;
-        $countAddress = DB::connection('sqlsrv3')
-            // ->select("EXEC spCrudDeliveryAddress ".$zero.",'00','00','000','000','000',00,00,'00','".$customerCode."',00,'Count'");
-            ->select('exec spCrudDeliveryAddress ?,?,?,?,?,?,?,?,?,?,?,?',
-                array($zero,'00','00','000','000','000',00,00,'00',$customerCode,00,'Count')
-            );
-        $custSingleAddress = DB::connection('sqlsrv3')
-            ->select('exec spCrudDeliveryAddress ?,?,?,?,?,?,?,?,?,?,?,?',
-                array($zero,'00','00','000','000','000',00,00,'00',$customerCode,00,'Select')
-            );
 
-        $output['orderId'] = $returnPastInvoices[0]->ID;
-        $output['counter'] = $countAddress[0];
-        $output['singleAddress'] = $custSingleAddress[0];
         return $output;
     }
+
     public function orderheaderAndOrderLines(Request $request)
     {
         $orderlines = $request->get('orderlines');
@@ -642,14 +662,18 @@ class SalesFormFunctions extends Controller
         $OrderNo = $request->get('orderNo');
         $statement = $request->get('statement');
         $DeliveryAddressID = 0;
-        $userID =  Auth::user()->UserID;
         $OrderNo = str_replace("'", " ", $OrderNo);
+        if (config('app.IS_API_BASED')) {
+            $returnCounts = 0;
+        } else {
+            $userID =  Auth::user()->UserID;
+            $returnCounts = DB::connection('sqlsrv3')
+                //->select("EXEC spCRUDOrderHeaders 0,'".$customerCode."',".$DeliveryAddressID.",'".$OrderDate."','".$DeliveryDate."',".$LateOrder.",'".$OrderNo."',0,'".$statement."'".","."'0'".","."'0'".","."'0'".","."'0'".","."'0'".","."'0'".",".$userID.",0,0.0");
+                ->select('exec spCRUDOrderHeaders ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?',
+                    array(0,$customerCode,$DeliveryAddressID,$OrderDate,$DeliveryDate,$LateOrder,$OrderNo,0,$statement,'0','0','0','0','0','0',$userID,0,0)
+                );
+        }
 
-        $returnCounts = DB::connection('sqlsrv3')
-            //->select("EXEC spCRUDOrderHeaders 0,'".$customerCode."',".$DeliveryAddressID.",'".$OrderDate."','".$DeliveryDate."',".$LateOrder.",'".$OrderNo."',0,'".$statement."'".","."'0'".","."'0'".","."'0'".","."'0'".","."'0'".","."'0'".",".$userID.",0,0.0");
-            ->select('exec spCRUDOrderHeaders ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?',
-                array(0,$customerCode,$DeliveryAddressID,$OrderDate,$DeliveryDate,$LateOrder,$OrderNo,0,$statement,'0','0','0','0','0','0',$userID,0,0)
-            );
         return response()->json($returnCounts);
     }
     //check if other transactions exists ,sales orders are not part of this

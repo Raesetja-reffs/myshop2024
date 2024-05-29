@@ -1,23 +1,22 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Reginald
- * Date: 29/07/2017
- * Time: 10:00 AM
- */
 
 namespace App\Http\Controllers;
+
 use App\Http\Controllers\SalesForm;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use \Cache;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Middleware\AuthenticateUsersAndCentralUser;
+use App\Traits\DimsCommonTrait;
 
 class DimsCommon extends Controller
 {
+    use DimsCommonTrait;
+
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(AuthenticateUsersAndCentralUser::class);
     }
     public function getCommonRoutes()
     {
@@ -534,27 +533,39 @@ class DimsCommon extends Controller
              ->select("EXEC spOrderLocks '".$OrderId."',".$userId);
          return $CheckOrderLocks;
     }
+
     public function invoiceLookUp(Request $request)
     {
-        $term = $request->get('term','');;
-
-        $results = array();
-        $queries =DB::connection('sqlsrv3')->table("vwInvoiceOrderIDLookUp")
-            ->where('InvoiceNo', 'LIKE', '%'.$term.'%')
-           /* ->orWhere('OrderId', 'LIKE', '%'.$term.'%')
-            ->orWhere('CustomerPastelCode', 'LIKE', '%'.$term.'%')
-            ->orWhere('StoreName', 'LIKE', '%'.$term.'%')*/
-            ->take(10)->get();
-        foreach ($queries as $query)
-        {
-            $results[] = [ 'id' => $query->OrderId, 'value' => $query->InvoiceNo,
-                'StoreName'=>$query->StoreName,'CustomerPastelCode'=>$query->CustomerPastelCode,'CompanyName'=>$query->CompanyName,
-                'mnyTotal'=>$query->mnyTotal,'PaymentTerms'=>$query->PaymentTerms];
+        $results = [];
+        $term = $request->get('term', '');
+        if (config('app.IS_API_BASED')) {
+            $results = $this->apiGetInvoiceLookup($term);
+        } else {
+            $queries = DB::connection('sqlsrv3')->table("vwInvoiceOrderIDLookUp")
+                ->where('InvoiceNo', 'LIKE', '%'.$term.'%')
+                /* ->orWhere('OrderId', 'LIKE', '%'.$term.'%')
+                ->orWhere('CustomerPastelCode', 'LIKE', '%'.$term.'%')
+                ->orWhere('StoreName', 'LIKE', '%'.$term.'%')*/
+                ->take(10)->get();
+            if ($queries) {
+                foreach ($queries as $query) {
+                    $results[] = [
+                        'id' => $query->OrderId,
+                        'value' => $query->InvoiceNo,
+                        'StoreName' => $query->StoreName,
+                        'CustomerPastelCode' => $query->CustomerPastelCode,
+                        'CompanyName' => $query->CompanyName,
+                        'mnyTotal' => $query->mnyTotal,
+                        'PaymentTerms' => $query->PaymentTerms
+                    ];
+                }
+            }
         }
-        if(count($results))
-            return $results;
-        else
-            return ['value'=>'No Result Found','id'=>''];
+        if (empty($results)) {
+            $results = ['value'=>'No Result Found','id'=>''];
+        }
+
+        return $results;
     }
     public function customerLookUp(Request $request)
     {

@@ -25,53 +25,53 @@ class SalesForm extends Controller
     public function index(Request $request)
     {
         if (config('app.IS_API_BASED')) {
-            $sessionUserId = auth()->guard('central_api_user')->user()->id;
-            $queryCustomers = $this->getCustomer();
-            //dd($queryCustomers);
+            $queryCustomers = $this->apiGetCustomer();
+            $userPerfomance = $this->apiGetUserPerformance();
+            $queryCustomersDontCareStatus = [];
+            $queryProducts = $this->apiGetProducts();
+            $trueFalse = $this->apiGetCompanyReportStatus();
+            $getLastInserted = $this->apiGetLastInserted();
+            $marginType =  $this->apiGetMarginType();
+            $deliverTypes = $this->apiGetDeliveryTypes();
+            $getDeliveryDates = $this->apiGetDeliveryDates();
+            $callListUserInfo = $this->apiCallListUserInfo();
+            $callListDeliveryDate = $this->apiCallListDeliveryDate();
+            $getRoutes = $this->apiGetRoutes();
+            $saleman = $this->apiSalesMan();
+            $getviewWareHouseLocations = $this->apiGetviewWareHouseLocations();
+            $printinvoices = '"1"';
         } else {
-            // (new DimsCommon())->clearAllUserLocks();
-            //viewtblCustomers
-
             $sessionUserId = Auth::user()->UserID;
-            //$sessionUserId = Auth::user()->UserID;
-
-            if(Auth::user()->strDepartmentApp !="SALES"){
-
-            }else{
+            if(Auth::user()->strDepartmentApp == "SALES"){
                 return redirect('backorders');
             }
-        }
-        // if(env('CustomerAccess') == 1){
-        //     $queryCustomers =DB::connection('sqlsrv3')->table("viewtblCustomers" )
-        //         ->join('tblAccessOnCustomers', 'viewtblCustomers.GroupId', '=', 'tblAccessOnCustomers.intGroupId')
-        //         ->select('CustomerId','StoreName','CustomerPastelCode','CreditLimit','BalanceDue','UserField5','Email','Routeid','Discount','OtherImportantNotes','strRoute','mnyCustomerGp','ID','Warehouse','PriceListName','CustomerOnHold','termsAndList')
-        //         ->where('StatusId',1)
-        //         ->where('intUserId',$sessionUserId)
-        //         ->orderBy('CustomerPastelCode','ASC')->get();
-        // }else{
-        //     $queryCustomers =DB::connection('sqlsrv3')->table("viewtblCustomers" )
-        //         ->select('CustomerId','StoreName','CustomerPastelCode','CreditLimit','BalanceDue','UserField5','Email','Routeid','Discount','OtherImportantNotes','strRoute','mnyCustomerGp','ID','Warehouse','PriceListName','CustomerOnHold','termsAndList')
-        //         ->where('StatusId',1)
-        //         ->orderBy('CustomerPastelCode','ASC')->get();
-        // }
-        // dd($queryCustomers);
-        $queryCustomersDontCareStatus =DB::connection('sqlsrv3')->table("viewtblCustomers" )
-            ->select('CustomerId','StoreName','CustomerPastelCode','CreditLimit','BalanceDue','UserField5','Email','Routeid','Discount','OtherImportantNotes','strRoute','mnyCustomerGp','ID','Warehouse','PriceListName','CustomerOnHold','termsAndList')
-
-            ->orderBy('CustomerPastelCode','ASC')->get();
-        $deliverTypes= DB::connection('sqlsrv3')->table('tblOrderTypes')->select('OrderTypeId','OrderType')->get();
-
-        $users = DB::connection('sqlsrv3')->table('tblDIMSUSERS')->select('UserID','UserName','strSalesmanCode')->get();
-        $getDeliveryDates = DB::connection('sqlsrv3')->table('vwDistinctDelvDates')->select('DeliveryDate')->orderBy('DeliveryDate', 'desc')->get();
-        $getRoutes =  DB::connection('sqlsrv3')->table('tblRoutes')->select('Routeid', 'Route')->where('NotInUse','0')->orderBy('Route', 'asc')->get();
-        $callListUserInfo = DB::connection('sqlsrv3')
-            ->select("Select * from  [dbo].[fnGetLastUserInfoForCallList]($sessionUserId) Order By od Desc");
-        $callListDeliveryDate = DB::connection('sqlsrv3')
-            ->select("Select Top 1 dteSessionDate from  [dbo].[fnGetLastUserInfoForCallList]($sessionUserId) Order By od Desc");
-
-        $marginType =  DB::connection('sqlsrv3')->table('tblCOMPANYREPORTS')->select('ReportType', 'Comment')->where('ReportName','marginCalculator')
-            ->where('Function','1')
-            ->get();
+            if(env('CustomerAccess') == 1){
+                $queryCustomers =DB::connection('sqlsrv3')->table("viewtblCustomers" )
+                    ->join('tblAccessOnCustomers', 'viewtblCustomers.GroupId', '=', 'tblAccessOnCustomers.intGroupId')
+                    ->select('CustomerId','StoreName','CustomerPastelCode','CreditLimit','BalanceDue','UserField5','Email','Routeid','Discount','OtherImportantNotes','strRoute','mnyCustomerGp','ID','Warehouse','PriceListName','CustomerOnHold','termsAndList')
+                    ->where('StatusId',1)
+                    ->where('intUserId',$sessionUserId)
+                    ->orderBy('CustomerPastelCode','ASC')->get();
+            }else{
+                $queryCustomers =DB::connection('sqlsrv3')->table("viewtblCustomers" )
+                    ->select('CustomerId','StoreName','CustomerPastelCode','CreditLimit','BalanceDue','UserField5','Email','Routeid','Discount','OtherImportantNotes','strRoute','mnyCustomerGp','ID','Warehouse','PriceListName','CustomerOnHold','termsAndList')
+                    ->where('StatusId',1)
+                    ->orderBy('CustomerPastelCode','ASC')->get();
+            }
+            $queryCustomersDontCareStatus =DB::connection('sqlsrv3')->table("viewtblCustomers" )
+                ->select('CustomerId','StoreName','CustomerPastelCode','CreditLimit','BalanceDue','UserField5','Email','Routeid','Discount','OtherImportantNotes','strRoute','mnyCustomerGp','ID','Warehouse','PriceListName','CustomerOnHold','termsAndList')
+                ->orderBy('CustomerPastelCode','ASC')->get();
+            $deliverTypes= DB::connection('sqlsrv3')->table('tblOrderTypes')->select('OrderTypeId','OrderType')->get();
+            $users = DB::connection('sqlsrv3')->table('tblDIMSUSERS')->select('UserID','UserName','strSalesmanCode')->get();
+            $getDeliveryDates = DB::connection('sqlsrv3')->table('vwDistinctDelvDates')->select('DeliveryDate')->orderBy('DeliveryDate', 'desc')->get();
+            $getRoutes =  DB::connection('sqlsrv3')->table('tblRoutes')->select('Routeid', 'Route')->where('NotInUse','0')->orderBy('Route', 'asc')->get();
+            $callListUserInfo = DB::connection('sqlsrv3')
+                ->select("Select * from  [dbo].[fnGetLastUserInfoForCallList]($sessionUserId) Order By od Desc");
+            $callListDeliveryDate = DB::connection('sqlsrv3')
+                ->select("Select Top 1 dteSessionDate from  [dbo].[fnGetLastUserInfoForCallList]($sessionUserId) Order By od Desc");
+            $marginType =  DB::connection('sqlsrv3')->table('tblCOMPANYREPORTS')->select('ReportType', 'Comment')->where('ReportName','marginCalculator')
+                ->where('Function','1')
+                ->get();
 
             switch ($marginType[0]->ReportType)
             {
@@ -97,23 +97,16 @@ class SalesForm extends Controller
                     break;
 
             }
+            $trueFalse =  DB::connection('sqlsrv3')->table('tblCOMPANYREPORTS')->select('ReportType', 'ReportName')->where('ReportName','True')
+                ->orwhere('ReportName','False')
+                ->get();
+            $getLastInserted= DB::connection('sqlsrv3')
+                ->select("Select * from viewGetLastInsertedOrderIdAndDeliveryDate");
 
-        $trueFalse =  DB::connection('sqlsrv3')->table('tblCOMPANYREPORTS')->select('ReportType', 'ReportName')->where('ReportName','True')
-            ->orwhere('ReportName','False')
-            ->get();
-        $getLastInserted= DB::connection('sqlsrv3')
-            ->select("Select * from viewGetLastInsertedOrderIdAndDeliveryDate");
-
-        $getviewWareHouseLocations= DB::connection('sqlsrv3')
-            ->select("Select * from viewWareHouseLocations");
-        $saleman= DB::connection('sqlsrv3')
-            ->select("Select 0 as UserID,SalesmanDescription as UserName,SalesmanCode as strSalesmanCode from tblSalesCodes");
-
-        if (config('app.IS_API_BASED')) {
-            $userPerfomance= DB::connection('sqlsrv3')
-                ->select("Exec spUserPerformance ".$sessionUserId);
-            $printinvoices = null;
-        } else {
+            $getviewWareHouseLocations= DB::connection('sqlsrv3')
+                ->select("Select * from viewWareHouseLocations");
+            $saleman= DB::connection('sqlsrv3')
+                ->select("Select 0 as UserID,SalesmanDescription as UserName,SalesmanCode as strSalesmanCode from tblSalesCodes");
             $GroupId = Auth::user()->GroupId;
             $things = $this->getThings($GroupId,'Allow Call Logger');
             $userPerfomance= DB::connection('sqlsrv3')
@@ -356,5 +349,29 @@ public function getCustomerStoppedBuyingJSon()
     public function destroy($id)
     {
 
+    }
+
+    public function getSalesOrderCustomers()
+    {
+        $response = [];
+        if (config('app.IS_API_BASED')) {
+            $response = $this->apiGetCustomer();
+        } else {
+            if (env('CustomerAccess') == 1) {
+                $response =DB::connection('sqlsrv3')->table("viewtblCustomers" )
+                    ->join('tblAccessOnCustomers', 'viewtblCustomers.GroupId', '=', 'tblAccessOnCustomers.intGroupId')
+                    ->select('CustomerId','StoreName','CustomerPastelCode','CreditLimit','BalanceDue','UserField5','Email','Routeid','Discount','OtherImportantNotes','strRoute','mnyCustomerGp','ID','Warehouse','PriceListName','CustomerOnHold','termsAndList')
+                    ->where('StatusId', 1)
+                    ->where('intUserId', Auth::user()->UserID)
+                    ->orderBy('CustomerPastelCode', 'ASC')->get();
+            } else {
+                $response =DB::connection('sqlsrv3')->table("viewtblCustomers" )
+                    ->select('CustomerId','StoreName','CustomerPastelCode','CreditLimit','BalanceDue','UserField5','Email','Routeid','Discount','OtherImportantNotes','strRoute','mnyCustomerGp','ID','Warehouse','PriceListName','CustomerOnHold','termsAndList')
+                    ->where('StatusId',1)
+                    ->orderBy('CustomerPastelCode','ASC')->get();
+            }
+        }
+
+        return response()->json($response);
     }
 }

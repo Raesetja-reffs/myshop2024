@@ -1,20 +1,17 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Reginald
- * Date: 30/07/2017
- * Time: 09:59 AM
- */
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Middleware\AuthenticateUsersAndCentralUser;
+
 class ConsoleManagement extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(AuthenticateUsersAndCentralUser::class);
     }
     /**
      * @param $ConsoleTypeId
@@ -66,7 +63,6 @@ class ConsoleManagement extends Controller
         $OrderId= $request->get('OrderId');
         $productid= $request->get('productid');
         $CustomerId= $request->get('CustomerId');
-        $UserId= Auth::user()->UserID;
         $OldQty= $request->get('OldQty');
         $NewQty= $request->get('NewQty');
         $OldPrice= $request->get('OldPrice');
@@ -77,13 +73,18 @@ class ConsoleManagement extends Controller
         $DocNumber = $request->get('DocNumber');
         $machine = $request->get('machine');
         $ReturnId = $request->get('ReturnId');
-        $LoggedBy = Auth::user()->UserName;
+        if (config('app.IS_API_BASED')) {
+            $returnManagemntC = [];
+        } else {
+            $UserId= Auth::user()->UserID;
+            $LoggedBy = Auth::user()->UserName;
+            $returnManagemntC = DB::connection('sqlsrv3')
+                ->statement('exec spConsoleManagement ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?',
+                    array($ConsoleTypeId,$Importance,$LoggedBy,$Message,$Reviewed,$productid,$CustomerId,$UserId,$OldQty,$NewQty,$OldPrice,
+                        $NewPrice,$ReviewedUserId,$ReferenceNo,$DocType,$DocNumber,$machine,$OrderId,$ReturnId)
+                );
+        }
 
-        $returnManagemntC = DB::connection('sqlsrv3')
-        ->statement('exec spConsoleManagement ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?',
-        array($ConsoleTypeId,$Importance,$LoggedBy,$Message,$Reviewed,$productid,$CustomerId,$UserId,$OldQty,$NewQty,$OldPrice,
-            $NewPrice,$ReviewedUserId,$ReferenceNo,$DocType,$DocNumber,$machine,$OrderId,$ReturnId)
-    );
         return response()->json($returnManagemntC);
     }
     public function logMessageAuth(Request $request)

@@ -173,13 +173,6 @@
 
         });
 
-
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-
         var columnsC = [{
                 name: 'PastelCode',
                 minWidth: '90px',
