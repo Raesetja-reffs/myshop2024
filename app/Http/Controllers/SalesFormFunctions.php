@@ -173,16 +173,24 @@ class SalesFormFunctions extends Controller
 
     public function returnProductPrice(Request $request)
     {
-        //dd($request);
         $customerCode = $request->get('customerID');
         $productCode = $request->get('productCode');
         $warehouse = $request->get('warehouseid');
-        $userid = Auth::user()->UserID;
         $deliveryDate = (new \DateTime($request->get('deliveryDate')))->format('Y-m-d');
-        $returnPrice = DB::connection('sqlsrv3')
-            ->select('exec spCustomerPriceLookUp ?,?,?,?,?',
-                array($deliveryDate,$productCode,$customerCode,$warehouse,$userid)
-            );
+        if (config('app.IS_API_BASED')) {
+            $returnPrice = $this->apiReturnProductPrice([
+                'customerID' => $customerCode,
+                'productCode' => $productCode,
+                'deliveryDate' => $deliveryDate,
+                'warehouse' => $warehouse,
+            ]);
+        } else {
+            $userid = Auth::user()->UserID;
+            $returnPrice = DB::connection('sqlsrv3')
+                ->select('exec spCustomerPriceLookUp ?,?,?,?,?',
+                    array($deliveryDate,$productCode,$customerCode,$warehouse,$userid)
+                );
+        }
 
         return response()->json($returnPrice);
 
@@ -1150,11 +1158,19 @@ class SalesFormFunctions extends Controller
         $customerCode = $request->get('customerCode');
         $deldate = $request->get('delDate');
         $deliveryDate = (new \DateTime($deldate))->format('Y-m-d');
-        $userid = Auth::user()->UserID;
-        $returnCustProdPrice = DB::connection('sqlsrv3')
-            ->select('exec spCustomerPriceLookUpAssociatedItems ?,?,?,?,?',
-                array($deliveryDate,$prodCode,$customerCode,-1,$userid)
-            );
+        if (config('app.IS_API_BASED')) {
+            $returnCustProdPrice = $this->apiAssociatedItem([
+                'deliveryDate' => $deliveryDate,
+                'prodCode' => $prodCode,
+                'customerCode' => $customerCode,
+            ]);
+        } else {
+            $userid = Auth::user()->UserID;
+            $returnCustProdPrice = DB::connection('sqlsrv3')
+                ->select('exec spCustomerPriceLookUpAssociatedItems ?,?,?,?,?',
+                    array($deliveryDate,$prodCode,$customerCode,-1,$userid)
+                );
+        }
 
         return response()->json($returnCustProdPrice);
 

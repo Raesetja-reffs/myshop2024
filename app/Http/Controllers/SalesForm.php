@@ -374,4 +374,28 @@ public function getCustomerStoppedBuyingJSon()
 
         return response()->json($response);
     }
+
+    public function getSalesOrderProducts()
+    {
+        $response = [];
+        if (config('app.IS_API_BASED')) {
+            $response = $this->apiGetProducts();
+        } else {
+            if (env('CustomerAccess') == 1) {
+                $response =DB::connection('sqlsrv3')->table("viewtblCustomers" )
+                    ->join('tblAccessOnCustomers', 'viewtblCustomers.GroupId', '=', 'tblAccessOnCustomers.intGroupId')
+                    ->select('CustomerId','StoreName','CustomerPastelCode','CreditLimit','BalanceDue','UserField5','Email','Routeid','Discount','OtherImportantNotes','strRoute','mnyCustomerGp','ID','Warehouse','PriceListName','CustomerOnHold','termsAndList')
+                    ->where('StatusId', 1)
+                    ->where('intUserId', Auth::user()->UserID)
+                    ->orderBy('CustomerPastelCode', 'ASC')->get();
+            } else {
+                $response =DB::connection('sqlsrv3')->table("viewtblCustomers" )
+                    ->select('CustomerId','StoreName','CustomerPastelCode','CreditLimit','BalanceDue','UserField5','Email','Routeid','Discount','OtherImportantNotes','strRoute','mnyCustomerGp','ID','Warehouse','PriceListName','CustomerOnHold','termsAndList')
+                    ->where('StatusId',1)
+                    ->orderBy('CustomerPastelCode','ASC')->get();
+            }
+        }
+
+        return response()->json($response);
+    }
 }

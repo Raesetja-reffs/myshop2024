@@ -14,9 +14,12 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
+use App\Traits\LoadingAppAPIsTrait;
 
 class LoadingAppAPIs extends Controller
 {
+    use LoadingAppAPIsTrait;
+
     public function sendMessages(Request $request /*$ID,$Type,$Instructions*/)
     {
         $Instructions = $request->get('Instructions');
@@ -47,7 +50,7 @@ class LoadingAppAPIs extends Controller
                 $sqlProducts = DB::connection('sqlsrv3')->table('tblOrderDetails')->select('ProductId')->where('OrderDetailId', $ODID)->get(1);
                 DB::connection('sqlsrv3')->update("UPDATE tblOrders SET Loaded = 0 WHERE OrderID = $OID");
                 $ProductId = $sqlProducts[0]->ProductId;
-                DB::connection('sqlsrv3')->insert("Insert into tblManagementConsol (ConsoleTypeId,Importance,dtm,LoggedBy,Message,UserId,OldQty,NewQty,OrderId,productid,DocNumber,Reviewed) 
+                DB::connection('sqlsrv3')->insert("Insert into tblManagementConsol (ConsoleTypeId,Importance,dtm,LoggedBy,Message,UserId,OldQty,NewQty,OrderId,productid,DocNumber,Reviewed)
 	                              VALUES ('8888','1','$Date','$UserName','User $UserID   UNLOADED OrderDetail $ODID',$UserID ,0,0,$OID,$ProductId,$OID,0)");
                 break;
             case "LOADED":
@@ -69,7 +72,7 @@ class LoadingAppAPIs extends Controller
                 $getUserID = DB::connection('sqlsrv3')->table('tblDIMSUSERS')->select('UserName')->where('UserID', $UserID)->get(1);
                 $UserName = $getUserID[0]->UserName;
 
-                DB::connection('sqlsrv3')->insert("Insert into tblManagementConsol (ConsoleTypeId,Importance,dtm,LoggedBy,Message,UserId,OldQty,NewQty,OrderId,productid,DocNumber,Reviewed) 
+                DB::connection('sqlsrv3')->insert("Insert into tblManagementConsol (ConsoleTypeId,Importance,dtm,LoggedBy,Message,UserId,OldQty,NewQty,OrderId,productid,DocNumber,Reviewed)
 	                VALUES ('8888','1','$Date','$UserName','User $UserID  LOADED OrderDetail $ODID',$UserID ,0,0,$OID,$ProductId,$OID,0)");
 
                 break;
@@ -82,7 +85,7 @@ class LoadingAppAPIs extends Controller
                 $getUserID = DB::connection('sqlsrv3')->table('tblDIMSUSERS')->select('PrinterPathInvoice')->where('UserID', $UserID)->get(1);
                 $PrinterPathInvoice = $getUserID[0]->PrinterPathInvoice;
 
-                DB::connection('sqlsrv3')->insert("INSERT INTO tblPrintedDocuments ( DocumentType, DocID, [User], PrinterPath ) 
+                DB::connection('sqlsrv3')->insert("INSERT INTO tblPrintedDocuments ( DocumentType, DocID, [User], PrinterPath )
                                                         VALUES (1 ,$OID,$UserID, '$PrinterPathInvoice')");
                 break;
             case "UPDATE":
@@ -120,7 +123,7 @@ class LoadingAppAPIs extends Controller
 
 
                 DB::connection('sqlsrv3')->update("UPDATE tblOrderDetails SET Qty = ROUND($Qty, 3) ,Loaded = $loaded  WHERE OrderDetailId = $ODID");
-                DB::connection('sqlsrv3')->insert("Insert into tblManagementConsol (ConsoleTypeId,Importance,dtm,LoggedBy,Message,UserId,OldQty,NewQty,OrderId,productid,DocNumber,Reviewed) 
+                DB::connection('sqlsrv3')->insert("Insert into tblManagementConsol (ConsoleTypeId,Importance,dtm,LoggedBy,Message,UserId,OldQty,NewQty,OrderId,productid,DocNumber,Reviewed)
 	VALUES ('8888','1','$Date','$UserName','User $UserID  changed Quantity from $OriginQty to $Qty',$UserID ,$OriginQty,$Qty,$OID,$ProductId,$OID,0)");
 
                 break;
@@ -189,7 +192,7 @@ class LoadingAppAPIs extends Controller
                     $sqlProducts = DB::connection('sqlsrv3')->table('tblOrderDetails')->select('ProductId')->where('OrderDetailId', $ODID)->get(1);
                     DB::connection('sqlsrv3')->update("UPDATE tblOrders SET Loaded = 0 WHERE OrderID = $OID");
                     $ProductId = $sqlProducts[0]->ProductId;
-                    DB::connection('sqlsrv3')->insert("Insert into tblManagementConsol (ConsoleTypeId,Importance,dtm,LoggedBy,Message,UserId,OldQty,NewQty,OrderId,productid,DocNumber,Reviewed) 
+                    DB::connection('sqlsrv3')->insert("Insert into tblManagementConsol (ConsoleTypeId,Importance,dtm,LoggedBy,Message,UserId,OldQty,NewQty,OrderId,productid,DocNumber,Reviewed)
 	                              VALUES ('8888','1','$Date','$UserName','User $UserID   UNLOADED OrderDetail $ODID',$UserID ,0,0,$OID,$ProductId,$OID,0)");
                     break;
                 case "LOADED":
@@ -211,7 +214,7 @@ class LoadingAppAPIs extends Controller
                     $getUserID = DB::connection('sqlsrv3')->table('tblDIMSUSERS')->select('UserName')->where('UserID', $UserID)->get(1);
                     $UserName = $getUserID[0]->UserName;
 
-                    DB::connection('sqlsrv3')->insert("Insert into tblManagementConsol (ConsoleTypeId,Importance,dtm,LoggedBy,Message,UserId,OldQty,NewQty,OrderId,productid,DocNumber,Reviewed) 
+                    DB::connection('sqlsrv3')->insert("Insert into tblManagementConsol (ConsoleTypeId,Importance,dtm,LoggedBy,Message,UserId,OldQty,NewQty,OrderId,productid,DocNumber,Reviewed)
 	                VALUES ('8888','1','$Date','$UserName','User $UserID  LOADED OrderDetail $ODID',$UserID ,0,0,$OID,$ProductId,$OID,0)");
 
                     break;
@@ -224,7 +227,7 @@ class LoadingAppAPIs extends Controller
                     $getUserID = DB::connection('sqlsrv3')->table('tblDIMSUSERS')->select('PrinterPathInvoice')->where('UserID', $UserID)->get(1);
                     $PrinterPathInvoice = $getUserID[0]->PrinterPathInvoice;
 
-                    DB::connection('sqlsrv3')->insert("INSERT INTO tblPrintedDocuments ( DocumentType, DocID, [User], PrinterPath ) 
+                    DB::connection('sqlsrv3')->insert("INSERT INTO tblPrintedDocuments ( DocumentType, DocID, [User], PrinterPath )
                                                         VALUES (1 ,$OID,$UserID, '$PrinterPathInvoice')");
                     break;
                 case "UPDATE":
@@ -245,7 +248,7 @@ class LoadingAppAPIs extends Controller
 
 
                     DB::connection('sqlsrv3')->update("UPDATE tblOrderDetails SET Qty = ROUND($Qty, 3) ,Loaded = $loaded  WHERE OrderDetailId = $ODID");
-                    DB::connection('sqlsrv3')->insert("Insert into tblManagementConsol (ConsoleTypeId,Importance,dtm,LoggedBy,Message,UserId,OldQty,NewQty,OrderId,productid,DocNumber,Reviewed) 
+                    DB::connection('sqlsrv3')->insert("Insert into tblManagementConsol (ConsoleTypeId,Importance,dtm,LoggedBy,Message,UserId,OldQty,NewQty,OrderId,productid,DocNumber,Reviewed)
 	VALUES ('8888','1','$Date','$UserName','User $UserID  changed Quantity from $OriginQty to $Qty',$UserID ,$OriginQty,$Qty,$OID,$ProductId,$OID,0)");
 
                     break;
@@ -318,7 +321,7 @@ class LoadingAppAPIs extends Controller
                     $ProductId = $sqlProducts[0]->ProductId;
                     DB::connection('sqlsrv3')->update("UPDATE tblOrderDetails SET fltQtyPicked = (SELECT Qty FROM tblOrderDetails WHERE OrderDetailId = $ODID) WHERE OrderDetailId = $ODID ");
 
-                    DB::connection('sqlsrv3')->insert("Insert into tblManagementConsol (ConsoleTypeId,Importance,dtm,LoggedBy,Message,UserId,OldQty,NewQty,OrderId,productid,DocNumber,Reviewed) 
+                    DB::connection('sqlsrv3')->insert("Insert into tblManagementConsol (ConsoleTypeId,Importance,dtm,LoggedBy,Message,UserId,OldQty,NewQty,OrderId,productid,DocNumber,Reviewed)
 	                              VALUES ('8888','1','$Date','$UserName','User $UserID   UNPICKED OrderDetail $ODID',$UserID ,0,0,$OID,$ProductId,$OID,0)");
                     break;
                 case "LOADED":
@@ -341,7 +344,7 @@ class LoadingAppAPIs extends Controller
                     $UserName = $getUserID[0]->UserName;
                     DB::connection('sqlsrv3')->update("UPDATE tblOrderDetails SET fltQtyPicked = (SELECT Qty FROM tblOrderDetails WHERE OrderDetailId = $ODID) WHERE OrderDetailId = $ODID ");
 
-                    DB::connection('sqlsrv3')->insert("Insert into tblManagementConsol (ConsoleTypeId,Importance,dtm,LoggedBy,Message,UserId,OldQty,NewQty,OrderId,productid,DocNumber,Reviewed) 
+                    DB::connection('sqlsrv3')->insert("Insert into tblManagementConsol (ConsoleTypeId,Importance,dtm,LoggedBy,Message,UserId,OldQty,NewQty,OrderId,productid,DocNumber,Reviewed)
 	                VALUES ('8888','1','$Date','$UserName','User $UserID  PICKED OrderDetail $ODID',$UserID ,0,0,$OID,$ProductId,$OID,0)");
 
                     break;
@@ -354,7 +357,7 @@ class LoadingAppAPIs extends Controller
                     $getUserID = DB::connection('sqlsrv3')->table('tblDIMSUSERS')->select('PrinterPathInvoice')->where('UserID', $UserID)->get(1);
                     $PrinterPathInvoice = $getUserID[0]->PrinterPathInvoice;
 
-                    DB::connection('sqlsrv3')->insert("INSERT INTO tblPrintedDocuments ( DocumentType, DocID, [User], PrinterPath ) 
+                    DB::connection('sqlsrv3')->insert("INSERT INTO tblPrintedDocuments ( DocumentType, DocID, [User], PrinterPath )
                                                         VALUES (1 ,$OID,$UserID, '$PrinterPathInvoice')");
                     break;
                 case "UPDATE":
@@ -375,7 +378,7 @@ class LoadingAppAPIs extends Controller
 
 
                     DB::connection('sqlsrv3')->update("UPDATE tblOrderDetails SET fltQtyPicked = ROUND($Qty, 3) ,blnPicked = $loaded  WHERE OrderDetailId = $ODID");
-                    DB::connection('sqlsrv3')->insert("Insert into tblManagementConsol (ConsoleTypeId,Importance,dtm,LoggedBy,Message,UserId,OldQty,NewQty,OrderId,productid,DocNumber,Reviewed) 
+                    DB::connection('sqlsrv3')->insert("Insert into tblManagementConsol (ConsoleTypeId,Importance,dtm,LoggedBy,Message,UserId,OldQty,NewQty,OrderId,productid,DocNumber,Reviewed)
 	VALUES ('8888','1','$Date','$UserName','User $UserID  changed Quantity from $OriginQty to $Qty',$UserID ,$OriginQty,$Qty,$OID,$ProductId,$OID,0)");
 
                     break;
@@ -429,14 +432,14 @@ class LoadingAppAPIs extends Controller
 
 
                 DB::connection('sqlsrv3')->update("UPDATE tblOrders SET Loaded = 1 WHERE OrderID = $value->OrderID");
-                DB::connection('sqlsrv3')->insert("INSERT INTO tblPrintedDocuments ( DocumentType, DocID, [User], PrinterPath ) 
+                DB::connection('sqlsrv3')->insert("INSERT INTO tblPrintedDocuments ( DocumentType, DocID, [User], PrinterPath )
                                                         VALUES (1,$value->OrderID,$UserID, '$PrinterPathInvoice')");
             }
             //this is for loaded products
             $checkFirst2 = DB::connection('sqlsrv3')->select("Exec spPickingLoadingVariances ".$value->OrderID);
             if (count($checkFirst2) > 0 )
             {
-                DB::connection('sqlsrv3')->insert("INSERT INTO tblPrintedDocuments ( DocumentType, DocID, [User], PrinterPath ) 
+                DB::connection('sqlsrv3')->insert("INSERT INTO tblPrintedDocuments ( DocumentType, DocID, [User], PrinterPath )
                                                         VALUES (4001,$value->OrderID,$UserID, '$PrinterPathInvoice')");
             }
 
@@ -490,16 +493,22 @@ dd($request) ;
         $res = $client->get('http://localhost:8888/stock.php',['query' =>  [ 'ItemCode' => $productCode,'OrderDetailID'=>0,'BrandId'=>$brandId]]);
        return $res->getBody();*/
         $productCode = $request->get('ItemCode');
-        $products = DB::connection('sqlsrv3')->table('viewtblProductsAndsalesQuantity')->where('PastelCode', $productCode)->get();
-        $available = 0;
-        if (count($products) < 1)
-        {
+        if (config('app.IS_API_BASED')) {
+            $available = $this->apistockApi([
+                'productCode' => $productCode
+            ]);
+        } else {
+            $products = DB::connection('sqlsrv3')->table('viewtblProductsAndsalesQuantity')->where('PastelCode', $productCode)->get();
             $available = 0;
-        }else{
-            $available = $products[0]->Available;
+            if (count($products) < 1)
+            {
+                $available = 0;
+            }else{
+                $available = $products[0]->Available;
+            }
         }
-        //
-       return $available;
+
+        return $available;
     }
 
     /*

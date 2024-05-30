@@ -5022,11 +5022,22 @@
                 $("" + jID + "").mcautocomplete({
                     //source: finalDataProduct,
                     source: function(req, response) {
-                        var re = $.ui.autocomplete.escapeRegex(req.term);
-                        var matcher = new RegExp("^" + re, "i");
-                        response($.grep(finalDataProduct, function(item) {
-                            return matcher.test(item.value);
-                        }));
+                        $.ajax({
+                            url: "{{ route('sales-order.get-sales-order-products') }}",
+                            dataType: "json",
+                            data: {
+                                term: req.term
+                            },
+                            success: function(data) {
+                                console.log(data);
+                                response(data);
+                            }
+                        });
+                        // var re = $.ui.autocomplete.escapeRegex(req.term);
+                        // var matcher = new RegExp("^" + re, "i");
+                        // response($.grep(finalDataProduct, function(item) {
+                        //     return matcher.test(item.value);
+                        // }));
                     },
                     columns: columnsC,
                     minlength: 1,
