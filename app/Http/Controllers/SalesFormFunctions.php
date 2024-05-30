@@ -128,11 +128,18 @@ class SalesFormFunctions extends Controller
     public function getCustomerRouteWithOtherRoutesByPriority(Request $request)
     {
         $customerCode = $request->get('customerCode');
-        $returnCustomerRoute = DB::connection('sqlsrv3')
+        if (config('app.IS_API_BASED')) {
+            $returnCustomerRoute = $this->apiGetCustomerRouteWithOtherRoutesByPriority([
+                'customerCode' => $customerCode
+            ]);
+        } else {
+            $returnCustomerRoute = DB::connection('sqlsrv3')
             ->select('exec spCustomerRouteAndAllRoutesByPriority ?',
                 array($customerCode)
             );
-        // ->select("EXEC spCustomerRouteAndAllRoutesByPriority '".$customerCode."'");
+            // ->select("EXEC spCustomerRouteAndAllRoutesByPriority '".$customerCode."'");
+        }
+
         return response()->json($returnCustomerRoute);
 
     }
@@ -300,27 +307,33 @@ class SalesFormFunctions extends Controller
     public function combinedSpecials(Request $request)
     {
         $customerCode = $request->get('customerCode');
+        if (config('app.IS_API_BASED')) {
+            $output = $this->apiCombinedSpecials([
+                'customerCode' => $customerCode
+            ]);
+        } else {
+            $deliveryDate = (new \DateTime($request->get('deliveryDate')))->format('Y-m-d');
+            $returnGroupSpecials= DB::connection('sqlsrv3')
+                ->select('exec spCustomerGroupSpecials ?,?',
+                    array($customerCode,$deliveryDate)
+                );
+            $returnCustomer = DB::connection('sqlsrv3')
+                ->select('exec spCustomerDateDrivenSpecials ?,?',
+                    array($customerCode,$deliveryDate)
+                );
+            $returnPastInvoices = DB::connection('sqlsrv3')
+                ->select('exec spGetCustomerPastInvoices ?',
+                    array($customerCode)
+                );
 
-        $deliveryDate = (new \DateTime($request->get('deliveryDate')))->format('Y-m-d');
-        $returnGroupSpecials= DB::connection('sqlsrv3')
-            ->select('exec spCustomerGroupSpecials ?,?',
-                array($customerCode,$deliveryDate)
-            );
-        $returnCustomer = DB::connection('sqlsrv3')
-            ->select('exec spCustomerDateDrivenSpecials ?,?',
-                array($customerCode,$deliveryDate)
-            );
-        $returnPastInvoices = DB::connection('sqlsrv3')
-            ->select('exec spGetCustomerPastInvoices ?',
-                array($customerCode)
-            );
+            $customerContacts= DB::connection('sqlsrv3')->table('tblCustomers')->select('BuyerContact','BuyerTelephone','CellPhone')->where('CustomerPastelCode',$customerCode)->get();
 
-        $customerContacts= DB::connection('sqlsrv3')->table('tblCustomers')->select('BuyerContact','BuyerTelephone','CellPhone')->where('CustomerPastelCode',$customerCode)->get();
+            $output['customerSpecials'] = $returnCustomer;
+            $output['GroupSpecials'] = $returnGroupSpecials;
+            $output['pastInvoices'] = $returnPastInvoices;
+            $output['contacts'] = $customerContacts;
+        }
 
-        $output['customerSpecials'] = $returnCustomer;
-        $output['GroupSpecials'] = $returnGroupSpecials;
-        $output['pastInvoices'] = $returnPastInvoices;
-        $output['contacts'] = $customerContacts;
         return $output;
     }
 
@@ -370,8 +383,23 @@ class SalesFormFunctions extends Controller
                 'DeliveryAddressID' => $DeliveryAddressID,
             ]);
             $output['orderId'] = $response['ID'];
-            $output['counter'] = '';
-            $output['singleAddress'] = '';
+            $output['counter'] = [
+                'CustomerId' => 1
+            ];
+            $output['singleAddress'] = [
+                "CustomerPastelCode" => "000001",
+                "StoreName" => "000001Customer",
+                "DeliveryAddressID" => "0",
+                "DAddress1" => "Del Address 1",
+                "DAddress2" => "Del Address 2",
+                "DAddress3" => "GEORGE",
+                "DAddress4" => "6530",
+                "DAddress5" => null,
+                "SalesmanCode" => "115",
+                "UserID" => "1",
+                "Routeid" => "10",
+                "CustomerOnHold" => "0"
+             ];
         } else {
             $userID =  Auth::user()->UserID;
             //$customerID = DB::connection('sqlsrv3')->table('tblCustomers')->select('CustomerId')->where('CustomerPastelCode',$customerCode)->get();
@@ -847,20 +875,26 @@ class SalesFormFunctions extends Controller
         $orderID = $request->get('orderID');
         $DeliveryAddressIId = $request->get('DeliveryAddressIId');
         $CustomerId = $request->get('CustomerId');
-        if (strlen($DeliveryAddressIId) < 1)
-        {
+        if (strlen($DeliveryAddressIId) < 1) {
             $DeliveryAddressIId = "NULL";
         }
+        $CustomerCode = str_replace("'", "''", $CustomerCode);
 
-        $CustomerCode =$text=str_replace("'","''",$CustomerCode);
-        $GetOrderPattern = DB::connection('sqlsrv3')
-            ->select("Select * from  [dbo].[fnCustomerDefaultOrders]('$CustomerId',$orderID,$DeliveryAddressIId) Order By PushProduct Desc, PastelDescription");
-
+        if (config('app.IS_API_BASED')) {
+            $GetOrderPattern = $this->apiGetCustomerOderpattern([
+                'Customerid' => $CustomerId,
+                'OrderId' => $orderID,
+                'addressId' => $DeliveryAddressIId,
+            ]);
+        } else {
+            $GetOrderPattern = DB::connection('sqlsrv3')
+                ->select("Select * from  [dbo].[fnCustomerDefaultOrders]('$CustomerId',$orderID,$DeliveryAddressIId) Order By PushProduct Desc, PastelDescription");
+        }
         $output['recordsTotal'] = count($GetOrderPattern);
         $output['data'] = $GetOrderPattern;
         $output['recordsFiltered'] = count($GetOrderPattern);
-
         $output['draw'] = intval($request->input('draw'));
+
         return $output;
 
     }

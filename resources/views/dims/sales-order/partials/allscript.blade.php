@@ -84,6 +84,7 @@
     var jArraydelivRoutes = JSON.stringify({!! json_encode($routesNames) !!});
     var jArraytrueOrFalse = JSON.stringify({!! json_encode($trueOrFalse) !!});
     var warehouses = JSON.stringify({!! json_encode($warehouses) !!});
+    var ajaxRequests = [];
 
     // console.debug(jArrayCustomer);
     // var computerName = '<?php echo gethostname(); ?>';
@@ -3054,7 +3055,20 @@
         });
 
         $("#productCodeOnOrder").mcautocomplete({
-            source: finalDataProduct,
+            //source: finalDataProduct,
+            source: function(req, response) {
+                $.ajax({
+                    url: "{{ route('sales-order.get-sales-order-products') }}",
+                    dataType: "json",
+                    data: {
+                        term: req.term
+                    },
+                    success: function(data) {
+                        console.log(data);
+                        response(data);
+                    }
+                });
+            },
             columns: columnsC,
             minlength: 1,
             autoFocus: true,
@@ -3084,7 +3098,20 @@
             }
         ];
         $("#productCodeOnOrder").mcautocomplete({
-            source: finalDataProduct,
+            //source: finalDataProduct,
+            source: function(req, response) {
+                $.ajax({
+                    url: "{{ route('sales-order.get-sales-order-products') }}",
+                    dataType: "json",
+                    data: {
+                        term: req.term
+                    },
+                    success: function(data) {
+                        console.log(data);
+                        response(data);
+                    }
+                });
+            },
             columns: columnsC,
             minlength: 1,
             autoFocus: true,
@@ -3096,7 +3123,20 @@
             }
         });
         $("#productCodeOnInvoice").mcautocomplete({
-            source: finalDataProduct,
+            //source: finalDataProduct,
+            source: function(req, response) {
+                $.ajax({
+                    url: "{{ route('sales-order.get-sales-order-products') }}",
+                    dataType: "json",
+                    data: {
+                        term: req.term
+                    },
+                    success: function(data) {
+                        console.log(data);
+                        response(data);
+                    }
+                });
+            },
             columns: columnsC,
             minlength: 1,
             autoFocus: true,
@@ -3109,7 +3149,20 @@
         });
 
         $("#productCodePl").mcautocomplete({
-            source: finalDataProduct,
+            //source: finalDataProduct,
+            source: function(req, response) {
+                $.ajax({
+                    url: "{{ route('sales-order.get-sales-order-products') }}",
+                    dataType: "json",
+                    data: {
+                        term: req.term
+                    },
+                    success: function(data) {
+                        console.log(data);
+                        response(data);
+                    }
+                });
+            },
             columns: columnsC,
             minlength: 1,
             autoFocus: true,
@@ -3140,7 +3193,20 @@
             }
         ];
         $("#productDescOnOrder").mcautocomplete({
-            source: finalDataProductTest,
+            //source: finalDataProductTest,
+            source: function(req, response) {
+                $.ajax({
+                    url: "{{ route('sales-order.get-sales-order-products') }}",
+                    dataType: "json",
+                    data: {
+                        term: req.term
+                    },
+                    success: function(data) {
+                        console.log(data);
+                        response(data);
+                    }
+                });
+            },
             columns: columnsD,
             autoFocus: true,
             minlength: 3,
@@ -3154,7 +3220,20 @@
             }
         });
         $("#productDescOnInvoiced").mcautocomplete({
-            source: finalDataProductTest,
+            //source: finalDataProductTest,
+            source: function(req, response) {
+                $.ajax({
+                    url: "{{ route('sales-order.get-sales-order-products') }}",
+                    dataType: "json",
+                    data: {
+                        term: req.term
+                    },
+                    success: function(data) {
+                        console.log(data);
+                        response(data);
+                    }
+                });
+            },
             columns: columnsD,
             autoFocus: true,
             minlength: 2,
@@ -3168,7 +3247,20 @@
             }
         });
         $("#productDescPl").mcautocomplete({
-            source: finalDataProductTest,
+            //source: finalDataProductTest,
+            source: function(req, response) {
+                $.ajax({
+                    url: "{{ route('sales-order.get-sales-order-products') }}",
+                    dataType: "json",
+                    data: {
+                        term: req.term
+                    },
+                    success: function(data) {
+                        console.log(data);
+                        response(data);
+                    }
+                });
+            },
             columns: columnsD,
             autoFocus: true,
             minlength: 2,
@@ -4943,11 +5035,28 @@
                     }
                 ];
                 $("" + jID + "").mcautocomplete({
-                    source: finalDataProductTest,
+                    //source: finalDataProductTest,
+                    source: function(req, response) {
+                        // Cancel previous AJAX request for this index
+                        requestName = 'prodDescription_';
+                        if (ajaxRequests[requestName]) {
+                            ajaxRequests[requestName].abort();
+                        }
+                        ajaxRequests[requestName] = $.ajax({
+                            url: "{{ route('sales-order.get-sales-order-products') }}",
+                            dataType: "json",
+                            data: {
+                                term: req.term
+                            },
+                            success: function(data) {
+                                response(data);
+                            }
+                        });
+                    },
                     columns: columnsD,
                     autoFocus: true,
                     minLength: searchstring,
-                    delay: 2,
+                    delay: 500,
                     multiple: true,
                     multipleSeparator: ",",
                     select: function(e, ui) {
@@ -5022,27 +5131,26 @@
                 $("" + jID + "").mcautocomplete({
                     //source: finalDataProduct,
                     source: function(req, response) {
-                        $.ajax({
+                        // Cancel previous AJAX request for this index
+                        requestName = 'theProductCode_';
+                        if (ajaxRequests[requestName]) {
+                            ajaxRequests[requestName].abort();
+                        }
+                        ajaxRequests[requestName] = $.ajax({
                             url: "{{ route('sales-order.get-sales-order-products') }}",
                             dataType: "json",
                             data: {
                                 term: req.term
                             },
                             success: function(data) {
-                                console.log(data);
                                 response(data);
                             }
                         });
-                        // var re = $.ui.autocomplete.escapeRegex(req.term);
-                        // var matcher = new RegExp("^" + re, "i");
-                        // response($.grep(finalDataProduct, function(item) {
-                        //     return matcher.test(item.value);
-                        // }));
                     },
                     columns: columnsC,
                     minlength: 1,
                     autoFocus: true,
-                    delay: 0,
+                    delay: 500,
                     select: function(e, ui) {
 
                         var n = ID.indexOf("_");

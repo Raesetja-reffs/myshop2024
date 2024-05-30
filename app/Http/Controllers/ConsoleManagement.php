@@ -6,9 +6,12 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Middleware\AuthenticateUsersAndCentralUser;
+use App\Traits\ConsoleManagementTrait;
 
 class ConsoleManagement extends Controller
 {
+    use ConsoleManagementTrait;
+
     public function __construct()
     {
         $this->middleware(AuthenticateUsersAndCentralUser::class);
@@ -74,7 +77,7 @@ class ConsoleManagement extends Controller
         $machine = $request->get('machine');
         $ReturnId = $request->get('ReturnId');
         if (config('app.IS_API_BASED')) {
-            $returnManagemntC = [];
+            $returnManagemntC = $this->apiLogMessageAjax();
         } else {
             $UserId= Auth::user()->UserID;
             $LoggedBy = Auth::user()->UserName;
@@ -158,10 +161,18 @@ dd("hererererere");
         $orderId = $request->get('orderId');
         $delivdate =  (new \DateTime($request->get('delivdate')))->format('Y-m-d');
         $customerCode = $request->get('customerCode');
-        $LoggedBy = Auth::user()->UserName;
-        $userId = Auth::user()->UserID;
-        $deleteallLines= DB::connection('sqlsrv3')
-            ->select("EXEC spDeleteAllLinesOnOrder ".$orderId.",'".$LoggedBy."',".$userId.",'".$customerCode."','".$delivdate."'");
+        if (config('app.IS_API_BASED')) {
+            $deleteallLines = $this->apiDeleteallLinesOnOrder([
+                'orderId' => $orderId,
+                'delivdate' => $delivdate,
+                'customerCode' => $customerCode,
+            ]);
+        } else {
+            $LoggedBy = Auth::user()->UserName;
+            $userId = Auth::user()->UserID;
+            $deleteallLines = DB::connection('sqlsrv3')
+                ->select("EXEC spDeleteAllLinesOnOrder ".$orderId.",'".$LoggedBy."',".$userId.",'".$customerCode."','".$delivdate."'");
+        }
 
         return response()->json($deleteallLines);
     }

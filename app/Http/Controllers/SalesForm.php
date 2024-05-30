@@ -28,7 +28,7 @@ class SalesForm extends Controller
             $queryCustomers = $this->apiGetCustomer();
             $userPerfomance = $this->apiGetUserPerformance();
             $queryCustomersDontCareStatus = [];
-            $queryProducts = $this->apiGetProducts();
+            $queryProducts = [];
             $trueFalse = $this->apiGetCompanyReportStatus();
             $getLastInserted = $this->apiGetLastInserted();
             $marginType =  $this->apiGetMarginType();
@@ -375,11 +375,13 @@ public function getCustomerStoppedBuyingJSon()
         return response()->json($response);
     }
 
-    public function getSalesOrderProducts()
+    public function getSalesOrderProducts(Request $request)
     {
         $response = [];
         if (config('app.IS_API_BASED')) {
-            $response = $this->apiGetProducts();
+            $response = $this->apiGetProducts([
+                'searchTerm' => $request->get('term')
+            ]);
         } else {
             if (env('CustomerAccess') == 1) {
                 $response =DB::connection('sqlsrv3')->table("viewtblCustomers" )
