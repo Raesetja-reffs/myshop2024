@@ -3373,4 +3373,216 @@ trait SalesFormFunctionsTrait
 
         return $response;
     }
+
+    public function apiGeneralPriceCheckAndLastCost($data)
+    {
+        // $user = auth()->guard('central_api_user')->user();
+        // $data['companyid'] = $user->company_id;
+        // $data['UserID'] = $user->erp_user_id;
+        // $response = $this->httpRequest('post', 'GetOrderPattern', $data);
+        $response = [
+            "pricelists" => [
+                [
+                    "PriceList" => "Retail",
+                    "PriceListId" => "1",
+                    "PastelCode" => "AB082501",
+                    "PastelDescription" => "LIQUIFR 250ML MANGO/ORANGE x24",
+                    "Price" => "4258.35",
+                    "Date" => "1980-01-01 00:00:00.000",
+                    "PriceInc" => "4897.10",
+                    "StatusId" => "1"
+                ]
+            ],
+            "sellingPrice" => [
+                [
+                    "Price" => "3150.000",
+                    "DeliveryDate" => "2019-02-20",
+                    "Margin" => "8.840"
+                ],
+                [
+                    "Price" => "3150.000",
+                    "DeliveryDate" => "2019-02-12",
+                    "Margin" => "8.840"
+                ],
+                [
+                    "Price" => "3080.000",
+                    "DeliveryDate" => "2018-02-12",
+                    "Margin" => "6.770"
+                ],
+                [
+                    "Price" => "3080.000",
+                    "DeliveryDate" => "2018-01-22",
+                    "Margin" => "6.770"
+                ],
+                [
+                    "Price" => "3080.000",
+                    "DeliveryDate" => "2018-09-21",
+                    "Margin" => "6.770"
+                ]
+            ]
+        ];
+
+        return $response;
+    }
+
+    public function apiDeleteByHiddenToken()
+    {
+        return 'SUCCESS';
+    }
+
+    public function apiDeleteOrderLinedetails($data)
+    {
+        $response = [
+            [
+                'Result' => 'Success'
+            ]
+        ];
+
+        return $response;
+    }
+
+    public function apiOrderheaderAndOrderLines($data)
+    {
+        $response = [
+            'result' => 'SUCCESS',
+            'Error' => 'SUCCESS',
+            'Extras' => ''
+        ];
+
+        return $response;
+    }
+
+    public function apiOnCheckOrderHeaderDetails($data)
+    {
+        $response = [
+            [
+                "OrderId" => "388108",
+                "OrderDetailId" => "1481393",
+                "Qty" => "1.0",
+                "ProductId" => "6591",
+                "Price" => "3150.00",
+                "Comment" => "",
+                "LineDisc" => "0.0",
+                "IncPrice" => "3622.50",
+                "IncNettPrice" => "3622.5",
+                "PastelCode" => "AB082501",
+                "PastelDescription" => "LIQUIFR 250ML MANGO/ORANGE x24",
+                "Cost" => "2854.5061",
+                "QtyInStock" => "31.200000000000003",
+                "DispatchQty" => "1.0",
+                "TaxId" => "1",
+                "Tax" => "15.0",
+                "MESSAGESINV" => null,
+                "OrderNo" => "",
+                "AwaitingStock" => "0",
+                "UnitSize" => "EA",
+                "UnitCount" => "0.0",
+                "ProductMargin" => "14.99",
+                "ID" => "1",
+                "Warehouse" => "001"
+            ],
+            [
+                "OrderId" => "388108",
+                "OrderDetailId" => "1481394",
+                "Qty" => "1.0",
+                "ProductId" => "6592",
+                "Price" => "1785.00",
+                "Comment" => "",
+                "LineDisc" => "0.0",
+                "IncPrice" => "2052.75",
+                "IncNettPrice" => "2052.75",
+                "PastelCode" => "AB083055",
+                "PastelDescription" => "LIQUIFR 250ML MANGO/ORANGE  x6",
+                "Cost" => "1469.1167",
+                "QtyInStock" => "13.800000000000001",
+                "DispatchQty" => "1.0",
+                "TaxId" => "1",
+                "Tax" => "15.0",
+                "MESSAGESINV" => null,
+                "OrderNo" => "",
+                "AwaitingStock" => "0",
+                "UnitSize" => "EA",
+                "UnitCount" => "0.0",
+                "ProductMargin" => "14.99",
+                "ID" => "1",
+                "Warehouse" => "001"
+            ]
+        ];
+
+        return $response;
+    }
+
+    public function apiUpdateCContactsOnOrder($data)
+    {
+        return 1;
+    }
+
+    public function apiMarkitawaitingstock($data)
+    {
+        return '';
+    }
+
+    public function apiTreatAsQuote($data)
+    {
+        return '';
+    }
+
+    public function apiAdvancedOrderNo($data)
+    {
+        $response = [
+            [
+                'OrderNo' => '',
+                'Brand' => 'Margot Swiss',
+                'BrandId' => '1'
+            ]
+        ];
+
+        return $response;
+    }
+
+    public function apiInsertNewAddress($data)
+    {
+        return true;
+    }
+
+    public function apiTempDeliverAddress($data)
+    {
+        return true;
+    }
+
+    public function apiChangeDeliveryAddressOnNoInvoiceNo($data)
+    {
+        $response = [
+            [
+                "CustomerPastelCode" => "000001",
+                "StoreName" => "000001Customer",
+                "DeliveryAddressID" => "70",
+                "DAddress1" => "Del Address 1",
+                "DAddress2" => "Del Address 2",
+                "DAddress3" => "GEORGE",
+                "DAddress4" => "6530",
+                "DAddress5" => "",
+                "SalesmanCode" => "115",
+                "UserID" => "1",
+                "Routeid" => "10"
+            ]
+        ];
+
+        return $response;
+    }
+
+    public function apiAssignInvoiceNumber($data)
+    {
+        return '';
+    }
+
+    public function apiCheckifInvoiced($data)
+    {
+        return '';
+    }
+
+    public function apiWaitingForInvoiceNo($data)
+    {
+        return '';
+    }
 }

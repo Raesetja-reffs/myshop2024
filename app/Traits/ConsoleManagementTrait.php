@@ -22,7 +22,11 @@ trait ConsoleManagementTrait
 
     public function apiDeleteallLinesOnOrder($data)
     {
-        $response = [];
+        $response = [
+            [
+                'Result' => 'SUCCESS'
+            ]
+        ];
 
         return $response;
     }

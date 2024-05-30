@@ -23,12 +23,10 @@ $(document).ready(function() {
         }
     });
     $(document).ajaxSend(function(event, xhr, settings) {
-        console.log("Global beforeSend");
         $(".general-loader").show();
     });
 
     $(document).ajaxComplete(function(event, xhr, settings) {
-        console.log("Global complete");
         $(".general-loader").hide();
     });
 

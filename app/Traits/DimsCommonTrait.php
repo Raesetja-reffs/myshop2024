@@ -110,4 +110,31 @@ trait DimsCommonTrait
 
         return $response;
     }
+
+    public function apiChangerouteonorder($data)
+    {
+        $response = 'BEAUFORT WEST';
+
+        return $response;
+    }
+
+    public function apiChangesalesman($data)
+    {
+        return 'Sorry ,you don\'t have access to authorize accounts';
+    }
+
+    public function apiVerifyAuth($data)
+    {
+        return [];
+    }
+
+    public function apiClearorderlocksperorder($data)
+    {
+        return [];
+    }
+
+    public function apiInvoicedoc()
+    {
+        return [];
+    }
 }
