@@ -78,30 +78,33 @@ class SalesFormFunctions extends Controller
     }
     public function isClosedRoute(Request $request)
     {
-        //$deliveryDate = $request->get('delDate');
         $OrderType= $request->get('orderType');
         $routeId= $request->get('routeId');
         $inputCustAcc = $request->get('inputCustAcc');
-        $islosed =DB::connection('sqlsrv3')->table("tblDeliveryDateRouting")->select('Closed')
-            ->where('DeliveryDate',(new \DateTime($request->get('delDate')))->format('Y-m-d') )
-            ->Where('OrderTypeId',$OrderType )
-            ->Where('RouteId',$routeId )->take(1)->get();
-        $customerRouteCheck =DB::connection('sqlsrv3')->table("viewtblCustomers")->select('Routeid')
-            ->where('CustomerPastelCode',$inputCustAcc)
-            ->take(1)->get();
-
-        //dd($customerRouteCheck);
-        $count = array();
-        if (count($islosed) < 1){
-
-            $count['isClosed']= 0;
-            $count['routeId']= $customerRouteCheck[0]->Routeid;
-        }else{
-            $count['isClosed']= $islosed[0]->Closed;
-            $count['routeId']= $customerRouteCheck[0]->Routeid;
-
+        if (config('app.IS_API_BASED')) {
+            $count = $this->apiIsClosedRoute([
+                'OrderType' => $OrderType,
+                'routeId' => $routeId,
+                'inputCustAcc' => $inputCustAcc,
+            ]);
+        } else {
+            $islosed =DB::connection('sqlsrv3')->table("tblDeliveryDateRouting")->select('Closed')
+                ->where('DeliveryDate',(new \DateTime($request->get('delDate')))->format('Y-m-d') )
+                ->Where('OrderTypeId',$OrderType )
+                ->Where('RouteId',$routeId )->take(1)->get();
+            $customerRouteCheck =DB::connection('sqlsrv3')->table("viewtblCustomers")->select('Routeid')
+                ->where('CustomerPastelCode',$inputCustAcc)
+                ->take(1)->get();
+            $count = array();
+            if (count($islosed) < 1) {
+                $count['isClosed']= 0;
+                $count['routeId']= $customerRouteCheck[0]->Routeid;
+            } else {
+                $count['isClosed']= $islosed[0]->Closed;
+                $count['routeId']= $customerRouteCheck[0]->Routeid;
+            }
+            $count['routeOnOrder'] = $routeId;
         }
-        $count['routeOnOrder'] = $routeId;
 
         return $count;
     }
@@ -478,40 +481,37 @@ class SalesFormFunctions extends Controller
     }
     public function checkZeroCostOnOrder(Request $request)
     {
+        $outPut = [];
         $orderlines = $request->get('orderlines');
         $OrderId = $request->get('OrderId');
-        $userid = Auth::user()->UserID;
-        $userName = Auth::user()->UserName;
-        ///var_dump($orderlines);
-         $v  =  new \App\Http\Controllers\SalesForm();
-        $hasauthcosts = $v->getThings(Auth::user()->GroupId,'Auth Zero Cost Grid');
-        if($hasauthcosts =="1"){
-            if (is_array($orderlines)) {
-
-                $orderlinesrxml = $this->toxml($orderlines, "xml", array("result"));
-                $getResult = DB::connection('sqlsrv4')
-                    ->select("EXEC spXmlProductHavingZeroCost " . $OrderId . ",'" . $orderlinesrxml . "'");
-
-                if(count($getResult) > 0)
-                {
-                    $outPut['result'] = "SUCCESS";
-                    $outPut['data'] = $getResult;
-                }else{
+        if (config('app.IS_API_BASED')) {
+            $outPut = $this->apiCheckZeroCostOnOrder([
+                'orderlines' => $orderlines,
+                'OrderId' => $OrderId,
+            ]);
+        } else {
+             $v = new \App\Http\Controllers\SalesForm();
+            $hasauthcosts = $v->getThings(Auth::user()->GroupId,'Auth Zero Cost Grid');
+            if ($hasauthcosts =="1") {
+                if (is_array($orderlines)) {
+                    $orderlinesrxml = $this->toxml($orderlines, "xml", array("result"));
+                    $getResult = DB::connection('sqlsrv4')
+                        ->select("EXEC spXmlProductHavingZeroCost " . $OrderId . ",'" . $orderlinesrxml . "'");
+                    if(count($getResult) > 0) {
+                        $outPut['result'] = "SUCCESS";
+                        $outPut['data'] = $getResult;
+                    } else {
+                        $outPut['result'] = "Nothing";
+                    }
+                } else {
                     $outPut['result'] = "Nothing";
                 }
-
-                return $outPut;
-            }else{
+            } else {
                 $outPut['result'] = "Nothing";
-
-                return $outPut;
             }
-        }else{
-            $outPut['result'] = "Nothing";
-            return $outPut;
         }
 
-
+        return $outPut;
     }
     public function insertHeaderForOtherTrans(Request $request)
     {
@@ -1335,20 +1335,27 @@ class SalesFormFunctions extends Controller
     {
         $CustCode= $request->get('customerCode');
         $OrderId = $request->get('OrderId');
-
         $zero = 0;
-        $returnAddress = DB::connection('sqlsrv3')
-            ->select("EXEC spCrudDeliveryAddress ".$zero.",'00','00','000','000','000',00,00,'00','".$CustCode."',00,'Select'");
+        if (config('app.IS_API_BASED')) {
+            $output = $this->apiSelectCustomerMultiAddressconfirm([
+                'CustCode' => $CustCode,
+                'OrderId' => $OrderId,
+                'zero' => $zero,
+            ]);
+        } else {
+            $returnAddress = DB::connection('sqlsrv3')
+                ->select("EXEC spCrudDeliveryAddress ".$zero.",'00','00','000','000','000',00,00,'00','".$CustCode."',00,'Select'");
 
-        $returnselected = DB::connection('sqlsrv3')
-            ->select("EXEC spGetSelectedAddressForMultiDeliveries ".$OrderId);
+            $returnselected = DB::connection('sqlsrv3')
+                ->select("EXEC spGetSelectedAddressForMultiDeliveries ".$OrderId);
 
-        $routes = DB::connection('sqlsrv3')
-            ->select("select * from tblRoutes order by Route");
+            $routes = DB::connection('sqlsrv3')
+                ->select("select * from tblRoutes order by Route");
 
-        $output["addresses"] = $returnAddress;
-        $output["selectedaddress"] = $returnselected;
-        $output["routes"] = $routes;
+            $output["addresses"] = $returnAddress;
+            $output["selectedaddress"] = $returnselected;
+            $output["routes"] = $routes;
+        }
 
         return response()->json($output);
     }

@@ -2016,4 +2016,9 @@ trait SalesFormTrait
 
         return $response;
     }
+
+    public function apiGetThings()
+    {
+        return 0;
+    }
 }

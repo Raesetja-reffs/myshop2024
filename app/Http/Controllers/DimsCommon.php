@@ -301,10 +301,18 @@ class DimsCommon extends Controller
         $output['result'] = $activeUser;
         return response()->json($output);
     }
-    public function checkifhasmultiaddress(Request $request){
+    public function checkifhasmultiaddress(Request $request)
+    {
         $customerCode = $request->get('account');
-        $hasmulti = DB::connection('sqlsrv3')
-            ->select("Exec spHasMultiDeliveryAddress '".$customerCode."'");
+        if (config('app.IS_API_BASED')) {
+            $hasmulti = $this->apiCheckifhasmultiaddress([
+                'customerCode' => $customerCode
+            ]);
+        } else {
+            $hasmulti = DB::connection('sqlsrv3')
+                ->select("Exec spHasMultiDeliveryAddress '".$customerCode."'");
+        }
+
         return response()->json($hasmulti);
     }
     public function AuthBulkZeroCost(Request $request)

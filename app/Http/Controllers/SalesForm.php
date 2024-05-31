@@ -135,14 +135,16 @@ class SalesForm extends Controller
     public function getThings($GroupId,$thing)
     {
         $things = 0;
-
-        //$GroupId = Auth::user()->GroupId;
-        $returnTrueOrFalse = DB::connection('sqlsrv3')
-            ->select("select [dbo].[fnGetGroupThings](".$GroupId.",'".$thing."',0) as things");
-        foreach ($returnTrueOrFalse as $val)
-        {
-            $things =  $val->things;
+        if (config('app.IS_API_BASED')) {
+            $things = $this->apiGetThings();
+        } else {
+            $returnTrueOrFalse = DB::connection('sqlsrv3')
+                ->select("select [dbo].[fnGetGroupThings](".$GroupId.",'".$thing."',0) as things");
+            foreach ($returnTrueOrFalse as $val) {
+                $things = $val->things;
+            }
         }
+
         return $things;
     }
     public function hasAccessToEdit($orderid)

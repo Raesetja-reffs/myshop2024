@@ -137,4 +137,15 @@ trait DimsCommonTrait
     {
         return [];
     }
+
+    public function apiCheckifhasmultiaddress($data)
+    {
+        $response = [
+            [
+                'result' => 'SUCCESS'
+            ]
+        ];
+
+        return $response;
+    }
 }
