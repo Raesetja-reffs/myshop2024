@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('erp_apiusername');
             $table->string('erp_apipassword');
             $table->string('erp_apiauthtoken');
+            $table->string('location_id');
             $table->rememberToken();
             $table->timestamps();
         });

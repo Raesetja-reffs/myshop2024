@@ -11,7 +11,7 @@ trait ApiTrait
         $user = auth()->guard('central_api_user')->user();
         $response = Http::withHeaders([
             'Authorization' => 'Key=' . $user->erp_apiauthtoken,
-        ])->$method('https://linxsystems.flowgear.net/' . $url, $data);
+        ])->$method($user->erp_apiurl . $url, $data);
 
         return $response->json();
     }

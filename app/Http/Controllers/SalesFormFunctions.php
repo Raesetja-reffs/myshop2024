@@ -310,12 +310,13 @@ class SalesFormFunctions extends Controller
     public function combinedSpecials(Request $request)
     {
         $customerCode = $request->get('customerCode');
+        $deliveryDate = (new \DateTime($request->get('deliveryDate')))->format('Y-m-d');
         if (config('app.IS_API_BASED')) {
             $output = $this->apiCombinedSpecials([
-                'customerCode' => $customerCode
+                'CustomerCode' => $customerCode,
+                'DelvDate' => $deliveryDate
             ]);
         } else {
-            $deliveryDate = (new \DateTime($request->get('deliveryDate')))->format('Y-m-d');
             $returnGroupSpecials= DB::connection('sqlsrv3')
                 ->select('exec spCustomerGroupSpecials ?,?',
                     array($customerCode,$deliveryDate)
@@ -808,7 +809,10 @@ class SalesFormFunctions extends Controller
         $OrderId = $request->get('orderId');
         $hiddentToken = $request->get('hiddenToken');
         if (config('app.IS_API_BASED')) {
-            $outPut['result'] = $this->apiDeleteByHiddenToken();
+            $outPut['result'] = $this->apiDeleteByHiddenToken([
+                'Orderid' => $OrderId,
+                'HiddenToken' => $hiddentToken,
+            ]);
         } else {
             $getResult = DB::connection('sqlsrv3')
                 ->select("EXEC spDeleteHiddenToken ".$OrderId.",".$hiddentToken);
@@ -1199,8 +1203,8 @@ class SalesFormFunctions extends Controller
         $custCode= $request->get('custCode');
         if (config('app.IS_API_BASED')) {
             $outPut = $this->apiGeneralPriceCheckAndLastCost([
-                'productCode' => $productCode,
-                'custCode' => $custCode,
+                'ProductCode' => $productCode,
+                'CustCode' => $custCode,
             ]);
         } else {
             $locationId =  Auth::user()->LocationId;

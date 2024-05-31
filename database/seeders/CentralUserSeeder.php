@@ -23,6 +23,7 @@ class CentralUserSeeder extends Seeder
             'erp_apiusername' => '',
             'erp_apipassword' => '',
             'erp_apiauthtoken' => '',
+            'location_id' => 1,
         ]);
     }
 }

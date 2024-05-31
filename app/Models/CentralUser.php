@@ -25,5 +25,6 @@ class CentralUser extends Authenticatable
         'erp_apiusername',
         'erp_apipassword',
         'erp_apiauthtoken',
+        'location_id',
     ];
 }

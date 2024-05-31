@@ -62,16 +62,16 @@ trait SalesFormFunctionsTrait
         return $this->httpRequest('post', 'GetCustomerRoutes', $data);
     }
 
-    public function apiCombinedSpecials()
+    public function apiCombinedSpecials($data)
     {
         $user = auth()->guard('central_api_user')->user();
         $data['companyid'] = $user->company_id;
-        $data['UserID'] = $user->erp_user_id;
+        $data['UserId'] = $user->erp_user_id;
         $groupSpecials = $this->httpRequest('post', 'GetGroupSpecials', $data);
         $customerSpecials = $this->httpRequest('post', 'GetCustomerSpecials', $data);
         $pastInvoices = $this->httpRequest('post', 'GetPastCustomerInvoices', $data);
 
-        $response = [
+        return [
             "customerSpecials" => $customerSpecials,
             "GroupSpecials" => $groupSpecials,
             "pastInvoices" => $pastInvoices,
@@ -83,8 +83,6 @@ trait SalesFormFunctionsTrait
                 ]
             ]
         ];
-
-        return $response;
     }
 
     public function apiGetCustomerOderpattern($data)
@@ -98,54 +96,27 @@ trait SalesFormFunctionsTrait
 
     public function apiGeneralPriceCheckAndLastCost($data)
     {
-        $response = [
-            "pricelists" => [
-                [
-                    "PriceList" => "Retail",
-                    "PriceListId" => "1",
-                    "PastelCode" => "AB082501",
-                    "PastelDescription" => "LIQUIFR 250ML MANGO/ORANGE x24",
-                    "Price" => "4258.35",
-                    "Date" => "1980-01-01 00:00:00.000",
-                    "PriceInc" => "4897.10",
-                    "StatusId" => "1"
-                ]
-            ],
-            "sellingPrice" => [
-                [
-                    "Price" => "3150.000",
-                    "DeliveryDate" => "2019-02-20",
-                    "Margin" => "8.840"
-                ],
-                [
-                    "Price" => "3150.000",
-                    "DeliveryDate" => "2019-02-12",
-                    "Margin" => "8.840"
-                ],
-                [
-                    "Price" => "3080.000",
-                    "DeliveryDate" => "2018-02-12",
-                    "Margin" => "6.770"
-                ],
-                [
-                    "Price" => "3080.000",
-                    "DeliveryDate" => "2018-01-22",
-                    "Margin" => "6.770"
-                ],
-                [
-                    "Price" => "3080.000",
-                    "DeliveryDate" => "2018-09-21",
-                    "Margin" => "6.770"
-                ]
-            ]
-        ];
+        $user = auth()->guard('central_api_user')->user();
+        $data['companyid'] = $user->company_id;
+        $data['UserID'] = $user->erp_user_id;
+        $pricelists = $this->httpRequest('post', 'GeneralPriceCheck', $data);
 
-        return $response;
+        $data['LocationId'] = $user->location_id;
+        $sellingPrice = $this->httpRequest('post', 'GetLastSellingPrice', $data);
+
+        return [
+            'pricelists' => $pricelists,
+            'sellingPrice' => $sellingPrice,
+        ];
     }
 
-    public function apiDeleteByHiddenToken()
+    public function apiDeleteByHiddenToken($data)
     {
-        return 'SUCCESS';
+        $user = auth()->guard('central_api_user')->user();
+        $data['companyid'] = $user->company_id;
+        $data['UserID'] = $user->erp_user_id;
+
+        return $this->httpRequest('post', 'DeleteHiddenToken', $data);
     }
 
     public function apiDeleteOrderLinedetails($data)
