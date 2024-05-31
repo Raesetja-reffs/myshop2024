@@ -8,7 +8,7 @@ trait DimsCommonTrait
 {
     use ApiTrait;
 
-    public function apiGetInvoiceLookup($searchString)
+    public function apiInvoiceLookup($searchString)
     {
         // $user = auth()->guard('central_api_user')->user();
         // $response = $this->httpRequest('post', 'general/getcustomers', [

@@ -25,21 +25,24 @@ class SalesForm extends Controller
     public function index(Request $request)
     {
         if (config('app.IS_API_BASED')) {
-            $queryCustomers = $this->apiGetCustomer();
-            $userPerfomance = $this->apiGetUserPerformance();
+            $queryCustomers = [];
             $queryCustomersDontCareStatus = [];
             $queryProducts = [];
-            $trueFalse = $this->apiGetCompanyReportStatus();
-            $getLastInserted = $this->apiGetLastInserted();
-            $marginType =  $this->apiGetMarginType();
-            $deliverTypes = $this->apiGetDeliveryTypes();
-            $getDeliveryDates = $this->apiGetDeliveryDates();
-            $callListUserInfo = $this->apiCallListUserInfo();
-            $callListDeliveryDate = $this->apiCallListDeliveryDate();
-            $getRoutes = $this->apiGetRoutes();
-            $saleman = $this->apiSalesMan();
-            $getviewWareHouseLocations = $this->apiGetviewWareHouseLocations();
+            $commonData = $this->apiGetSalesOrderPageData();
+            $userPerfomance = $commonData['userPerfomance'];
+            $trueFalse = $commonData['trueFalse'];
+            $getLastInserted = $commonData['getLastInserted'];
+            $marginType = $commonData['marginType'];
+            $deliverTypes = $commonData['deliverTypes'];
+            $getDeliveryDates = $commonData['getDeliveryDates'];
+            $getRoutes = $commonData['getRoutes'];
+            $saleman = $commonData['saleman'];
+            $getviewWareHouseLocations = $commonData['getviewWareHouseLocations'];
             $printinvoices = '"1"';
+            //$callListUserInfo = $this->apiCallListUserInfo();
+            $callListUserInfo = [];
+            //$callListDeliveryDate = $this->apiCallListDeliveryDate();
+            $callListDeliveryDate = [];
         } else {
             $sessionUserId = Auth::user()->UserID;
             if(Auth::user()->strDepartmentApp == "SALES"){
@@ -128,8 +131,8 @@ class SalesForm extends Controller
             ->with('salesmen',$saleman)
             ->with('warehouses',$getviewWareHouseLocations)
             ->with('warehouses',$getviewWareHouseLocations)
-            ->with('userperformance',$userPerfomance)->with('printinvoices',$printinvoices)
-            ;
+            ->with('userperformance',$userPerfomance)
+            ->with('printinvoices',$printinvoices);
 
     }
     public function getThings($GroupId,$thing)
@@ -353,21 +356,23 @@ public function getCustomerStoppedBuyingJSon()
 
     }
 
-    public function getSalesOrderCustomers()
+    public function getSalesOrderCustomers(Request $request)
     {
         $response = [];
         if (config('app.IS_API_BASED')) {
-            $response = $this->apiGetCustomer();
+            $response = $this->apiGetSalesOrderCustomers([
+                'searchTerm' => $request->get('term')
+            ]);
         } else {
             if (env('CustomerAccess') == 1) {
-                $response =DB::connection('sqlsrv3')->table("viewtblCustomers" )
+                $response = DB::connection('sqlsrv3')->table("viewtblCustomers" )
                     ->join('tblAccessOnCustomers', 'viewtblCustomers.GroupId', '=', 'tblAccessOnCustomers.intGroupId')
                     ->select('CustomerId','StoreName','CustomerPastelCode','CreditLimit','BalanceDue','UserField5','Email','Routeid','Discount','OtherImportantNotes','strRoute','mnyCustomerGp','ID','Warehouse','PriceListName','CustomerOnHold','termsAndList')
                     ->where('StatusId', 1)
                     ->where('intUserId', Auth::user()->UserID)
                     ->orderBy('CustomerPastelCode', 'ASC')->get();
             } else {
-                $response =DB::connection('sqlsrv3')->table("viewtblCustomers" )
+                $response = DB::connection('sqlsrv3')->table("viewtblCustomers" )
                     ->select('CustomerId','StoreName','CustomerPastelCode','CreditLimit','BalanceDue','UserField5','Email','Routeid','Discount','OtherImportantNotes','strRoute','mnyCustomerGp','ID','Warehouse','PriceListName','CustomerOnHold','termsAndList')
                     ->where('StatusId',1)
                     ->orderBy('CustomerPastelCode','ASC')->get();
@@ -381,7 +386,7 @@ public function getCustomerStoppedBuyingJSon()
     {
         $response = [];
         if (config('app.IS_API_BASED')) {
-            $response = $this->apiGetProducts([
+            $response = $this->apiGetSalesOrderProducts([
                 'searchTerm' => $request->get('term')
             ]);
         } else {

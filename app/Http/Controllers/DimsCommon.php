@@ -554,7 +554,7 @@ class DimsCommon extends Controller
         $results = [];
         $term = $request->get('term', '');
         if (config('app.IS_API_BASED')) {
-            $results = $this->apiGetInvoiceLookup($term);
+            $results = $this->apiInvoiceLookup($term);
         } else {
             $queries = DB::connection('sqlsrv3')->table("vwInvoiceOrderIDLookUp")
                 ->where('InvoiceNo', 'LIKE', '%'.$term.'%')

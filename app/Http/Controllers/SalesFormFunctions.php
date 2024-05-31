@@ -133,7 +133,7 @@ class SalesFormFunctions extends Controller
         $customerCode = $request->get('customerCode');
         if (config('app.IS_API_BASED')) {
             $returnCustomerRoute = $this->apiGetCustomerRouteWithOtherRoutesByPriority([
-                'customerCode' => $customerCode
+                'CustomerCode' => $customerCode
             ]);
         } else {
             $returnCustomerRoute = DB::connection('sqlsrv3')
