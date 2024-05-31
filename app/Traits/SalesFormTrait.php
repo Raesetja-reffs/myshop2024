@@ -3,10 +3,12 @@
 namespace App\Traits;
 
 use App\Traits\ApiTrait;
+use App\Traits\UtilityTrait;
 
 trait SalesFormTrait
 {
     use ApiTrait;
+    use UtilityTrait;
 
     public function apiGetSalesOrderPageData()
     {
@@ -1019,7 +1021,7 @@ trait SalesFormTrait
         } elseif ($response && isset($response['PastelCode'])) {
             $response = [$response];
         }
-        //we need at the api side like if one record then also we need to merge with array
+        //Pending From API: we need at the api side like if one record then also we need to merge with array
 
         return $response;
     }

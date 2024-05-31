@@ -21,14 +21,8 @@
         <!--end::Item-->
     </x-slot>
     <?php
-    $v  =  new \App\Http\Controllers\SalesForm();
-    if (config('app.IS_API_BASED')) {
-        $thingsAllowDiscount = $v->getThings(Auth::guard('central_api_user')->user()->GroupId ?? 0,'Discountinput');
-        $userActions = $v->getThings(Auth::guard('central_api_user')->user()->GroupId ?? 0,'Access User Actions');
-    } else {
-        $thingsAllowDiscount = $v->getThings(Auth::user()->GroupId,'Discountinput');
-        $userActions = $v->getThings(Auth::user()->GroupId,'Access User Actions');
-    }
+    $thingsAllowDiscount = hasThingRole('Discountinput');
+    $userActions = hasThingRole('Access User Actions');
     $discountProperty = "";
     if($thingsAllowDiscount != 1)
     {

@@ -100,9 +100,18 @@ trait SalesFormFunctionsTrait
         $data['companyid'] = $user->company_id;
         $data['UserID'] = $user->erp_user_id;
         $pricelists = $this->httpRequest('post', 'GeneralPriceCheck', $data);
+        if (!$pricelists) {
+            $pricelists = [];
+        } elseif ($pricelists && isset($pricelists['PriceList'])) {
+            $pricelists = [$pricelists];
+        }
 
         $data['LocationId'] = $user->location_id;
         $sellingPrice = $this->httpRequest('post', 'GetLastSellingPrice', $data);
+        if (!$sellingPrice) {
+            $sellingPrice = [];
+        }
+        //Pending From API: we need at the api side like if one record then also we need to merge with array
 
         return [
             'pricelists' => $pricelists,
