@@ -1011,53 +1011,41 @@ class SalesFormFunctions extends Controller
         $orderby = $request->input('order.0.column');
         $sort['col'] = $request->input('columns.' . $orderby . '.data');
         $sort['dir'] = $request->input('order.0.dir');
-
-        $edit = (new SalesForm())->hasAccessToEdit($OrderId);
-        $isQoutation = DB::connection('sqlsrv3')
-            ->select("select * from tblOrders where OrderId = " . $OrderId." and TreatAsQuotation=1");
-
-        $responseFromOrdeLock = (new DimsCommon())->checkUserLock($OrderId);
-        //dd($responseFromOrdeLock[0]->orderID);
-        // dd($isQoutation);
-        if (count($isQoutation) > 0) {
-            //dd($isQoutation);
-            $GetOrderHeader = DB::connection('sqlsrv3')
-                ->select("EXEC spReturnInvoiceOrderIdData '" . $OrderId . "','" . $InvoiceNumber . "'");
-
-
-            $outPut['data'] = $GetOrderHeader;
-            $outPut['returns'] = "inserted";
-
-            return response()->json($outPut);
+        $outPut = [];
+        if (config('app.IS_API_BASED')) {
+            $outPut = $this->apiOnCheckOrderHeader();
         } else {
-
-
-            if ($responseFromOrdeLock[0]->orderID == "inserted") {
-                if ($edit == "Yes") {
-                    $GetOrderHeader = DB::connection('sqlsrv3')
-                        ->select("EXEC spReturnInvoiceOrderIdData '" . $OrderId . "','" . $InvoiceNumber . "'");
-
-                  //  dd($GetOrderHeader);
-                    $outPut['data'] = $GetOrderHeader;
-                    $outPut['returns'] = "inserted";
+            $edit = (new SalesForm())->hasAccessToEdit($OrderId);
+            $isQoutation = DB::connection('sqlsrv3')
+                ->select("select * from tblOrders where OrderId = " . $OrderId." and TreatAsQuotation=1");
+            $responseFromOrdeLock = (new DimsCommon())->checkUserLock($OrderId);
+            if (count($isQoutation) > 0) {
+                $GetOrderHeader = DB::connection('sqlsrv3')
+                    ->select("EXEC spReturnInvoiceOrderIdData '" . $OrderId . "','" . $InvoiceNumber . "'");
+                $outPut['data'] = $GetOrderHeader;
+                $outPut['returns'] = "inserted";
+            } else {
+                if ($responseFromOrdeLock[0]->orderID == "inserted") {
+                    if ($edit == "Yes") {
+                        $GetOrderHeader = DB::connection('sqlsrv3')
+                            ->select("EXEC spReturnInvoiceOrderIdData '" . $OrderId . "','" . $InvoiceNumber . "'");
+                        $outPut['data'] = $GetOrderHeader;
+                        $outPut['returns'] = "inserted";
+                    } else {
+                        $mes = $OrderId . ' has been planned already, please view this order as PDF';
+                        $GetOrdermess = DB::connection('sqlsrv3')
+                            ->select("Select '$mes' as orderID ");
+                        $outPut['data'] = $GetOrdermess;
+                        $outPut['returns'] = "Not inserted";
+                    }
                 } else {
-                    $mes = $OrderId . ' has been planned already, please view this order as PDF';
-                    $GetOrdermess = DB::connection('sqlsrv3')
-                        ->select("Select '$mes' as orderID ");
-                    // dd($GetOrdermess);
-                    $outPut['data'] = $GetOrdermess;
+                    $outPut['data'] = $responseFromOrdeLock;
                     $outPut['returns'] = "Not inserted";
                 }
-
-                return response()->json($outPut);
-            } else {
-//dd($responseFromOrdeLock[0]->orderID);
-                $outPut['data'] = $responseFromOrdeLock;
-                $outPut['returns'] = "Not inserted";
-                return response()->json($outPut);
             }
         }
 
+        return response()->json($outPut);
     }
     //For Other Transactions
     public function onCheckOrderHeaderForOtherTrans(Request $request)
