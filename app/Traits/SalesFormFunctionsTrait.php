@@ -20,10 +20,6 @@ trait SalesFormFunctionsTrait
 
     public function apiReturnProductPrice($data)
     {
-        // $user = auth()->guard('central_api_user')->user();
-        // $data['companyid'] = $user->company_id;
-        // $data['UserID'] = $user->erp_user_id;
-        //$response = $this->httpRequest('post', 'InsertNewOrder', $data);
         $response = [
             [
                 "Price" => "3150.0",
@@ -47,7 +43,7 @@ trait SalesFormFunctionsTrait
         $user = auth()->guard('central_api_user')->user();
         $data['companyid'] = $user->company_id;
         $data['UserID'] = $user->erp_user_id;
-        //$response = $this->httpRequest('post', 'InsertNewOrder', $data);
+        //$response = $this->httpRequest('post', '', $data);
         $response = [];
 
         return $response;
@@ -130,13 +126,12 @@ trait SalesFormFunctionsTrait
 
     public function apiDeleteOrderLinedetails($data)
     {
-        $response = [
-            [
-                'Result' => 'Success'
-            ]
-        ];
+        $user = auth()->guard('central_api_user')->user();
+        $data['companyid'] = $user->company_id;
+        $data['UserID'] = $user->erp_user_id;
+        $data['Username'] = $user->erp_apiusername;
 
-        return $response;
+        return $this->httpRequest('post', 'DeleteOrderLinedetails', $data);
     }
 
     public function apiOrderheaderAndOrderLines($data)
@@ -152,62 +147,11 @@ trait SalesFormFunctionsTrait
 
     public function apiOnCheckOrderHeaderDetails($data)
     {
-        $response = [
-            [
-                "OrderId" => "388108",
-                "OrderDetailId" => "1481393",
-                "Qty" => "1.0",
-                "ProductId" => "6591",
-                "Price" => "3150.00",
-                "Comment" => "",
-                "LineDisc" => "0.0",
-                "IncPrice" => "3622.50",
-                "IncNettPrice" => "3622.5",
-                "PastelCode" => "AB082501",
-                "PastelDescription" => "LIQUIFR 250ML MANGO/ORANGE x24",
-                "Cost" => "2854.5061",
-                "QtyInStock" => "31.200000000000003",
-                "DispatchQty" => "1.0",
-                "TaxId" => "1",
-                "Tax" => "15.0",
-                "MESSAGESINV" => null,
-                "OrderNo" => "",
-                "AwaitingStock" => "0",
-                "UnitSize" => "EA",
-                "UnitCount" => "0.0",
-                "ProductMargin" => "14.99",
-                "ID" => "1",
-                "Warehouse" => "001"
-            ],
-            [
-                "OrderId" => "388108",
-                "OrderDetailId" => "1481394",
-                "Qty" => "1.0",
-                "ProductId" => "6592",
-                "Price" => "1785.00",
-                "Comment" => "",
-                "LineDisc" => "0.0",
-                "IncPrice" => "2052.75",
-                "IncNettPrice" => "2052.75",
-                "PastelCode" => "AB083055",
-                "PastelDescription" => "LIQUIFR 250ML MANGO/ORANGE  x6",
-                "Cost" => "1469.1167",
-                "QtyInStock" => "13.800000000000001",
-                "DispatchQty" => "1.0",
-                "TaxId" => "1",
-                "Tax" => "15.0",
-                "MESSAGESINV" => null,
-                "OrderNo" => "",
-                "AwaitingStock" => "0",
-                "UnitSize" => "EA",
-                "UnitCount" => "0.0",
-                "ProductMargin" => "14.99",
-                "ID" => "1",
-                "Warehouse" => "001"
-            ]
-        ];
+        $user = auth()->guard('central_api_user')->user();
+        $data['companyid'] = $user->company_id;
+        $data['UserID'] = $user->erp_user_id;
 
-        return $response;
+        return $this->httpRequest('post', 'GetOrderIdLines', $data);
     }
 
     public function apiUpdateCContactsOnOrder($data)

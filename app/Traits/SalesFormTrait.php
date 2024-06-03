@@ -3,12 +3,10 @@
 namespace App\Traits;
 
 use App\Traits\ApiTrait;
-use App\Traits\UtilityTrait;
 
 trait SalesFormTrait
 {
     use ApiTrait;
-    use UtilityTrait;
 
     public function apiGetSalesOrderPageData()
     {
