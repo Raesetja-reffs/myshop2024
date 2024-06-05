@@ -10,11 +10,6 @@ trait DimsCommonTrait
 
     public function apiInvoiceLookup($searchString)
     {
-        // $user = auth()->guard('central_api_user')->user();
-        // $response = $this->httpRequest('post', 'general/getcustomers', [
-        //     'userId' => $user->erp_user_id,
-        //     'companyid' => $user->company_id,
-        // ]);
         $response =  [
             [
                 "id" => "366724",

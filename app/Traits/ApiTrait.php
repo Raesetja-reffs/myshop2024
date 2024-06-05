@@ -15,6 +15,7 @@ trait ApiTrait
         $returnResponse = [];
         try {
             $user = auth()->guard('central_api_user')->user();
+            $data = $this->addAdditionalDetailsToApiData($user, $data);
             $response = Http::withHeaders([
                 'Authorization' => 'Key=' . $user->erp_apiauthtoken,
             ])->$method($user->erp_apiurl . $url, $data);
@@ -32,5 +33,19 @@ trait ApiTrait
         }
 
         return $returnResponse;
+    }
+
+    /**
+     * This function is used for setup the additional data to api data
+     *
+     * @param obj $user
+     * @param array $data
+     */
+    public function addAdditionalDetailsToApiData($user, $data)
+    {
+        $data['companyid'] = $user->company_id;
+        $data['UserID'] = $user->erp_user_id;
+
+        return $data;
     }
 }

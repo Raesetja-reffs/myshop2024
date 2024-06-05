@@ -1001,18 +1001,11 @@ trait SalesFormTrait
 
     public function apiGetSalesOrderCustomers($data)
     {
-        $user = auth()->guard('central_api_user')->user();
-        $data['companyid'] = $user->company_id;
-        $data['UserID'] = $user->erp_user_id;
-
         return $this->httpRequest('post', 'searchcustomers', $data);
     }
 
     public function apiGetSalesOrderProducts($data)
     {
-        $user = auth()->guard('central_api_user')->user();
-        $data['companyid'] = $user->company_id;
-        $data['UserID'] = $user->erp_user_id;
         $response = $this->httpRequest('post', 'searchProducts', $data);
         if (!$response) {
             $response = [];

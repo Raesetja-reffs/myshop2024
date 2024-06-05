@@ -83,9 +83,10 @@ class SalesFormFunctions extends Controller
         $inputCustAcc = $request->get('inputCustAcc');
         if (config('app.IS_API_BASED')) {
             $count = $this->apiIsClosedRoute([
-                'OrderType' => $OrderType,
-                'routeId' => $routeId,
-                'inputCustAcc' => $inputCustAcc,
+                'DeliveryDate' => (new \DateTime($request->get('delDate')))->format('Y-m-d'),
+                'OrderTypeId' => $OrderType,
+                'RouteId' => $routeId,
+                'CustomerPastelCode' => $inputCustAcc,
             ]);
         } else {
             $islosed =DB::connection('sqlsrv3')->table("tblDeliveryDateRouting")->select('Closed')
@@ -103,8 +104,8 @@ class SalesFormFunctions extends Controller
                 $count['isClosed']= $islosed[0]->Closed;
                 $count['routeId']= $customerRouteCheck[0]->Routeid;
             }
-            $count['routeOnOrder'] = $routeId;
         }
+        $count['routeOnOrder'] = $routeId;
 
         return $count;
     }
@@ -1095,6 +1096,8 @@ class SalesFormFunctions extends Controller
                 'address3' => $address3,
                 'address4' => $address4,
                 'address5' => $address5,
+                'Routeid' => $Routeid,
+                'OrderId' => $orderID,
             ]);
         } else {
             $salesmanid = Auth::user()->UserID;
@@ -1120,6 +1123,7 @@ class SalesFormFunctions extends Controller
             $GetOrderNo = DB::connection('sqlsrv3')
                 ->select("select OrderNo,Brand,tblBrandOrderInvoice.BrandId from tblBrandOrderInvoice inner join tblBrands on tblBrandOrderInvoice.BrandId = tblBrands.BrandId where OrderId=".$OrderId);
         }
+
         return response()->json($GetOrderNo);
     }
     public function updateOrderNo(Request $request)
@@ -2375,10 +2379,12 @@ class SalesFormFunctions extends Controller
         $isQuote = $request->get('isQuote');
         $dateFrom = (new \DateTime())->format('Y-m-d H:i:s');
         if (config('app.IS_API_BASED')) {
-            $this->apiMarkitawaitingstock([
-                'orderId' => $orderId,
-                'isQuote' => $isQuote,
+            $response = $this->apiMarkitawaitingstock([
+                'OrderId' => $orderId,
+                'isAwaitingStock' => $isQuote,
             ]);
+
+            return response()->json($response);
         } else {
             $Message = "";
             $userName =   Auth::user()->UserName;

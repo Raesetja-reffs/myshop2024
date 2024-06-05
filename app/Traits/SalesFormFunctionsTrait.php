@@ -10,12 +10,7 @@ trait SalesFormFunctionsTrait
 
     public function apiInsertOrderHearder($data)
     {
-        $user = auth()->guard('central_api_user')->user();
-        $data['companyid'] = $user->company_id;
-        $data['UserID'] = $user->erp_user_id;
-        $response = $this->httpRequest('post', 'InsertNewOrder', $data);
-
-        return $response;
+        return $this->httpRequest('post', 'InsertNewOrder', $data);
     }
 
     public function apiReturnProductPrice($data)
@@ -51,18 +46,11 @@ trait SalesFormFunctionsTrait
 
     public function apiGetCustomerRouteWithOtherRoutesByPriority($data)
     {
-        $user = auth()->guard('central_api_user')->user();
-        $data['companyid'] = $user->company_id;
-        $data['UserID'] = $user->erp_user_id;
-
         return $this->httpRequest('post', 'GetCustomerRoutes', $data);
     }
 
     public function apiCombinedSpecials($data)
     {
-        $user = auth()->guard('central_api_user')->user();
-        $data['companyid'] = $user->company_id;
-        $data['UserId'] = $user->erp_user_id;
         $groupSpecials = $this->httpRequest('post', 'GetGroupSpecials', $data);
         $customerSpecials = $this->httpRequest('post', 'GetCustomerSpecials', $data);
         $pastInvoices = $this->httpRequest('post', 'GetPastCustomerInvoices', $data);
@@ -83,18 +71,11 @@ trait SalesFormFunctionsTrait
 
     public function apiGetCustomerOderpattern($data)
     {
-        $user = auth()->guard('central_api_user')->user();
-        $data['companyid'] = $user->company_id;
-        $data['UserID'] = $user->erp_user_id;
-
         return $this->httpRequest('post', 'GetOrderPattern', $data);
     }
 
     public function apiGeneralPriceCheckAndLastCost($data)
     {
-        $user = auth()->guard('central_api_user')->user();
-        $data['companyid'] = $user->company_id;
-        $data['UserID'] = $user->erp_user_id;
         $pricelists = $this->httpRequest('post', 'GeneralPriceCheck', $data);
         if (!$pricelists) {
             $pricelists = [];
@@ -102,6 +83,7 @@ trait SalesFormFunctionsTrait
             $pricelists = [$pricelists];
         }
 
+        $user = auth()->guard('central_api_user')->user();
         $data['LocationId'] = $user->location_id;
         $sellingPrice = $this->httpRequest('post', 'GetLastSellingPrice', $data);
         if (!$sellingPrice) {
@@ -117,18 +99,12 @@ trait SalesFormFunctionsTrait
 
     public function apiDeleteByHiddenToken($data)
     {
-        $user = auth()->guard('central_api_user')->user();
-        $data['companyid'] = $user->company_id;
-        $data['UserID'] = $user->erp_user_id;
-
         return $this->httpRequest('post', 'DeleteHiddenToken', $data);
     }
 
     public function apiDeleteOrderLinedetails($data)
     {
         $user = auth()->guard('central_api_user')->user();
-        $data['companyid'] = $user->company_id;
-        $data['UserID'] = $user->erp_user_id;
         $data['Username'] = $user->erp_apiusername;
 
         return $this->httpRequest('post', 'DeleteOrderLinedetails', $data);
@@ -147,10 +123,6 @@ trait SalesFormFunctionsTrait
 
     public function apiOnCheckOrderHeaderDetails($data)
     {
-        $user = auth()->guard('central_api_user')->user();
-        $data['companyid'] = $user->company_id;
-        $data['UserID'] = $user->erp_user_id;
-
         return $this->httpRequest('post', 'GetOrderIdLines', $data);
     }
 
@@ -161,25 +133,23 @@ trait SalesFormFunctionsTrait
 
     public function apiMarkitawaitingstock($data)
     {
-        return '';
+        $user = auth()->guard('central_api_user')->user();
+        $data['Username'] = $user->erp_apiusername;
+
+        return $this->httpRequest('post', 'AwaitingStock', $data);
     }
 
     public function apiTreatAsQuote($data)
     {
-        return '';
+        $user = auth()->guard('central_api_user')->user();
+        $data['Username'] = $user->erp_apiusername;
+
+        return $this->httpRequest('post', 'AwaitingStock', $data);
     }
 
     public function apiAdvancedOrderNo($data)
     {
-        $response = [
-            [
-                'OrderNo' => '',
-                'Brand' => 'Margot Swiss',
-                'BrandId' => '1'
-            ]
-        ];
-
-        return $response;
+        return $this->httpRequest('post', 'GetAdvancedOrderNo', $data);
     }
 
     public function apiInsertNewAddress($data)
@@ -189,7 +159,10 @@ trait SalesFormFunctionsTrait
 
     public function apiTempDeliverAddress($data)
     {
-        return true;
+        $user = auth()->guard('central_api_user')->user();
+        $data['salesmanID'] = $user->erp_user_id;
+
+        return $this->httpRequest('post', 'InsertTempDeliveryAddress', $data);
     }
 
     public function apiChangeDeliveryAddressOnNoInvoiceNo($data)
@@ -230,13 +203,7 @@ trait SalesFormFunctionsTrait
 
     public function apiIsClosedRoute($data)
     {
-        $response = [
-            'isClosed' => 0,
-            'routeId' => 10,
-            'routeOnOrder' => 10,
-        ];
-
-        return $response;
+        return $this->httpRequest('post', 'isRouteClosed', $data);
     }
 
     public function apiCheckZeroCostOnOrder($data)
