@@ -144,7 +144,7 @@ trait SalesFormFunctionsTrait
         $user = auth()->guard('central_api_user')->user();
         $data['Username'] = $user->erp_apiusername;
 
-        return $this->httpRequest('post', 'AwaitingStock', $data);
+        return $this->httpRequest('post', 'treatasquote', $data);
     }
 
     public function apiAdvancedOrderNo($data)

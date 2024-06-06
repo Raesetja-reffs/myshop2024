@@ -2347,8 +2347,8 @@ class SalesFormFunctions extends Controller
         $dateFrom = (new \DateTime())->format('Y-m-d H:i:s');
         if (config('app.IS_API_BASED')) {
             $this->apiTreatAsQuote([
-                'orderId' => $orderId,
-                'isQuote' => $isQuote,
+                'OrderId' => $orderId,
+                'isTreatAsQuotation' => $isQuote,
             ]);
         } else {
             $Message = "";
