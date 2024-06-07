@@ -10,8 +10,6 @@ trait LoadingAppAPIsTrait
 
     public function apistockApi($data)
     {
-        $response = 0;
-
-        return $response;
+        return $this->httpRequest('post', 'Post_ProductSalesQuantity', $data);
     }
 }

@@ -163,9 +163,9 @@ dd("hererererere");
         $customerCode = $request->get('customerCode');
         if (config('app.IS_API_BASED')) {
             $deleteallLines = $this->apiDeleteallLinesOnOrder([
-                'orderId' => $orderId,
-                'delivdate' => $delivdate,
-                'customerCode' => $customerCode,
+                'OrderId' => $orderId,
+                'ConsoleDate' => $delivdate,
+                'CustomerCode' => $customerCode,
             ]);
         } else {
             $LoggedBy = Auth::user()->UserName;

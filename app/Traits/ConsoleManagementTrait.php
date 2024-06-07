@@ -15,10 +15,8 @@ trait ConsoleManagementTrait
 
     public function apiDeleteallLinesOnOrder($data)
     {
-        return [
-            [
-                'Result' => 'SUCCESS'
-            ]
-        ];
+        $data = $this->setUserNameInApiData($data);
+
+        return $this->httpRequest('post', 'Post_DeleteAllLinesOnOrder', $data);
     }
 }

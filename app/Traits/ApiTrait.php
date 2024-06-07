@@ -48,4 +48,17 @@ trait ApiTrait
 
         return $data;
     }
+
+    /**
+     * This function is used for set the user name in api data
+     *
+     * @param array $data
+     */
+    public function setUserNameInApiData($data)
+    {
+        $user = auth()->guard('central_api_user')->user();
+        $data['Username'] = $user->erp_apiusername;
+
+        return $data;
+    }
 }

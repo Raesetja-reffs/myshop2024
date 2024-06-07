@@ -54,18 +54,13 @@ trait SalesFormFunctionsTrait
         $groupSpecials = $this->httpRequest('post', 'GetGroupSpecials', $data);
         $customerSpecials = $this->httpRequest('post', 'GetCustomerSpecials', $data);
         $pastInvoices = $this->httpRequest('post', 'GetPastCustomerInvoices', $data);
+        $getBuyerContacts = $this->httpRequest('post', 'Post_GetBuyerContacts', $data);
 
         return [
             "customerSpecials" => $customerSpecials,
             "GroupSpecials" => $groupSpecials,
             "pastInvoices" => $pastInvoices,
-            "contacts" => [
-                [
-                    "BuyerContact" => null,
-                    "BuyerTelephone" => "044 873 5015",
-                    "CellPhone" => null
-                ]
-            ]
+            "contacts" => $getBuyerContacts
         ];
     }
 
@@ -104,8 +99,7 @@ trait SalesFormFunctionsTrait
 
     public function apiDeleteOrderLinedetails($data)
     {
-        $user = auth()->guard('central_api_user')->user();
-        $data['Username'] = $user->erp_apiusername;
+        $data = $this->setUserNameInApiData($data);
 
         return $this->httpRequest('post', 'DeleteOrderLinedetails', $data);
     }

@@ -206,8 +206,8 @@ class DimsCommon extends Controller
         $userPassword = $request->get('userPassword');
         if (config('app.IS_API_BASED')) {
             $activeUser = $this->apiVerifyAuth([
-                'userNameId' => $userNameId,
-                'userPassword' => $userPassword,
+                'UserName' => $userNameId,
+                'UserPassword' => $userPassword,
             ]);
         } else {
             $activeUser = DB::connection('sqlsrv3')->table('tblDIMSUSERS')->select('UserID', 'UserName','Password')
@@ -306,7 +306,7 @@ class DimsCommon extends Controller
         $customerCode = $request->get('account');
         if (config('app.IS_API_BASED')) {
             $hasmulti = $this->apiCheckifhasmultiaddress([
-                'customerCode' => $customerCode
+                'CustomerCode' => $customerCode
             ]);
         } else {
             $hasmulti = DB::connection('sqlsrv3')
@@ -554,7 +554,9 @@ class DimsCommon extends Controller
         $results = [];
         $term = $request->get('term', '');
         if (config('app.IS_API_BASED')) {
-            $results = $this->apiInvoiceLookup($term);
+            $results = $this->apiInvoiceLookup([
+                'InvoiceNo' => $term
+            ]);
         } else {
             $queries = DB::connection('sqlsrv3')->table("vwInvoiceOrderIDLookUp")
                 ->where('InvoiceNo', 'LIKE', '%'.$term.'%')
@@ -1020,7 +1022,7 @@ class DimsCommon extends Controller
         $orderid = $request->get('OrderId');
         if (config('app.IS_API_BASED')) {
             $this->apiClearorderlocksperorder([
-                'orderid' => $orderid
+                'OrderId' => $orderid
             ]);
         } else {
             $userId = Auth::user()->UserID;
@@ -1680,10 +1682,10 @@ class DimsCommon extends Controller
         $DriverDeliveryDate= $request->get('DriverDeliveryDate');
         if (config('app.IS_API_BASED')) {
             $hasAccess = $this->apiChangesalesman([
-                'userID' => $userID,
-                'OrderID' => $OrderID,
-                'authUserName' => $authUserName,
-                'authUserPassword' => $authUserPassword,
+                'UserId' => $userID,
+                'OrderId' => $OrderID,
+                'UserNameAuthorising' => $authUserName,
+                'PasswordAuthorising' => $authUserPassword,
                 'DriverDeliveryDate' => $DriverDeliveryDate
             ]);
         } else {
@@ -1725,8 +1727,8 @@ class DimsCommon extends Controller
         $RouteID= $request->get('routeId');
         if (config('app.IS_API_BASED')) {
             $newRoute = $this->apiChangerouteonorder([
-                'OrderID' => $OrderID,
-                'RouteID' => $RouteID,
+                'OrderId' => $OrderID,
+                'RouteId' => $RouteID,
             ]);
         } else {
             $userAuth = Auth::user()->UserName;

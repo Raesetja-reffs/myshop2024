@@ -485,17 +485,10 @@ dd($request) ;
     }
     public function stockApi(Request $request)
     {
-       /* $productCode = $request->get('ItemCode');
-        $products = DB::connection('sqlsrv3')->table('tblProducts')->where('PastelCode', $productCode)->first();
-        $brandId = $products->BrandId;
-        //BrandId
-        $client = new Client();
-        $res = $client->get('http://localhost:8888/stock.php',['query' =>  [ 'ItemCode' => $productCode,'OrderDetailID'=>0,'BrandId'=>$brandId]]);
-       return $res->getBody();*/
         $productCode = $request->get('ItemCode');
         if (config('app.IS_API_BASED')) {
             $available = $this->apistockApi([
-                'productCode' => $productCode
+                'ItemCode' => $productCode
             ]);
         } else {
             $products = DB::connection('sqlsrv3')->table('viewtblProductsAndsalesQuantity')->where('PastelCode', $productCode)->get();
@@ -510,12 +503,4 @@ dd($request) ;
 
         return $available;
     }
-
-    /*
-     * $productCode = $request->get('ItemCode');
-        $client = new Client();
-        $res = $client->get('http://192.168.0.254:8880/getposition/stock.php',['query' =>  [ 'ItemCode' => $productCode,'OrderDetailID'=>0]]);
-       return $res->getBody();
-     */
-
 }
