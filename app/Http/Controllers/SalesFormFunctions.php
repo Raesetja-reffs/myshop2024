@@ -1220,9 +1220,9 @@ class SalesFormFunctions extends Controller
         $deliveryDate = (new \DateTime($deldate))->format('Y-m-d');
         if (config('app.IS_API_BASED')) {
             $returnCustProdPrice = $this->apiAssociatedItem([
-                'deliveryDate' => $deliveryDate,
-                'prodCode' => $prodCode,
-                'customerCode' => $customerCode,
+                'DelvDate' => $deliveryDate,
+                'ProductCode' => $prodCode,
+                'CustomerCode' => $customerCode,
             ]);
         } else {
             $userid = Auth::user()->UserID;

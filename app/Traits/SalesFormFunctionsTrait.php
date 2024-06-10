@@ -35,13 +35,7 @@ trait SalesFormFunctionsTrait
 
     public function apiAssociatedItem($data)
     {
-        $user = auth()->guard('central_api_user')->user();
-        $data['companyid'] = $user->company_id;
-        $data['UserID'] = $user->erp_user_id;
-        //$response = $this->httpRequest('post', '', $data);
-        $response = [];
-
-        return $response;
+        return $this->httpRequest('post', 'Post_CustomerPriceLookUpAssociatedItems', $data);
     }
 
     public function apiGetCustomerRouteWithOtherRoutesByPriority($data)
