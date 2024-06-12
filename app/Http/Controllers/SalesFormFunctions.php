@@ -190,10 +190,10 @@ class SalesFormFunctions extends Controller
         $deliveryDate = (new \DateTime($request->get('deliveryDate')))->format('Y-m-d');
         if (config('app.IS_API_BASED')) {
             $returnPrice = $this->apiReturnProductPrice([
-                'customerID' => $customerCode,
-                'productCode' => $productCode,
-                'deliveryDate' => $deliveryDate,
-                'warehouse' => $warehouse,
+                'CustomerCode' => $customerCode,
+                'ProductCode' => $productCode,
+                'DelvDate' => $deliveryDate,
+                'Warehouseid' => $warehouse,
             ]);
         } else {
             $userid = Auth::user()->UserID;
@@ -1334,7 +1334,7 @@ class SalesFormFunctions extends Controller
         $zero = 0;
         if (config('app.IS_API_BASED')) {
             $output = $this->apiSelectCustomerMultiAddressconfirm([
-                'CustCode' => $CustCode,
+                'CustomerCode' => $CustCode,
                 'OrderId' => $OrderId,
                 'zero' => $zero,
             ]);
@@ -2158,7 +2158,7 @@ class SalesFormFunctions extends Controller
         $customerCode = $request->get('customerCode');
         if (config('app.IS_API_BASED')) {
             $GetOrderDetails = $this->apiChangeDeliveryAddressOnNoInvoiceNo([
-                'customerCode' => $customerCode
+                'CustomerCode' => $customerCode
             ]);
         } else {
             $GetOrderDetails = DB::connection('sqlsrv3')
@@ -2224,7 +2224,7 @@ class SalesFormFunctions extends Controller
         $orderId = $request->get('orderID');
         if (config('app.IS_API_BASED')) {
             $response = $this->apiCheckifInvoiced([
-                'orderId' => $orderId
+                'OrderId' => $orderId
             ]);
         } else {
             $UserID = Auth::user()->UserID;
@@ -2327,9 +2327,10 @@ class SalesFormFunctions extends Controller
 
         if (config('app.IS_API_BASED')) {
             $this->apiUpdateCContactsOnOrder([
-                'CustomerPastelCode' => $CustomerPastelCode,
-                'contactCellTel' => $contactCellTel,
-                'contactPersonOnDispatch' => $contactPersonOnDispatch
+                'CustomerCode' => $CustomerPastelCode,
+                'CellNo' => $contactCellTel,
+                'TelNo' => $contactCellTel,
+                'ContactPerson' => $contactPersonOnDispatch
             ]);
         } else {
             DB::connection('sqlsrv3')->table('tblCustomers')
