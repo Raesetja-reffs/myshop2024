@@ -460,29 +460,31 @@ class SalesFormFunctions extends Controller
     {
         $orderlines = $request->get('orderlines');
         $orderheaders = $request->get('orderheaders');
-        $OrderId = $request->get('OrderId');
-        if (config('app.IS_API_BASED')) {
-            $outPut = $this->apiOrderheaderAndOrderLines([
-                'orderlines' => $orderlines,
-                'orderheaders' => $orderheaders,
-                'OrderId' => $OrderId,
-            ]);
-        } else {
-            $userid = Auth::user()->UserID;
-            $userName = Auth::user()->UserName;
-            if (is_array($orderlines)) {
-                $orderheaderxml = $this->toxml($orderheaders, "xml", array("result"));
+        $orderId = $request->get('OrderId');
+        if (is_array($orderlines)) {
+            $orderheaderxml = $this->toxml($orderheaders, "xml", array("result"));
+            $orderlinesrxml = $this->toxml($orderlines, "xml", array("result"));
+            if (config('app.IS_API_BASED')) {
                 $orderlinesrxml = $this->toxml($orderlines, "xml", array("result"));
+                $orderheaderxml = $this->toxml($orderheaders, "xml", array("result"));
+                $outPut = $this->apiOrderheaderAndOrderLines([
+                    'OrderId' => $orderId,
+                    'XmlOrderLines' => $orderlinesrxml,
+                    'XmlOrderHeaders' => $orderheaderxml,
+                ]);
+            } else {
+                $userid = Auth::user()->UserID;
+                $userName = Auth::user()->UserName;
                 $getResult = DB::connection('sqlsrv4')
-                    ->select("EXEC spXmlOrderHeadersAndLines " . $OrderId . ",'" . $orderlinesrxml . "','" . $orderheaderxml . "','" . $userName . "'," . $userid);
+                    ->select("EXEC spXmlOrderHeadersAndLines " . $orderId . ",'" . $orderlinesrxml . "','" . $orderheaderxml . "','" . $userName . "'," . $userid);
                 $outPut['result'] = $getResult[0]->Result;
                 $outPut['Error'] = $getResult[0]->error;
                 $outPut['Extras'] = $getResult[0]->Extras;
-            } else {
-                $outPut['result'] = "Success";
-                $outPut['Error'] = "Success";
-                $outPut['Extras'] = "";
             }
+        } else {
+            $outPut['result'] = "Success";
+            $outPut['Error'] = "Success";
+            $outPut['Extras'] = "";
         }
 
         return $outPut;

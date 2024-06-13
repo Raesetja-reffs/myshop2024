@@ -85,13 +85,9 @@ trait SalesFormFunctionsTrait
 
     public function apiOrderheaderAndOrderLines($data)
     {
-        $response = [
-            'result' => 'SUCCESS',
-            'Error' => 'SUCCESS',
-            'Extras' => ''
-        ];
+        $data = $this->setUserNameInApiData($data);
 
-        return $response;
+        return $this->httpRequest('post', 'Post_XmlOrderHeadersAndLines', $data);
     }
 
     public function apiOnCheckOrderHeaderDetails($data)
