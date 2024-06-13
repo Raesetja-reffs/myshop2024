@@ -603,7 +603,6 @@ $salesMonthToDate = DB::connection('sqlsrv3')
     }
     public function exportorder($orderid)
     {
-
         // return Excel::download(new SpecialsExport(), 'specials.xlsx');
         return (new OrdersExport($orderid))->download('order-'.$orderid.'.xlsx');
     }

@@ -41,4 +41,9 @@ trait UtilityTrait
 
         Log::debug($message, $context);
     }
+
+    public function apiOrdersExport()
+    {
+        return [];
+    }
 }

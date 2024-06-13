@@ -40,13 +40,20 @@ class SalesFormFunctions extends Controller
         else
             return ['value'=>'No Result Found','id'=>''];
     }
-    public function copyorder($orderid){
-        $queryCustomers =DB::connection('sqlsrv3')->table("viewtblCustomers" )
-            ->select('CustomerId','StoreName','CustomerPastelCode','CreditLimit','BalanceDue','UserField5','Email','Routeid','Discount','OtherImportantNotes','strRoute','mnyCustomerGp','ID','Warehouse','PriceListName','CustomerOnHold','termsAndList')
-            ->where('StatusId',1)
-            ->orderBy('CustomerPastelCode','ASC')->get();
+    public function copyorder($orderid)
+    {
+        if (config('app.IS_API_BASED')) {
+            $queryCustomers = $this->apiCopyorder();
+        } else {
+            $queryCustomers = DB::connection('sqlsrv3')->table("viewtblCustomers" )
+                ->select('CustomerId','StoreName','CustomerPastelCode','CreditLimit','BalanceDue','UserField5','Email','Routeid','Discount','OtherImportantNotes','strRoute','mnyCustomerGp','ID','Warehouse','PriceListName','CustomerOnHold','termsAndList')
+                ->where('StatusId',1)
+                ->orderBy('CustomerPastelCode','ASC')->get();
+        }
 
-        return view('dims/copyorder')->with('customers',$queryCustomers)->with('orderid',$orderid);
+        return view('dims/copyorder')
+            ->with('customers',$queryCustomers)
+            ->with('orderid',$orderid);
 
     }
     public function insertCopyorder(Request $request){
@@ -65,15 +72,23 @@ class SalesFormFunctions extends Controller
 
         return response()->json($returnmsg);
     }
-    public function getextracomunsforItems(Request $request){
-
+    public function getextracomunsforItems(Request $request)
+    {
         $custCode = $request->get('custCode');
         $productCode = $request->get('productCode');
-        $returnCustomerRoute = DB::connection('sqlsrv3')
+        if (config('app.IS_API_BASED')) {
+            $returnCustomerRoute = $this->apiGetextracomunsforItems([
+                'custCode' => $custCode,
+                'productCode' => $productCode,
+            ]);
+        } else {
+            $returnCustomerRoute = DB::connection('sqlsrv3')
             ->select('exec spGetproductExtraInfo ?,?',
                 array($productCode,$custCode)
             );
-        // ->select("EXEC spCustomerRouteAndAllRoutesByPriority '".$customerCode."'");
+            // ->select("EXEC spCustomerRouteAndAllRoutesByPriority '".$customerCode."'");
+        }
+
         return response()->json($returnCustomerRoute);
     }
     public function isClosedRoute(Request $request)
@@ -487,8 +502,12 @@ class SalesFormFunctions extends Controller
         $orderlines = $request->get('orderlines');
         $OrderId = $request->get('OrderId');
         if (config('app.IS_API_BASED')) {
+            $orderlinesrxml = '';
+            if (is_array($orderlines)) {
+                $orderlinesrxml = $this->toxml($orderlines, "xml", array("result"));
+            }
             $outPut = $this->apiCheckZeroCostOnOrder([
-                'orderlines' => $orderlines,
+                'XmlPassed' => $orderlinesrxml,
                 'OrderId' => $OrderId,
             ]);
         } else {
@@ -810,7 +829,7 @@ class SalesFormFunctions extends Controller
         $OrderId = $request->get('orderId');
         $hiddentToken = $request->get('hiddenToken');
         if (config('app.IS_API_BASED')) {
-            $outPut['result'] = $this->apiDeleteByHiddenToken([
+            $outPut = $this->apiDeleteByHiddenToken([
                 'Orderid' => $OrderId,
                 'HiddenToken' => $hiddentToken,
             ]);
@@ -1220,6 +1239,7 @@ class SalesFormFunctions extends Controller
         $deliveryDate = (new \DateTime($deldate))->format('Y-m-d');
         if (config('app.IS_API_BASED')) {
             $returnCustProdPrice = $this->apiAssociatedItem([
+                'Warehouseid' => 1,
                 'DelvDate' => $deliveryDate,
                 'ProductCode' => $prodCode,
                 'CustomerCode' => $customerCode,

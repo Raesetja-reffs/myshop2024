@@ -44,4 +44,17 @@ trait DimsCommonTrait
     {
         return $this->httpRequest('post', 'Post_HasMultiDeliveryAddress', $data);
     }
+
+    public function apiAuthBulkZeroCost($data)
+    {
+        return [
+            'done' => 'Sorry ,you don\'t have access to authorize accounts',
+            'result' => []
+        ];
+    }
+
+    public function apiVerifyAuthOnAdmin($data)
+    {
+        return [];
+    }
 }

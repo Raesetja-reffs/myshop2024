@@ -165,11 +165,13 @@ trait SalesFormFunctionsTrait
 
     public function apiCheckZeroCostOnOrder($data)
     {
-        $response = [
-            'result' => 'Nothing'
-        ];
+        $productsHavingZeroCost = $this->httpRequest('post', 'Post_XmlProductHavingZeroCost', $data);
+        $checkProductHavingZeroCost = $this->httpRequest('post', 'Post_HasProductHavingZeroCost', $data);
 
-        return $response;
+        return [
+            'Result' => $checkProductHavingZeroCost[0]['Result'] ?? 'Nothing',
+            'data' => $productsHavingZeroCost
+        ];
     }
 
     public function apiSelectCustomerMultiAddressconfirm($data)
@@ -221,5 +223,19 @@ trait SalesFormFunctionsTrait
         ];
 
         return $response;
+    }
+
+    public function apiGetextracomunsforItems()
+    {
+        return [
+            [
+                'Description_2' => '1'
+            ]
+        ];
+    }
+
+    public function apiCopyorder()
+    {
+        return [];
     }
 }

@@ -260,17 +260,24 @@ class DimsCommon extends Controller
     }
     public function verifyAuthOnAdmin(Request $request)
     {
-        $v  =  new \App\Http\Controllers\SalesForm();
         $userNameId = $request->get('userName');
         $userPassword = $request->get('userPassword');
-        $hasauthPrices = $v->getThings(Auth::user()->GroupId,'Access To Auth Prices');
-       // dd();
-        $activeUser = "";
-        if($hasauthPrices =="1"){
-            $activeUser= DB::connection('sqlsrv3')->table('tblDIMSUSERS')->select('UserID', 'UserName','Password')
-                ->where('UserName','LIKE',"%{$userNameId}%")->where('Password',$userPassword)->get();
+        if (config('app.IS_API_BASED')) {
+            $activeUser = $this->apiVerifyAuthOnAdmin([
+                'userNameId' => $userNameId,
+                'userPassword' => $userPassword,
+            ]);
+        } else {
+            $v  =  new \App\Http\Controllers\SalesForm();
+            $hasauthPrices = $v->getThings(Auth::user()->GroupId,'Access To Auth Prices');
+            $activeUser = "";
+            if ($hasauthPrices =="1") {
+                $activeUser= DB::connection('sqlsrv3')->table('tblDIMSUSERS')
+                    ->select('UserID', 'UserName','Password')
+                    ->where('UserName','LIKE',"%{$userNameId}%")
+                    ->where('Password',$userPassword)->get();
+            }
         }
-
 
         return response()->json($activeUser);
     }
@@ -315,33 +322,37 @@ class DimsCommon extends Controller
 
         return response()->json($hasmulti);
     }
+
     public function AuthBulkZeroCost(Request $request)
     {
         $userNameId = $request->get('userName');
         $userPassword = $request->get('userPassword');
         $OrderId= $request->get('OrderId');
-
-        $v  =  new \App\Http\Controllers\SalesForm();
-
-        $activeUser= DB::connection('sqlsrv3')->table('tblDIMSUSERS')->select('GroupId','UserID', 'UserName','Password')
-            ->where('UserName',$userNameId)->where('Password',$userPassword)->get();
-        $hasAccess = "Sorry ,you don't have access to authorize accounts";
-    //    dd($activeUser);
-        if(count($activeUser) > 0)
-        {
-            $things = $v->getThings($activeUser[0]->GroupId,'Auth Zero Cost');
-            if($things != "0")
-            {
-                DB::connection('sqlsrv3')->table('tblOrderDetails')
-                    ->where('OrderId', $OrderId)
-                    ->update(['blnCostAuth' =>1]);
-                $hasAccess = "DONE";
+        if (config('app.IS_API_BASED')) {
+            $output = $this->apiAuthBulkZeroCost([
+                'OrderId' => $OrderId
+            ]);
+        } else {
+            $v  =  new \App\Http\Controllers\SalesForm();
+            $activeUser= DB::connection('sqlsrv3')->table('tblDIMSUSERS')->select('GroupId','UserID', 'UserName','Password')
+                ->where('UserName',$userNameId)->where('Password',$userPassword)->get();
+            $hasAccess = "Sorry ,you don't have access to authorize accounts";
+            if (count($activeUser) > 0) {
+                $things = $v->getThings($activeUser[0]->GroupId,'Auth Zero Cost');
+                if ($things != "0") {
+                    DB::connection('sqlsrv3')->table('tblOrderDetails')
+                        ->where('OrderId', $OrderId)
+                        ->update(['blnCostAuth' =>1]);
+                    $hasAccess = "DONE";
+                }
             }
+            $output['done'] = $hasAccess;
+            $output['result'] = $activeUser;
         }
-        $output['done'] = $hasAccess;
-        $output['result'] = $activeUser;
+
         return response()->json($output);
     }
+
     public function AuthExternaOrders(Request $request)
     {
         $userName = $request->get('userName');
