@@ -264,8 +264,8 @@ class DimsCommon extends Controller
         $userPassword = $request->get('userPassword');
         if (config('app.IS_API_BASED')) {
             $activeUser = $this->apiVerifyAuthOnAdmin([
-                'userNameId' => $userNameId,
-                'userPassword' => $userPassword,
+                'UserName' => $userNameId,
+                'UserPassword' => $userPassword,
             ]);
         } else {
             $v  =  new \App\Http\Controllers\SalesForm();
@@ -327,21 +327,26 @@ class DimsCommon extends Controller
     {
         $userNameId = $request->get('userName');
         $userPassword = $request->get('userPassword');
-        $OrderId= $request->get('OrderId');
+        $orderId = $request->get('OrderId');
         if (config('app.IS_API_BASED')) {
             $output = $this->apiAuthBulkZeroCost([
-                'OrderId' => $OrderId
+                'OrderId' => $orderId,
+                'UserName' => $userNameId,
+                'UserPassword' => $userPassword
             ]);
         } else {
             $v  =  new \App\Http\Controllers\SalesForm();
-            $activeUser= DB::connection('sqlsrv3')->table('tblDIMSUSERS')->select('GroupId','UserID', 'UserName','Password')
-                ->where('UserName',$userNameId)->where('Password',$userPassword)->get();
+            $activeUser= DB::connection('sqlsrv3')->table('tblDIMSUSERS')
+                ->select('GroupId','UserID', 'UserName','Password')
+                ->where('UserName',$userNameId)
+                ->where('Password',$userPassword)
+                ->get();
             $hasAccess = "Sorry ,you don't have access to authorize accounts";
             if (count($activeUser) > 0) {
                 $things = $v->getThings($activeUser[0]->GroupId,'Auth Zero Cost');
                 if ($things != "0") {
                     DB::connection('sqlsrv3')->table('tblOrderDetails')
-                        ->where('OrderId', $OrderId)
+                        ->where('OrderId', $orderId)
                         ->update(['blnCostAuth' =>1]);
                     $hasAccess = "DONE";
                 }

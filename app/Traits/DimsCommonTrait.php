@@ -47,14 +47,11 @@ trait DimsCommonTrait
 
     public function apiAuthBulkZeroCost($data)
     {
-        return [
-            'done' => 'Sorry ,you don\'t have access to authorize accounts',
-            'result' => []
-        ];
+        return $this->httpRequest('post', 'Post_AuthBulkZeroCost', $data);
     }
 
     public function apiVerifyAuthOnAdmin($data)
     {
-        return [];
+        return $this->httpRequest('post', 'Post_AuthMinimumGP', $data);
     }
 }

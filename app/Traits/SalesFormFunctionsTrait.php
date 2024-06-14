@@ -123,7 +123,7 @@ trait SalesFormFunctionsTrait
 
     public function apiInsertNewAddress($data)
     {
-        return true;
+        return $this->httpRequest('post', 'Post_AddNewAddress', $data);
     }
 
     public function apiTempDeliverAddress($data)
@@ -141,7 +141,7 @@ trait SalesFormFunctionsTrait
 
     public function apiAssignInvoiceNumber($data)
     {
-        return '';
+        return $this->httpRequest('post', 'Post_AssignInvoiceNumber', $data);
     }
 
     public function apiCheckifInvoiced($data)

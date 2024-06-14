@@ -1800,12 +1800,12 @@ class SalesFormFunctions extends Controller
         if (strlen($CustomerCode) > 0) {
             if (config('app.IS_API_BASED')) {
                 $insertAddress = $this->apiInsertNewAddress([
-                    'AddressLine1' => $AddressLine1,
-                    'AddressLine2' => $AddressLine2,
-                    'AddressLine3' => $AddressLine3,
-                    'AddressLine4' => $AddressLine4,
-                    'AddressLine5' => $AddressLine5,
-                    'CustomerCode' => $CustomerCode,
+                    'Address1' => $AddressLine1,
+                    'Address2' => $AddressLine2,
+                    'Address3' => $AddressLine3,
+                    'Address4' => $AddressLine4,
+                    'Address5' => $AddressLine5,
+                    'OrdCustomerCodeerId' => $CustomerCode,
                 ]);
             } else {
                 $insertAddress = DB::connection('sqlsrv3')
