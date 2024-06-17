@@ -1017,8 +1017,8 @@ trait SalesFormTrait
         return $response;
     }
 
-    public function apiGetThings()
+    public function apiGetThings($data)
     {
-        return 0;
+        return $this->httpRequest('post', 'Post_GetThings', $data);
     }
 }

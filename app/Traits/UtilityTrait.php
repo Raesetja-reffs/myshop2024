@@ -5,18 +5,25 @@ namespace App\Traits;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use App\Traits\SalesFormTrait;
 
 trait UtilityTrait
 {
-    public function commonGetThings($thing)
+    use SalesFormTrait;
+
+    public function commonGetThings($thing, $groupId = null)
     {
         $things = 0;
         if (config('app.IS_API_BASED')) {
-            $things = $this->apiGetThings();
+            $things = $this->apiGetThings([
+                'Content' => $thing
+            ]);
         } else {
-            $GroupId = Auth::user()->GroupId;
+            if (!$groupId) {
+                $groupId = Auth::user()->GroupId;
+            }
             $returnTrueOrFalse = DB::connection('sqlsrv3')
-                ->select("select [dbo].[fnGetGroupThings](".$GroupId.",'".$thing."',0) as things");
+                ->select("select [dbo].[fnGetGroupThings](" . $groupId . ",'" . $thing . "',0) as things");
             foreach ($returnTrueOrFalse as $val) {
                 $things = $val->things;
             }

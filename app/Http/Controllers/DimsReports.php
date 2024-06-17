@@ -547,7 +547,10 @@ $salesMonthToDate = DB::connection('sqlsrv3')
         $customerCode = $request->get('customerCode');
         $addressId = $request->get('addressId');
         if (config('app.IS_API_BASED')) {
-            $backawaiting = $this->apiBackordersandawaiting();
+            $backawaiting = $this->apiBackordersandawaiting([
+                'CustCode' => $customerCode,
+                'DeliveryAddressId' => $addressId
+            ]);
         } else {
             $backawaiting = DB::connection('sqlsrv3')
             ->select('exec spBackOrderAndAwaitingStock ?,?',

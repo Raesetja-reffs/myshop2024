@@ -77,7 +77,26 @@ class ConsoleManagement extends Controller
         $machine = $request->get('machine');
         $ReturnId = $request->get('ReturnId');
         if (config('app.IS_API_BASED')) {
-            $returnManagemntC = $this->apiLogMessageAjax();
+            $returnManagemntC = $this->apiLogMessageAjax([
+                'ConsoleTypeId' => $ConsoleTypeId,
+                'Importance' => $Importance,
+                'LoggedBy' => '',
+                'Message' => $Message,
+                'Reviewed' => $Reviewed,
+                'productid' => $productid,
+                'CustomerCode' => $CustomerId,
+                'OldQty' => $OldQty,
+                'NewQty' =>  $NewQty,
+                'OldPrice' =>  $OldPrice,
+                'NewPrice' => $NewPrice,
+                'ReviewedUserId' => $ReviewedUserId,
+                'ReferenceNo' => $ReferenceNo,
+                'DocType' =>  $DocType,
+                'DocNumber' => $DocNumber,
+                'Computer' => $machine,
+                'OrderId' => $OrderId,
+                'ReturnId' => $ReturnId,
+            ]);
         } else {
             $UserId= Auth::user()->UserID;
             $LoggedBy = Auth::user()->UserName;

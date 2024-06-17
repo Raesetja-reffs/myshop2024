@@ -8,9 +8,12 @@ trait ConsoleManagementTrait
 {
     use ApiTrait;
 
-    public function apiLogMessageAjax()
+    public function apiLogMessageAjax($data)
     {
-        return [];
+        $user = auth()->guard('central_api_user')->user();
+        $data['LoggedBy'] = $user->erp_apiusername;
+
+        return $this->httpRequest('post', 'Post_ConsoleManagement', $data);
     }
 
     public function apiDeleteallLinesOnOrder($data)

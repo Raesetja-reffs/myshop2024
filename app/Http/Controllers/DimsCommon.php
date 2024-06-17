@@ -1759,7 +1759,6 @@ class DimsCommon extends Controller
            // $things = (new SalesForm())->getThings($GroupId,'Allow Call Logger');
 
             $OurderRoute = DB::connection('sqlsrv3')->table('tblOrders')->select('RouteId')->where('OrderId',$OrderID)->get();
-            //dd($OurderRoute);
             $currentRoute = $this->returnRouteName($OurderRoute[0]->RouteId);
             DB::connection('sqlsrv3')->table('tblOrders')
                 ->where('OrderId',$OrderID )

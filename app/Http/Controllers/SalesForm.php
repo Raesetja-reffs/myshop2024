@@ -135,20 +135,9 @@ class SalesForm extends Controller
             ->with('printinvoices',$printinvoices);
 
     }
-    public function getThings($GroupId,$thing)
+    public function getThings($groupId, $thing)
     {
-        $things = 0;
-        if (config('app.IS_API_BASED')) {
-            $things = $this->apiGetThings();
-        } else {
-            $returnTrueOrFalse = DB::connection('sqlsrv3')
-                ->select("select [dbo].[fnGetGroupThings](".$GroupId.",'".$thing."',0) as things");
-            foreach ($returnTrueOrFalse as $val) {
-                $things = $val->things;
-            }
-        }
-
-        return $things;
+        return $this->commonGetThings($thing, $groupId);
     }
     public function hasAccessToEdit($orderid)
     {
