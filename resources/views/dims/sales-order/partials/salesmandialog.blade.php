@@ -34,27 +34,27 @@
         $('#addTheSalesMan').click(function() {
             $('#salesmandialog').show();
             showDialog('#salesmandialog', '35%', 350);
-            $('#authsalesmanusername').val(" ");
-            $('#authsalesmanpassword').val(" ");
-            $('#submitsalesman').click(function() {
-                $.ajax({
-                    url: '{!! url('/changesalesman') !!}',
-                    type: "POST",
-                    data: {
-                        userID: $('#salesmanselectstatement').val(),
-                        OrderId: $('#orderId').val(),
-                        DriverDeliveryDate: $('#inputDeliveryDate').val(),
-                        authUserName: $('#authsalesmanusername').val(),
-                        authUserPassword: $('#authsalesmanpassword').val()
-                    },
-                    success: function(data) {
-                        if (data == "DONE") {
-                            $('#salesmandialog').dialog('close');
-                        } else {
-                            alert("Sorry ,you don't have access to authorize rep codes");
-                        }
+            $('#authsalesmanusername').val("");
+            $('#authsalesmanpassword').val("");
+        });
+        $('#submitsalesman').click(function() {
+            $.ajax({
+                url: '{!! url('/changesalesman') !!}',
+                type: "POST",
+                data: {
+                    userID: $('#salesmanselectstatement').val(),
+                    OrderId: $('#orderId').val(),
+                    DriverDeliveryDate: $('#inputDeliveryDate').val(),
+                    authUserName: $('#authsalesmanusername').val(),
+                    authUserPassword: $('#authsalesmanpassword').val()
+                },
+                success: function(data) {
+                    if (data == "DONE") {
+                        $('#salesmandialog').dialog('close');
+                    } else {
+                        alert("Sorry ,you don't have access to authorize rep codes");
                     }
-                });
+                }
             });
         });
     });

@@ -295,15 +295,25 @@ class SalesFormFunctions extends Controller
 
         return $outPut;
     }
+
     public function updateDiscount(Request $request)
     {
         $orderID = $request->get('OrderId');
         $Disc = $request->get('Disc');
-        DB::connection('sqlsrv3')->table('tblOrders')
-            ->where('OrderID',$orderID )
-            ->update(['Disc' => $Disc]);
+        if (config('app.IS_API_BASED')) {
+            $this->apiUpdateDiscount([
+                'OrderID' => $orderID,
+                'Disc' => $Disc
+            ]);
+        } else {
+            DB::connection('sqlsrv3')->table('tblOrders')
+                ->where('OrderID', $orderID )
+                ->update(['Disc' => $Disc]);
+        }
+
         return $Disc;
     }
+
     /*
      * Deprecated
      */

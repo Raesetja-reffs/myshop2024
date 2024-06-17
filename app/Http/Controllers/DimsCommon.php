@@ -665,16 +665,20 @@ class DimsCommon extends Controller
     public function getDataFromManagementConsole(Request $request)
     {
         $docId = $request->get('orderID');
-        $data =  DB::connection('sqlsrv3')
-            ->select("EXEC spManagementConsoleData ".$docId);
-
+        if (config('app.IS_API_BASED')) {
+            $data = $this->apiGetDataFromManagementConsole([
+                'docId' => $docId
+            ]);
+        } else {
+            $data = DB::connection('sqlsrv3')
+                ->select("EXEC spManagementConsoleData ".$docId);
+        }
         $output['recordsTotal'] = count($data);
         $output['data'] = $data;
         $output['recordsFiltered'] = count($data);
-
         $output['draw'] = intval($request->input('draw'));
-        return $output;
 
+        return $output;
     }
     public function getDataFromManagementConsoleForAuditors(Request $request)
     {
@@ -1742,10 +1746,11 @@ class DimsCommon extends Controller
         $OrderID= $request->get('OrderId');
         $RouteID= $request->get('routeId');
         if (config('app.IS_API_BASED')) {
-            $newRoute = $this->apiChangerouteonorder([
+            $response = $this->apiChangerouteonorder([
                 'OrderId' => $OrderID,
                 'RouteId' => $RouteID,
             ]);
+            $newRoute = $response[0]['Route'];
         } else {
             $userAuth = Auth::user()->UserName;
             $userAuthID = Auth::user()->UserID;

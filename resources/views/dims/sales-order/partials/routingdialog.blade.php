@@ -29,20 +29,20 @@
         $('#routeonabutton').click(function() {
             $('#routingdialog').show();
             showDialog('#routingdialog', '40%', 300);
-            $('#auththisrouteontheorder').click(function() {
-                $.ajax({
-                    url: '{!! url('/changerouteonorder') !!}',
-                    type: "POST",
-                    data: {
-                        routeId: $('#changetcurrentrouteonorder').val(),
-                        OrderId: $('#orderId').val(),
-                    },
-                    success: function(data) {
-                        //console.debug(data);
-                        $('#routeonabutton').val(data);
-                        $('#routingdialog').dialog('close');
-                    }
-                });
+        });
+        $('#auththisrouteontheorder').click(function() {
+            $.ajax({
+                url: '{!! url('/changerouteonorder') !!}',
+                type: "POST",
+                data: {
+                    routeId: $('#changetcurrentrouteonorder').val(),
+                    OrderId: $('#orderId').val(),
+                },
+                success: function(data) {
+                    //console.debug(data);
+                    $('#routeonabutton').val(data);
+                    $('#routingdialog').dialog('close');
+                }
             });
         });
     });

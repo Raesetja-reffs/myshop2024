@@ -54,4 +54,9 @@ trait DimsCommonTrait
     {
         return $this->httpRequest('post', 'Post_AuthMinimumGP', $data);
     }
+
+    public function apiGetDataFromManagementConsole($data)
+    {
+        return [];
+    }
 }

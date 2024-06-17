@@ -234,4 +234,9 @@ trait SalesFormFunctionsTrait
     {
         return [];
     }
+
+    public function apiUpdateDiscount($data)
+    {
+        return $this->httpRequest('post', '', $data);
+    }
 }

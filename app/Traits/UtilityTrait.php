@@ -5,12 +5,9 @@ namespace App\Traits;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use App\Traits\SalesFormTrait;
 
 trait UtilityTrait
 {
-    use SalesFormTrait;
-
     public function commonGetThings($thing, $groupId = null)
     {
         $things = 0;
