@@ -183,41 +183,12 @@ trait SalesFormFunctionsTrait
 
     public function apiOnCheckOrderHeader($data)
     {
-        return $this->httpRequest('post', 'Post_ReturnInvoiceOrderIdData', $data);
-        // $response = [
-        //     "data" => [
-        //         [
-        //             "OrderId" => "366724",
-        //             "CustomerId" => "958",
-        //             "OrderDate" => "2020-03-23",
-        //             "RouteId" => "2",
-        //             "Route" => "BEAUFORT WEST",
-        //             "DeliveryDate" => "2020-03-26",
-        //             "LateOrder" => "2",
-        //             "OrderNo" => "Mariena",
-        //             "Invoiced" => "1",
-        //             "InvoiceNo" => "CAN366724",
-        //             "MESSAGESINV" => "0",
-        //             "Disc" => "0.0",
-        //             "DeliveryAddressID" => "0",
-        //             "DeliveryAddress1" => "Del Address 1",
-        //             "DeliveryAddress2" => "Del Address 2",
-        //             "DeliveryAddress3" => "BEAUFORT WES",
-        //             "DeliveryAddress4" => "6970",
-        //             "DeliveryAddress5" => null,
-        //             "CustomerPastelCode" => "000017",
-        //             "StoreName" => "000017Customer",
-        //             "CreditLimit" => "45000.0000",
-        //             "BalanceDue" => ".0000",
-        //             "OrderType" => "1stDelivery",
-        //             "Discount" => "0.0",
-        //             "TreatAsQuotation" => "0"
-        //         ]
-        //     ],
-        //     "returns" => "inserted"
-        // ];
+        $response = $this->httpRequest('post', 'Post_ReturnInvoiceOrderIdData', $data);
 
-        // return $response;
+        return [
+            'data' => $response['data'],
+            'returns' => $response['Returns'][0]['returns'],
+        ];
     }
 
     public function apiGetextracomunsforItems()

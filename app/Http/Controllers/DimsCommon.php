@@ -570,9 +570,10 @@ class DimsCommon extends Controller
         $results = [];
         $term = $request->get('term', '');
         if (config('app.IS_API_BASED')) {
-            $results = $this->apiInvoiceLookup([
+            $queries = $this->apiInvoiceLookup([
                 'InvoiceNo' => $term
             ]);
+            $queries = $this->convertToCollectionObject($queries);
         } else {
             $queries = DB::connection('sqlsrv3')->table("vwInvoiceOrderIDLookUp")
                 ->where('InvoiceNo', 'LIKE', '%'.$term.'%')
@@ -580,18 +581,18 @@ class DimsCommon extends Controller
                 ->orWhere('CustomerPastelCode', 'LIKE', '%'.$term.'%')
                 ->orWhere('StoreName', 'LIKE', '%'.$term.'%')*/
                 ->take(10)->get();
-            if ($queries) {
-                foreach ($queries as $query) {
-                    $results[] = [
-                        'id' => $query->OrderId,
-                        'value' => $query->InvoiceNo,
-                        'StoreName' => $query->StoreName,
-                        'CustomerPastelCode' => $query->CustomerPastelCode,
-                        'CompanyName' => $query->CompanyName,
-                        'mnyTotal' => $query->mnyTotal,
-                        'PaymentTerms' => $query->PaymentTerms
-                    ];
-                }
+        }
+        if ($queries) {
+            foreach ($queries as $query) {
+                $results[] = [
+                    'id' => $query->OrderId,
+                    'value' => $query->InvoiceNo,
+                    'StoreName' => $query->StoreName,
+                    'CustomerPastelCode' => $query->CustomerPastelCode,
+                    'CompanyName' => $query->CompanyName,
+                    'mnyTotal' => $query->mnyTotal,
+                    'PaymentTerms' => $query->PaymentTerms
+                ];
             }
         }
         if (empty($results)) {
