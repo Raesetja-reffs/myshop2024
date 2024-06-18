@@ -22,6 +22,8 @@ trait DimsCommonTrait
 
     public function apiChangesalesman($data)
     {
+        $data = $this->setUserNameInApiData($data);
+
         return $this->httpRequest('post', 'Post_ChangeSalesman', $data);
     }
 
@@ -57,6 +59,6 @@ trait DimsCommonTrait
 
     public function apiGetDataFromManagementConsole($data)
     {
-        return [];
+        return $this->httpRequest('post', 'Post_Retrivemanagementconsoledata', $data);
     }
 }

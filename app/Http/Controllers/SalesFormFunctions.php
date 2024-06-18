@@ -299,19 +299,19 @@ class SalesFormFunctions extends Controller
     public function updateDiscount(Request $request)
     {
         $orderID = $request->get('OrderId');
-        $Disc = $request->get('Disc');
+        $disc = $request->get('Disc');
         if (config('app.IS_API_BASED')) {
             $this->apiUpdateDiscount([
-                'OrderID' => $orderID,
-                'Disc' => $Disc
+                'OrderId' => $orderID,
+                'Disc' => $disc
             ]);
         } else {
             DB::connection('sqlsrv3')->table('tblOrders')
                 ->where('OrderID', $orderID )
-                ->update(['Disc' => $Disc]);
+                ->update(['Disc' => $disc]);
         }
 
-        return $Disc;
+        return $disc;
     }
 
     /*
@@ -838,16 +838,16 @@ class SalesFormFunctions extends Controller
 
     public function deleteByHiddenToken(Request $request)
     {
-        $OrderId = $request->get('orderId');
+        $orderId = $request->get('orderId');
         $hiddentToken = $request->get('hiddenToken');
         if (config('app.IS_API_BASED')) {
             $outPut = $this->apiDeleteByHiddenToken([
-                'Orderid' => $OrderId,
+                'Orderid' => $orderId,
                 'HiddenToken' => $hiddentToken,
             ]);
         } else {
             $getResult = DB::connection('sqlsrv3')
-                ->select("EXEC spDeleteHiddenToken ".$OrderId.",".$hiddentToken);
+                ->select("EXEC spDeleteHiddenToken ".$orderId.",".$hiddentToken);
 
             $outPut['result'] = $getResult[0]->Result;
         }
@@ -1045,7 +1045,10 @@ class SalesFormFunctions extends Controller
         $sort['dir'] = $request->input('order.0.dir');
         $outPut = [];
         if (config('app.IS_API_BASED')) {
-            $outPut = $this->apiOnCheckOrderHeader();
+            $outPut = $this->apiOnCheckOrderHeader([
+                'OrderId' => $OrderId,
+                'InvoiceNo' => $InvoiceNumber,
+            ]);
         } else {
             $edit = (new SalesForm())->hasAccessToEdit($OrderId);
             $isQoutation = DB::connection('sqlsrv3')
@@ -1816,7 +1819,7 @@ class SalesFormFunctions extends Controller
                         'Address3' => $AddressLine3,
                         'Address4' => $AddressLine4,
                         'Address5' => $AddressLine5,
-                        'OrdCustomerCodeerId' => $CustomerCode,
+                        'CustomerCode' => $CustomerCode,
                     ]);
                 }
             } else {
@@ -2245,7 +2248,7 @@ class SalesFormFunctions extends Controller
         $orderId = $request->get('orderID');
         if (config('app.IS_API_BASED')) {
             $this->apiAssignInvoiceNumber([
-                'orderId' => $orderId
+                'OrderId' => $orderId
             ]);
         } else {
             $UserID = Auth::user()->UserID;

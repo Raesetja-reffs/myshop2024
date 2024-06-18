@@ -664,14 +664,14 @@ class DimsCommon extends Controller
 
     public function getDataFromManagementConsole(Request $request)
     {
-        $docId = $request->get('orderID');
+        $orderId = $request->get('orderID');
         if (config('app.IS_API_BASED')) {
             $data = $this->apiGetDataFromManagementConsole([
-                'docId' => $docId
+                'OrderId' => $orderId
             ]);
         } else {
             $data = DB::connection('sqlsrv3')
-                ->select("EXEC spManagementConsoleData ".$docId);
+                ->select("EXEC spManagementConsoleData " . $orderId);
         }
         $output['recordsTotal'] = count($data);
         $output['data'] = $data;

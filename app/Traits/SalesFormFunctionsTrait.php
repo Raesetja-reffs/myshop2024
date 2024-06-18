@@ -73,14 +73,14 @@ trait SalesFormFunctionsTrait
 
     public function apiDeleteByHiddenToken($data)
     {
-        return $this->httpRequest('post', 'DeleteHiddenToken', $data);
+        return $this->httpRequest('post', 'Post_DeleteHiddenToken', $data);
     }
 
     public function apiDeleteOrderLinedetails($data)
     {
         $data = $this->setUserNameInApiData($data);
 
-        return $this->httpRequest('post', 'DeleteOrderLinedetails', $data);
+        return $this->httpRequest('post', 'Post_DeleteOrderLinedetails', $data);
     }
 
     public function apiOrderheaderAndOrderLines($data)
@@ -102,18 +102,16 @@ trait SalesFormFunctionsTrait
 
     public function apiMarkitawaitingstock($data)
     {
-        $user = auth()->guard('central_api_user')->user();
-        $data['Username'] = $user->erp_apiusername;
+        $data = $this->setUserNameInApiData($data);
 
         return $this->httpRequest('post', 'AwaitingStock', $data);
     }
 
     public function apiTreatAsQuote($data)
     {
-        $user = auth()->guard('central_api_user')->user();
-        $data['Username'] = $user->erp_apiusername;
+        $data = $this->setUserNameInApiData($data);
 
-        return $this->httpRequest('post', 'treatasquote', $data);
+        return $this->httpRequest('post', 'Post_treatasquote', $data);
     }
 
     public function apiAdvancedOrderNo($data)
@@ -183,42 +181,43 @@ trait SalesFormFunctionsTrait
         ];
     }
 
-    public function apiOnCheckOrderHeader()
+    public function apiOnCheckOrderHeader($data)
     {
-        $response = [
-            "data" => [
-                [
-                    "OrderId" => "366724",
-                    "CustomerId" => "958",
-                    "OrderDate" => "2020-03-23",
-                    "RouteId" => "2",
-                    "Route" => "BEAUFORT WEST",
-                    "DeliveryDate" => "2020-03-26",
-                    "LateOrder" => "2",
-                    "OrderNo" => "Mariena",
-                    "Invoiced" => "1",
-                    "InvoiceNo" => "CAN366724",
-                    "MESSAGESINV" => "0",
-                    "Disc" => "0.0",
-                    "DeliveryAddressID" => "0",
-                    "DeliveryAddress1" => "Del Address 1",
-                    "DeliveryAddress2" => "Del Address 2",
-                    "DeliveryAddress3" => "BEAUFORT WES",
-                    "DeliveryAddress4" => "6970",
-                    "DeliveryAddress5" => null,
-                    "CustomerPastelCode" => "000017",
-                    "StoreName" => "000017Customer",
-                    "CreditLimit" => "45000.0000",
-                    "BalanceDue" => ".0000",
-                    "OrderType" => "1stDelivery",
-                    "Discount" => "0.0",
-                    "TreatAsQuotation" => "0"
-                ]
-            ],
-            "returns" => "inserted"
-        ];
+        return $this->httpRequest('post', 'Post_ReturnInvoiceOrderIdData', $data);
+        // $response = [
+        //     "data" => [
+        //         [
+        //             "OrderId" => "366724",
+        //             "CustomerId" => "958",
+        //             "OrderDate" => "2020-03-23",
+        //             "RouteId" => "2",
+        //             "Route" => "BEAUFORT WEST",
+        //             "DeliveryDate" => "2020-03-26",
+        //             "LateOrder" => "2",
+        //             "OrderNo" => "Mariena",
+        //             "Invoiced" => "1",
+        //             "InvoiceNo" => "CAN366724",
+        //             "MESSAGESINV" => "0",
+        //             "Disc" => "0.0",
+        //             "DeliveryAddressID" => "0",
+        //             "DeliveryAddress1" => "Del Address 1",
+        //             "DeliveryAddress2" => "Del Address 2",
+        //             "DeliveryAddress3" => "BEAUFORT WES",
+        //             "DeliveryAddress4" => "6970",
+        //             "DeliveryAddress5" => null,
+        //             "CustomerPastelCode" => "000017",
+        //             "StoreName" => "000017Customer",
+        //             "CreditLimit" => "45000.0000",
+        //             "BalanceDue" => ".0000",
+        //             "OrderType" => "1stDelivery",
+        //             "Discount" => "0.0",
+        //             "TreatAsQuotation" => "0"
+        //         ]
+        //     ],
+        //     "returns" => "inserted"
+        // ];
 
-        return $response;
+        // return $response;
     }
 
     public function apiGetextracomunsforItems()
@@ -237,6 +236,8 @@ trait SalesFormFunctionsTrait
 
     public function apiUpdateDiscount($data)
     {
-        return $this->httpRequest('post', '', $data);
+        $data = $this->setUserNameInApiData($data);
+
+        return $this->httpRequest('post', 'Post_UpdateDiscPercent', $data);
     }
 }
