@@ -50,4 +50,11 @@ trait UtilityTrait
     {
         return [];
     }
+
+    public function convertToCollectionObject($array)
+    {
+        return collect($array)->map(function ($item) {
+            return (object) $item;
+        });
+    }
 }

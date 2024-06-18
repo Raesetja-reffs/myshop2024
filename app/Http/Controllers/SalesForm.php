@@ -38,7 +38,7 @@ class SalesForm extends Controller
             $getRoutes = $commonData['getRoutes'];
             $saleman = $commonData['saleman'];
             $getviewWareHouseLocations = $commonData['getviewWareHouseLocations'];
-            $printinvoices = '"1"';
+            $printinvoices = $commonData['printinvoices'];
             //$callListUserInfo = $this->apiCallListUserInfo();
             $callListUserInfo = [];
             //$callListDeliveryDate = $this->apiCallListDeliveryDate();
