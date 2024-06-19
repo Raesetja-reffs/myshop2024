@@ -39,10 +39,8 @@ class SalesForm extends Controller
             $saleman = $commonData['saleman'];
             $getviewWareHouseLocations = $commonData['getviewWareHouseLocations'];
             $printinvoices = $commonData['printinvoices'];
-            //$callListUserInfo = $this->apiCallListUserInfo();
-            $callListUserInfo = [];
-            //$callListDeliveryDate = $this->apiCallListDeliveryDate();
-            $callListDeliveryDate = [];
+            $callListUserInfo = $commonData['callListUserInfo'];
+            $callListDeliveryDate = $commonData['callListDeliveryDate'];
         } else {
             $sessionUserId = Auth::user()->UserID;
             if(Auth::user()->strDepartmentApp == "SALES"){
@@ -350,7 +348,7 @@ public function getCustomerStoppedBuyingJSon()
         $response = [];
         if (config('app.IS_API_BASED')) {
             $response = $this->apiGetSalesOrderCustomers([
-                'searchTerm' => $request->get('term')
+                'searchTerm' => $request->get('keyword')
             ]);
         } else {
             if (env('CustomerAccess') == 1) {

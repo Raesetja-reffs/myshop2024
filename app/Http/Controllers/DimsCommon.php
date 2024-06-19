@@ -1702,13 +1702,18 @@ class DimsCommon extends Controller
         $authUserPassword= $request->get('authUserPassword');
         $DriverDeliveryDate= $request->get('DriverDeliveryDate');
         if (config('app.IS_API_BASED')) {
-            $hasAccess = $this->apiChangesalesman([
-                'UserId' => $userID,
+            $response = $this->apiChangesalesman([
                 'OrderId' => $OrderID,
                 'UserNameAuthorising' => $authUserName,
                 'PasswordAuthorising' => $authUserPassword,
-                'DriverDeliveryDate' => $DriverDeliveryDate
+                'DriverDeliveryDate' => $DriverDeliveryDate,
+                'AuthNow' => 1,
+                'SaleCode' => $userID,
             ]);
+            $hasAccess = "Sorry ,you don't have access to authorize accounts";
+            if (isset($response['0']['Result']) && $response['0']['Result'] == 'SUCCESS') {
+                $hasAccess = "DONE";
+            }
         } else {
             $userAuth = Auth::user()->UserName;
             $userAuthID = Auth::user()->UserID;

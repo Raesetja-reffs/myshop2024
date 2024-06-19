@@ -30,10 +30,10 @@ trait SalesFormFunctionsTrait
 
     public function apiCombinedSpecials($data)
     {
-        $groupSpecials = $this->httpRequest('post', 'GetGroupSpecials', $data);
-        $customerSpecials = $this->httpRequest('post', 'GetCustomerSpecials', $data);
-        $pastInvoices = $this->httpRequest('post', 'GetPastCustomerInvoices', $data);
-        $getBuyerContacts = $this->httpRequest('post', 'Post_GetBuyerContacts', $data);
+        $groupSpecials = $this->httpRequest('post', 'GetGroupSpecials', $data, true);
+        $customerSpecials = $this->httpRequest('post', 'GetCustomerSpecials', $data, true);
+        $pastInvoices = $this->httpRequest('post', 'GetPastCustomerInvoices', $data, true);
+        $getBuyerContacts = $this->httpRequest('post', 'Post_GetBuyerContacts', $data, true);
 
         return [
             "customerSpecials" => $customerSpecials,
@@ -71,7 +71,7 @@ trait SalesFormFunctionsTrait
     {
         $data = $this->setUserNameInApiData($data);
 
-        return $this->httpRequest('post', 'Post_DeleteOrderLinedetails', $data);
+        return $this->httpRequest('post', 'Post_DeleteOrderLinedetails', $data, true);
     }
 
     public function apiOrderheaderAndOrderLines($data)

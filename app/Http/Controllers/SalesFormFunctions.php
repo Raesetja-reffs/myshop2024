@@ -406,24 +406,9 @@ class SalesFormFunctions extends Controller
                 'OrderDate' => $OrderDate,
                 'DeliveryAddressID' => $DeliveryAddressID,
             ]);
-            $output['orderId'] = $response['ID'];
-            $output['counter'] = [
-                'CustomerId' => 1
-            ];
-            $output['singleAddress'] = [
-                "CustomerPastelCode" => "000001",
-                "StoreName" => "000001Customer",
-                "DeliveryAddressID" => "0",
-                "DAddress1" => "Del Address 1",
-                "DAddress2" => "Del Address 2",
-                "DAddress3" => "GEORGE",
-                "DAddress4" => "6530",
-                "DAddress5" => null,
-                "SalesmanCode" => "115",
-                "UserID" => "1",
-                "Routeid" => "10",
-                "CustomerOnHold" => "0"
-             ];
+            $output['orderId'] = $response['Result']['Table']['ID'];
+            $output['singleAddress'] = $response['Result']['Table1'];
+            $output['counter'] = $response['Result']['Table2'];
         } else {
             $userID =  Auth::user()->UserID;
             //$customerID = DB::connection('sqlsrv3')->table('tblCustomers')->select('CustomerId')->where('CustomerPastelCode',$customerCode)->get();
