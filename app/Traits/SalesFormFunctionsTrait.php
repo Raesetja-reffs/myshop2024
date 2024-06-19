@@ -92,11 +92,13 @@ trait SalesFormFunctionsTrait
 
     public function apiOnCheckOrderHeaderDetails($data)
     {
-        return $this->httpRequest('post', 'GetOrderIdLines', $data);
+        return $this->httpRequest('post', 'GetOrderIdLines', $data, true);
     }
 
     public function apiUpdateCContactsOnOrder($data)
     {
+        $data = $this->setUserNameInApiData($data);
+
         return $this->httpRequest('post', 'Post_AlterBuyerContactsWhileOnOrder', $data);
     }
 

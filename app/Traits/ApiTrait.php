@@ -10,7 +10,7 @@ trait ApiTrait
 {
     use UtilityTrait;
 
-    public function httpRequest($method, $url, $data = [])
+    public function httpRequest($method, $url, $data = [], $isConvertToMultiple = false)
     {
         $returnResponse = [];
         try {
@@ -20,6 +20,9 @@ trait ApiTrait
                 'Authorization' => 'Key=' . $user->erp_apiauthtoken,
             ])->$method($user->erp_apiurl . $url, $data);
             $returnResponse = $response->json();
+            if ($isConvertToMultiple && $returnResponse && !isset($returnResponse[0])) {
+                $returnResponse = [$returnResponse];
+            }
         } catch (Exception $e) {
             $logData = [
                 'url' => $user->erp_apiurl . $url,

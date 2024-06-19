@@ -1418,11 +1418,8 @@
                                                 "anonymouscolsOff";
                                         }
                                         var bulkitemcolor = "";
-                                        if (valueDetails
-                                            .SoldByWeight != 0
-                                            ) {
-                                            bulkitemcolor =
-                                                "bulkitemcolor";
+                                        if (valueDetails.SoldByWeight != 0) {
+                                            bulkitemcolor = "bulkitemcolor";
                                         }
                                         var $row = $(`
                                             <tr id="new_row_ajax${tokenId}" class="fast_remove">

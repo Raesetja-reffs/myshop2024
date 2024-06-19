@@ -406,7 +406,6 @@ class SalesFormFunctions extends Controller
         if (config('app.IS_API_BASED')) {
             $response = $this->apiInsertOrderHearder([
                 'CustomerCode' => $customerCode,
-                'UserID' => $customerCode,
                 'LateOrder' => $LateOrder,
                 'DeliveryDate' => $DeliveryDate,
                 'OrderDate' => $OrderDate,
@@ -2364,10 +2363,10 @@ class SalesFormFunctions extends Controller
 
         if (config('app.IS_API_BASED')) {
             $this->apiUpdateCContactsOnOrder([
-                'CustomerCode' => $CustomerPastelCode,
                 'CellNo' => $contactCellTel,
+                'ContactPerson' => $contactPersonOnDispatch,
                 'TelNo' => $contactCellTel,
-                'ContactPerson' => $contactPersonOnDispatch
+                'CustomerCode' => $CustomerPastelCode,
             ]);
         } else {
             DB::connection('sqlsrv3')->table('tblCustomers')
