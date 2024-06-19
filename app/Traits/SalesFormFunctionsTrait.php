@@ -193,15 +193,15 @@ trait SalesFormFunctionsTrait
         ];
     }
 
-    public function apiCopyorder()
-    {
-        return [];
-    }
-
     public function apiUpdateDiscount($data)
     {
         $data = $this->setUserNameInApiData($data);
 
         return $this->httpRequest('post', 'Post_UpdateDiscPercent', $data);
+    }
+
+    public function apiSelectCustomerMultiAddress($data)
+    {
+        return [];
     }
 }

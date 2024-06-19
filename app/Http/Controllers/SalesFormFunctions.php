@@ -42,17 +42,12 @@ class SalesFormFunctions extends Controller
     }
     public function copyorder($orderid)
     {
-        if (config('app.IS_API_BASED')) {
-            $queryCustomers = $this->apiCopyorder();
-        } else {
-            $queryCustomers = DB::connection('sqlsrv3')->table("viewtblCustomers" )
-                ->select('CustomerId','StoreName','CustomerPastelCode','CreditLimit','BalanceDue','UserField5','Email','Routeid','Discount','OtherImportantNotes','strRoute','mnyCustomerGp','ID','Warehouse','PriceListName','CustomerOnHold','termsAndList')
-                ->where('StatusId',1)
-                ->orderBy('CustomerPastelCode','ASC')->get();
-        }
+        // $queryCustomers = DB::connection('sqlsrv3')->table("viewtblCustomers" )
+        //     ->select('CustomerId','StoreName','CustomerPastelCode','CreditLimit','BalanceDue','UserField5','Email','Routeid','Discount','OtherImportantNotes','strRoute','mnyCustomerGp','ID','Warehouse','PriceListName','CustomerOnHold','termsAndList')
+        //     ->where('StatusId',1)
+        //     ->orderBy('CustomerPastelCode','ASC')->get();
 
         return view('dims/copyorder')
-            ->with('customers',$queryCustomers)
             ->with('orderid',$orderid);
 
     }
@@ -1353,11 +1348,17 @@ class SalesFormFunctions extends Controller
     }
     public function selectCustomerMultiAddress(Request $request)
     {
-        $CustCode= $request->get('customerCode');
-
+        $custCode = $request->get('customerCode');
         $zero = 0;
-        $countAddress = DB::connection('sqlsrv3')
-            ->select("EXEC spCrudDeliveryAddress ".$zero.",'00','00','000','000','000',00,00,'00','".$CustCode."',00,'Select'");
+        if (config('app.IS_API_BASED')) {
+            $countAddress = $this->apiSelectCustomerMultiAddress([
+                'custCode' => $custCode,
+                'zero' => $zero,
+            ]);
+        } else {
+            $countAddress = DB::connection('sqlsrv3')
+                ->select("EXEC spCrudDeliveryAddress ".$zero.",'00','00','000','000','000',00,00,'00','" . $custCode . "',00,'Select'");
+        }
 
         return response()->json($countAddress);
     }

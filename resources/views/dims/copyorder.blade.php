@@ -148,30 +148,6 @@
             });
             var currentdate = new Date();
             $("#inputDeliveryDate").val($.datepicker.formatDate('dd-mm-yy', currentdate));
-            var jArrayCustomer = JSON.stringify({!! json_encode($customers) !!});
-
-            var finalData = $.map(JSON.parse(jArrayCustomer), function(item) {
-
-                return {
-                    BalanceDue: item.BalanceDue,
-                    CustomerPastelCode: item.CustomerPastelCode,
-                    StoreName: item.StoreName,
-                    UserField5: item.UserField5,
-                    CustomerId: item.CustomerId,
-                    CreditLimit: item.CreditLimit,
-                    Email: item.Email,
-                    Routeid: item.Routeid,
-                    Discount: item.Discount,
-                    OtherImportantNotes: item.OtherImportantNotes,
-                    Routeid: item.Routeid,
-                    strRoute: item.strRoute,
-                    mnyCustomerGp: item.mnyCustomerGp,
-                    Warehouse: item.Warehouse,
-                    ID: item.ID,
-                    CustomerOnHold: item.CustomerOnHold,
-                    termsAndList: item.termsAndList
-                }
-            });
 
             $.ajaxSetup({
                 headers: {
@@ -187,14 +163,13 @@
                 searchContain: true,
                 visibleProperties: ["StoreName", "CustomerPastelCode"],
                 searchIn: 'StoreName',
-                data: finalData
+                //data: finalData
+                url: "{{  route('sales-order.get-sales-order-customers') }}",
             });
             inputCustNames.on('select:flexdatalist', function(event, data) {
                 $('#customercode').val(data.CustomerPastelCode);
                 $('#customerdescription').val(data.StoreName);
                 multiaddress();
-
-
             });
 
             var customerCode = $('#customercode').flexdatalist({
@@ -205,13 +180,13 @@
                 searchContain: true,
                 visibleProperties: ["StoreName", "CustomerPastelCode"],
                 searchIn: 'CustomerPastelCode',
-                data: finalData
+                //data: finalData
+                url: "{{  route('sales-order.get-sales-order-customers') }}",
             });
             customerCode.on('select:flexdatalist', function(event, data) {
                 $('#customercode').val(data.CustomerPastelCode);
                 $('#customerdescription').val(data.StoreName);
                 multiaddress();
-
             });
 
             $('#copytothisaccount').click(function() {
