@@ -288,15 +288,7 @@ trait SalesFormTrait
 
     public function apiGetSalesOrderProducts($data)
     {
-        $response = $this->httpRequest('post', 'searchProducts', $data);
-        if (!$response) {
-            $response = [];
-        } elseif ($response && isset($response['PastelCode'])) {
-            $response = [$response];
-        }
-        //Pending From API: we need at the api side like if one record then also we need to merge with array
-
-        return $response;
+        return $this->httpRequest('post', 'searchProducts', $data, true);
     }
 
     public function apiGetThings($data)

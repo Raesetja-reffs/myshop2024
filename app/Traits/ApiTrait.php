@@ -10,6 +10,14 @@ trait ApiTrait
 {
     use UtilityTrait;
 
+    /**
+     * This function is used for make the http request for the flowgear and handle the failed request
+     *
+     * @param string $method
+     * @param string $url
+     * @param array $data
+     * @param bool $isConvertToMultiple
+     */
     public function httpRequest($method, $url, $data = [], $isConvertToMultiple = false)
     {
         $returnResponse = [];
@@ -22,6 +30,9 @@ trait ApiTrait
             $returnResponse = $response->json();
             if ($isConvertToMultiple && $returnResponse && !isset($returnResponse[0])) {
                 $returnResponse = [$returnResponse];
+            }
+            if (!$returnResponse) {
+                $returnResponse = [];
             }
         } catch (Exception $e) {
             $logData = [

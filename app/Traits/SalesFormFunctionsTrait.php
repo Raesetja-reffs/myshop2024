@@ -50,20 +50,11 @@ trait SalesFormFunctionsTrait
 
     public function apiGeneralPriceCheckAndLastCost($data)
     {
-        $pricelists = $this->httpRequest('post', 'GeneralPriceCheck', $data);
-        if (!$pricelists) {
-            $pricelists = [];
-        } elseif ($pricelists && isset($pricelists['PriceList'])) {
-            $pricelists = [$pricelists];
-        }
+        $pricelists = $this->httpRequest('post', 'GeneralPriceCheck', $data, true);
 
         $user = auth()->guard('central_api_user')->user();
         $data['LocationId'] = $user->location_id;
         $sellingPrice = $this->httpRequest('post', 'GetLastSellingPrice', $data);
-        if (!$sellingPrice) {
-            $sellingPrice = [];
-        }
-        //Pending From API: we need at the api side like if one record then also we need to merge with array
 
         return [
             'pricelists' => $pricelists,

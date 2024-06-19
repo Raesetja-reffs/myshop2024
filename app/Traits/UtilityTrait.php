@@ -51,9 +51,14 @@ trait UtilityTrait
         return [];
     }
 
-    public function convertToCollectionObject($array)
+    /**
+     * This function is used for convert the array to collection object
+     *
+     * @param array $data
+     */
+    public function convertToCollectionObject($data)
     {
-        return collect($array)->map(function ($item) {
+        return collect($data)->map(function ($item) {
             return (object) $item;
         });
     }
