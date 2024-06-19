@@ -61,4 +61,9 @@ trait DimsCommonTrait
     {
         return $this->httpRequest('post', 'Post_Retrivemanagementconsoledata', $data);
     }
+
+    public function apiUpdateallOrderlinestocostauth($data)
+    {
+        return [];
+    }
 }

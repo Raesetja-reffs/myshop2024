@@ -331,11 +331,17 @@ class DimsCommon extends Controller
         $userPassword = $request->get('userPassword');
         $orderId = $request->get('OrderId');
         if (config('app.IS_API_BASED')) {
-            $output = $this->apiAuthBulkZeroCost([
+            $response = $this->apiAuthBulkZeroCost([
                 'OrderId' => $orderId,
                 'UserName' => $userNameId,
                 'UserPassword' => $userPassword
             ]);
+            $hasAccess = "Sorry ,you don't have access to authorize accounts";
+            if (isset($response[0]['UserID']) && $response[0]['UserID'] != '') {
+                $hasAccess = "DONE";
+            }
+            $output['done'] = $hasAccess;
+            $output['result'] = $response;
         } else {
             $v  =  new \App\Http\Controllers\SalesForm();
             $activeUser= DB::connection('sqlsrv3')->table('tblDIMSUSERS')
@@ -521,9 +527,15 @@ class DimsCommon extends Controller
     public function updateallOrderlinestocostauth(Request $request)
     {
         $OrderId = $request->get('orderId');
-        DB::connection('sqlsrv3')->table('tblOrderDetails')
-            ->where('OrderId', $OrderId)
-            ->update(['blnCostAuth' =>1]);
+        if (config('app.IS_API_BASED')) {
+            $this->apiUpdateallOrderlinestocostauth([
+                'OrderId' => $OrderId
+            ]);
+        } else {
+            DB::connection('sqlsrv3')->table('tblOrderDetails')
+                ->where('OrderId', $OrderId)
+                ->update(['blnCostAuth' =>1]);
+        }
     }
 
     public function restFullOrderLock(Request $request)
