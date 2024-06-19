@@ -262,10 +262,12 @@ class DimsCommon extends Controller
     {
         $userNameId = $request->get('userName');
         $userPassword = $request->get('userPassword');
+        $orderId = $request->get('orderId');
         if (config('app.IS_API_BASED')) {
             $activeUser = $this->apiVerifyAuthOnAdmin([
                 'UserName' => $userNameId,
                 'UserPassword' => $userPassword,
+                'OrderId' => $orderId,
             ]);
         } else {
             $v  =  new \App\Http\Controllers\SalesForm();

@@ -46,9 +46,9 @@ trait UtilityTrait
         Log::debug($message, $context);
     }
 
-    public function apiOrdersExport()
+    public function apiOrdersExport($data)
     {
-        return [];
+        return $this->httpRequest('post', 'Post_RetrieveOrderLineForExcel', $data);
     }
 
     /**

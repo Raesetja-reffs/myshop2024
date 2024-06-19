@@ -142,7 +142,9 @@ trait SalesFormFunctionsTrait
 
     public function apiWaitingForInvoiceNo($data)
     {
-        return '';
+        $data = $this->setUserNameInApiData($data);
+
+        return $this->httpRequest('post', 'Post_WaitingInvoiceNo', $data);
     }
 
     public function apiIsClosedRoute($data)
@@ -184,13 +186,9 @@ trait SalesFormFunctionsTrait
         ];
     }
 
-    public function apiGetextracomunsforItems()
+    public function apiGetextracomunsforItems($data)
     {
-        return [
-            [
-                'Description_2' => '1'
-            ]
-        ];
+        return $this->httpRequest('post', 'Post_RetrieveExtraProductInfo', $data);
     }
 
     public function apiUpdateDiscount($data)

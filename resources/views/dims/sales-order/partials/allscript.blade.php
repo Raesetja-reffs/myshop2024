@@ -5776,7 +5776,8 @@
                                         type: "POST",
                                         data: {
                                             userName: $('#userAuthName').val(),
-                                            userPassword: $('#userAuthPassWord').val()
+                                            userPassword: $('#userAuthPassWord').val(),
+                                            orderId: $('#orderId').val()
                                         },
                                         success: function(data) {
                                             //console.debug("bunch"+data);
@@ -7717,7 +7718,8 @@
                 type: "POST",
                 data: {
                     userName: $('#userAuthName').val(),
-                    userPassword: $('#userAuthPassWord').val()
+                    userPassword: $('#userAuthPassWord').val(),
+                    orderId: $('#orderId').val()
                 },
                 success: function(data) {
                     //console.debug("bunch"+data);
@@ -7821,7 +7823,8 @@
                 type: "POST",
                 data: {
                     userName: $('#userauthproductwithzeroprice').val(),
-                    userPassword: $('#userAuthPassWordzeroprice').val()
+                    userPassword: $('#userAuthPassWordzeroprice').val(),
+                    orderId: $('#orderId').val()
                 },
                 success: function(data) {
 
@@ -7953,7 +7956,8 @@
                 type: "POST",
                 data: {
                     userName: $('#userAuthName').val(),
-                    userPassword: $('#userAuthPassWord').val()
+                    userPassword: $('#userAuthPassWord').val(),
+                    orderId: $('#orderId').val()
                 },
                 success: function(data) {
                     //console.debug("bunch"+data);

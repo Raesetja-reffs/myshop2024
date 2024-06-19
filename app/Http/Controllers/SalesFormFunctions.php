@@ -73,8 +73,8 @@ class SalesFormFunctions extends Controller
         $productCode = $request->get('productCode');
         if (config('app.IS_API_BASED')) {
             $returnCustomerRoute = $this->apiGetextracomunsforItems([
-                'custCode' => $custCode,
-                'productCode' => $productCode,
+                'CustomerCode' => $custCode,
+                'ItemCode' => $productCode,
             ]);
         } else {
             $returnCustomerRoute = DB::connection('sqlsrv3')
@@ -2214,7 +2214,18 @@ class SalesFormFunctions extends Controller
         $posPayMentTypeAccount = $request->get('posPayMentTypeAccount');
         $invoiceTotalFromTheDoc = $request->get('invoiceTotal');
         if (config('app.IS_API_BASED')) {
-            $response = $this->apiWaitingForInvoiceNo([]);
+            $response = $this->apiWaitingForInvoiceNo([
+                'OrderId' => $orderId,
+                'CustomerNumber' => $custCode,
+                'OrderIdReceipt' => $orderId,
+                'InvoiceNumber' => '',
+                'InvoiceTotal' => $invoiceTotalFromTheDoc,
+                'TotalTenderedCreditCard' => $posPayMentTypeCreditCard,
+                'TotalTenderedAccount' => $posPayMentTypeAccount,
+                'TotalTenderedCash' => $posPayMentTypeCash,
+                'TotalTenderedCheque' => $posPayMentTypeCheque,
+                'Change' => $Change,
+            ]);
         } else {
             $UserID = Auth::user()->UserID;
             $UserName = Auth::user()->UserName;
