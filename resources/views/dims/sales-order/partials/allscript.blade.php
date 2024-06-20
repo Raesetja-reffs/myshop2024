@@ -2819,7 +2819,7 @@
 
         /* END OF -----ON BUTTON TO CREATE NEW LINE*/
         var inputCustNames = $('#inputCustName').flexdatalist({
-            minLength: 1,
+            minLength: getMinimumLengthOnSearch(),
             valueProperty: '*',
             selectionRequired: true,
             focusFirstResult: true,
@@ -2922,7 +2922,7 @@
         ///////////////////
 
         var inputCustAccount = $('#inputCustAcc').flexdatalist({
-            minLength: 1,
+            minLength: getMinimumLengthOnSearch(),
             valueProperty: '*',
             selectionRequired: true,
             searchContain: true,
@@ -3067,7 +3067,7 @@
                 });
             },
             columns: columnsC,
-            minlength: 1,
+            minLength: getMinimumLengthOnSearch(),
             autoFocus: true,
             delay: 0,
             select: function(e, ui) {
@@ -3110,7 +3110,7 @@
                 });
             },
             columns: columnsC,
-            minlength: 1,
+            minLength: getMinimumLengthOnSearch(),
             autoFocus: true,
             delay: 0,
             appendTo: "#prodOnOrder",
@@ -3135,7 +3135,7 @@
                 });
             },
             columns: columnsC,
-            minlength: 1,
+            minLength: getMinimumLengthOnSearch(),
             autoFocus: true,
             delay: 0,
             appendTo: "#prodonInvoice",
@@ -3161,7 +3161,7 @@
                 });
             },
             columns: columnsC,
-            minlength: 1,
+            minLength: getMinimumLengthOnSearch(),
             autoFocus: true,
             delay: 0,
             appendTo: "#priceLookPriceWithCustomer",
@@ -3206,7 +3206,7 @@
             },
             columns: columnsD,
             autoFocus: true,
-            minlength: 3,
+            minLength: getMinimumLengthOnSearch(),
             delay: 0,
             multiple: true,
             multipleSeparator: " ",
@@ -3233,7 +3233,7 @@
             },
             columns: columnsD,
             autoFocus: true,
-            minlength: 2,
+            minLength: getMinimumLengthOnSearch(),
             delay: 0,
             multiple: true,
             multipleSeparator: " ",
@@ -3260,7 +3260,7 @@
             },
             columns: columnsD,
             autoFocus: true,
-            minlength: 2,
+            minLength: getMinimumLengthOnSearch(),
             delay: 0,
             multiple: true,
             multipleSeparator: " ",
@@ -3278,12 +3278,11 @@
 
         $("#invoiceNo").autocomplete({
             source: '{!! url('/invoiceLookUp') !!}',
-            minlength: 2,
+            minLength: getMinimumLengthOnSearch(),
             autoFocus: true,
             select: function(e, ui) {
                 $('#invoiceNo').val(ui.item.value);
                 $('#orderId').val(ui.item.id);
-
             }
         }).data("ui-autocomplete")._renderItem = function(ul, item) {
             if (item.value) {
@@ -5052,7 +5051,7 @@
                     },
                     columns: columnsD,
                     autoFocus: true,
-                    minLength: searchstring,
+                    minLength: getMinimumLengthOnSearch(),
                     delay: 500,
                     multiple: true,
                     multipleSeparator: ",",
@@ -5145,7 +5144,7 @@
                         });
                     },
                     columns: columnsC,
-                    minlength: 1,
+                    minLength: getMinimumLengthOnSearch(),
                     autoFocus: true,
                     delay: 500,
                     select: function(e, ui) {

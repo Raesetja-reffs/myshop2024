@@ -120,3 +120,8 @@ function showErrorDialog(message, showCancelButton)
         }
     });
 }
+
+function getMinimumLengthOnSearch()
+{
+    return 2;
+}

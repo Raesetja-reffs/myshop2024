@@ -156,7 +156,7 @@
             });
 
             var inputCustNames = $('#customerdescription').flexdatalist({
-                minLength: 1,
+                minLength: getMinimumLengthOnSearch(),
                 valueProperty: '*',
                 selectionRequired: true,
                 focusFirstResult: true,
@@ -173,7 +173,7 @@
             });
 
             var customerCode = $('#customercode').flexdatalist({
-                minLength: 1,
+                minLength: getMinimumLengthOnSearch(),
                 valueProperty: '*',
                 selectionRequired: true,
                 focusFirstResult: true,
