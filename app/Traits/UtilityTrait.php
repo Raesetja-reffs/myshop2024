@@ -62,4 +62,22 @@ trait UtilityTrait
             return (object) $item;
         });
     }
+
+    /**
+     * This function is used for return the success response
+     */
+    public function successResponse()
+    {
+        return response()->json(['status' => 'success']);
+    }
+
+    /**
+     * This function is used for call the get thing api
+     *
+     * @param array $data
+     */
+    public function apiGetThings($data)
+    {
+        return $this->httpRequest('post', 'Post_GetThings', $data);
+    }
 }

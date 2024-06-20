@@ -58,9 +58,4 @@ trait SalesFormTrait
     {
         return $this->httpRequest('post', 'searchProducts', $data, true);
     }
-
-    public function apiGetThings($data)
-    {
-        return $this->httpRequest('post', 'Post_GetThings', $data);
-    }
 }

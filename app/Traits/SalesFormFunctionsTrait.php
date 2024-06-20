@@ -207,4 +207,13 @@ trait SalesFormFunctionsTrait
     {
         return $this->httpRequest('post', 'Post_RetrieveOrderListing', $data);
     }
+
+    public function apiInsertCopyorder($data)
+    {
+        return [
+            [
+                'result' => 'SUCCESS'
+            ]
+        ];
+    }
 }

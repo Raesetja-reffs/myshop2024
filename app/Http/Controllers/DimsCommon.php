@@ -536,6 +536,8 @@ class DimsCommon extends Controller
                 ->where('OrderId', $OrderId)
                 ->update(['blnCostAuth' =>1]);
         }
+
+        return $this->successResponse();
     }
 
     public function restFullOrderLock(Request $request)
@@ -1064,6 +1066,8 @@ class DimsCommon extends Controller
             $deleteorderlock = DB::connection('sqlsrv3')
                 ->statement("EXEC spDeleteOrderLocksPerUser ".$userId.",".$orderid);
         }
+
+        return $this->successResponse();
     }
     public function specials()
     {

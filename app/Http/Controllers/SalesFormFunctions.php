@@ -51,19 +51,25 @@ class SalesFormFunctions extends Controller
             ->with('orderid',$orderid);
 
     }
-    public function insertCopyorder(Request $request){
+
+    public function insertCopyorder(Request $request)
+    {
         $custCode = $request->get('custCode');
         $orderid = $request->get('orderid');
         $deliverydate = $request->get('deliverydate');
         $recalcprices = $request->get('recalcprice');
-
-        $userid = Auth::user()->UserID;
-        $username = Auth::user()->UserName;
-
-        $returnmsg= DB::connection('sqlsrv3')
-            ->select('exec spCopyOrder ?,?,?,?,?,?',
-                array($orderid,$custCode,(new \DateTime($deliverydate))->format('Y-m-d') ,$userid,$recalcprices,$username)
-            );
+        if (config('app.IS_API_BASED')) {
+            $returnmsg = $this->apiInsertCopyorder([
+                'custCode' => $custCode
+            ]);
+        } else {
+            $userid = Auth::user()->UserID;
+            $username = Auth::user()->UserName;
+            $returnmsg = DB::connection('sqlsrv3')
+                ->select('exec spCopyOrder ?,?,?,?,?,?',
+                    array($orderid,$custCode,(new \DateTime($deliverydate))->format('Y-m-d') ,$userid,$recalcprices,$username)
+                );
+        }
 
         return response()->json($returnmsg);
     }
