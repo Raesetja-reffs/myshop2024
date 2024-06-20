@@ -24,6 +24,7 @@ trait ApiTrait
         try {
             $user = auth()->guard('central_api_user')->user();
             $data = $this->addAdditionalDetailsToApiData($user, $data);
+            $data = $this->setBlankInsteadOfBlank($data);
             $response = Http::withHeaders([
                 'Authorization' => 'Key=' . $user->erp_apiauthtoken,
             ])->$method($user->erp_apiurl . $url, $data);
@@ -55,7 +56,7 @@ trait ApiTrait
      * @param obj $user
      * @param array $data
      */
-    public function addAdditionalDetailsToApiData($user, $data)
+    private function addAdditionalDetailsToApiData($user, $data)
     {
         $data['companyid'] = $user->company_id;
         $data['UserID'] = $user->erp_user_id;
@@ -72,6 +73,24 @@ trait ApiTrait
     {
         $user = auth()->guard('central_api_user')->user();
         $data['Username'] = $user->erp_apiusername;
+
+        return $data;
+    }
+
+    /**
+     * This function is used for set the blank value instead of null
+     *
+     * @param array $data
+     */
+    private function setBlankInsteadOfBlank($data)
+    {
+        if ($data) {
+            foreach ($data as &$value) {
+                if (!$value) {
+                    $value = '';
+                }
+            }
+        }
 
         return $data;
     }

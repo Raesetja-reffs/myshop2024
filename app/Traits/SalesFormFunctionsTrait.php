@@ -202,4 +202,9 @@ trait SalesFormFunctionsTrait
     {
         return [];
     }
+
+    public function apiGetOrderListing($data)
+    {
+        return $this->httpRequest('post', 'Post_RetrieveOrderListing', $data);
+    }
 }

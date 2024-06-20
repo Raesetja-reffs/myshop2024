@@ -922,16 +922,22 @@ class SalesFormFunctions extends Controller
         $InvNo = $request->get('InvNo');
         $CustCode = $request->get('CustCode');
         $delDate = $request->get('delDate');
-        $userid =Auth::user()->UserID;
-        // echo $userid ;
-        if(strlen($CustCode)> 0){
-            $CustomerId = DB::connection('sqlsrv3')->table('viewtblCustomers')->select('CustomerId')->where('CustomerPastelCode',$CustCode)->get();
-            $CustCode = $CustomerId[0]->CustomerId;
+        if (config('app.IS_API_BASED')) {
+            $GetOrderListing = $this->apiGetOrderListing([
+                'OrderId' => $OrderId,
+                'InvoiceNo' => $InvNo,
+                'DelDate' => $delDate,
+                'CustomerCode' => $CustCode,
+            ]);
+        } else {
+            $userid =Auth::user()->UserID;
+            if(strlen($CustCode)> 0){
+                $CustomerId = DB::connection('sqlsrv3')->table('viewtblCustomers')->select('CustomerId')->where('CustomerPastelCode',$CustCode)->get();
+                $CustCode = $CustomerId[0]->CustomerId;
+            }
+            $GetOrderListing= DB::connection('sqlsrv3')
+                ->select("EXEC spOrderListing '".$OrderId."','".$InvNo."','".$delDate."','".$CustCode."',".$userid);
         }
-
-        $GetOrderListing= DB::connection('sqlsrv3')
-            ->select("EXEC spOrderListing '".$OrderId."','".$InvNo."','".$delDate."','".$CustCode."',".$userid);
-        //dd($GetOrderListing);
         $output['recordsTotal'] = count($GetOrderListing);
         $output['data'] = $GetOrderListing;
         $output['recordsFiltered'] = $output['recordsTotal'];
