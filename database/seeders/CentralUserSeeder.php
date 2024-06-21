@@ -16,7 +16,7 @@ class CentralUserSeeder extends Seeder
     {
         CentralUser::create([
             'username' => 'Admin',
-            'password' => Hash::make('Admin@123'),
+            'password' => Hash::make('Linx_123#@!'),
             'company_id' => '5730aaa7-fd77-e46f-298d-e8eca042d6a9',
             'erp_user_id' => 1,
             'erp_apiurl' => 'https://linxsystems.flowgear.net/dims24/',
