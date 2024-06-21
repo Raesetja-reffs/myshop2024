@@ -19,7 +19,7 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.3'
+          php-version: '8.2'
 
       - name: Check if composer.json exists
         id: check_files
@@ -57,7 +57,7 @@ jobs:
 
       - name: Unzip artifact for deployment
         run: unzip release.zip
-      
+
       - name: Login to Azure
         uses: azure/login@v1
         with:
@@ -72,4 +72,3 @@ jobs:
           app-name: 'dims24apisdemo'
           slot-name: 'Production'
           package: .
-          
