@@ -66,4 +66,9 @@ trait DimsCommonTrait
     {
         return [];
     }
+
+    public function apiDeleteuserOrderLocks()
+    {
+        return [];
+    }
 }

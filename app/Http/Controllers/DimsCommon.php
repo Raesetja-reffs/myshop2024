@@ -516,13 +516,19 @@ class DimsCommon extends Controller
     }
     public function deleteuserOrderLocks()
     {
-        $userId =   Auth::user()->UserID;
-        if(env("DEPARTMENT_LOCKING")  !='TRUE') {
+        if (config('app.IS_API_BASED')) {
+            $this->apiDeleteuserOrderLocks();
+        } else {
+            $userId = Auth::user()->UserID;
+            if(env("DEPARTMENT_LOCKING")  !='TRUE') {
+                DB::connection('sqlsrv3')->table('tblOrderLocks')->where('UserId', $userId)->delete();
+            }else{
+                DB::connection('sqlsrv3')->table('tblOrderLocksByDepartment')->where('intUserId', $userId)->delete();
+            }
             DB::connection('sqlsrv3')->table('tblOrderLocks')->where('UserId', $userId)->delete();
-        }else{
-            DB::connection('sqlsrv3')->table('tblOrderLocksByDepartment')->where('intUserId', $userId)->delete();
         }
-        DB::connection('sqlsrv3')->table('tblOrderLocks')->where('UserId', $userId)->delete();
+
+        return $this->successResponse();
     }
     public function updateallOrderlinestocostauth(Request $request)
     {
