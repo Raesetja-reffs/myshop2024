@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CompanyPermissionController;
+use App\Http\Middleware\AuthenticateUsersAndCentralUser;
+use App\Http\Controllers\SalesForm;
 use App\Http\Controllers\GRVController;
 
 Route::middleware('auth')->group(function () {
@@ -14,3 +16,6 @@ Route::middleware('auth')->group(function () {
     Route::get('grv/queries', [GRVController::class, 'queries'])->name('grv.queries');
     Route::get('grv/issues', [GRVController::class, 'issues'])->name('grv.issues');
 });
+
+Route::get('/getSalesOrderCustomers', [SalesForm::class,'getSalesOrderCustomers'])->name('sales-order.get-sales-order-customers');
+Route::get('/getSalesOrderProducts', [SalesForm::class,'getSalesOrderProducts'])->name('sales-order.get-sales-order-products');

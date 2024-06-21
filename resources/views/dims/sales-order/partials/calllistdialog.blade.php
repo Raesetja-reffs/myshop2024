@@ -19,7 +19,9 @@
                     <div class="col-md-2 mb-2">
                         <label for="callListUser">User</label>
                         <select class="form-control form-select" name="callListUser" id="callListUser">
-                            <option value="{{ Auth::user()->UserID }}">{{ Auth::user()->UserName }}</option>
+                            @if (Auth::user())
+                                <option value="{{ Auth::user()->UserID }}">{{ Auth::user()->UserName }}</option>
+                            @endif
                         </select>
                     </div>
                     <div class="col-md-2 mb-2">

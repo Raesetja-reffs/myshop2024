@@ -10,15 +10,24 @@ $(document).ready(function() {
             $(".general-loader").hide();
         },
         error: function(xhr, status, error) {
-            if (xhr.responseJSON && xhr.responseJSON.message) {
-                message = xhr.responseJSON.message;
-            } else if(xhr.responseText && xhr.responseText) {
-                message = xhr.responseText;
-            } else {
-                message = error;
+            if (status !== 'abort') {
+                if (xhr.responseJSON && xhr.responseJSON.message) {
+                    message = xhr.responseJSON.message;
+                } else if(xhr.responseText && xhr.responseText) {
+                    message = xhr.responseText;
+                } else {
+                    message = error;
+                }
+                showAlert('danger', message, 10000);
             }
-            showAlert('danger', message, 10000);
         }
+    });
+    $(document).ajaxSend(function(event, xhr, settings) {
+        $(".general-loader").show();
+    });
+
+    $(document).ajaxComplete(function(event, xhr, settings) {
+        $(".general-loader").hide();
     });
 
     //On hover, toggle the "active" class
@@ -110,4 +119,20 @@ function showErrorDialog(message, showCancelButton)
             cancelButton: 'btn btn-danger btn-auto-height'
         }
     });
+}
+
+function getMinimumLengthOnSearch()
+{
+    return 2;
+}
+
+// Debounce function
+function debounce(func, delay) {
+    let debounceTimer;
+    return function() {
+      const context = this;
+      const args = arguments;
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => func.apply(context, args), delay);
+    };
 }

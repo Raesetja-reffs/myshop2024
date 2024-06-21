@@ -1,23 +1,22 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Reginald
- * Date: 29/07/2017
- * Time: 10:00 AM
- */
 
 namespace App\Http\Controllers;
+
 use App\Http\Controllers\SalesForm;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use \Cache;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Middleware\AuthenticateUsersAndCentralUser;
+use App\Traits\DimsCommonTrait;
 
 class DimsCommon extends Controller
 {
+    use DimsCommonTrait;
+
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(AuthenticateUsersAndCentralUser::class);
     }
     public function getCommonRoutes()
     {
@@ -205,8 +204,15 @@ class DimsCommon extends Controller
     {
         $userNameId = $request->get('userName');
         $userPassword = $request->get('userPassword');
-        $activeUser= DB::connection('sqlsrv3')->table('tblDIMSUSERS')->select('UserID', 'UserName','Password')
-            ->where('UserName','LIKE',"%{$userNameId}%")->where('Password',$userPassword)->get();
+        if (config('app.IS_API_BASED')) {
+            $activeUser = $this->apiVerifyAuth([
+                'UserName' => $userNameId,
+                'UserPassword' => $userPassword,
+            ]);
+        } else {
+            $activeUser = DB::connection('sqlsrv3')->table('tblDIMSUSERS')->select('UserID', 'UserName','Password')
+                ->where('UserName','LIKE',"%{$userNameId}%")->where('Password',$userPassword)->get();
+        }
 
         return response()->json($activeUser);
     }
@@ -254,17 +260,26 @@ class DimsCommon extends Controller
     }
     public function verifyAuthOnAdmin(Request $request)
     {
-        $v  =  new \App\Http\Controllers\SalesForm();
         $userNameId = $request->get('userName');
         $userPassword = $request->get('userPassword');
-        $hasauthPrices = $v->getThings(Auth::user()->GroupId,'Access To Auth Prices');
-       // dd();
-        $activeUser = "";
-        if($hasauthPrices =="1"){
-            $activeUser= DB::connection('sqlsrv3')->table('tblDIMSUSERS')->select('UserID', 'UserName','Password')
-                ->where('UserName','LIKE',"%{$userNameId}%")->where('Password',$userPassword)->get();
+        $orderId = $request->get('orderId');
+        if (config('app.IS_API_BASED')) {
+            $activeUser = $this->apiVerifyAuthOnAdmin([
+                'UserName' => $userNameId,
+                'UserPassword' => $userPassword,
+                'OrderId' => $orderId,
+            ]);
+        } else {
+            $v  =  new \App\Http\Controllers\SalesForm();
+            $hasauthPrices = $v->getThings(Auth::user()->GroupId,'Access To Auth Prices');
+            $activeUser = "";
+            if ($hasauthPrices =="1") {
+                $activeUser= DB::connection('sqlsrv3')->table('tblDIMSUSERS')
+                    ->select('UserID', 'UserName','Password')
+                    ->where('UserName','LIKE',"%{$userNameId}%")
+                    ->where('Password',$userPassword)->get();
+            }
         }
-
 
         return response()->json($activeUser);
     }
@@ -295,39 +310,62 @@ class DimsCommon extends Controller
         $output['result'] = $activeUser;
         return response()->json($output);
     }
-    public function checkifhasmultiaddress(Request $request){
+    public function checkifhasmultiaddress(Request $request)
+    {
         $customerCode = $request->get('account');
-        $hasmulti = DB::connection('sqlsrv3')
-            ->select("Exec spHasMultiDeliveryAddress '".$customerCode."'");
+        if (config('app.IS_API_BASED')) {
+            $hasmulti = $this->apiCheckifhasmultiaddress([
+                'CustomerCode' => $customerCode
+            ]);
+        } else {
+            $hasmulti = DB::connection('sqlsrv3')
+                ->select("Exec spHasMultiDeliveryAddress '".$customerCode."'");
+        }
+
         return response()->json($hasmulti);
     }
+
     public function AuthBulkZeroCost(Request $request)
     {
         $userNameId = $request->get('userName');
         $userPassword = $request->get('userPassword');
-        $OrderId= $request->get('OrderId');
-
-        $v  =  new \App\Http\Controllers\SalesForm();
-
-        $activeUser= DB::connection('sqlsrv3')->table('tblDIMSUSERS')->select('GroupId','UserID', 'UserName','Password')
-            ->where('UserName',$userNameId)->where('Password',$userPassword)->get();
-        $hasAccess = "Sorry ,you don't have access to authorize accounts";
-    //    dd($activeUser);
-        if(count($activeUser) > 0)
-        {
-            $things = $v->getThings($activeUser[0]->GroupId,'Auth Zero Cost');
-            if($things != "0")
-            {
-                DB::connection('sqlsrv3')->table('tblOrderDetails')
-                    ->where('OrderId', $OrderId)
-                    ->update(['blnCostAuth' =>1]);
+        $orderId = $request->get('OrderId');
+        if (config('app.IS_API_BASED')) {
+            $response = $this->apiAuthBulkZeroCost([
+                'OrderId' => $orderId,
+                'UserName' => $userNameId,
+                'UserPassword' => $userPassword
+            ]);
+            $hasAccess = "Sorry ,you don't have access to authorize accounts";
+            if (isset($response[0]['UserID']) && $response[0]['UserID'] != '') {
                 $hasAccess = "DONE";
             }
+            $output['done'] = $hasAccess;
+            $output['result'] = $response;
+        } else {
+            $v  =  new \App\Http\Controllers\SalesForm();
+            $activeUser= DB::connection('sqlsrv3')->table('tblDIMSUSERS')
+                ->select('GroupId','UserID', 'UserName','Password')
+                ->where('UserName',$userNameId)
+                ->where('Password',$userPassword)
+                ->get();
+            $hasAccess = "Sorry ,you don't have access to authorize accounts";
+            if (count($activeUser) > 0) {
+                $things = $v->getThings($activeUser[0]->GroupId,'Auth Zero Cost');
+                if ($things != "0") {
+                    DB::connection('sqlsrv3')->table('tblOrderDetails')
+                        ->where('OrderId', $orderId)
+                        ->update(['blnCostAuth' =>1]);
+                    $hasAccess = "DONE";
+                }
+            }
+            $output['done'] = $hasAccess;
+            $output['result'] = $activeUser;
         }
-        $output['done'] = $hasAccess;
-        $output['result'] = $activeUser;
+
         return response()->json($output);
     }
+
     public function AuthExternaOrders(Request $request)
     {
         $userName = $request->get('userName');
@@ -478,20 +516,34 @@ class DimsCommon extends Controller
     }
     public function deleteuserOrderLocks()
     {
-        $userId =   Auth::user()->UserID;
-        if(env("DEPARTMENT_LOCKING")  !='TRUE') {
+        if (config('app.IS_API_BASED')) {
+            $this->apiDeleteuserOrderLocks();
+        } else {
+            $userId = Auth::user()->UserID;
+            if(env("DEPARTMENT_LOCKING")  !='TRUE') {
+                DB::connection('sqlsrv3')->table('tblOrderLocks')->where('UserId', $userId)->delete();
+            }else{
+                DB::connection('sqlsrv3')->table('tblOrderLocksByDepartment')->where('intUserId', $userId)->delete();
+            }
             DB::connection('sqlsrv3')->table('tblOrderLocks')->where('UserId', $userId)->delete();
-        }else{
-            DB::connection('sqlsrv3')->table('tblOrderLocksByDepartment')->where('intUserId', $userId)->delete();
         }
-        DB::connection('sqlsrv3')->table('tblOrderLocks')->where('UserId', $userId)->delete();
+
+        return $this->successResponse();
     }
     public function updateallOrderlinestocostauth(Request $request)
     {
         $OrderId = $request->get('orderId');
-        DB::connection('sqlsrv3')->table('tblOrderDetails')
-            ->where('OrderId', $OrderId)
-            ->update(['blnCostAuth' =>1]);
+        if (config('app.IS_API_BASED')) {
+            $this->apiUpdateallOrderlinestocostauth([
+                'OrderId' => $OrderId
+            ]);
+        } else {
+            DB::connection('sqlsrv3')->table('tblOrderDetails')
+                ->where('OrderId', $OrderId)
+                ->update(['blnCostAuth' =>1]);
+        }
+
+        return $this->successResponse();
     }
 
     public function restFullOrderLock(Request $request)
@@ -534,27 +586,42 @@ class DimsCommon extends Controller
              ->select("EXEC spOrderLocks '".$OrderId."',".$userId);
          return $CheckOrderLocks;
     }
+
     public function invoiceLookUp(Request $request)
     {
-        $term = $request->get('term','');;
-
-        $results = array();
-        $queries =DB::connection('sqlsrv3')->table("vwInvoiceOrderIDLookUp")
-            ->where('InvoiceNo', 'LIKE', '%'.$term.'%')
-           /* ->orWhere('OrderId', 'LIKE', '%'.$term.'%')
-            ->orWhere('CustomerPastelCode', 'LIKE', '%'.$term.'%')
-            ->orWhere('StoreName', 'LIKE', '%'.$term.'%')*/
-            ->take(10)->get();
-        foreach ($queries as $query)
-        {
-            $results[] = [ 'id' => $query->OrderId, 'value' => $query->InvoiceNo,
-                'StoreName'=>$query->StoreName,'CustomerPastelCode'=>$query->CustomerPastelCode,'CompanyName'=>$query->CompanyName,
-                'mnyTotal'=>$query->mnyTotal,'PaymentTerms'=>$query->PaymentTerms];
+        $results = [];
+        $term = $request->get('term', '');
+        if (config('app.IS_API_BASED')) {
+            $queries = $this->apiInvoiceLookup([
+                'InvoiceNo' => $term
+            ]);
+            $queries = $this->convertToCollectionObject($queries);
+        } else {
+            $queries = DB::connection('sqlsrv3')->table("vwInvoiceOrderIDLookUp")
+                ->where('InvoiceNo', 'LIKE', '%'.$term.'%')
+                /* ->orWhere('OrderId', 'LIKE', '%'.$term.'%')
+                ->orWhere('CustomerPastelCode', 'LIKE', '%'.$term.'%')
+                ->orWhere('StoreName', 'LIKE', '%'.$term.'%')*/
+                ->take(10)->get();
         }
-        if(count($results))
-            return $results;
-        else
-            return ['value'=>'No Result Found','id'=>''];
+        if ($queries) {
+            foreach ($queries as $query) {
+                $results[] = [
+                    'id' => $query->OrderId,
+                    'value' => $query->InvoiceNo,
+                    'StoreName' => $query->StoreName,
+                    'CustomerPastelCode' => $query->CustomerPastelCode,
+                    'CompanyName' => $query->CompanyName,
+                    'mnyTotal' => $query->mnyTotal,
+                    'PaymentTerms' => $query->PaymentTerms
+                ];
+            }
+        }
+        if (empty($results)) {
+            $results = ['value'=>'No Result Found','id'=>''];
+        }
+
+        return $results;
     }
     public function customerLookUp(Request $request)
     {
@@ -601,36 +668,40 @@ class DimsCommon extends Controller
     public function invoicedoc(Request $request)
     {
         $OrderId = $request->get('OrderId');
-        $userID = Auth::user()->UserID;
-        $v  =  new \App\Http\Controllers\SalesForm();
-
-        $hasauthInvoicePrinting = $v->getThings(Auth::user()->GroupId,'Print Invoice');
-        if ($hasauthInvoicePrinting == "1"){
-           $return =  DB::connection('sqlsrv3')
-                ->statement("EXEC spPrintInvoice  ".$OrderId.",".$userID);
-
-            return response()->json($OrderId);
-        }else{
-            //will log
-            return response()->json($OrderId);
+        if (config('app.IS_API_BASED')) {
+            $this->apiInvoicedoc([
+                'OrderId' => $OrderId
+            ]);
+        } else {
+            $userID = Auth::user()->UserID;
+            $v = new \App\Http\Controllers\SalesForm();
+            $hasauthInvoicePrinting = $v->getThings(Auth::user()->GroupId,'Print Invoice');
+            if ($hasauthInvoicePrinting == "1"){
+               $return = DB::connection('sqlsrv3')
+                    ->statement("EXEC spPrintInvoice  ".$OrderId.",".$userID);
+            }
         }
 
-
+        return response()->json($OrderId);
     }
 
     public function getDataFromManagementConsole(Request $request)
     {
-        $docId = $request->get('orderID');
-        $data =  DB::connection('sqlsrv3')
-            ->select("EXEC spManagementConsoleData ".$docId);
-
+        $orderId = $request->get('orderID');
+        if (config('app.IS_API_BASED')) {
+            $data = $this->apiGetDataFromManagementConsole([
+                'OrderId' => $orderId
+            ]);
+        } else {
+            $data = DB::connection('sqlsrv3')
+                ->select("EXEC spManagementConsoleData " . $orderId);
+        }
         $output['recordsTotal'] = count($data);
         $output['data'] = $data;
         $output['recordsFiltered'] = count($data);
-
         $output['draw'] = intval($request->input('draw'));
-        return $output;
 
+        return $output;
     }
     public function getDataFromManagementConsoleForAuditors(Request $request)
     {
@@ -991,10 +1062,18 @@ class DimsCommon extends Controller
     }
     public function clearorderlocksperorder(Request $request)
     {
-        $userId = Auth::user()->UserID;
         $orderid = $request->get('OrderId');
-        $deleteorderlock = DB::connection('sqlsrv3')
-            ->statement("EXEC spDeleteOrderLocksPerUser ".$userId.",".$orderid);
+        if (config('app.IS_API_BASED')) {
+            $this->apiClearorderlocksperorder([
+                'OrderId' => $orderid
+            ]);
+        } else {
+            $userId = Auth::user()->UserID;
+            $deleteorderlock = DB::connection('sqlsrv3')
+                ->statement("EXEC spDeleteOrderLocksPerUser ".$userId.",".$orderid);
+        }
+
+        return $this->successResponse();
     }
     public function specials()
     {
@@ -1641,79 +1720,99 @@ class DimsCommon extends Controller
     }
     public function changesalesman(Request $request)
     {
-        $userID= $request->get('userID');
-        $OrderID= $request->get('OrderId');
+        $userID = $request->get('userID');
+        $OrderID = $request->get('OrderId');
         $authUserName= $request->get('authUserName');
         $authUserPassword= $request->get('authUserPassword');
         $DriverDeliveryDate= $request->get('DriverDeliveryDate');
-        $userAuth = Auth::user()->UserName;
-        $userAuthID = Auth::user()->UserID;
-        $userGroupId = Auth::user()->GroupId;
-
-        $v  =  new \App\Http\Controllers\SalesForm();
-
-        $activeUser= DB::connection('sqlsrv3')->table('tblDIMSUSERS')->select('GroupId','UserID', 'UserName','Password')
-            ->where('UserName',$authUserName)->where('Password',$authUserPassword)->get();
-        $hasAccess = "Sorry ,you don't have access to authorize accounts";
-        //    dd($activeUser);
-        if(count($activeUser) > 0)
-        {
-            $things = $v->getThings($activeUser[0]->GroupId,'Change Salesman');
-            if($things != "0")
-            {
-                $salescodes = DB::connection('sqlsrv3')->table('tblOrderSalesCodes')->select('OrderId')->where('OrderId',$OrderID)->get();
-
-                //  dd($salescodes);
-                $DriverDeliveryDate = (new \DateTime($DriverDeliveryDate))->format('Y-m-d H:i:s') ;
-                if ( count($salescodes) > 0)
-                {
-                    DB::connection('sqlsrv3')->table('tblOrderSalesCodes')
-                        ->where('OrderId',$OrderID )
-                        ->update(['SalesCode' => $userID, 'OrderId' => $OrderID,'DriverDeliveryDate' => $DriverDeliveryDate]);
-                }else
-                {
-                    DB::connection('sqlsrv3')->table('tblOrderSalesCodes')->insert(
-                        ['SalesCode' => $userID, 'OrderId' => $OrderID,'DriverDeliveryDate' => $DriverDeliveryDate,'OrderCancelled' => 0]);
-                }
-
-                DB::connection('sqlsrv3')->table('tblManagementConsol')->insert(
-                    ['ConsoleTypeId' => 88, 'Importance' => 1,'LoggedBy' => $userAuth,'Message' => "Order assigned to Rep Code ".$userID." by ".$userAuth,
-                        'UserId' => $userAuthID,'OrderId' => $OrderID,'DocNumber'=>$OrderID]);
+        if (config('app.IS_API_BASED')) {
+            $response = $this->apiChangesalesman([
+                'OrderId' => $OrderID,
+                'UserNameAuthorising' => $authUserName,
+                'PasswordAuthorising' => $authUserPassword,
+                'DriverDeliveryDate' => $DriverDeliveryDate,
+                'AuthNow' => 1,
+                'SaleCode' => $userID,
+            ]);
+            $hasAccess = "Sorry ,you don't have access to authorize accounts";
+            if (isset($response['0']['Result']) && $response['0']['Result'] == 'SUCCESS') {
                 $hasAccess = "DONE";
+            }
+        } else {
+            $userAuth = Auth::user()->UserName;
+            $userAuthID = Auth::user()->UserID;
+            $userGroupId = Auth::user()->GroupId;
+
+            $v  =  new \App\Http\Controllers\SalesForm();
+
+            $activeUser= DB::connection('sqlsrv3')->table('tblDIMSUSERS')->select('GroupId','UserID', 'UserName','Password')
+                ->where('UserName',$authUserName)->where('Password',$authUserPassword)->get();
+            $hasAccess = "Sorry ,you don't have access to authorize accounts";
+            if (count($activeUser) > 0) {
+                $things = $v->getThings($activeUser[0]->GroupId,'Change Salesman');
+                if ($things != "0") {
+                    $salescodes = DB::connection('sqlsrv3')->table('tblOrderSalesCodes')->select('OrderId')->where('OrderId',$OrderID)->get();
+                    $DriverDeliveryDate = (new \DateTime($DriverDeliveryDate))->format('Y-m-d H:i:s') ;
+                    if ( count($salescodes) > 0) {
+                        DB::connection('sqlsrv3')->table('tblOrderSalesCodes')
+                            ->where('OrderId',$OrderID )
+                            ->update(['SalesCode' => $userID, 'OrderId' => $OrderID,'DriverDeliveryDate' => $DriverDeliveryDate]);
+                    } else {
+                        DB::connection('sqlsrv3')->table('tblOrderSalesCodes')->insert(
+                            ['SalesCode' => $userID, 'OrderId' => $OrderID,'DriverDeliveryDate' => $DriverDeliveryDate,'OrderCancelled' => 0]);
+                    }
+                    DB::connection('sqlsrv3')->table('tblManagementConsol')->insert(
+                        ['ConsoleTypeId' => 88, 'Importance' => 1,'LoggedBy' => $userAuth,'Message' => "Order assigned to Rep Code ".$userID." by ".$userAuth,
+                            'UserId' => $userAuthID,'OrderId' => $OrderID,'DocNumber'=>$OrderID]);
+                    $hasAccess = "DONE";
+                }
             }
         }
 
-     return $hasAccess;
-
-
+        return $hasAccess;
     }
     public function changerouteonorder(Request $request)
     {
         $OrderID= $request->get('OrderId');
         $RouteID= $request->get('routeId');
-        $userAuth = Auth::user()->UserName;
-        $userAuthID = Auth::user()->UserID;
+        if (config('app.IS_API_BASED')) {
+            $response = $this->apiChangerouteonorder([
+                'OrderId' => $OrderID,
+                'RouteId' => $RouteID,
+            ]);
+            $newRoute = $response[0]['Route'];
+        } else {
+            $userAuth = Auth::user()->UserName;
+            $userAuthID = Auth::user()->UserID;
 
-        $GroupId = Auth::user()->GroupId;
-        if ($RouteID == 1138){
-            DB::connection('sqlsrv3')->statement("EXEC spTriggerUplift ?,?",array($OrderID,1));
-        } else{
-            DB::connection('sqlsrv3')->statement("EXEC spTriggerUplift ?,?",array($OrderID,0));
+            $GroupId = Auth::user()->GroupId;
+            if ($RouteID == 1138){
+                DB::connection('sqlsrv3')->statement("EXEC spTriggerUplift ?,?",array($OrderID,1));
+            } else{
+                DB::connection('sqlsrv3')->statement("EXEC spTriggerUplift ?,?",array($OrderID,0));
+            }
+           // $things = (new SalesForm())->getThings($GroupId,'Allow Call Logger');
+
+            $OurderRoute = DB::connection('sqlsrv3')->table('tblOrders')->select('RouteId')->where('OrderId',$OrderID)->get();
+            $currentRoute = $this->returnRouteName($OurderRoute[0]->RouteId);
+            DB::connection('sqlsrv3')->table('tblOrders')
+                ->where('OrderId',$OrderID )
+                ->update(['routeid' => $RouteID]);
+            $OurderRoutenew = DB::connection('sqlsrv3')->table('tblOrders')->select('RouteId')->where('OrderId',$OrderID)->get();
+            $newRoute = $this->returnRouteName($OurderRoutenew[0]->RouteId);
+
+            DB::connection('sqlsrv3')->table('tblManagementConsol')->insert([
+                'ConsoleTypeId' => 88,
+                'Importance' => 1,
+                'LoggedBy' => $userAuth,
+                'Message' => "Change the Route from" . $currentRoute . " to " . $newRoute,
+                'UserId' => $userAuthID,
+                'OrderId' => $OrderID,
+                'OrderId' => $OrderID,
+                'DocNumber'=>$OrderID
+            ]);
         }
-       // $things = (new SalesForm())->getThings($GroupId,'Allow Call Logger');
 
-        $OurderRoute = DB::connection('sqlsrv3')->table('tblOrders')->select('RouteId')->where('OrderId',$OrderID)->get();
-        //dd($OurderRoute);
-        $currentRoute = $this->returnRouteName($OurderRoute[0]->RouteId);
-        DB::connection('sqlsrv3')->table('tblOrders')
-            ->where('OrderId',$OrderID )
-            ->update(['routeid' => $RouteID]);
-        $OurderRoutenew = DB::connection('sqlsrv3')->table('tblOrders')->select('RouteId')->where('OrderId',$OrderID)->get();
-        $newRoute = $this->returnRouteName($OurderRoutenew[0]->RouteId);
-
-        DB::connection('sqlsrv3')->table('tblManagementConsol')->insert(
-            ['ConsoleTypeId' => 88, 'Importance' => 1,'LoggedBy' => $userAuth,'Message' => "Change the Route from".$currentRoute." to ".$newRoute,
-                'UserId' => $userAuthID,'OrderId' => $OrderID,'OrderId' => $OrderID,'DocNumber'=>$OrderID]);
         return  $newRoute;
     }
     public function returnRouteName($routeid)

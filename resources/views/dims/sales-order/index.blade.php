@@ -21,14 +21,8 @@
         <!--end::Item-->
     </x-slot>
     <?php
-    if ((Auth::guest()))
-    {
-
-    }else{
-        $v  =  new \App\Http\Controllers\SalesForm();
-        $thingsAllowDiscount = $v->getThings(Auth::user()->GroupId,'Discountinput');
-        $userActions = $v->getThings(Auth::user()->GroupId,'Access User Actions');
-    }
+    $thingsAllowDiscount = hasThingRole('Discountinput');
+    $userActions = hasThingRole('Access User Actions');
     $discountProperty = "";
     if($thingsAllowDiscount != 1)
     {

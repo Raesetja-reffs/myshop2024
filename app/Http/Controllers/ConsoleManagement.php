@@ -1,20 +1,20 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Reginald
- * Date: 30/07/2017
- * Time: 09:59 AM
- */
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Middleware\AuthenticateUsersAndCentralUser;
+use App\Traits\ConsoleManagementTrait;
+
 class ConsoleManagement extends Controller
 {
+    use ConsoleManagementTrait;
+
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(AuthenticateUsersAndCentralUser::class);
     }
     /**
      * @param $ConsoleTypeId
@@ -66,7 +66,6 @@ class ConsoleManagement extends Controller
         $OrderId= $request->get('OrderId');
         $productid= $request->get('productid');
         $CustomerId= $request->get('CustomerId');
-        $UserId= Auth::user()->UserID;
         $OldQty= $request->get('OldQty');
         $NewQty= $request->get('NewQty');
         $OldPrice= $request->get('OldPrice');
@@ -77,13 +76,37 @@ class ConsoleManagement extends Controller
         $DocNumber = $request->get('DocNumber');
         $machine = $request->get('machine');
         $ReturnId = $request->get('ReturnId');
-        $LoggedBy = Auth::user()->UserName;
+        if (config('app.IS_API_BASED')) {
+            $returnManagemntC = $this->apiLogMessageAjax([
+                'ConsoleTypeId' => $ConsoleTypeId,
+                'Importance' => $Importance,
+                'LoggedBy' => '',
+                'Message' => $Message,
+                'Reviewed' => $Reviewed,
+                'productid' => $productid,
+                'CustomerCode' => $CustomerId,
+                'OldQty' => $OldQty,
+                'NewQty' =>  $NewQty,
+                'OldPrice' =>  $OldPrice,
+                'NewPrice' => $NewPrice,
+                'ReviewedUserId' => $ReviewedUserId,
+                'ReferenceNo' => $ReferenceNo,
+                'DocType' =>  $DocType,
+                'DocNumber' => $DocNumber,
+                'Computer' => $machine,
+                'OrderId' => $OrderId,
+                'ReturnId' => $ReturnId,
+            ]);
+        } else {
+            $UserId= Auth::user()->UserID;
+            $LoggedBy = Auth::user()->UserName;
+            $returnManagemntC = DB::connection('sqlsrv3')
+                ->statement('exec spConsoleManagement ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?',
+                    array($ConsoleTypeId,$Importance,$LoggedBy,$Message,$Reviewed,$productid,$CustomerId,$UserId,$OldQty,$NewQty,$OldPrice,
+                        $NewPrice,$ReviewedUserId,$ReferenceNo,$DocType,$DocNumber,$machine,$OrderId,$ReturnId)
+                );
+        }
 
-        $returnManagemntC = DB::connection('sqlsrv3')
-        ->statement('exec spConsoleManagement ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?',
-        array($ConsoleTypeId,$Importance,$LoggedBy,$Message,$Reviewed,$productid,$CustomerId,$UserId,$OldQty,$NewQty,$OldPrice,
-            $NewPrice,$ReviewedUserId,$ReferenceNo,$DocType,$DocNumber,$machine,$OrderId,$ReturnId)
-    );
         return response()->json($returnManagemntC);
     }
     public function logMessageAuth(Request $request)
@@ -157,10 +180,18 @@ dd("hererererere");
         $orderId = $request->get('orderId');
         $delivdate =  (new \DateTime($request->get('delivdate')))->format('Y-m-d');
         $customerCode = $request->get('customerCode');
-        $LoggedBy = Auth::user()->UserName;
-        $userId = Auth::user()->UserID;
-        $deleteallLines= DB::connection('sqlsrv3')
-            ->select("EXEC spDeleteAllLinesOnOrder ".$orderId.",'".$LoggedBy."',".$userId.",'".$customerCode."','".$delivdate."'");
+        if (config('app.IS_API_BASED')) {
+            $deleteallLines = $this->apiDeleteallLinesOnOrder([
+                'OrderId' => $orderId,
+                'ConsoleDate' => $delivdate,
+                'CustomerCode' => $customerCode,
+            ]);
+        } else {
+            $LoggedBy = Auth::user()->UserName;
+            $userId = Auth::user()->UserID;
+            $deleteallLines = DB::connection('sqlsrv3')
+                ->select("EXEC spDeleteAllLinesOnOrder ".$orderId.",'".$LoggedBy."',".$userId.",'".$customerCode."','".$delivdate."'");
+        }
 
         return response()->json($deleteallLines);
     }

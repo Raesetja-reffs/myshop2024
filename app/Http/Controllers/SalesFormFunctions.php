@@ -11,12 +11,16 @@ use View;
 use App;
 use PDF;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Middleware\AuthenticateUsersAndCentralUser;
+use App\Traits\SalesFormFunctionsTrait;
 
 class SalesFormFunctions extends Controller
 {
+    use SalesFormFunctionsTrait;
+
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(AuthenticateUsersAndCentralUser::class);
     }
     //returnProductPrice
     public function CustomerCode(Request $request)
@@ -36,66 +40,86 @@ class SalesFormFunctions extends Controller
         else
             return ['value'=>'No Result Found','id'=>''];
     }
-    public function copyorder($orderid){
-        $queryCustomers =DB::connection('sqlsrv3')->table("viewtblCustomers" )
-            ->select('CustomerId','StoreName','CustomerPastelCode','CreditLimit','BalanceDue','UserField5','Email','Routeid','Discount','OtherImportantNotes','strRoute','mnyCustomerGp','ID','Warehouse','PriceListName','CustomerOnHold','termsAndList')
-            ->where('StatusId',1)
-            ->orderBy('CustomerPastelCode','ASC')->get();
+    public function copyorder($orderid)
+    {
+        // $queryCustomers = DB::connection('sqlsrv3')->table("viewtblCustomers" )
+        //     ->select('CustomerId','StoreName','CustomerPastelCode','CreditLimit','BalanceDue','UserField5','Email','Routeid','Discount','OtherImportantNotes','strRoute','mnyCustomerGp','ID','Warehouse','PriceListName','CustomerOnHold','termsAndList')
+        //     ->where('StatusId',1)
+        //     ->orderBy('CustomerPastelCode','ASC')->get();
 
-        return view('dims/copyorder')->with('customers',$queryCustomers)->with('orderid',$orderid);
+        return view('dims/copyorder')
+            ->with('orderid',$orderid);
 
     }
-    public function insertCopyorder(Request $request){
+
+    public function insertCopyorder(Request $request)
+    {
         $custCode = $request->get('custCode');
         $orderid = $request->get('orderid');
         $deliverydate = $request->get('deliverydate');
         $recalcprices = $request->get('recalcprice');
-
-        $userid = Auth::user()->UserID;
-        $username = Auth::user()->UserName;
-
-        $returnmsg= DB::connection('sqlsrv3')
-            ->select('exec spCopyOrder ?,?,?,?,?,?',
-                array($orderid,$custCode,(new \DateTime($deliverydate))->format('Y-m-d') ,$userid,$recalcprices,$username)
-            );
+        if (config('app.IS_API_BASED')) {
+            $returnmsg = $this->apiInsertCopyorder([
+                'custCode' => $custCode
+            ]);
+        } else {
+            $userid = Auth::user()->UserID;
+            $username = Auth::user()->UserName;
+            $returnmsg = DB::connection('sqlsrv3')
+                ->select('exec spCopyOrder ?,?,?,?,?,?',
+                    array($orderid,$custCode,(new \DateTime($deliverydate))->format('Y-m-d') ,$userid,$recalcprices,$username)
+                );
+        }
 
         return response()->json($returnmsg);
     }
-    public function getextracomunsforItems(Request $request){
-
+    public function getextracomunsforItems(Request $request)
+    {
         $custCode = $request->get('custCode');
         $productCode = $request->get('productCode');
-        $returnCustomerRoute = DB::connection('sqlsrv3')
+        if (config('app.IS_API_BASED')) {
+            $returnCustomerRoute = $this->apiGetextracomunsforItems([
+                'CustomerCode' => $custCode,
+                'ItemCode' => $productCode,
+            ]);
+        } else {
+            $returnCustomerRoute = DB::connection('sqlsrv3')
             ->select('exec spGetproductExtraInfo ?,?',
                 array($productCode,$custCode)
             );
-        // ->select("EXEC spCustomerRouteAndAllRoutesByPriority '".$customerCode."'");
+            // ->select("EXEC spCustomerRouteAndAllRoutesByPriority '".$customerCode."'");
+        }
+
         return response()->json($returnCustomerRoute);
     }
     public function isClosedRoute(Request $request)
     {
-        //$deliveryDate = $request->get('delDate');
         $OrderType= $request->get('orderType');
         $routeId= $request->get('routeId');
         $inputCustAcc = $request->get('inputCustAcc');
-        $islosed =DB::connection('sqlsrv3')->table("tblDeliveryDateRouting")->select('Closed')
-            ->where('DeliveryDate',(new \DateTime($request->get('delDate')))->format('Y-m-d') )
-            ->Where('OrderTypeId',$OrderType )
-            ->Where('RouteId',$routeId )->take(1)->get();
-        $customerRouteCheck =DB::connection('sqlsrv3')->table("viewtblCustomers")->select('Routeid')
-            ->where('CustomerPastelCode',$inputCustAcc)
-            ->take(1)->get();
-
-        //dd($customerRouteCheck);
-        $count = array();
-        if (count($islosed) < 1){
-
-            $count['isClosed']= 0;
-            $count['routeId']= $customerRouteCheck[0]->Routeid;
-        }else{
-            $count['isClosed']= $islosed[0]->Closed;
-            $count['routeId']= $customerRouteCheck[0]->Routeid;
-
+        if (config('app.IS_API_BASED')) {
+            $count = $this->apiIsClosedRoute([
+                'DeliveryDate' => (new \DateTime($request->get('delDate')))->format('Y-m-d'),
+                'OrderTypeId' => $OrderType,
+                'RouteId' => $routeId,
+                'CustomerPastelCode' => $inputCustAcc,
+            ]);
+        } else {
+            $islosed =DB::connection('sqlsrv3')->table("tblDeliveryDateRouting")->select('Closed')
+                ->where('DeliveryDate',(new \DateTime($request->get('delDate')))->format('Y-m-d') )
+                ->Where('OrderTypeId',$OrderType )
+                ->Where('RouteId',$routeId )->take(1)->get();
+            $customerRouteCheck =DB::connection('sqlsrv3')->table("viewtblCustomers")->select('Routeid')
+                ->where('CustomerPastelCode',$inputCustAcc)
+                ->take(1)->get();
+            $count = array();
+            if (count($islosed) < 1) {
+                $count['isClosed']= 0;
+                $count['routeId']= $customerRouteCheck[0]->Routeid;
+            } else {
+                $count['isClosed']= $islosed[0]->Closed;
+                $count['routeId']= $customerRouteCheck[0]->Routeid;
+            }
         }
         $count['routeOnOrder'] = $routeId;
 
@@ -124,11 +148,18 @@ class SalesFormFunctions extends Controller
     public function getCustomerRouteWithOtherRoutesByPriority(Request $request)
     {
         $customerCode = $request->get('customerCode');
-        $returnCustomerRoute = DB::connection('sqlsrv3')
+        if (config('app.IS_API_BASED')) {
+            $returnCustomerRoute = $this->apiGetCustomerRouteWithOtherRoutesByPriority([
+                'CustomerCode' => $customerCode
+            ]);
+        } else {
+            $returnCustomerRoute = DB::connection('sqlsrv3')
             ->select('exec spCustomerRouteAndAllRoutesByPriority ?',
                 array($customerCode)
             );
-        // ->select("EXEC spCustomerRouteAndAllRoutesByPriority '".$customerCode."'");
+            // ->select("EXEC spCustomerRouteAndAllRoutesByPriority '".$customerCode."'");
+        }
+
         return response()->json($returnCustomerRoute);
 
     }
@@ -169,16 +200,24 @@ class SalesFormFunctions extends Controller
 
     public function returnProductPrice(Request $request)
     {
-        //dd($request);
         $customerCode = $request->get('customerID');
         $productCode = $request->get('productCode');
         $warehouse = $request->get('warehouseid');
-        $userid = Auth::user()->UserID;
         $deliveryDate = (new \DateTime($request->get('deliveryDate')))->format('Y-m-d');
-        $returnPrice = DB::connection('sqlsrv3')
-            ->select('exec spCustomerPriceLookUp ?,?,?,?,?',
-                array($deliveryDate,$productCode,$customerCode,$warehouse,$userid)
-            );
+        if (config('app.IS_API_BASED')) {
+            $returnPrice = $this->apiReturnProductPrice([
+                'CustomerCode' => $customerCode,
+                'ProductCode' => $productCode,
+                'DelvDate' => $deliveryDate,
+                'Warehouseid' => $warehouse,
+            ]);
+        } else {
+            $userid = Auth::user()->UserID;
+            $returnPrice = DB::connection('sqlsrv3')
+                ->select('exec spCustomerPriceLookUp ?,?,?,?,?',
+                    array($deliveryDate,$productCode,$customerCode,$warehouse,$userid)
+                );
+        }
 
         return response()->json($returnPrice);
 
@@ -257,15 +296,25 @@ class SalesFormFunctions extends Controller
 
         return $outPut;
     }
+
     public function updateDiscount(Request $request)
     {
         $orderID = $request->get('OrderId');
-        $Disc = $request->get('Disc');
-        DB::connection('sqlsrv3')->table('tblOrders')
-            ->where('OrderID',$orderID )
-            ->update(['Disc' => $Disc]);
-        return $Disc;
+        $disc = $request->get('Disc');
+        if (config('app.IS_API_BASED')) {
+            $this->apiUpdateDiscount([
+                'OrderId' => $orderID,
+                'Disc' => $disc
+            ]);
+        } else {
+            DB::connection('sqlsrv3')->table('tblOrders')
+                ->where('OrderID', $orderID )
+                ->update(['Disc' => $disc]);
+        }
+
+        return $disc;
     }
+
     /*
      * Deprecated
      */
@@ -288,27 +337,34 @@ class SalesFormFunctions extends Controller
     public function combinedSpecials(Request $request)
     {
         $customerCode = $request->get('customerCode');
-
         $deliveryDate = (new \DateTime($request->get('deliveryDate')))->format('Y-m-d');
-        $returnGroupSpecials= DB::connection('sqlsrv3')
-            ->select('exec spCustomerGroupSpecials ?,?',
-                array($customerCode,$deliveryDate)
-            );
-        $returnCustomer = DB::connection('sqlsrv3')
-            ->select('exec spCustomerDateDrivenSpecials ?,?',
-                array($customerCode,$deliveryDate)
-            );
-        $returnPastInvoices = DB::connection('sqlsrv3')
-            ->select('exec spGetCustomerPastInvoices ?',
-                array($customerCode)
-            );
+        if (config('app.IS_API_BASED')) {
+            $output = $this->apiCombinedSpecials([
+                'CustomerCode' => $customerCode,
+                'DelvDate' => $deliveryDate
+            ]);
+        } else {
+            $returnGroupSpecials= DB::connection('sqlsrv3')
+                ->select('exec spCustomerGroupSpecials ?,?',
+                    array($customerCode,$deliveryDate)
+                );
+            $returnCustomer = DB::connection('sqlsrv3')
+                ->select('exec spCustomerDateDrivenSpecials ?,?',
+                    array($customerCode,$deliveryDate)
+                );
+            $returnPastInvoices = DB::connection('sqlsrv3')
+                ->select('exec spGetCustomerPastInvoices ?',
+                    array($customerCode)
+                );
 
-        $customerContacts= DB::connection('sqlsrv3')->table('tblCustomers')->select('BuyerContact','BuyerTelephone','CellPhone')->where('CustomerPastelCode',$customerCode)->get();
+            $customerContacts= DB::connection('sqlsrv3')->table('tblCustomers')->select('BuyerContact','BuyerTelephone','CellPhone')->where('CustomerPastelCode',$customerCode)->get();
 
-        $output['customerSpecials'] = $returnCustomer;
-        $output['GroupSpecials'] = $returnGroupSpecials;
-        $output['pastInvoices'] = $returnPastInvoices;
-        $output['contacts'] = $customerContacts;
+            $output['customerSpecials'] = $returnCustomer;
+            $output['GroupSpecials'] = $returnGroupSpecials;
+            $output['pastInvoices'] = $returnPastInvoices;
+            $output['contacts'] = $customerContacts;
+        }
+
         return $output;
     }
 
@@ -348,69 +404,85 @@ class SalesFormFunctions extends Controller
         $discount = $request->get('discount');
         $OrderNo = str_replace("'", " ", $OrderNo);
         $DeliveryAddressID =0;
-        $userID =  Auth::user()->UserID;
-        //$customerID = DB::connection('sqlsrv3')->table('tblCustomers')->select('CustomerId')->where('CustomerPastelCode',$customerCode)->get();
-        //$Routeid = DB::connection('sqlsrv3')->table('tblCustomers')->select('Routeid')->where('CustomerPastelCode',$customerCode)->get();
-        //DB::beginTransaction();
+        if (config('app.IS_API_BASED')) {
+            $response = $this->apiInsertOrderHearder([
+                'CustomerCode' => $customerCode,
+                'LateOrder' => $LateOrder,
+                'DeliveryDate' => $DeliveryDate,
+                'OrderDate' => $OrderDate,
+                'DeliveryAddressID' => $DeliveryAddressID,
+            ]);
+            $output['orderId'] = $response['Result']['Table']['ID'];
+            $output['singleAddress'] = $response['Result']['Table1'];
+            $output['counter'] = $response['Result']['Table2'];
+        } else {
+            $userID =  Auth::user()->UserID;
+            //$customerID = DB::connection('sqlsrv3')->table('tblCustomers')->select('CustomerId')->where('CustomerPastelCode',$customerCode)->get();
+            //$Routeid = DB::connection('sqlsrv3')->table('tblCustomers')->select('Routeid')->where('CustomerPastelCode',$customerCode)->get();
+            //DB::beginTransaction();
 
-        // $returnPastInvoices = DB::connection('sqlsrv3')->select("EXEC spCRUDOrderHeaders 0,'".$customerCode."',".$DeliveryAddressID.",'".$OrderDate."','".$DeliveryDate."',".$LateOrder.",'".$OrderNo."',0,'".$statement."'".","."'0'".","."'0'".","."'0'".","."'0'".","."'0'".","."'0'".",".$userID.",0,".$discount);
-        $returnPastInvoices = DB::connection('sqlsrv3')
-            //->select("EXEC spCRUDOrderHeaders 0,'".$customerCode."',".$DeliveryAddressID.",'".$OrderDate."','".$DeliveryDate."',".$LateOrder.",'".$OrderNo."',0,'".$statement."'".","."'0'".","."'0'".","."'0'".","."'0'".","."'0'".","."'0'".",".$userID.",0,0.0");
-            ->select('exec spCRUDOrderHeaders ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?',
-                array(0,$customerCode,$DeliveryAddressID,$OrderDate,$DeliveryDate,$LateOrder,$OrderNo,0,$statement,'0','0','0','0','0','0',$userID,0,$discount)
-            );
+            // $returnPastInvoices = DB::connection('sqlsrv3')->select("EXEC spCRUDOrderHeaders 0,'".$customerCode."',".$DeliveryAddressID.",'".$OrderDate."','".$DeliveryDate."',".$LateOrder.",'".$OrderNo."',0,'".$statement."'".","."'0'".","."'0'".","."'0'".","."'0'".","."'0'".","."'0'".",".$userID.",0,".$discount);
+            $returnPastInvoices = DB::connection('sqlsrv3')
+                //->select("EXEC spCRUDOrderHeaders 0,'".$customerCode."',".$DeliveryAddressID.",'".$OrderDate."','".$DeliveryDate."',".$LateOrder.",'".$OrderNo."',0,'".$statement."'".","."'0'".","."'0'".","."'0'".","."'0'".","."'0'".","."'0'".",".$userID.",0,0.0");
+                ->select('exec spCRUDOrderHeaders ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?',
+                    array(0,$customerCode,$DeliveryAddressID,$OrderDate,$DeliveryDate,$LateOrder,$OrderNo,0,$statement,'0','0','0','0','0','0',$userID,0,$discount)
+                );
 
 
-        if(strlen($returnPastInvoices[0]->ID > 1)){
-            (new DimsCommon())->lockOrder($returnPastInvoices[0]->ID);
+            if(strlen($returnPastInvoices[0]->ID > 1)){
+                (new DimsCommon())->lockOrder($returnPastInvoices[0]->ID);
+            }
+            $zero = 0;
+            $countAddress = DB::connection('sqlsrv3')
+                // ->select("EXEC spCrudDeliveryAddress ".$zero.",'00','00','000','000','000',00,00,'00','".$customerCode."',00,'Count'");
+                ->select('exec spCrudDeliveryAddress ?,?,?,?,?,?,?,?,?,?,?,?',
+                    array($zero,'00','00','000','000','000',00,00,'00',$customerCode,00,'Count')
+                );
+            $custSingleAddress = DB::connection('sqlsrv3')
+                ->select('exec spCrudDeliveryAddress ?,?,?,?,?,?,?,?,?,?,?,?',
+                    array($zero,'00','00','000','000','000',00,00,'00',$customerCode,00,'Select')
+                );
+
+            $output['orderId'] = $returnPastInvoices[0]->ID;
+            $output['counter'] = $countAddress[0];
+            $output['singleAddress'] = $custSingleAddress[0];
         }
-        $zero = 0;
-        $countAddress = DB::connection('sqlsrv3')
-            // ->select("EXEC spCrudDeliveryAddress ".$zero.",'00','00','000','000','000',00,00,'00','".$customerCode."',00,'Count'");
-            ->select('exec spCrudDeliveryAddress ?,?,?,?,?,?,?,?,?,?,?,?',
-                array($zero,'00','00','000','000','000',00,00,'00',$customerCode,00,'Count')
-            );
-        $custSingleAddress = DB::connection('sqlsrv3')
-            ->select('exec spCrudDeliveryAddress ?,?,?,?,?,?,?,?,?,?,?,?',
-                array($zero,'00','00','000','000','000',00,00,'00',$customerCode,00,'Select')
-            );
 
-        $output['orderId'] = $returnPastInvoices[0]->ID;
-        $output['counter'] = $countAddress[0];
-        $output['singleAddress'] = $custSingleAddress[0];
         return $output;
     }
+
     public function orderheaderAndOrderLines(Request $request)
     {
         $orderlines = $request->get('orderlines');
         $orderheaders = $request->get('orderheaders');
-        $OrderId = $request->get('OrderId');
-        $userid = Auth::user()->UserID;
-        $userName = Auth::user()->UserName;
-        ///var_dump($orderlines);
-        ///
+        $orderId = $request->get('OrderId');
         if (is_array($orderlines)) {
-
             $orderheaderxml = $this->toxml($orderheaders, "xml", array("result"));
             $orderlinesrxml = $this->toxml($orderlines, "xml", array("result"));
-
-
-            $getResult = DB::connection('sqlsrv4')
-                ->select("EXEC spXmlOrderHeadersAndLines " . $OrderId . ",'" . $orderlinesrxml . "','" . $orderheaderxml . "','" . $userName . "'," . $userid);
-
-            // echo $orderheaderxml;
-            // echo $orderlinesrxml;
-            $outPut['result'] = $getResult[0]->Result;
-            $outPut['Error'] = $getResult[0]->error;
-            $outPut['Extras'] = $getResult[0]->Extras;
-            return $outPut;
-        }else{
+            if (config('app.IS_API_BASED')) {
+                $orderlinesrxml = $this->toxml($orderlines, "xml", array("result"));
+                $orderheaderxml = $this->toxml($orderheaders, "xml", array("result"));
+                $outPut = $this->apiOrderheaderAndOrderLines([
+                    'OrderId' => $orderId,
+                    'XmlOrderLines' => $orderlinesrxml,
+                    'XmlOrderHeaders' => $orderheaderxml,
+                ]);
+            } else {
+                $userid = Auth::user()->UserID;
+                $userName = Auth::user()->UserName;
+                $getResult = DB::connection('sqlsrv4')
+                    ->select("EXEC spXmlOrderHeadersAndLines " . $orderId . ",'" . $orderlinesrxml . "','" . $orderheaderxml . "','" . $userName . "'," . $userid);
+                $outPut['result'] = $getResult[0]->Result;
+                $outPut['Error'] = $getResult[0]->error;
+                $outPut['Extras'] = $getResult[0]->Extras;
+            }
+        } else {
             $outPut['result'] = "Success";
             $outPut['Error'] = "Success";
             $outPut['Extras'] = "";
-            return $outPut;
         }
 
+        return $outPut;
     }
     public function checkstockonorders(Request $request){
         $orderlines = $request->get('orderlinesprodValidations');
@@ -423,40 +495,41 @@ class SalesFormFunctions extends Controller
     }
     public function checkZeroCostOnOrder(Request $request)
     {
+        $outPut = [];
         $orderlines = $request->get('orderlines');
         $OrderId = $request->get('OrderId');
-        $userid = Auth::user()->UserID;
-        $userName = Auth::user()->UserName;
-        ///var_dump($orderlines);
-         $v  =  new \App\Http\Controllers\SalesForm();
-        $hasauthcosts = $v->getThings(Auth::user()->GroupId,'Auth Zero Cost Grid');
-        if($hasauthcosts =="1"){
+        if (config('app.IS_API_BASED')) {
+            $orderlinesrxml = '';
             if (is_array($orderlines)) {
-
                 $orderlinesrxml = $this->toxml($orderlines, "xml", array("result"));
-                $getResult = DB::connection('sqlsrv4')
-                    ->select("EXEC spXmlProductHavingZeroCost " . $OrderId . ",'" . $orderlinesrxml . "'");
-
-                if(count($getResult) > 0)
-                {
-                    $outPut['result'] = "SUCCESS";
-                    $outPut['data'] = $getResult;
-                }else{
+            }
+            $outPut = $this->apiCheckZeroCostOnOrder([
+                'XmlPassed' => $orderlinesrxml,
+                'OrderId' => $OrderId,
+            ]);
+        } else {
+             $v = new \App\Http\Controllers\SalesForm();
+            $hasauthcosts = $v->getThings(Auth::user()->GroupId,'Auth Zero Cost Grid');
+            if ($hasauthcosts =="1") {
+                if (is_array($orderlines)) {
+                    $orderlinesrxml = $this->toxml($orderlines, "xml", array("result"));
+                    $getResult = DB::connection('sqlsrv4')
+                        ->select("EXEC spXmlProductHavingZeroCost " . $OrderId . ",'" . $orderlinesrxml . "'");
+                    if(count($getResult) > 0) {
+                        $outPut['result'] = "SUCCESS";
+                        $outPut['data'] = $getResult;
+                    } else {
+                        $outPut['result'] = "Nothing";
+                    }
+                } else {
                     $outPut['result'] = "Nothing";
                 }
-
-                return $outPut;
-            }else{
+            } else {
                 $outPut['result'] = "Nothing";
-
-                return $outPut;
             }
-        }else{
-            $outPut['result'] = "Nothing";
-            return $outPut;
         }
 
-
+        return $outPut;
     }
     public function insertHeaderForOtherTrans(Request $request)
     {
@@ -642,14 +715,20 @@ class SalesFormFunctions extends Controller
         $OrderNo = $request->get('orderNo');
         $statement = $request->get('statement');
         $DeliveryAddressID = 0;
-        $userID =  Auth::user()->UserID;
         $OrderNo = str_replace("'", " ", $OrderNo);
+        if (config('app.IS_API_BASED')) {
+             $returnCounts = $this->apiCheckIfOrderExists([
+                'customerCode' => $customerCode
+             ]);
+        } else {
+            $userID =  Auth::user()->UserID;
+            $returnCounts = DB::connection('sqlsrv3')
+                //->select("EXEC spCRUDOrderHeaders 0,'".$customerCode."',".$DeliveryAddressID.",'".$OrderDate."','".$DeliveryDate."',".$LateOrder.",'".$OrderNo."',0,'".$statement."'".","."'0'".","."'0'".","."'0'".","."'0'".","."'0'".","."'0'".",".$userID.",0,0.0");
+                ->select('exec spCRUDOrderHeaders ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?',
+                    array(0,$customerCode,$DeliveryAddressID,$OrderDate,$DeliveryDate,$LateOrder,$OrderNo,0,$statement,'0','0','0','0','0','0',$userID,0,0)
+                );
+        }
 
-        $returnCounts = DB::connection('sqlsrv3')
-            //->select("EXEC spCRUDOrderHeaders 0,'".$customerCode."',".$DeliveryAddressID.",'".$OrderDate."','".$DeliveryDate."',".$LateOrder.",'".$OrderNo."',0,'".$statement."'".","."'0'".","."'0'".","."'0'".","."'0'".","."'0'".","."'0'".",".$userID.",0,0.0");
-            ->select('exec spCRUDOrderHeaders ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?',
-                array(0,$customerCode,$DeliveryAddressID,$OrderDate,$DeliveryDate,$LateOrder,$OrderNo,0,$statement,'0','0','0','0','0','0',$userID,0,0)
-            );
         return response()->json($returnCounts);
     }
     //check if other transactions exists ,sales orders are not part of this
@@ -743,19 +822,26 @@ class SalesFormFunctions extends Controller
         //return $outPut;
 
     }
+
     public function deleteByHiddenToken(Request $request)
     {
-        $OrderId = $request->get('orderId');
+        $orderId = $request->get('orderId');
         $hiddentToken = $request->get('hiddenToken');
-        $getResult = DB::connection('sqlsrv3')
-            ->select("EXEC spDeleteHiddenToken ".$OrderId.",".$hiddentToken);
+        if (config('app.IS_API_BASED')) {
+            $outPut = $this->apiDeleteByHiddenToken([
+                'Orderid' => $orderId,
+                'HiddenToken' => $hiddentToken,
+            ]);
+        } else {
+            $getResult = DB::connection('sqlsrv3')
+                ->select("EXEC spDeleteHiddenToken ".$orderId.",".$hiddentToken);
 
-        //dd($getResult);
-        $outPut['result'] = $getResult[0]->Result;
+            $outPut['result'] = $getResult[0]->Result;
+        }
 
         return $outPut;
-
     }
+
     public function DeleteOrderDetailsOrtherTrans(Request $request)
     {
         $OrderId= $request->get('OrderId');
@@ -815,20 +901,26 @@ class SalesFormFunctions extends Controller
         $orderID = $request->get('orderID');
         $DeliveryAddressIId = $request->get('DeliveryAddressIId');
         $CustomerId = $request->get('CustomerId');
-        if (strlen($DeliveryAddressIId) < 1)
-        {
+        if (strlen($DeliveryAddressIId) < 1) {
             $DeliveryAddressIId = "NULL";
         }
+        $CustomerCode = str_replace("'", "''", $CustomerCode);
 
-        $CustomerCode =$text=str_replace("'","''",$CustomerCode);
-        $GetOrderPattern = DB::connection('sqlsrv3')
-            ->select("Select * from  [dbo].[fnCustomerDefaultOrders]('$CustomerId',$orderID,$DeliveryAddressIId) Order By PushProduct Desc, PastelDescription");
-
+        if (config('app.IS_API_BASED')) {
+            $GetOrderPattern = $this->apiGetCustomerOderpattern([
+                'Customerid' => $CustomerId,
+                'OrderId' => $orderID,
+                'addressId' => $DeliveryAddressIId,
+            ]);
+        } else {
+            $GetOrderPattern = DB::connection('sqlsrv3')
+                ->select("Select * from  [dbo].[fnCustomerDefaultOrders]('$CustomerId',$orderID,$DeliveryAddressIId) Order By PushProduct Desc, PastelDescription");
+        }
         $output['recordsTotal'] = count($GetOrderPattern);
         $output['data'] = $GetOrderPattern;
         $output['recordsFiltered'] = count($GetOrderPattern);
-
         $output['draw'] = intval($request->input('draw'));
+
         return $output;
 
     }
@@ -838,16 +930,22 @@ class SalesFormFunctions extends Controller
         $InvNo = $request->get('InvNo');
         $CustCode = $request->get('CustCode');
         $delDate = $request->get('delDate');
-        $userid =Auth::user()->UserID;
-        // echo $userid ;
-        if(strlen($CustCode)> 0){
-            $CustomerId = DB::connection('sqlsrv3')->table('viewtblCustomers')->select('CustomerId')->where('CustomerPastelCode',$CustCode)->get();
-            $CustCode = $CustomerId[0]->CustomerId;
+        if (config('app.IS_API_BASED')) {
+            $GetOrderListing = $this->apiGetOrderListing([
+                'OrderId' => $OrderId,
+                'InvoiceNo' => $InvNo,
+                'DelDate' => $delDate,
+                'CustomerCode' => $CustCode,
+            ]);
+        } else {
+            $userid =Auth::user()->UserID;
+            if(strlen($CustCode)> 0){
+                $CustomerId = DB::connection('sqlsrv3')->table('viewtblCustomers')->select('CustomerId')->where('CustomerPastelCode',$CustCode)->get();
+                $CustCode = $CustomerId[0]->CustomerId;
+            }
+            $GetOrderListing= DB::connection('sqlsrv3')
+                ->select("EXEC spOrderListing '".$OrderId."','".$InvNo."','".$delDate."','".$CustCode."',".$userid);
         }
-
-        $GetOrderListing= DB::connection('sqlsrv3')
-            ->select("EXEC spOrderListing '".$OrderId."','".$InvNo."','".$delDate."','".$CustCode."',".$userid);
-        //dd($GetOrderListing);
         $output['recordsTotal'] = count($GetOrderListing);
         $output['data'] = $GetOrderListing;
         $output['recordsFiltered'] = $output['recordsTotal'];
@@ -938,53 +1036,44 @@ class SalesFormFunctions extends Controller
         $orderby = $request->input('order.0.column');
         $sort['col'] = $request->input('columns.' . $orderby . '.data');
         $sort['dir'] = $request->input('order.0.dir');
-
-        $edit = (new SalesForm())->hasAccessToEdit($OrderId);
-        $isQoutation = DB::connection('sqlsrv3')
-            ->select("select * from tblOrders where OrderId = " . $OrderId." and TreatAsQuotation=1");
-
-        $responseFromOrdeLock = (new DimsCommon())->checkUserLock($OrderId);
-        //dd($responseFromOrdeLock[0]->orderID);
-        // dd($isQoutation);
-        if (count($isQoutation) > 0) {
-            //dd($isQoutation);
-            $GetOrderHeader = DB::connection('sqlsrv3')
-                ->select("EXEC spReturnInvoiceOrderIdData '" . $OrderId . "','" . $InvoiceNumber . "'");
-
-
-            $outPut['data'] = $GetOrderHeader;
-            $outPut['returns'] = "inserted";
-
-            return response()->json($outPut);
+        $outPut = [];
+        if (config('app.IS_API_BASED')) {
+            $outPut = $this->apiOnCheckOrderHeader([
+                'OrderId' => $OrderId,
+                'InvoiceNo' => $InvoiceNumber,
+            ]);
         } else {
-
-
-            if ($responseFromOrdeLock[0]->orderID == "inserted") {
-                if ($edit == "Yes") {
-                    $GetOrderHeader = DB::connection('sqlsrv3')
-                        ->select("EXEC spReturnInvoiceOrderIdData '" . $OrderId . "','" . $InvoiceNumber . "'");
-
-                  //  dd($GetOrderHeader);
-                    $outPut['data'] = $GetOrderHeader;
-                    $outPut['returns'] = "inserted";
+            $edit = (new SalesForm())->hasAccessToEdit($OrderId);
+            $isQoutation = DB::connection('sqlsrv3')
+                ->select("select * from tblOrders where OrderId = " . $OrderId." and TreatAsQuotation=1");
+            $responseFromOrdeLock = (new DimsCommon())->checkUserLock($OrderId);
+            if (count($isQoutation) > 0) {
+                $GetOrderHeader = DB::connection('sqlsrv3')
+                    ->select("EXEC spReturnInvoiceOrderIdData '" . $OrderId . "','" . $InvoiceNumber . "'");
+                $outPut['data'] = $GetOrderHeader;
+                $outPut['returns'] = "inserted";
+            } else {
+                if ($responseFromOrdeLock[0]->orderID == "inserted") {
+                    if ($edit == "Yes") {
+                        $GetOrderHeader = DB::connection('sqlsrv3')
+                            ->select("EXEC spReturnInvoiceOrderIdData '" . $OrderId . "','" . $InvoiceNumber . "'");
+                        $outPut['data'] = $GetOrderHeader;
+                        $outPut['returns'] = "inserted";
+                    } else {
+                        $mes = $OrderId . ' has been planned already, please view this order as PDF';
+                        $GetOrdermess = DB::connection('sqlsrv3')
+                            ->select("Select '$mes' as orderID ");
+                        $outPut['data'] = $GetOrdermess;
+                        $outPut['returns'] = "Not inserted";
+                    }
                 } else {
-                    $mes = $OrderId . ' has been planned already, please view this order as PDF';
-                    $GetOrdermess = DB::connection('sqlsrv3')
-                        ->select("Select '$mes' as orderID ");
-                    // dd($GetOrdermess);
-                    $outPut['data'] = $GetOrdermess;
+                    $outPut['data'] = $responseFromOrdeLock;
                     $outPut['returns'] = "Not inserted";
                 }
-
-                return response()->json($outPut);
-            } else {
-//dd($responseFromOrdeLock[0]->orderID);
-                $outPut['data'] = $responseFromOrdeLock;
-                $outPut['returns'] = "Not inserted";
-                return response()->json($outPut);
             }
         }
 
+        return response()->json($outPut);
     }
     //For Other Transactions
     public function onCheckOrderHeaderForOtherTrans(Request $request)
@@ -1020,31 +1109,48 @@ class SalesFormFunctions extends Controller
         $address3 = $request->get('address3');
         $address4 = $request->get('address4');
         $address5 = $request->get('address5');
-
         $address1 =  substr($address1,0,28);
         $address2 =  substr($address2,0,28);
         $address3 =  substr($address3,0,28);
         $address4 =  substr($address4,0,28);
         $address5 =  substr($address5,0,28);
-
         $Routeid = $request->get('Routeid');
-        $salesmanid = Auth::user()->UserID;
 
-        $getCallistSp= DB::connection('sqlsrv3')
-            ->statement("EXEC spInsertDeliveryAddressOnTheFly ".$orderID.",'".$address1."','".$address2."','".$address3."','".$address4."','".$address5."',".$Routeid.",".$salesmanid);
+        if (config('app.IS_API_BASED')) {
+            $getCallistSp = $this->apiTempDeliverAddress([
+                'address1' => $address1,
+                'address2' => $address2,
+                'address3' => $address3,
+                'address4' => $address4,
+                'address5' => $address5,
+                'Routeid' => $Routeid,
+                'OrderId' => $orderID,
+            ]);
+        } else {
+            $salesmanid = Auth::user()->UserID;
+            $getCallistSp = DB::connection('sqlsrv3')
+                ->statement("EXEC spInsertDeliveryAddressOnTheFly ".$orderID.",'".$address1."','".$address2."','".$address3."','".$address4."','".$address5."',".$Routeid.",".$salesmanid);
+        }
 
+        $message = 'OOPS Something wen wrong';
         if ($getCallistSp == true){
-            return "Address Created and Saved";
+            $message = 'Address Created and Saved';
         }
-        else{
-            return "OOPS Something wen wrong";
-        }
+
+        return $message;
     }
     public function advancedOrderNo(Request $request)
     {
         $OrderId= $request->get('OrderId');
-        $GetOrderNo= DB::connection('sqlsrv3')
-            ->select("select OrderNo,Brand,tblBrandOrderInvoice.BrandId from tblBrandOrderInvoice inner join tblBrands on tblBrandOrderInvoice.BrandId = tblBrands.BrandId where OrderId=".$OrderId);
+        if (config('app.IS_API_BASED')) {
+            $GetOrderNo = $this->apiAdvancedOrderNo([
+                'OrderId' => $OrderId
+            ]);
+        } else {
+            $GetOrderNo = DB::connection('sqlsrv3')
+                ->select("select OrderNo,Brand,tblBrandOrderInvoice.BrandId from tblBrandOrderInvoice inner join tblBrands on tblBrandOrderInvoice.BrandId = tblBrands.BrandId where OrderId=".$OrderId);
+        }
+
         return response()->json($GetOrderNo);
     }
     public function updateOrderNo(Request $request)
@@ -1072,9 +1178,16 @@ class SalesFormFunctions extends Controller
     }
     public function onCheckOrderHeaderDetails(Request $request)
     {
-        $OrderId= $request->get('orderId');
-        $GetOrderDetails= DB::connection('sqlsrv3')
-            ->select("EXEC spOrderIdLines ".$OrderId);
+        $OrderId = $request->get('orderId');
+        if (config('app.IS_API_BASED')) {
+            $GetOrderDetails = $this->apiOnCheckOrderHeaderDetails([
+                'OrderId' => $OrderId
+            ]);
+        } else {
+            $GetOrderDetails = DB::connection('sqlsrv3')
+                ->select("EXEC spOrderIdLines " . $OrderId);
+        }
+
         return response()->json($GetOrderDetails);
     }
     public function onCheckOrderHeaderDetailsForOtherTrans(Request $request)
@@ -1107,15 +1220,21 @@ class SalesFormFunctions extends Controller
     {
         $productCode= $request->get('productCode');
         $custCode= $request->get('custCode');
-        $locationId =  Auth::user()->LocationId;
-        $GetProductPrices= DB::connection('sqlsrv3')
-            ->select("EXEC spGeneralPriceCheck '".$productCode."'");
+        if (config('app.IS_API_BASED')) {
+            $outPut = $this->apiGeneralPriceCheckAndLastCost([
+                'ProductCode' => $productCode,
+                'CustCode' => $custCode,
+            ]);
+        } else {
+            $locationId =  Auth::user()->LocationId;
+            $GetProductPrices= DB::connection('sqlsrv3')
+                ->select("EXEC spGeneralPriceCheck '".$productCode."'");
 
-        $GetLastCost= DB::connection('sqlsrv3')
-            ->select("EXEC spLastSellingPrice '".$productCode."','".$custCode."',".$locationId);
-
-        $outPut['pricelists'] = $GetProductPrices;
-        $outPut['sellingPrice'] = $GetLastCost;
+            $GetLastCost= DB::connection('sqlsrv3')
+                ->select("EXEC spLastSellingPrice '".$productCode."','".$custCode."',".$locationId);
+            $outPut['pricelists'] = $GetProductPrices;
+            $outPut['sellingPrice'] = $GetLastCost;
+        }
 
         return response()->json($outPut);
 
@@ -1126,11 +1245,20 @@ class SalesFormFunctions extends Controller
         $customerCode = $request->get('customerCode');
         $deldate = $request->get('delDate');
         $deliveryDate = (new \DateTime($deldate))->format('Y-m-d');
-        $userid = Auth::user()->UserID;
-        $returnCustProdPrice = DB::connection('sqlsrv3')
-            ->select('exec spCustomerPriceLookUpAssociatedItems ?,?,?,?,?',
-                array($deliveryDate,$prodCode,$customerCode,-1,$userid)
-            );
+        if (config('app.IS_API_BASED')) {
+            $returnCustProdPrice = $this->apiAssociatedItem([
+                'Warehouseid' => 1,
+                'DelvDate' => $deliveryDate,
+                'ProductCode' => $prodCode,
+                'CustomerCode' => $customerCode,
+            ]);
+        } else {
+            $userid = Auth::user()->UserID;
+            $returnCustProdPrice = DB::connection('sqlsrv3')
+                ->select('exec spCustomerPriceLookUpAssociatedItems ?,?,?,?,?',
+                    array($deliveryDate,$prodCode,$customerCode,-1,$userid)
+                );
+        }
 
         return response()->json($returnCustProdPrice);
 
@@ -1219,11 +1347,17 @@ class SalesFormFunctions extends Controller
     }
     public function selectCustomerMultiAddress(Request $request)
     {
-        $CustCode= $request->get('customerCode');
-
+        $custCode = $request->get('customerCode');
         $zero = 0;
-        $countAddress = DB::connection('sqlsrv3')
-            ->select("EXEC spCrudDeliveryAddress ".$zero.",'00','00','000','000','000',00,00,'00','".$CustCode."',00,'Select'");
+        if (config('app.IS_API_BASED')) {
+            $countAddress = $this->apiSelectCustomerMultiAddress([
+                'custCode' => $custCode,
+                'zero' => $zero,
+            ]);
+        } else {
+            $countAddress = DB::connection('sqlsrv3')
+                ->select("EXEC spCrudDeliveryAddress ".$zero.",'00','00','000','000','000',00,00,'00','" . $custCode . "',00,'Select'");
+        }
 
         return response()->json($countAddress);
     }
@@ -1231,20 +1365,27 @@ class SalesFormFunctions extends Controller
     {
         $CustCode= $request->get('customerCode');
         $OrderId = $request->get('OrderId');
-
         $zero = 0;
-        $returnAddress = DB::connection('sqlsrv3')
-            ->select("EXEC spCrudDeliveryAddress ".$zero.",'00','00','000','000','000',00,00,'00','".$CustCode."',00,'Select'");
+        if (config('app.IS_API_BASED')) {
+            $output = $this->apiSelectCustomerMultiAddressconfirm([
+                'CustomerCode' => $CustCode,
+                'OrderId' => $OrderId,
+                'zero' => $zero,
+            ]);
+        } else {
+            $returnAddress = DB::connection('sqlsrv3')
+                ->select("EXEC spCrudDeliveryAddress ".$zero.",'00','00','000','000','000',00,00,'00','".$CustCode."',00,'Select'");
 
-        $returnselected = DB::connection('sqlsrv3')
-            ->select("EXEC spGetSelectedAddressForMultiDeliveries ".$OrderId);
+            $returnselected = DB::connection('sqlsrv3')
+                ->select("EXEC spGetSelectedAddressForMultiDeliveries ".$OrderId);
 
-        $routes = DB::connection('sqlsrv3')
-            ->select("select * from tblRoutes order by Route");
+            $routes = DB::connection('sqlsrv3')
+                ->select("select * from tblRoutes order by Route");
 
-        $output["addresses"] = $returnAddress;
-        $output["selectedaddress"] = $returnselected;
-        $output["routes"] = $routes;
+            $output["addresses"] = $returnAddress;
+            $output["selectedaddress"] = $returnselected;
+            $output["routes"] = $routes;
+        }
 
         return response()->json($output);
     }
@@ -1667,16 +1808,26 @@ class SalesFormFunctions extends Controller
         $AddressLine4 = $request->get('AddressLine4');
         $AddressLine5 = $request->get('AddressLine5');
         $CustomerCode = $request->get('CustomerCode');
-        if (strlen($CustomerCode) > 0)
-        {
-            $insertAddress = DB::connection('sqlsrv3')
-                ->statement("EXEC spAddNewAddress '".$AddressLine1."','".$AddressLine2."','".$AddressLine3."','".$AddressLine4."','".$AddressLine5."','".$CustomerCode."'");
-            return response()->json($insertAddress);
-        }else{
-            return response()->json('false');
+        $insertAddress = 'false';
+        if (strlen($CustomerCode) > 0) {
+            if (config('app.IS_API_BASED')) {
+                if ($AddressLine1 || $AddressLine2 || $AddressLine3 || $AddressLine4 || $AddressLine5) {
+                    $insertAddress = $this->apiInsertNewAddress([
+                        'Address1' => $AddressLine1,
+                        'Address2' => $AddressLine2,
+                        'Address3' => $AddressLine3,
+                        'Address4' => $AddressLine4,
+                        'Address5' => $AddressLine5,
+                        'CustomerCode' => $CustomerCode,
+                    ]);
+                }
+            } else {
+                $insertAddress = DB::connection('sqlsrv3')
+                    ->statement("EXEC spAddNewAddress '".$AddressLine1."','".$AddressLine2."','".$AddressLine3."','".$AddressLine4."','".$AddressLine5."','".$CustomerCode."'");
+            }
         }
 
-
+        return response()->json($insertAddress);
     }
     public function getCustomerOrderId(Request $request)
     {
@@ -1998,12 +2149,19 @@ class SalesFormFunctions extends Controller
 
         return response()->json($result);
     }
+
     public function deleteOrderLinedetails(Request $request)
     {
-        $userid = Auth::user()->UserID;
-        $UserName = Auth::user()->UserName;
         $OrderId = $request->get('OrderId');
-        $result= DB::connection('sqlsrv3')->select("EXEC spDeleteOrderLinedetails ?,?,?",array($OrderId,$userid,$UserName));
+        if (config('app.IS_API_BASED')) {
+            $result = $this->apiDeleteOrderLinedetails([
+                'OrderId' => $OrderId
+            ]);
+        } else {
+            $userid = Auth::user()->UserID;
+            $UserName = Auth::user()->UserName;
+            $result = DB::connection('sqlsrv3')->select("EXEC spDeleteOrderLinedetails ?,?,?",array($OrderId,$userid,$UserName));
+        }
 
         return response()->json($result);
     }
@@ -2034,9 +2192,15 @@ class SalesFormFunctions extends Controller
     public function changeDeliveryAddressOnNoInvoiceNo(Request $request)
     {
         $customerCode = $request->get('customerCode');
-        //
-        $GetOrderDetails= DB::connection('sqlsrv3')
-            ->select("EXEC spChangeDeliveryAddressOnNoInvoiceNo '".$customerCode."'");
+        if (config('app.IS_API_BASED')) {
+            $GetOrderDetails = $this->apiChangeDeliveryAddressOnNoInvoiceNo([
+                'CustomerCode' => $customerCode
+            ]);
+        } else {
+            $GetOrderDetails = DB::connection('sqlsrv3')
+                ->select("EXEC spChangeDeliveryAddressOnNoInvoiceNo '".$customerCode."'");
+        }
+
         return response()->json($GetOrderDetails);
     }
     public function updateAuthHeader(Request $request)
@@ -2053,11 +2217,7 @@ class SalesFormFunctions extends Controller
     }
     public function waitingForInvoiceNo(Request $request)
     {
-
         $orderId = $request->get('orderID');
-        $UserID = Auth::user()->UserID;
-        //  $GetOrderDetails= DB::connection('sqlsrv3')->table('tblOrders')->select('InvoiceNo')->where('OrderId',$orderId)->get();
-
         $custCode = $request->get('customerCode');
         $TotalTendered = $request->get('TotalTendered');
         $Change = $request->get('Change');
@@ -2067,43 +2227,60 @@ class SalesFormFunctions extends Controller
         $posPayMentTypeCreditCard = $request->get('posPayMentTypeCreditCard');
         $posPayMentTypeAccount = $request->get('posPayMentTypeAccount');
         $invoiceTotalFromTheDoc = $request->get('invoiceTotal');
-
-        $UserName = Auth::user()->UserName;
-        $array = array($posPayMentTypeCash,$posPayMentTypeCheque,$posPayMentTypeCreditCard,$posPayMentTypeAccount);
-        $counter = 0;
-
-
-
-        // $invoiceNo = $GetOrderDetails[0]->InvoiceNo;
-        // echo $invoiceNo;
-        $GetProductsOrder= DB::connection('sqlsrv3')
-            ->select("EXEC spWaitingInvoiceNo ".$orderId.",".$UserID.",'".$custCode."','".$orderId."',
+        if (config('app.IS_API_BASED')) {
+            $response = $this->apiWaitingForInvoiceNo([
+                'OrderId' => $orderId,
+                'CustomerNumber' => $custCode,
+                'OrderIdReceipt' => $orderId,
+                'InvoiceNumber' => '',
+                'InvoiceTotal' => $invoiceTotalFromTheDoc,
+                'TotalTenderedCreditCard' => $posPayMentTypeCreditCard,
+                'TotalTenderedAccount' => $posPayMentTypeAccount,
+                'TotalTenderedCash' => $posPayMentTypeCash,
+                'TotalTenderedCheque' => $posPayMentTypeCheque,
+                'Change' => $Change,
+            ]);
+        } else {
+            $UserID = Auth::user()->UserID;
+            $UserName = Auth::user()->UserName;
+            $array = array($posPayMentTypeCash,$posPayMentTypeCheque,$posPayMentTypeCreditCard,$posPayMentTypeAccount);
+            $counter = 0;
+            $GetProductsOrder= DB::connection('sqlsrv3')
+                ->select("EXEC spWaitingInvoiceNo ".$orderId.",".$UserID.",'".$custCode."','".$orderId."',
                     'TestIV',".$invoiceTotalFromTheDoc.",".$posPayMentTypeCreditCard.",
                     ".$posPayMentTypeAccount.",".$posPayMentTypeCash.",".$posPayMentTypeCheque.",".$Change.",'".$UserName."'");
+            $response = $GetProductsOrder[0]->results;
+        }
 
-
-
-        return response()->json($GetProductsOrder[0]->results);
-
+        return response()->json($response);
     }
     public function AssignInvoiceNumber(Request $request){
         $orderId = $request->get('orderID');
-        $UserID = Auth::user()->UserID;
-
-
-        $spAssign= DB::connection('sqlsrv3')
-            ->select("EXEC spAssignInvoiceNumberPOS ".$orderId.",".$UserID);
-        // dd("EXEC spAssignInvoiceNumber ".$orderId.",".$UserID);
-
+        if (config('app.IS_API_BASED')) {
+            $this->apiAssignInvoiceNumber([
+                'OrderId' => $orderId
+            ]);
+        } else {
+            $UserID = Auth::user()->UserID;
+            $spAssign = DB::connection('sqlsrv3')
+                ->select("EXEC spAssignInvoiceNumberPOS ".$orderId.",".$UserID);
+        }
     }
     public function checkifInvoiced(Request $request)
     {
         $orderId = $request->get('orderID');
-        $UserID = Auth::user()->UserID;
+        if (config('app.IS_API_BASED')) {
+            $response = $this->apiCheckifInvoiced([
+                'OrderId' => $orderId
+            ]);
+        } else {
+            $UserID = Auth::user()->UserID;
+            $GetProductsOrder = DB::connection('sqlsrv3')
+                ->select("EXEC spCheckInvoiced ".$orderId.",".$UserID);
+            $response = $GetProductsOrder[0]->results;
+        }
 
-        $GetProductsOrder= DB::connection('sqlsrv3')
-            ->select("EXEC spCheckInvoiced ".$orderId.",".$UserID);
-        return response()->json($GetProductsOrder[0]->results);
+        return response()->json($response);
     }
     public function doesExistsRc($rc,$orderId)
     {
@@ -2195,9 +2372,18 @@ class SalesFormFunctions extends Controller
         $telOnDispatch = trim($request->get('telOnDispatch'));
         $contactCellTel = $telOnDispatch." ".$contactCellOnDispatch;
 
-        DB::connection('sqlsrv3')->table('tblCustomers')
-            ->where('CustomerPastelCode',$CustomerPastelCode )
-            ->update(['BuyerTelephone' => $contactCellTel,'BuyerContact'=>$contactPersonOnDispatch]);
+        if (config('app.IS_API_BASED')) {
+            $this->apiUpdateCContactsOnOrder([
+                'CellNo' => $contactCellTel,
+                'ContactPerson' => $contactPersonOnDispatch,
+                'TelNo' => $contactCellTel,
+                'CustomerCode' => $CustomerPastelCode,
+            ]);
+        } else {
+            DB::connection('sqlsrv3')->table('tblCustomers')
+                ->where('CustomerPastelCode',$CustomerPastelCode )
+                ->update(['BuyerTelephone' => $contactCellTel,'BuyerContact'=>$contactPersonOnDispatch]);
+        }
 
         //to be revisited
         return response()->json(1);
@@ -2206,60 +2392,70 @@ class SalesFormFunctions extends Controller
     {
         $orderId = $request->get('orderId');
         $isQuote = $request->get('isQuote');
-        $Message = "";
-
-        $userName =   Auth::user()->UserName;
         $dateFrom = (new \DateTime())->format('Y-m-d H:i:s');
-        DB::connection('sqlsrv4')
-        ->statement('exec spUpdateQuote ?,?',
-        array($orderId,$isQuote));
-        /*DB::connection('sqlsrv4')->table('tblOrders')
-            ->where('OrderId',$orderId )
-            ->update(['TreatAsQuotation' => $isQuote, 'TreatAsQuote'=>$isQuote]);*/
-
-
-        if($isQuote == "1")
-        {
-            $Message="The Order has been changed to be a quote by ".$userName;
+        if (config('app.IS_API_BASED')) {
+            $this->apiTreatAsQuote([
+                'OrderId' => $orderId,
+                'isTreatAsQuotation' => $isQuote,
+            ]);
+        } else {
+            $Message = "";
+            $userName = Auth::user()->UserName;
+            DB::connection('sqlsrv4')->statement('exec spUpdateQuote ?,?',array($orderId,$isQuote));
+            if($isQuote == "1") {
+                $Message="The Order has been changed to be a quote by ".$userName;
+            } else {
+                $Message="The Quotation has been changed to be a Sales Orders by ".$userName;
+            }
+            $userId = Auth::user()->UserID;
+            DB::connection('sqlsrv3')->table('tblManagementConsol')->insert([
+                'OrderId' => $orderId,
+                'UserId' => $userId,
+                'ConsoleTypeId' => 2,
+                'Importance' => 1,
+                'dtm' => $dateFrom,
+                'LoggedBy' => $userName,
+                'UserId' => $userId,
+                'Message'=>$Message
+            ]);
         }
-        else{
-            $Message="The Quotation has been changed to be a Sales Orders by ".$userName;
-        }
-        $userId =   Auth::user()->UserID;
-
-        DB::connection('sqlsrv3')->table('tblManagementConsol')->insert(
-            ['OrderId' => $orderId, 'UserId' => $userId,'ConsoleTypeId'=>2,'Importance'=> 1 ,'dtm'=>$dateFrom,'LoggedBy'=>$userName,'UserId'=>$userId,
-                'Message'=>$Message ]
-        );
-
     }
 
     public function markitawaitingstock(Request $request)
     {
         $orderId = $request->get('orderId');
         $isQuote = $request->get('isQuote');
-        $Message = "";
-
-        $userName =   Auth::user()->UserName;
         $dateFrom = (new \DateTime())->format('Y-m-d H:i:s');
+        if (config('app.IS_API_BASED')) {
+            $response = $this->apiMarkitawaitingstock([
+                'OrderId' => $orderId,
+                'isAwaitingStock' => $isQuote,
+            ]);
 
-        DB::connection('sqlsrv4')->table('tblOrders')
-            ->where('OrderId',$orderId )
-            ->update(['AwaitingStock' => $isQuote]);
-        if($isQuote == "1")
-        {
-            $Message="The Order has been changed to Awaiting Stock by ".$userName;
+            return response()->json($response);
+        } else {
+            $Message = "";
+            $userName =   Auth::user()->UserName;
+            DB::connection('sqlsrv4')->table('tblOrders')
+                ->where('OrderId',$orderId )
+                ->update(['AwaitingStock' => $isQuote]);
+            if($isQuote == "1") {
+                $Message="The Order has been changed to Awaiting Stock by ".$userName;
+            } else {
+                $Message="The Order has been changed to NOT Awaiting Stock ".$userName;
+            }
+            $userId = Auth::user()->UserID;
+            DB::connection('sqlsrv3')->table('tblManagementConsol')->insert([
+                'OrderId' => $orderId,
+                'UserId' => $userId,
+                'ConsoleTypeId' => 2,
+                'Importance' => 1,
+                'dtm' => $dateFrom,
+                'LoggedBy' => $userName,
+                'UserId' => $userId,
+                'Message'=>$Message
+            ]);
         }
-        else{
-            $Message="The Order has been changed to NOT Awaiting Stock ".$userName;
-        }
-        $userId =   Auth::user()->UserID;
-
-        DB::connection('sqlsrv3')->table('tblManagementConsol')->insert(
-            ['OrderId' => $orderId, 'UserId' => $userId,'ConsoleTypeId'=>2,'Importance'=> 1 ,'dtm'=>$dateFrom,'LoggedBy'=>$userName,'UserId'=>$userId,
-                'Message'=>$Message ]
-        );
-
     }
     public function viewordersonawaiting($orderid){
 

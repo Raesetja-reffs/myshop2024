@@ -166,8 +166,6 @@
                 customerCode: $('#inputCustAcc').val(),
             },
             success: function(data) {
-                console.log(data);
-
                 $("#gridbackorders").dxDataGrid({
                     dataSource: data, //as json
                     hoverStateEnabled: true,

@@ -50,7 +50,7 @@
     <script src="{{ asset('js/jquery.dialogextend.js') }}"></script>
     <script src="{{ asset('js/jquery.pleaseWait.js') }}"></script>
     <script src="{{ asset('js/dx.all.js') }}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.1.1/exceljs.min.js"></script>
+    <script src="{{ asset('js/exceljs.min.js') }}"></script>
     <!-- end: Page level JS -->
     <script src="{{ asset('js/commonScript.js?v=' . config('app.js_version')) }}"></script>
     <script src="{{ asset('js/app.js?v=' . config('app.js_version')) }}"></script>
@@ -167,7 +167,9 @@
         var today = new Date();
         var date = today.toISOString().substr(0, 10); // get the date in YYYY-MM-DD format
         var link = document.getElementById("logisticsplan");
-        link.href += "/" + date; // append the date as a parameter to the href attribute
+        if (link) {
+            link.href += "/" + date; // append the date as a parameter to the href attribute
+        }
     </script>
 </body>
 

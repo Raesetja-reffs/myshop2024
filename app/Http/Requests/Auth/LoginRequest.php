@@ -41,7 +41,16 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt(['UserName' => $this->get('UserName'), 'password' => $this->get('Password')], $this->boolean('remember'))) {
+        $auth = auth();
+        if (config('app.IS_API_BASED')) {
+            $auth = $auth->guard('central_api_user');
+        }
+        $auth = $auth->attempt([
+            'UserName' => $this->get('UserName'),
+            'password' => $this->get('Password')
+        ], $this->boolean('remember'));
+
+        if (!$auth) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([

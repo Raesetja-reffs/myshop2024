@@ -15,9 +15,11 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use GuzzleHttp\Client;
 use Khill\Lavacharts\Lavacharts;
+use App\Traits\DimsReportsTrait;
 
 class DimsReports extends Controller
 {
+    use DimsReportsTrait;
 
     public function reports()
     {
@@ -540,15 +542,21 @@ $salesMonthToDate = DB::connection('sqlsrv3')
 
         return response()->json($shorloadedJasper);
     }
-    public function backordersandawaiting(Request $request){
-
+    public function backordersandawaiting(Request $request)
+    {
         $customerCode = $request->get('customerCode');
         $addressId = $request->get('addressId');
-
-        $backawaiting=  DB::connection('sqlsrv3')
+        if (config('app.IS_API_BASED')) {
+            $backawaiting = $this->apiBackordersandawaiting([
+                'CustCode' => $customerCode,
+                'DeliveryAddressId' => $addressId
+            ]);
+        } else {
+            $backawaiting = DB::connection('sqlsrv3')
             ->select('exec spBackOrderAndAwaitingStock ?,?',
                 array($customerCode,$addressId)
             );
+        }
 
         return response()->json($backawaiting);
     }
@@ -598,7 +606,6 @@ $salesMonthToDate = DB::connection('sqlsrv3')
     }
     public function exportorder($orderid)
     {
-
         // return Excel::download(new SpecialsExport(), 'specials.xlsx');
         return (new OrdersExport($orderid))->download('order-'.$orderid.'.xlsx');
     }

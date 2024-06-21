@@ -577,3 +577,10 @@ if (!function_exists('getNavBarItems')) {
         ];
     }
 }
+
+if (!function_exists('hasThingRole')) {
+    function hasThingRole($thing)
+    {
+        return (new \App\Http\Controllers\SalesForm())->commonGetThings($thing);
+    }
+}

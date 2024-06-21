@@ -5,7 +5,7 @@
                 <div class="row">
                     <div class="col-md-12 mb-3">
                         <label for="fromEmail">From</label>
-                        <input type="text" class="form-control" id="fromEmail" value="{{ Auth::user()->Email }}">
+                        <input type="text" class="form-control" id="fromEmail" value="{{ Auth::user() ? Auth::user()->Email : '' }}">
                     </div>
                     <div class="col-md-12 mb-3">
                         <label for="toEmail">To</label>

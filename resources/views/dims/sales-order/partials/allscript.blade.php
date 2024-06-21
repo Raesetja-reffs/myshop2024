@@ -57,7 +57,7 @@
     var donotshowAvailable = "<?php echo config('app.donotshowAvailable'); ?>";
     var CompanyMarginApp = "<?php echo config('app.Margin'); ?>";
     var CompanyMargin = "<?php echo config('app.Margin'); ?>";
-    var isAllowedToChangeInv = "<?php echo Auth::user()->authInvoices; ?>";
+    var isAllowedToChangeInv = "<?php echo Auth::user() ? Auth::user()->authInvoices : ''; ?>";
     var isAuthMyLine = "<?php echo env('APP_AUTHLINE'); ?>";
     var isAuthPrice = "<?php echo env('APP_AUTH_PRICE'); ?>";
     var hassplitorder = "<?php echo env('SPLITORDER'); ?>";
@@ -66,7 +66,7 @@
     var searchstring = "<?php echo env('STRING_LENGTH'); ?>";
     var isBlockDeliveryTypeChanges = "<?php echo env('APP_DELIVERYTYPE'); ?>";
     var hasBasketAuth = "<?php echo env('APP_BASKET_MARGIN'); ?>";
-    var multiLines = "<?php echo Auth::user()->intAllowMultiLines; ?>";
+    var multiLines = "<?php echo Auth::user() ? Auth::user()->intAllowMultiLines : ''; ?>";
     var linediscount = "<?php echo $discountProperty; ?>";
     // console.debug("isAuthMyLine*******"+isAuthMyLine);
     // console.debug("isBlockRouteChanges*******"+isBlockRouteChanges);
@@ -84,11 +84,12 @@
     var jArraydelivRoutes = JSON.stringify({!! json_encode($routesNames) !!});
     var jArraytrueOrFalse = JSON.stringify({!! json_encode($trueOrFalse) !!});
     var warehouses = JSON.stringify({!! json_encode($warehouses) !!});
+    var ajaxRequests = [];
 
     // console.debug(jArrayCustomer);
     // var computerName = '<?php echo gethostname(); ?>';
     var computerName = '<?php echo php_uname('n'); ?>';
-    var byWho = '<?php echo Auth::user()->UserName; ?>';
+    var byWho = '<?php echo Auth::user() ? Auth::user()->UserName : ''; ?>';
     $(function() {
         $(document).keydown(function(e) {
             booze = $('#boozeLisence').val();
@@ -513,11 +514,6 @@
             // CustomerId,OldQty,NewQty,OldPrice,NewPrice,ReviewedUserId,ReferenceNo,DocType,DocNumber,machine,ReturnId
             consoleManagement('{!! url('/logMessageAjax') !!}', 300, 2, 'Dims Tablet Loading button Clicked',
                 0, 0, 0, 0, 0, 0, 0, 0, 'NULL', 0, computerName, 0, 0);
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
 
 
             $('#tabletLoadingGo').click(function() {
@@ -560,11 +556,6 @@
          * List Top 1000 orders and order them  by date in desc
          * */
         $('#orderListing').click(function() {
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
             otable = $('#createdOrders').DataTable({
                 "ajax": {
                     url: '{!! url('/getOrderListing') !!}',
@@ -741,6 +732,8 @@
                 $(this).addClass('row_selectedYellowish');
             });
             $('#passFiltersOnOrderListing').on('click change', function(event) {
+                let curObj = $(this);
+                curObj.prop("disabled", true);
                 // otable.draw();
                 otable = $('#createdOrders').DataTable({
                     "ajax": {
@@ -751,7 +744,10 @@
                             data.InvNo = $('#invoiceNoOrderListing').val();
                             data.CustCode = $('#customerCodeOrderListing').val();
                             data.delDate = $('#deliveryDateOrderListing').val();
-                        }
+                        },
+                        complete: function(xhr, status) {
+                            curObj.prop("disabled", false);
+                        },
                     },
                     "processing": false,
                     "serverSide": false,
@@ -843,6 +839,8 @@
                 });
             });
             $('#refreshOrderListing').on('click change', function(event) {
+                let curObj = $(this);
+                curObj.prop("disabled", true);
                 // otable.draw();
                 $('#orderIdOrderListing').val('');
                 $('#invoiceNoOrderListing').val('');
@@ -857,7 +855,10 @@
                             data.InvNo = $('#invoiceNoOrderListing').val();
                             data.CustCode = $('#customerCodeOrderListing').val();
                             data.delDate = $('#deliveryDateOrderListing').val();
-                        }
+                        },
+                        complete: function(xhr, status) {
+                            curObj.prop("disabled", false);
+                        },
                     },
                     "order": [
                         [6, "desc"]
@@ -1200,11 +1201,6 @@
             $('#changeDelvDate').hide();
             $('#deprecated_cangeDate').hide();
             //Pass the Ids
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
 
             //Order Header
             $.ajax({
@@ -1432,11 +1428,8 @@
                                                 "anonymouscolsOff";
                                         }
                                         var bulkitemcolor = "";
-                                        if (valueDetails
-                                            .SoldByWeight != 0
-                                            ) {
-                                            bulkitemcolor =
-                                                "bulkitemcolor";
+                                        if (valueDetails.SoldByWeight != 0) {
+                                            bulkitemcolor = "bulkitemcolor";
                                         }
                                         var $row = $(`
                                             <tr id="new_row_ajax${tokenId}" class="fast_remove">
@@ -2188,11 +2181,6 @@
 
 
 
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
 
                 //getTheCustomerId();
 
@@ -2764,7 +2752,7 @@
 
         datePicker();
         validate();
-        $('#inputCustAcc, #inputCustName, #inputDeliveryDate,#routeName').change(validate);
+        $('#inputCustAcc, #inputCustName, #inputDeliveryDate,#routeName').change(debounce(validate, 300));
         $("#routeName").on("change", function() {
             GlobalRouteId = this.value;
         });
@@ -2819,11 +2807,6 @@
                 GLOBALPRODCODE.length > 0 &&
                 GLOBALPRICE.length > 0 &&
                 GLOBALPRODUCTDESCRIPTION.length > 0) {
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
 
                 TotalExc = TotalExc + (parseFloat(GLOBALPRICE) * parseFloat(GLOBALQUANTITY)).toFixed(2);
                 //generateALine();
@@ -2846,14 +2829,15 @@
 
         /* END OF -----ON BUTTON TO CREATE NEW LINE*/
         var inputCustNames = $('#inputCustName').flexdatalist({
-            minLength: 1,
+            minLength: getMinimumLengthOnSearch(),
             valueProperty: '*',
             selectionRequired: true,
             focusFirstResult: true,
             searchContain: true,
             visibleProperties: ["StoreName", "CustomerPastelCode"],
             searchIn: 'StoreName',
-            data: finalData
+            //data: finalData
+            url: "{{  route('sales-order.get-sales-order-customers') }}",
         });
         inputCustNames.on('select:flexdatalist', function(event, data) {
 
@@ -2948,14 +2932,15 @@
         ///////////////////
 
         var inputCustAccount = $('#inputCustAcc').flexdatalist({
-            minLength: 1,
+            minLength: getMinimumLengthOnSearch(),
             valueProperty: '*',
             selectionRequired: true,
             searchContain: true,
             focusFirstResult: true,
             visibleProperties: ["CustomerPastelCode", "StoreName"],
             searchIn: 'CustomerPastelCode',
-            data: finalData
+            //data: finalData
+            url: "{{  route('sales-order.get-sales-order-customers') }}",
         });
         inputCustAccount.on('select:flexdatalist', function(event, data) {
 
@@ -3077,9 +3062,22 @@
         });
 
         $("#productCodeOnOrder").mcautocomplete({
-            source: finalDataProduct,
+            //source: finalDataProduct,
+            source: function(req, response) {
+                $.ajax({
+                    url: "{{ route('sales-order.get-sales-order-products') }}",
+                    dataType: "json",
+                    data: {
+                        term: req.term
+                    },
+                    success: function(data) {
+                        console.log(data);
+                        response(data);
+                    }
+                });
+            },
             columns: columnsC,
-            minlength: 1,
+            minLength: getMinimumLengthOnSearch(),
             autoFocus: true,
             delay: 0,
             select: function(e, ui) {
@@ -3107,9 +3105,22 @@
             }
         ];
         $("#productCodeOnOrder").mcautocomplete({
-            source: finalDataProduct,
+            //source: finalDataProduct,
+            source: function(req, response) {
+                $.ajax({
+                    url: "{{ route('sales-order.get-sales-order-products') }}",
+                    dataType: "json",
+                    data: {
+                        term: req.term
+                    },
+                    success: function(data) {
+                        console.log(data);
+                        response(data);
+                    }
+                });
+            },
             columns: columnsC,
-            minlength: 1,
+            minLength: getMinimumLengthOnSearch(),
             autoFocus: true,
             delay: 0,
             appendTo: "#prodOnOrder",
@@ -3119,9 +3130,22 @@
             }
         });
         $("#productCodeOnInvoice").mcautocomplete({
-            source: finalDataProduct,
+            //source: finalDataProduct,
+            source: function(req, response) {
+                $.ajax({
+                    url: "{{ route('sales-order.get-sales-order-products') }}",
+                    dataType: "json",
+                    data: {
+                        term: req.term
+                    },
+                    success: function(data) {
+                        console.log(data);
+                        response(data);
+                    }
+                });
+            },
             columns: columnsC,
-            minlength: 1,
+            minLength: getMinimumLengthOnSearch(),
             autoFocus: true,
             delay: 0,
             appendTo: "#prodonInvoice",
@@ -3132,9 +3156,22 @@
         });
 
         $("#productCodePl").mcautocomplete({
-            source: finalDataProduct,
+            //source: finalDataProduct,
+            source: function(req, response) {
+                $.ajax({
+                    url: "{{ route('sales-order.get-sales-order-products') }}",
+                    dataType: "json",
+                    data: {
+                        term: req.term
+                    },
+                    success: function(data) {
+                        console.log(data);
+                        response(data);
+                    }
+                });
+            },
             columns: columnsC,
-            minlength: 1,
+            minLength: getMinimumLengthOnSearch(),
             autoFocus: true,
             delay: 0,
             appendTo: "#priceLookPriceWithCustomer",
@@ -3163,10 +3200,23 @@
             }
         ];
         $("#productDescOnOrder").mcautocomplete({
-            source: finalDataProductTest,
+            //source: finalDataProductTest,
+            source: function(req, response) {
+                $.ajax({
+                    url: "{{ route('sales-order.get-sales-order-products') }}",
+                    dataType: "json",
+                    data: {
+                        term: req.term
+                    },
+                    success: function(data) {
+                        console.log(data);
+                        response(data);
+                    }
+                });
+            },
             columns: columnsD,
             autoFocus: true,
-            minlength: 3,
+            minLength: getMinimumLengthOnSearch(),
             delay: 0,
             multiple: true,
             multipleSeparator: " ",
@@ -3177,10 +3227,23 @@
             }
         });
         $("#productDescOnInvoiced").mcautocomplete({
-            source: finalDataProductTest,
+            //source: finalDataProductTest,
+            source: function(req, response) {
+                $.ajax({
+                    url: "{{ route('sales-order.get-sales-order-products') }}",
+                    dataType: "json",
+                    data: {
+                        term: req.term
+                    },
+                    success: function(data) {
+                        console.log(data);
+                        response(data);
+                    }
+                });
+            },
             columns: columnsD,
             autoFocus: true,
-            minlength: 2,
+            minLength: getMinimumLengthOnSearch(),
             delay: 0,
             multiple: true,
             multipleSeparator: " ",
@@ -3191,10 +3254,23 @@
             }
         });
         $("#productDescPl").mcautocomplete({
-            source: finalDataProductTest,
+            //source: finalDataProductTest,
+            source: function(req, response) {
+                $.ajax({
+                    url: "{{ route('sales-order.get-sales-order-products') }}",
+                    dataType: "json",
+                    data: {
+                        term: req.term
+                    },
+                    success: function(data) {
+                        console.log(data);
+                        response(data);
+                    }
+                });
+            },
             columns: columnsD,
             autoFocus: true,
-            minlength: 2,
+            minLength: getMinimumLengthOnSearch(),
             delay: 0,
             multiple: true,
             multipleSeparator: " ",
@@ -3212,12 +3288,11 @@
 
         $("#invoiceNo").autocomplete({
             source: '{!! url('/invoiceLookUp') !!}',
-            minlength: 2,
+            minLength: getMinimumLengthOnSearch(),
             autoFocus: true,
             select: function(e, ui) {
                 $('#invoiceNo').val(ui.item.value);
                 $('#orderId').val(ui.item.id);
-
             }
         }).data("ui-autocomplete")._renderItem = function(ul, item) {
             if (item.value) {
@@ -3260,11 +3335,6 @@
                 $('#theProductDescription').val(ui.item.extra);
                 //generateALine();
                 generateALine2();
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
                 $.ajax({
                     url: '{!! url('/getCutomerPriceOnOrderForm') !!}',
                     type: "POST",
@@ -3299,11 +3369,6 @@
                 $('#theDisc').val("0.00");
                 $('#theUnitSize').val(ui.item.unitSize);
 
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
                 $.ajax({
                     url: '{!! url('/getCutomerPriceOnOrderForm') !!}',
                     type: "POST",
@@ -4725,11 +4790,6 @@
     }
 
     function getTheCustomerId() {
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
         $.ajax({
             url: '{!! url('/custID') !!}',
             type: "POST",
@@ -4981,11 +5041,28 @@
                     }
                 ];
                 $("" + jID + "").mcautocomplete({
-                    source: finalDataProductTest,
+                    //source: finalDataProductTest,
+                    source: function(req, response) {
+                        // Cancel previous AJAX request for this index
+                        requestName = 'prodDescription_';
+                        if (ajaxRequests[requestName]) {
+                            ajaxRequests[requestName].abort();
+                        }
+                        ajaxRequests[requestName] = $.ajax({
+                            url: "{{ route('sales-order.get-sales-order-products') }}",
+                            dataType: "json",
+                            data: {
+                                term: req.term
+                            },
+                            success: function(data) {
+                                response(data);
+                            }
+                        });
+                    },
                     columns: columnsD,
                     autoFocus: true,
-                    minLength: searchstring,
-                    delay: 2,
+                    minLength: getMinimumLengthOnSearch(),
+                    delay: 500,
                     multiple: true,
                     multipleSeparator: ",",
                     select: function(e, ui) {
@@ -5032,11 +5109,6 @@
                         GLOBALQUANTITY = $('#prodQty_' + token_number).val();
                         GLOBALDISC = $('#prodDisc_' + token_number).val();
 
-                        $.ajaxSetup({
-                            headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                            }
-                        });
                         productPrice(token_number);
 
 
@@ -5065,16 +5137,26 @@
                 $("" + jID + "").mcautocomplete({
                     //source: finalDataProduct,
                     source: function(req, response) {
-                        var re = $.ui.autocomplete.escapeRegex(req.term);
-                        var matcher = new RegExp("^" + re, "i");
-                        response($.grep(finalDataProduct, function(item) {
-                            return matcher.test(item.value);
-                        }));
+                        // Cancel previous AJAX request for this index
+                        requestName = 'theProductCode_';
+                        if (ajaxRequests[requestName]) {
+                            ajaxRequests[requestName].abort();
+                        }
+                        ajaxRequests[requestName] = $.ajax({
+                            url: "{{ route('sales-order.get-sales-order-products') }}",
+                            dataType: "json",
+                            data: {
+                                term: req.term
+                            },
+                            success: function(data) {
+                                response(data);
+                            }
+                        });
                     },
                     columns: columnsC,
-                    minlength: 1,
+                    minLength: getMinimumLengthOnSearch(),
                     autoFocus: true,
-                    delay: 0,
+                    delay: 500,
                     select: function(e, ui) {
 
                         var n = ID.indexOf("_");
@@ -5109,11 +5191,6 @@
                         }
                         // $('#prodQty_' + token_number).attr('title', 'In Stock ' + parseFloat(ui.item.QtyInStock).toFixed(3));
 
-                        $.ajaxSetup({
-                            headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                            }
-                        });
                         productPrice(token_number);
 
                     }
@@ -5708,7 +5785,8 @@
                                         type: "POST",
                                         data: {
                                             userName: $('#userAuthName').val(),
-                                            userPassword: $('#userAuthPassWord').val()
+                                            userPassword: $('#userAuthPassWord').val(),
+                                            orderId: $('#orderId').val()
                                         },
                                         success: function(data) {
                                             //console.debug("bunch"+data);
@@ -7649,7 +7727,8 @@
                 type: "POST",
                 data: {
                     userName: $('#userAuthName').val(),
-                    userPassword: $('#userAuthPassWord').val()
+                    userPassword: $('#userAuthPassWord').val(),
+                    orderId: $('#orderId').val()
                 },
                 success: function(data) {
                     //console.debug("bunch"+data);
@@ -7753,7 +7832,8 @@
                 type: "POST",
                 data: {
                     userName: $('#userauthproductwithzeroprice').val(),
-                    userPassword: $('#userAuthPassWordzeroprice').val()
+                    userPassword: $('#userAuthPassWordzeroprice').val(),
+                    orderId: $('#orderId').val()
                 },
                 success: function(data) {
 
@@ -7885,7 +7965,8 @@
                 type: "POST",
                 data: {
                     userName: $('#userAuthName').val(),
-                    userPassword: $('#userAuthPassWord').val()
+                    userPassword: $('#userAuthPassWord').val(),
+                    orderId: $('#orderId').val()
                 },
                 success: function(data) {
                     //console.debug("bunch"+data);
