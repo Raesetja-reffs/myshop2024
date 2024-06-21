@@ -210,15 +210,13 @@ trait SalesFormFunctionsTrait
 
     public function apiInsertCopyorder($data)
     {
-        return [
-            [
-                'result' => 'SUCCESS'
-            ]
-        ];
+        $data = $this->setUserNameInApiData($data);
+
+        return $this->httpRequest('post', 'Post_CopyOrder', $data);
     }
 
     public function apiCheckIfOrderExists($data)
     {
-        return [];
+        return $this->httpRequest('post', 'Post_CheckIfOrderExists', $data);
     }
 }

@@ -60,7 +60,10 @@ class SalesFormFunctions extends Controller
         $recalcprices = $request->get('recalcprice');
         if (config('app.IS_API_BASED')) {
             $returnmsg = $this->apiInsertCopyorder([
-                'custCode' => $custCode
+                'OrderId' => $orderid,
+                'CustomerCode' => $custCode,
+                'Deliverydate' => $deliverydate,
+                'Recalculateprices' => $recalcprices,
             ]);
         } else {
             $userid = Auth::user()->UserID;
@@ -718,7 +721,23 @@ class SalesFormFunctions extends Controller
         $OrderNo = str_replace("'", " ", $OrderNo);
         if (config('app.IS_API_BASED')) {
              $returnCounts = $this->apiCheckIfOrderExists([
-                'customerCode' => $customerCode
+                'OrderId' => '',
+                'CustomerCode' => $customerCode,
+                'DeliveryAddressID' => $DeliveryAddressID,
+                'OrderDate' => $OrderDate,
+                'DeliveryDate' => $DeliveryDate,
+                'LateOrder' => $LateOrder,
+                'OrderNo' => $OrderNo,
+                'routeIdMain' => '',
+                'StatementType' => $statement,
+                'address1' => '',
+                'address2' => '',
+                'address3' => '',
+                'address4' => '',
+                'address5' => '',
+                'message' => '',
+                'awaitingStock' => '',
+                'disc' => '',
              ]);
         } else {
             $userID =  Auth::user()->UserID;

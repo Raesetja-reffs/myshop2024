@@ -69,6 +69,6 @@ trait DimsCommonTrait
 
     public function apiDeleteuserOrderLocks()
     {
-        return [];
+        return $this->httpRequest('post', 'Post_DeleteOrderLocksPerUserAndDept');
     }
 }
