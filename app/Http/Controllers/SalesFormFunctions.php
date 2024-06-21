@@ -717,7 +717,9 @@ class SalesFormFunctions extends Controller
         $DeliveryAddressID = 0;
         $OrderNo = str_replace("'", " ", $OrderNo);
         if (config('app.IS_API_BASED')) {
-            $returnCounts = 0;
+             $returnCounts = $this->apiCheckIfOrderExists([
+                'customerCode' => $customerCode
+             ]);
         } else {
             $userID =  Auth::user()->UserID;
             $returnCounts = DB::connection('sqlsrv3')

@@ -732,6 +732,8 @@
                 $(this).addClass('row_selectedYellowish');
             });
             $('#passFiltersOnOrderListing').on('click change', function(event) {
+                let curObj = $(this);
+                curObj.prop("disabled", true);
                 // otable.draw();
                 otable = $('#createdOrders').DataTable({
                     "ajax": {
@@ -742,7 +744,10 @@
                             data.InvNo = $('#invoiceNoOrderListing').val();
                             data.CustCode = $('#customerCodeOrderListing').val();
                             data.delDate = $('#deliveryDateOrderListing').val();
-                        }
+                        },
+                        complete: function(xhr, status) {
+                            curObj.prop("disabled", false);
+                        },
                     },
                     "processing": false,
                     "serverSide": false,
@@ -834,6 +839,8 @@
                 });
             });
             $('#refreshOrderListing').on('click change', function(event) {
+                let curObj = $(this);
+                curObj.prop("disabled", true);
                 // otable.draw();
                 $('#orderIdOrderListing').val('');
                 $('#invoiceNoOrderListing').val('');
@@ -848,7 +855,10 @@
                             data.InvNo = $('#invoiceNoOrderListing').val();
                             data.CustCode = $('#customerCodeOrderListing').val();
                             data.delDate = $('#deliveryDateOrderListing').val();
-                        }
+                        },
+                        complete: function(xhr, status) {
+                            curObj.prop("disabled", false);
+                        },
                     },
                     "order": [
                         [6, "desc"]
@@ -2742,7 +2752,7 @@
 
         datePicker();
         validate();
-        $('#inputCustAcc, #inputCustName, #inputDeliveryDate,#routeName').change(validate);
+        $('#inputCustAcc, #inputCustName, #inputDeliveryDate,#routeName').change(debounce(validate, 300));
         $("#routeName").on("change", function() {
             GlobalRouteId = this.value;
         });

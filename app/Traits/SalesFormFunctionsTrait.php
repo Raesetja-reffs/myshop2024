@@ -216,4 +216,9 @@ trait SalesFormFunctionsTrait
             ]
         ];
     }
+
+    public function apiCheckIfOrderExists($data)
+    {
+        return [];
+    }
 }
