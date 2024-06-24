@@ -64,11 +64,16 @@ trait DimsCommonTrait
 
     public function apiUpdateallOrderlinestocostauth($data)
     {
-        return [];
+        return $this->httpRequest('post', 'Post_UpdateblnAuthCost', $data);
     }
 
     public function apiDeleteuserOrderLocks()
     {
         return $this->httpRequest('post', 'Post_DeleteOrderLocksPerUserAndDept');
+    }
+
+    public function apiVerifyAuthMario($data)
+    {
+        return $this->httpRequest('post', 'Post_NoStockOnALine', $data);
     }
 }

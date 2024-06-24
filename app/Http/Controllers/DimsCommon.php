@@ -2261,4 +2261,25 @@ class DimsCommon extends Controller
         $result .= "</" . $root . ">\r\n";
         return $result;
     }
+
+    public function verifyAuthMario(Request $request) //This is temp, wanted something quick
+    {
+        $userNameId = $request->get('userName');
+        $userPassword = $request->get('userPassword');
+        if (config('app.IS_API_BASED')) {
+            $activeUser = $this->apiVerifyAuthMario([
+                'UserName' => $userNameId,
+                'UserPassword' => $userPassword,
+            ]);
+        } else {
+            $activeUser = DB::connection('sqlsrv3')->table('tblDIMSUSERS')
+                ->select('UserID', 'UserName','Password')
+                ->where('UserName','LIKE',"%{$userNameId}%")
+                ->where('Password',$userPassword)
+                ->where('GroupId',7)
+                ->get();
+        }
+
+        return response()->json($activeUser);
+    }
 }

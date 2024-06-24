@@ -158,7 +158,7 @@ trait SalesFormFunctionsTrait
         $checkProductHavingZeroCost = $this->httpRequest('post', 'Post_HasProductHavingZeroCost', $data);
 
         return [
-            'Result' => $checkProductHavingZeroCost[0]['Result'] ?? 'Nothing',
+            'result' => $checkProductHavingZeroCost[0]['Result'] ?? 'Nothing',
             'data' => $productsHavingZeroCost
         ];
     }
@@ -179,6 +179,9 @@ trait SalesFormFunctionsTrait
     public function apiOnCheckOrderHeader($data)
     {
         $response = $this->httpRequest('post', 'Post_ReturnInvoiceOrderIdData', $data);
+        if (isset($response['data'][0]['OrderId'])) {
+            $response['data'][0]['orderID'] = $response['data'][0]['OrderId'];
+        }
 
         return [
             'data' => $response['data'],
@@ -200,7 +203,7 @@ trait SalesFormFunctionsTrait
 
     public function apiSelectCustomerMultiAddress($data)
     {
-        return [];
+        return $this->httpRequest('post', 'Post_GetCustomerDeliveryAddresses', $data);
     }
 
     public function apiGetOrderListing($data)

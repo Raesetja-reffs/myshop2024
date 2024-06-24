@@ -721,14 +721,14 @@ class SalesFormFunctions extends Controller
         $OrderNo = str_replace("'", " ", $OrderNo);
         if (config('app.IS_API_BASED')) {
              $returnCounts = $this->apiCheckIfOrderExists([
-                'OrderId' => '',
+                'OrderId' => 0,
                 'CustomerCode' => $customerCode,
                 'DeliveryAddressID' => $DeliveryAddressID,
                 'OrderDate' => $OrderDate,
                 'DeliveryDate' => $DeliveryDate,
                 'LateOrder' => $LateOrder,
                 'OrderNo' => $OrderNo,
-                'routeIdMain' => '',
+                'routeIdMain' => 0,
                 'StatementType' => $statement,
                 'address1' => '',
                 'address2' => '',
@@ -736,8 +736,8 @@ class SalesFormFunctions extends Controller
                 'address4' => '',
                 'address5' => '',
                 'message' => '',
-                'awaitingStock' => '',
-                'disc' => '',
+                'awaitingStock' => 0,
+                'disc' => 0,
              ]);
         } else {
             $userID =  Auth::user()->UserID;
@@ -1370,7 +1370,7 @@ class SalesFormFunctions extends Controller
         $zero = 0;
         if (config('app.IS_API_BASED')) {
             $countAddress = $this->apiSelectCustomerMultiAddress([
-                'custCode' => $custCode,
+                'CustomerCode' => $custCode,
                 'zero' => $zero,
             ]);
         } else {

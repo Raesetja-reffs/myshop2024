@@ -93,6 +93,7 @@ Route::get('getDimsUsers', [UserFeature::class,'getDimsUsers']);
 
 //DIMS COMMON STARTS HERE!!!!
 Route::get('getCommonRoutes', [DimsCommon::class,'getCommonRoutes']);
+Route::post('verifyAuthMario', [DimsCommon::class,'verifyAuthMario']);
 
 Route::get('PointGrid', [DimsCommon::class,'PointGrid']);
 Route::get('stocktakecountspage',[DimsCommon::class,'stocktakecountspage']);
