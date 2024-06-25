@@ -46,7 +46,7 @@ class CentralUserController extends Controller
 
         $centralUsers = $centralUsers->paginate(config('custom.pagination'));
 
-        $companies = $this->getCompaniesListForDropdown([]);
+        $companies = $this->getCompaniesListForDropdown();
 
         return view('central-users.index', compact('centralUsers', 'companies'));
     }
@@ -56,7 +56,7 @@ class CentralUserController extends Controller
      */
     public function create()
     {
-        $companies = $this->getCompaniesListForDropdown([]);
+        $companies = $this->getCompaniesListForDropdown();
 
         return view('central-users.create', compact('companies'));
     }
@@ -88,7 +88,7 @@ class CentralUserController extends Controller
     {
         Gate::forUser(auth('central_api_user')->user())->authorize('update', $centralUser);
 
-        $companies = $this->getCompaniesListForDropdown([]);
+        $companies = $this->getCompaniesListForDropdown();
 
         return view('central-users.edit', compact('centralUser', 'companies'));
     }

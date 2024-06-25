@@ -1,24 +1,16 @@
 <x-app-layout>
     <x-slot name="header">
-        {{ __('Central Users') }}
+        {{ __('Central Users Listing') }}
     </x-slot>
     <x-slot name="breadcrum">
-        <!--begin::Item-->
         <li class="breadcrumb-item text-muted">
             <a href="{{ route('home') }}" class="text-muted text-hover-primary">
                 Home </a>
         </li>
-        <!--end::Item-->
-        <!--begin::Item-->
         <li class="breadcrumb-item">
             <span class="bullet bg-gray-300 w-5px h-2px"></span>
         </li>
-        <!--end::Item-->
-
-        <!--begin::Item-->
-        <li class="breadcrumb-item text-dark">
-            Dashboard </li>
-        <!--end::Item-->
+        <li class="breadcrumb-item text-dark">Central Users Listing </li>
     </x-slot>
 
     <div class="card card-flush m-3 mb-2 mt-2">
@@ -48,7 +40,7 @@
                                 multiple="multiple"
                                 required autofocus autocomplete='selectedCompanies' />
                         </div>
-                        <button type="submit" class="btn btn-info btn-sm me-1">Apply Filter</button>
+                        <button type="submit" class="btn btn-info btn-sm ms-1 me-1">Apply Filter</button>
                     @endif
                     <a href="{{ route('central-users.create') }}" class="btn btn-primary btn-sm">
                         Add Central User

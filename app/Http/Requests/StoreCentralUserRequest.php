@@ -44,4 +44,11 @@ class StoreCentralUserRequest extends FormRequest
 
         return $validationArr;
     }
+
+    public function attributes()
+    {
+        return [
+            'company_id' => 'company name',
+        ];
+    }
 }

@@ -66,18 +66,19 @@ trait UtilityTrait
         return $this->httpRequest('post', 'Post_GetThings', $data);
     }
 
-    public function getCompaniesListForDropdown($data)
+    /**
+     * This function is used for get the companies list for dropdown
+     */
+    public function getCompaniesListForDropdown()
     {
-        return [
-            [
-                'id' => '5730aaa7-fd77-e46f-298d-e8eca042d6a9',
-                'name' => 'Linx Test'
-            ],
-            [
-                'id' => '5730aaa7-fd77-e46f-298d-e8eca042d6a8',
-                'name' => 'Linx Test1'
-            ],
-        ];
-        //return $this->httpRequest('post', 'Get_Companies_List', $data);
+        $companies = $this->httpRequest('get', 'GetcompaniesAndGuid', [], false, true);
+        if ($companies) {
+            foreach ($companies as &$company) {
+                $company['id'] = $company['strGUID'];
+                $company['name'] = $company['strCompanyName'];
+            }
+        }
+
+        return $companies;
     }
 }

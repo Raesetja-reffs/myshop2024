@@ -3,22 +3,24 @@
         {{ __('Reset Password') }}
     </x-slot>
     <x-slot name="breadcrum">
-        <!--begin::Item-->
         <li class="breadcrumb-item text-muted">
             <a href="{{ route('home') }}" class="text-muted text-hover-primary">
-                Home </a>
+                Home
+            </a>
         </li>
-        <!--end::Item-->
-        <!--begin::Item-->
         <li class="breadcrumb-item">
             <span class="bullet bg-gray-300 w-5px h-2px"></span>
         </li>
-        <!--end::Item-->
 
-        <!--begin::Item-->
-        <li class="breadcrumb-item text-dark">
-            Dashboard </li>
-        <!--end::Item-->
+        <li class="breadcrumb-item">
+            <a href="{{ route('central-users.index') }}" class="text-muted text-hover-primary">
+                Central Users Listing
+            </a>
+        </li>
+        <li class="breadcrumb-item">
+            <span class="bullet bg-gray-300 w-5px h-2px"></span>
+        </li>
+        <li class="breadcrumb-item text-dark">Reset Password </li>
     </x-slot>
 
     <div class="row mb-3">

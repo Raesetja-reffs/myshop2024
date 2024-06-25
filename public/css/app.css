@@ -303,3 +303,11 @@ label {
 .card .card-header {
     padding: 0.75rem 0.75rem;
 }
+.select2-container .select2-selection--multiple {
+    background-color: var(--bs-body-bg);
+    background-clip: padding-box;
+    border: 1px solid var(--bs-gray-300) !important;
+    appearance: none;
+    border-radius: 0;
+    min-height: 25px;
+}

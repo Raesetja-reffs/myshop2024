@@ -488,11 +488,11 @@ if (!function_exists('getMenuItems')) {
                         [
                             'name' => 'Add Central User',
                             'icon' => 'ki-outline ki-minus fs-2',
-                            'href' => route('central-users.index'),
+                            'href' => route('central-users.create'),
                             'target' => '',
                         ],
                         [
-                            'name' => 'List Central Users',
+                            'name' => 'Central Users Listing',
                             'icon' => 'ki-outline ki-minus fs-2',
                             'href' => route('central-users.index'),
                             'target' => '',

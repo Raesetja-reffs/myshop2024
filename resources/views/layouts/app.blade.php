@@ -51,6 +51,7 @@
     <script src="{{ asset('js/jquery.pleaseWait.js') }}"></script>
     <script src="{{ asset('js/dx.all.js') }}"></script>
     <script src="{{ asset('js/exceljs.min.js') }}"></script>
+    <script src="{{ asset('js/select2.min.js') }}"></script>
     <!-- end: Page level JS -->
     <script src="{{ asset('js/commonScript.js?v=' . config('app.js_version')) }}"></script>
     <script src="{{ asset('js/app.js?v=' . config('app.js_version')) }}"></script>

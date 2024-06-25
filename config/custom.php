@@ -12,4 +12,6 @@ return [
     'debug_log_message' => [
         'flowgear_api' => 'Flowgear API Response',
     ],
+    'MAIN_API_URL' => env('MAIN_API_URL'),
+    'MAIN_API_AUTHTOKEN' => env('MAIN_API_AUTHTOKEN'),
 ];

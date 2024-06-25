@@ -18,16 +18,22 @@ trait ApiTrait
      * @param array $data
      * @param bool $isConvertToMultiple
      */
-    public function httpRequest($method, $url, $data = [], $isConvertToMultiple = false)
+    public function httpRequest($method, $url, $data = [], $isConvertToMultiple = false, $isMainUrl = false)
     {
         $returnResponse = [];
         try {
-            $user = auth()->guard('central_api_user')->user();
-            $data = $this->addAdditionalDetailsToApiData($user, $data);
-            $data = $this->setBlankInsteadOfBlank($data);
+            $authToken = config('custom.MAIN_API_AUTHTOKEN');
+            $baseURL = config('custom.MAIN_API_URL');
+            if (!$isMainUrl) {
+                $user = auth()->guard('central_api_user')->user();
+                $data = $this->addAdditionalDetailsToApiData($user, $data);
+                $data = $this->setBlankInsteadOfBlank($data);
+                $authToken = $user->erp_apiauthtoken;
+                $baseURL = $user->erp_apiurl;
+            }
             $response = Http::withHeaders([
-                'Authorization' => 'Key=' . $user->erp_apiauthtoken,
-            ])->$method($user->erp_apiurl . $url, $data);
+                'Authorization' => 'Key=' . $authToken,
+            ])->$method($baseURL . $url, $data);
             $returnResponse = $response->json();
             if ($isConvertToMultiple && $returnResponse && !isset($returnResponse[0])) {
                 $returnResponse = [$returnResponse];
