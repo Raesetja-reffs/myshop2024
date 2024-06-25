@@ -66,7 +66,18 @@ class CentralUserController extends Controller
      */
     public function store(StoreCentralUserRequest $request)
     {
-        CentralUser::create($this->getRequestData($request->validated()));
+        $data = $request->validated();
+        $centralUser = CentralUser::create($this->getRequestData($data));
+        $response = $this->createCentralDimsUser([
+            'Username' => $centralUser->username,
+            'PasswordString' => $data['password'],
+            'CentralUserId' => $centralUser->id,
+            'LocationId' => $centralUser->location_id,
+            'companyid' => $centralUser->company_id,
+        ]);
+        if (isset($response[0]['Result']) && $response[0]['Result'] == 'SUCCESS') {
+            $centralUser->update(['erp_user_id' => $response[0]['UserId']]);
+        }
 
         return redirect()->route('central-users.index')->with('success', 'Central User' . config('custom.flash_messages')['create']);
     }

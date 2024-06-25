@@ -64,8 +64,12 @@ trait ApiTrait
      */
     private function addAdditionalDetailsToApiData($user, $data)
     {
-        $data['companyid'] = $user->company_id;
-        $data['UserID'] = $user->erp_user_id;
+        if (!isset($data['companyid'])) {
+            $data['companyid'] = $user->company_id;
+        }
+        if (!isset($data['UserID'])) {
+            $data['UserID'] = $user->erp_user_id;
+        }
 
         return $data;
     }

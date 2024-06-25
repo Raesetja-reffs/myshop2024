@@ -81,4 +81,14 @@ trait UtilityTrait
 
         return $companies;
     }
+
+    /**
+     * This function is used for get the companies list for dropdown
+     * 
+     * @param array $data
+     */
+    public function createCentralDimsUser($data)
+    {
+        return $this->httpRequest('post', 'Post_CreateDimsUser', $data, false, true);
+    }
 }
