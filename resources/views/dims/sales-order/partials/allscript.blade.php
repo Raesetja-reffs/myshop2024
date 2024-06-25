@@ -5059,7 +5059,7 @@
                     columns: columnsD,
                     autoFocus: true,
                     minLength: getMinimumLengthOnSearch(),
-                    delay: 500,
+                    delay: getCommonDelay(),
                     multiple: true,
                     multipleSeparator: ",",
                     select: function(e, ui) {
@@ -5152,8 +5152,8 @@
                     },
                     columns: columnsC,
                     minLength: getMinimumLengthOnSearch(),
+                    delay: getCommonDelay(),
                     autoFocus: true,
-                    delay: 500,
                     select: function(e, ui) {
 
                         var n = ID.indexOf("_");

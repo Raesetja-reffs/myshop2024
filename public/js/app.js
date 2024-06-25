@@ -137,3 +137,8 @@ function debounce(func, delay) {
       debounceTimer = setTimeout(() => func.apply(context, args), delay);
     };
 }
+
+function getCommonDelay()
+{
+    return 500;
+}

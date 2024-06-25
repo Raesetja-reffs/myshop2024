@@ -222,4 +222,46 @@ trait SalesFormFunctionsTrait
     {
         return $this->httpRequest('post', 'Post_CheckIfOrderExists', $data);
     }
+
+    public function apiGeneralPriceChecking($data)
+    {
+        return [
+            [
+                "PriceList" => "Retail",
+                "PriceListId" => "1",
+                "PastelCode" => "BEV1280",
+                "PastelDescription" => "STAYFREE N/WING SC.    9x4x10s",
+                "Price" => "16.20",
+                "Date" => "1980-01-01 00:00:00.000",
+                "PriceInc" => "18.63",
+                "StatusId" => "1"
+            ]
+        ];
+        //return $this->httpRequest('post', '', $data);
+    }
+
+    public function apiGetProductStockOnHand($data)
+    {
+        return [
+            [
+                "AvgCost" => ".0000",
+                "Code" => "WATER",
+                "Cost" => ".0000",
+                "Qty" => "0.0",
+                "QtyInStock" => ".0000",
+                "Remaining" => "0.0",
+            ]
+        ];
+        //return $this->httpRequest('post', '', $data);
+    }
+
+    public function apiCountOnSalesOrder($data)
+    {
+        return [
+            (object) [
+                'Qty' => "0.0"
+            ]
+        ];
+        //return $this->httpRequest('post', '', $data);
+    }
 }

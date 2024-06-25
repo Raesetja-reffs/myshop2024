@@ -157,41 +157,7 @@ class SalesForm extends Controller
     }
     public function pl()
     {
-        if (config('app.IS_API_BASED')) {
-            $queryProducts = $this->apiPl();
-        } else {
-            $marginType =  DB::connection('sqlsrv3')->table('tblCOMPANYREPORTS')->select('ReportType', 'Comment')->where('ReportName','marginCalculator')
-                ->where('Function','1')
-                ->get();
-
-            $sessionUserId = Auth::user()->UserID;
-            switch ($marginType[0]->ReportType)
-            {
-                case 'marginType1':
-                    $queryProducts= DB::connection('sqlsrv3')
-                        ->select("Exec spActiveProductsWithVAT ".$sessionUserId);
-                    break;
-                case 'marginType2':
-                    $queryProducts= DB::connection('sqlsrv3')
-                        ->select("Exec spActiveProductsWithVAT ".$sessionUserId);
-                    break;
-                case 'marginType3':
-                    $queryProducts= DB::connection('sqlsrv3')
-                        ->select("Exec spActiveProductsWithVAT ".$sessionUserId);
-                    break;
-                case 'marginType4':
-                    $queryProducts= DB::connection('sqlsrv3')
-                        ->select("Exec spActiveProductsWithVAT ".$sessionUserId);
-                    break;
-                case 'marginType5':
-                    $queryProducts= DB::connection('sqlsrv3')
-                        ->select("Exec spActiveProductsWithVAT ".$sessionUserId);
-                    break;
-
-            }
-        }
-
-        return view('dims/sales-order/pricelookup')->with('products',$queryProducts);
+        return view('dims/sales-order/pricelookup')->with('products',[]);
     }
 
     public function getProducts()
