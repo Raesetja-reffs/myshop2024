@@ -5,9 +5,11 @@ namespace App\Traits;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use App\Traits\ApiTrait;
 
 trait UtilityTrait
 {
+    use ApiTrait;
     public function commonGetThings($thing, $groupId = null)
     {
         $things = 0;
@@ -27,23 +29,6 @@ trait UtilityTrait
         }
 
         return $things;
-    }
-
-    /**
-     * This function is used for save the laravel debug log
-     *
-     * @param string $message
-     * @param any $context
-     */
-    public function saveDebugLog($message, $context)
-    {
-        if (is_object($context)) {
-            $context = (array) $context;
-        } elseif (!is_array($context)) {
-            $context = [$context];
-        }
-
-        Log::debug($message, $context);
     }
 
     public function apiOrdersExport($data)
@@ -79,5 +64,20 @@ trait UtilityTrait
     public function apiGetThings($data)
     {
         return $this->httpRequest('post', 'Post_GetThings', $data);
+    }
+
+    public function getCompaniesListForDropdown($data)
+    {
+        return [
+            [
+                'id' => '5730aaa7-fd77-e46f-298d-e8eca042d6a9',
+                'name' => 'Linx Test'
+            ],
+            [
+                'id' => '5730aaa7-fd77-e46f-298d-e8eca042d6a8',
+                'name' => 'Linx Test1'
+            ],
+        ];
+        //return $this->httpRequest('post', 'Get_Companies_List', $data);
     }
 }

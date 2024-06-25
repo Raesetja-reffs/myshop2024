@@ -4,11 +4,11 @@ namespace App\Traits;
 
 use Exception;
 use Illuminate\Support\Facades\Http;
-use App\Traits\UtilityTrait;
+use App\Traits\UtilityDependencyTrait;
 
 trait ApiTrait
 {
-    use UtilityTrait;
+    use UtilityDependencyTrait;
 
     /**
      * This function is used for make the http request for the flowgear and handle the failed request

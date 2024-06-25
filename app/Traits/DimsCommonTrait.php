@@ -2,15 +2,18 @@
 
 namespace App\Traits;
 
-use App\Traits\ApiTrait;
+use App\Traits\UtilityTrait;
 
 trait DimsCommonTrait
 {
-    use ApiTrait;
+    use UtilityTrait;
 
     public function apiInvoiceLookup($data)
     {
-        return $this->httpRequest('post', 'Post_InvoiceLookUp', $data);
+        $queries = $this->httpRequest('post', 'Post_InvoiceLookUp', $data);
+        $queries = $this->convertToCollectionObject($queries);
+
+        return $queries;
     }
 
     public function apiChangerouteonorder($data)

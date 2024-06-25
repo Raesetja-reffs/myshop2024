@@ -595,7 +595,6 @@ class DimsCommon extends Controller
             $queries = $this->apiInvoiceLookup([
                 'InvoiceNo' => $term
             ]);
-            $queries = $this->convertToCollectionObject($queries);
         } else {
             $queries = DB::connection('sqlsrv3')->table("vwInvoiceOrderIDLookUp")
                 ->where('InvoiceNo', 'LIKE', '%'.$term.'%')

@@ -300,3 +300,6 @@ label {
 .background-color-yellow {
     background-color: yellow !important;
 }
+.card .card-header {
+    padding: 0.75rem 0.75rem;
+}
