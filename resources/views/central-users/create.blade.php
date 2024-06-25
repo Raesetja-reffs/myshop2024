@@ -26,7 +26,7 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
-                            <form method="POST" action="{{ route('central-users.store') }}">
+                            <form method="POST" action="{{ route('central-users.store') }}" class="addnovalidate">
                                 @csrf
 
                                 @if (auth()->guard('central_api_user')->user()->isAdmin())

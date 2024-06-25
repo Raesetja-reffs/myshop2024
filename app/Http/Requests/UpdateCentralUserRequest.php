@@ -3,11 +3,10 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules;
 use Illuminate\Validation\Rule;
 use App\Models\CentralUser;
 
-class StoreCentralUserRequest extends FormRequest
+class UpdateCentralUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -29,9 +28,8 @@ class StoreCentralUserRequest extends FormRequest
                 'required',
                 'string',
                 'max:255',
-                Rule::unique(CentralUser::class),
+                Rule::unique(CentralUser::class)->ignore($this->central_user->id),
             ],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'erp_apiurl' => ['required', 'string', 'max:255'],
             'erp_apiusername' => ['required', 'string', 'max:255'],
             'erp_apipassword' => ['required', 'string', 'max:255'],

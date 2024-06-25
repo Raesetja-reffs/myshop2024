@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\CentralUser;
 use App\Traits\UtilityTrait;
 use App\Http\Requests\StoreCentralUserRequest;
+use App\Http\Requests\StoreCentralUserResetPasswordRequest;
+use App\Http\Requests\UpdateCentralUserRequest;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Gate;
 
@@ -94,7 +96,7 @@ class CentralUserController extends Controller
     /**
      * This function is used for save the update user
      */
-    public function update(UpdateUserRequest $request, CentralUser $centralUser)
+    public function update(UpdateCentralUserRequest $request, CentralUser $centralUser)
     {
         Gate::forUser(auth('central_api_user')->user())->authorize('update', $centralUser);
 
@@ -156,7 +158,7 @@ class CentralUserController extends Controller
     /**
      * This function is used for store the reset password for user
      */
-    public function storeResetPassword(StoreResetPasswordRequest $request, CentralUser $centralUser)
+    public function storeResetPassword(StoreCentralUserResetPasswordRequest $request, CentralUser $centralUser)
     {
         Gate::forUser(auth('central_api_user')->user())->authorize('resetPassword', $centralUser);
 

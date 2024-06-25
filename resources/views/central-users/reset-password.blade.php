@@ -1,39 +1,57 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Reset Password') }}
-        </h2>
+        {{ __('Reset Password') }}
+    </x-slot>
+    <x-slot name="breadcrum">
+        <!--begin::Item-->
+        <li class="breadcrumb-item text-muted">
+            <a href="{{ route('home') }}" class="text-muted text-hover-primary">
+                Home </a>
+        </li>
+        <!--end::Item-->
+        <!--begin::Item-->
+        <li class="breadcrumb-item">
+            <span class="bullet bg-gray-300 w-5px h-2px"></span>
+        </li>
+        <!--end::Item-->
+
+        <!--begin::Item-->
+        <li class="breadcrumb-item text-dark">
+            Dashboard </li>
+        <!--end::Item-->
     </x-slot>
 
     <div class="row mb-3">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-body">
-                    <form action="{{ route('users.store.reset.password', $user->id) }}" method="POST">
+                    <form action="{{ route('central-users.store.reset.password', $centralUser->id) }}" method="POST" class="addnovalidate">
                         @csrf
 
-                        <div class="row">
-                            <div class="col-md-2">
-                              <label for="exampleLabel" class="form-label">Name:</label>
+                        @if (auth()->guard('central_api_user')->user()->isAdmin())
+                            <div class="row">
+                                <div class="col-md-2">
+                                  <label for="exampleLabel" class="form-label">Company Id:</label>
+                                </div>
+                                <div class="col-md-10">
+                                    {{ $centralUser->company_id }}
+                                </div>
                             </div>
-                            <div class="col-md-10">
-                                {{ $user->Name }}
-                            </div>
-                        </div>
+                        @endif
                         <div class="row">
                             <div class="col-md-2">
                               <label for="exampleLabel" class="form-label">UserName:</label>
                             </div>
                             <div class="col-md-10">
-                                {{ $user->UserName }}
+                                {{ $centralUser->username }}
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-2">
-                              <label for="exampleLabel" class="form-label">Email:</label>
+                              <label for="exampleLabel" class="form-label">ERP User Id:</label>
                             </div>
                             <div class="col-md-10">
-                                {{ $user->Email }}
+                                {{ $centralUser->erp_user_id }}
                             </div>
                         </div>
 
@@ -56,12 +74,13 @@
                                 class="form-control"
                                 :value="old('password_confirmation')"
                                 :messages="$errors->get('password_confirmation')"
-                                required autocomplete="new-password-confirmation" />
+                                required
+                            />
                         </div>
 
                         <div class="flex items-center gap-4">
-                            <x-primary-button>{{ __('Update') }}</x-primary-button>
-                            <x-a-secondary-button href="{{ route('users.index') }}">{{ __('Cancel') }}</x-a-secondary-button>
+                            <x-primary-button class="btn-sm">{{ __('Update') }}</x-primary-button>
+                            <x-a-secondary-button class="btn-sm" href="{{ route('central-users.index') }}">{{ __('Cancel') }}</x-a-secondary-button>
                         </div>
                     </form>
                 </div>

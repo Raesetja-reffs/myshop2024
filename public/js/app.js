@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    $("form").attr('noValidate', true);
+    $("form.addnovalidate").attr('noValidate', true);
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
