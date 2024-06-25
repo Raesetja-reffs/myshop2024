@@ -2,15 +2,18 @@
 
 namespace App\Traits;
 
-use App\Traits\ApiTrait;
+use App\Traits\UtilityTrait;
 
 trait DimsCommonTrait
 {
-    use ApiTrait;
+    use UtilityTrait;
 
     public function apiInvoiceLookup($data)
     {
-        return $this->httpRequest('post', 'Post_InvoiceLookUp', $data);
+        $queries = $this->httpRequest('post', 'Post_InvoiceLookUp', $data);
+        $queries = $this->convertToCollectionObject($queries);
+
+        return $queries;
     }
 
     public function apiChangerouteonorder($data)
@@ -64,11 +67,16 @@ trait DimsCommonTrait
 
     public function apiUpdateallOrderlinestocostauth($data)
     {
-        return [];
+        return $this->httpRequest('post', 'Post_UpdateblnAuthCost', $data);
     }
 
     public function apiDeleteuserOrderLocks()
     {
-        return [];
+        return $this->httpRequest('post', 'Post_DeleteOrderLocksPerUserAndDept');
+    }
+
+    public function apiVerifyAuthMario($data)
+    {
+        return $this->httpRequest('post', 'Post_NoStockOnALine', $data);
     }
 }

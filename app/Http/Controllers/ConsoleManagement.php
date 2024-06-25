@@ -80,7 +80,6 @@ class ConsoleManagement extends Controller
             $returnManagemntC = $this->apiLogMessageAjax([
                 'ConsoleTypeId' => $ConsoleTypeId,
                 'Importance' => $Importance,
-                'LoggedBy' => '',
                 'Message' => $Message,
                 'Reviewed' => $Reviewed,
                 'productid' => $productid,
@@ -118,7 +117,6 @@ class ConsoleManagement extends Controller
         $OrderId= $request->get('OrderId');
         $productCode= $request->get('productid');
         $CustomerId= $request->get('CustomerId');
-        $UserId= Auth::user()->UserID;
         $userName= $request->get('userName');
         $OldQty= $request->get('OldQty');
         $NewQty= $request->get('NewQty');
@@ -130,14 +128,40 @@ class ConsoleManagement extends Controller
         $DocNumber = $request->get('DocNumber');
         $machine = $request->get('machine');
         $ReturnId = $request->get('ReturnId');
-        $LoggedBy =  Auth::user()->UserName;
-        $productId = DB::connection('sqlsrv3')->table('tblProducts')->select('ProductId')->where('PastelCode',$productCode)->get();
+        if (config('app.IS_API_BASED')) {
+            $returnManagemntC = $this->apiLogMessageAuth([
+                'ConsoleTypeId' => $ConsoleTypeId,
+                'Importance' => $Importance,
+                'Message' => $Message,
+                'Reviewed' => $Reviewed,
+                'productid' => $productCode,
+                'CustomerCode' => $CustomerId,
+                'OldQty' => $OldQty,
+                'NewQty' =>  $NewQty,
+                'OldPrice' =>  $OldPrice,
+                'NewPrice' => $NewPrice,
+                'ReviewedUserId' => $ReviewedUserId,
+                'ReferenceNo' => $ReferenceNo,
+                'DocType' =>  $DocType,
+                'DocNumber' => $DocNumber,
+                'Computer' => $machine,
+                'OrderId' => $OrderId,
+                'ReturnId' => $ReturnId,
+            ]);
+        } else {
+            $LoggedBy =  Auth::user()->UserName;
+            $UserId= Auth::user()->UserID;
+            $productId = DB::connection('sqlsrv3')->table('tblProducts')
+                ->select('ProductId')
+                ->where('PastelCode',$productCode)
+                ->get();
 
-        $returnManagemntC = DB::connection('sqlsrv3')
-        ->statement('exec spConsoleManagement ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?',
-        array($ConsoleTypeId,$Importance,$LoggedBy,$Message,$Reviewed,$productId[0]->ProductId,$CustomerId,$UserId,$OldQty,$NewQty,$OldPrice,
-            $NewPrice,$ReviewedUserId,$ReferenceNo,$DocType,$DocNumber,$machine,$OrderId,$ReturnId)
-        );
+            $returnManagemntC = DB::connection('sqlsrv3')
+            ->statement('exec spConsoleManagement ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?',
+            array($ConsoleTypeId,$Importance,$LoggedBy,$Message,$Reviewed,$productId[0]->ProductId,$CustomerId,$UserId,$OldQty,$NewQty,$OldPrice,
+                $NewPrice,$ReviewedUserId,$ReferenceNo,$DocType,$DocNumber,$machine,$OrderId,$ReturnId)
+            );
+        }
 
         return response()->json($returnManagemntC);
     }

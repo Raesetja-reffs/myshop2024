@@ -16,15 +16,24 @@ class CentralUser extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
+        'is_admin',
         'username',
         'password',
         'company_id',
-        'erp_user_id',
         'erp_user_id',
         'erp_apiurl',
         'erp_apiusername',
         'erp_apipassword',
         'erp_apiauthtoken',
         'location_id',
+        'internal_pass',
     ];
+
+    /**
+     * This function is used for check the user is admin or not
+     */
+    public function isAdmin()
+    {
+        return $this->is_admin == '1';
+    }
 }

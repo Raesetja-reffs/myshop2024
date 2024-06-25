@@ -60,7 +60,10 @@ class SalesFormFunctions extends Controller
         $recalcprices = $request->get('recalcprice');
         if (config('app.IS_API_BASED')) {
             $returnmsg = $this->apiInsertCopyorder([
-                'custCode' => $custCode
+                'OrderId' => $orderid,
+                'CustomerCode' => $custCode,
+                'Deliverydate' => $deliverydate,
+                'Recalculateprices' => $recalcprices,
             ]);
         } else {
             $userid = Auth::user()->UserID;
@@ -718,7 +721,23 @@ class SalesFormFunctions extends Controller
         $OrderNo = str_replace("'", " ", $OrderNo);
         if (config('app.IS_API_BASED')) {
              $returnCounts = $this->apiCheckIfOrderExists([
-                'customerCode' => $customerCode
+                'OrderId' => 0,
+                'CustomerCode' => $customerCode,
+                'DeliveryAddressID' => $DeliveryAddressID,
+                'OrderDate' => $OrderDate,
+                'DeliveryDate' => $DeliveryDate,
+                'LateOrder' => $LateOrder,
+                'OrderNo' => $OrderNo,
+                'routeIdMain' => 0,
+                'StatementType' => $statement,
+                'address1' => '',
+                'address2' => '',
+                'address3' => '',
+                'address4' => '',
+                'address5' => '',
+                'message' => '',
+                'awaitingStock' => 0,
+                'disc' => 0,
              ]);
         } else {
             $userID =  Auth::user()->UserID;
@@ -1197,15 +1216,22 @@ class SalesFormFunctions extends Controller
             ->select("EXEC spOrderIdLinesForOtherTrans ".$OrderId);
         return response()->json($GetOrderDetails);
     }
+
     public function generalPriceChecking(Request $request)
     {
-        $productCode= $request->get('productCode');
-        $GetProductPrices= DB::connection('sqlsrv3')
-            ->select("EXEC spGeneralPriceCheck '".$productCode."'");
+        $productCode = $request->get('productCode');
+        if (config('app.IS_API_BASED')) {
+            $getProductPrices = $this->apiGeneralPriceChecking([
+                'productCode' => $productCode,
+            ]);
+        } else {
+            $getProductPrices = DB::connection('sqlsrv3')
+                ->select("EXEC spGeneralPriceCheck '".$productCode."'");
+        }
 
-        return response()->json($GetProductPrices);
-
+        return response()->json($getProductPrices);
     }
+
     public function convertToSalesOrder(Request $request)
     {
         $OrderId = $request->get('OrderId');
@@ -1351,7 +1377,7 @@ class SalesFormFunctions extends Controller
         $zero = 0;
         if (config('app.IS_API_BASED')) {
             $countAddress = $this->apiSelectCustomerMultiAddress([
-                'custCode' => $custCode,
+                'CustomerCode' => $custCode,
                 'zero' => $zero,
             ]);
         } else {
@@ -1455,14 +1481,23 @@ class SalesFormFunctions extends Controller
             ->select("Select * from viewGetLastInsertedOrderIdAndDeliveryDate");
         return response()->json($getLastInserted);
     }
+
     public function getProductStockOnHand(Request $request)
     {
-        $productCode= $request->get('productCode');
-        $userid  = Auth::user()->UserID;
-        $GetProductStockOnHand= DB::connection('sqlsrv3')
-            ->select("EXEC spGetProductStockOnHand '".$productCode."',".$userid);
-        return response()->json($GetProductStockOnHand);
+        $productCode = $request->get('productCode');
+        if (config('app.IS_API_BASED')) {
+            $getProductStockOnHand = $this->apiGetProductStockOnHand([
+                'productCode' => $productCode,
+            ]);
+        } else {
+            $userid  = Auth::user()->UserID;
+            $getProductStockOnHand = DB::connection('sqlsrv3')
+                ->select("EXEC spGetProductStockOnHand '".$productCode."',".$userid);
+        }
+
+        return response()->json($getProductStockOnHand);
     }
+
     public function selectAddressFromMultiAddressDeliveruyAddressId(Request $request)
     {
         $CustCode= $request->get('CustomerCode');
@@ -2182,13 +2217,21 @@ class SalesFormFunctions extends Controller
 
         return $output;
     }
+
     public function countOnSalesOrder(Request $request)
     {
         $productCode = $request->get('prodCode');
-        $sumQtyOrder = DB::connection('sqlsrv3')->select("EXEC spOnCountOnOrder '".$productCode."'");
+        if (config('app.IS_API_BASED')) {
+            $sumQtyOrder = $this->apiCountOnSalesOrder([
+                'productCode' => $productCode,
+            ]);
+        } else {
+            $sumQtyOrder = DB::connection('sqlsrv3')->select("EXEC spOnCountOnOrder '".$productCode."'");
+        }
+
         return response()->json($sumQtyOrder[0]->Qty);
-        //spOnCountOnOrder
     }
+
     public function changeDeliveryAddressOnNoInvoiceNo(Request $request)
     {
         $customerCode = $request->get('customerCode');

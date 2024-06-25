@@ -3,9 +3,12 @@
 namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
+
+use App\Models\CentralUser;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use App\Policies\CompanyPermissionPolicy;
 use App\Models\CompanyPermission;
+use App\Policies\CentralUserPolicy;
 use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
@@ -26,5 +29,6 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Gate::policy(CompanyPermission::class, CompanyPermissionPolicy::class);
+        Gate::policy(CentralUser::class, CentralUserPolicy::class);
     }
 }

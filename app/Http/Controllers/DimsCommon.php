@@ -595,7 +595,6 @@ class DimsCommon extends Controller
             $queries = $this->apiInvoiceLookup([
                 'InvoiceNo' => $term
             ]);
-            $queries = $this->convertToCollectionObject($queries);
         } else {
             $queries = DB::connection('sqlsrv3')->table("vwInvoiceOrderIDLookUp")
                 ->where('InvoiceNo', 'LIKE', '%'.$term.'%')
@@ -2260,5 +2259,26 @@ class DimsCommon extends Controller
         $result .= self::asxml($arr, $elements, 1);
         $result .= "</" . $root . ">\r\n";
         return $result;
+    }
+
+    public function verifyAuthMario(Request $request) //This is temp, wanted something quick
+    {
+        $userNameId = $request->get('userName');
+        $userPassword = $request->get('userPassword');
+        if (config('app.IS_API_BASED')) {
+            $activeUser = $this->apiVerifyAuthMario([
+                'UserName' => $userNameId,
+                'UserPassword' => $userPassword,
+            ]);
+        } else {
+            $activeUser = DB::connection('sqlsrv3')->table('tblDIMSUSERS')
+                ->select('UserID', 'UserName','Password')
+                ->where('UserName','LIKE',"%{$userNameId}%")
+                ->where('Password',$userPassword)
+                ->where('GroupId',7)
+                ->get();
+        }
+
+        return response()->json($activeUser);
     }
 }

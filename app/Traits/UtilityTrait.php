@@ -5,9 +5,11 @@ namespace App\Traits;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use App\Traits\ApiTrait;
 
 trait UtilityTrait
 {
+    use ApiTrait;
     public function commonGetThings($thing, $groupId = null)
     {
         $things = 0;
@@ -27,23 +29,6 @@ trait UtilityTrait
         }
 
         return $things;
-    }
-
-    /**
-     * This function is used for save the laravel debug log
-     *
-     * @param string $message
-     * @param any $context
-     */
-    public function saveDebugLog($message, $context)
-    {
-        if (is_object($context)) {
-            $context = (array) $context;
-        } elseif (!is_array($context)) {
-            $context = [$context];
-        }
-
-        Log::debug($message, $context);
     }
 
     public function apiOrdersExport($data)
@@ -79,5 +64,31 @@ trait UtilityTrait
     public function apiGetThings($data)
     {
         return $this->httpRequest('post', 'Post_GetThings', $data);
+    }
+
+    /**
+     * This function is used for get the companies list for dropdown
+     */
+    public function getCompaniesListForDropdown()
+    {
+        $companies = $this->httpRequest('get', 'GetcompaniesAndGuid', [], false, true);
+        if ($companies) {
+            foreach ($companies as &$company) {
+                $company['id'] = $company['strGUID'];
+                $company['name'] = $company['strCompanyName'];
+            }
+        }
+
+        return $companies;
+    }
+
+    /**
+     * This function is used for get the companies list for dropdown
+     * 
+     * @param array $data
+     */
+    public function createCentralDimsUser($data)
+    {
+        return $this->httpRequest('post', 'Post_CreateDimsUser', $data, false, true);
     }
 }

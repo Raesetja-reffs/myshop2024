@@ -136,43 +136,8 @@
         $('#pricingOnCustomer').hide();
         $('#salesOnOrder').hide();
         $('#posCashUp').hide();
-        var jArray = JSON.stringify({!! json_encode($products) !!});
+        var ajaxRequests = [];
         var accounting = "<?php echo config('app.Accounting'); ?>";
-        var finalDataProduct = $.map(JSON.parse(jArray), function(item) {
-            return {
-                value: item.PastelCode,
-                PastelCode: item.PastelCode,
-                PastelDescription: item.PastelDescription,
-                UnitSize: item.UnitSize,
-                Tax: item.Tax,
-                Cost: item.Cost,
-                QtyInStock: item.QtyInStock,
-                Margin: item.Margin,
-                Alcohol: item.Alcohol,
-                Available: parseFloat(item.Available).toFixed(2),
-                PurchOrder: item.PurchOrder,
-                AvgCost: item.AvgCost
-            }
-
-        });
-        var finalDataProductTest = $.map(JSON.parse(jArray), function(item) {
-            return {
-                value: item.PastelDescription,
-                PastelCode: item.PastelCode,
-                PastelDescription: item.PastelDescription,
-                UnitSize: item.UnitSize,
-                Tax: item.Tax,
-                Cost: item.Cost,
-                QtyInStock: parseFloat(item.QtyInStock).toFixed(2),
-                Margin: item.Margin,
-                Alcohol: item.Alcohol,
-                Available: parseFloat(item.Available).toFixed(2),
-                PurchOrder: item.PurchOrder,
-                AvgCost: item.AvgCost
-            }
-
-        });
-
         var columnsC = [{
                 name: 'PastelCode',
                 minWidth: '90px',
@@ -191,25 +156,30 @@
         ];
 
         $("#productCodeSearchPrice").mcautocomplete({
-
             source: function(req, response) {
-                var re = $.ui.autocomplete.escapeRegex(req.term);
-                var matcher = new RegExp("^" + re, "i");
-                response($.grep(finalDataProduct, function(item) {
-                    return matcher.test(item.value);
-                }));
-
+                // Cancel previous AJAX request for this index
+                requestName = 'theProductCode_';
+                if (ajaxRequests[requestName]) {
+                    ajaxRequests[requestName].abort();
+                }
+                ajaxRequests[requestName] = $.ajax({
+                    url: "{{ route('sales-order.get-sales-order-products') }}",
+                    dataType: "json",
+                    data: {
+                        term: req.term
+                    },
+                    success: function(data) {
+                        response(data);
+                    }
+                });
             },
             columns: columnsC,
-            minlength: 1,
+            minLength: getMinimumLengthOnSearch(),
+            delay: getCommonDelay(),
             autoFocus: true,
-            delay: 0,
-
             select: function(e, ui) {
-
                 $('#productDescriptionSearchPrice').val($.trim(ui.item.PastelDescription));
                 $('#productCodeSearchPrice').val(ui.item.PastelCode);
-
                 $('#priceCheckingOnCall').empty();
                 $.ajax({
                     url: '{!! url('/generalPriceChecking') !!}',
@@ -354,14 +324,29 @@
             }
         ];
         $("#productDescriptionSearchPrice").mcautocomplete({
-            source: finalDataProductTest,
+            source: function(req, response) {
+                // Cancel previous AJAX request for this index
+                requestName = 'prodDescription_';
+                if (ajaxRequests[requestName]) {
+                    ajaxRequests[requestName].abort();
+                }
+                ajaxRequests[requestName] = $.ajax({
+                    url: "{{ route('sales-order.get-sales-order-products') }}",
+                    dataType: "json",
+                    data: {
+                        term: req.term
+                    },
+                    success: function(data) {
+                        response(data);
+                    }
+                });
+            },
             columns: columnsD,
             autoFocus: true,
-            minlength: 3,
-            delay: 0,
+            minLength: getMinimumLengthOnSearch(),
+            delay: getCommonDelay(),
             multiple: true,
             multipleSeparator: " ",
-
             select: function(e, ui) {
                 $('#productDescriptionSearchPrice').val($.trim(ui.item.PastelDescription));
                 $('#productCodeSearchPrice').val($.trim(ui.item.PastelCode));

@@ -158,7 +158,7 @@ trait SalesFormFunctionsTrait
         $checkProductHavingZeroCost = $this->httpRequest('post', 'Post_HasProductHavingZeroCost', $data);
 
         return [
-            'Result' => $checkProductHavingZeroCost[0]['Result'] ?? 'Nothing',
+            'result' => $checkProductHavingZeroCost[0]['Result'] ?? 'Nothing',
             'data' => $productsHavingZeroCost
         ];
     }
@@ -179,6 +179,9 @@ trait SalesFormFunctionsTrait
     public function apiOnCheckOrderHeader($data)
     {
         $response = $this->httpRequest('post', 'Post_ReturnInvoiceOrderIdData', $data);
+        if (isset($response['data'][0]['OrderId'])) {
+            $response['data'][0]['orderID'] = $response['data'][0]['OrderId'];
+        }
 
         return [
             'data' => $response['data'],
@@ -200,7 +203,7 @@ trait SalesFormFunctionsTrait
 
     public function apiSelectCustomerMultiAddress($data)
     {
-        return [];
+        return $this->httpRequest('post', 'Post_GetCustomerDeliveryAddresses', $data);
     }
 
     public function apiGetOrderListing($data)
@@ -210,15 +213,55 @@ trait SalesFormFunctionsTrait
 
     public function apiInsertCopyorder($data)
     {
-        return [
-            [
-                'result' => 'SUCCESS'
-            ]
-        ];
+        $data = $this->setUserNameInApiData($data);
+
+        return $this->httpRequest('post', 'Post_CopyOrder', $data);
     }
 
     public function apiCheckIfOrderExists($data)
     {
-        return [];
+        return $this->httpRequest('post', 'Post_CheckIfOrderExists', $data);
+    }
+
+    public function apiGeneralPriceChecking($data)
+    {
+        return [
+            [
+                "PriceList" => "Retail",
+                "PriceListId" => "1",
+                "PastelCode" => "BEV1280",
+                "PastelDescription" => "STAYFREE N/WING SC.    9x4x10s",
+                "Price" => "16.20",
+                "Date" => "1980-01-01 00:00:00.000",
+                "PriceInc" => "18.63",
+                "StatusId" => "1"
+            ]
+        ];
+        //return $this->httpRequest('post', '', $data);
+    }
+
+    public function apiGetProductStockOnHand($data)
+    {
+        return [
+            [
+                "AvgCost" => ".0000",
+                "Code" => "WATER",
+                "Cost" => ".0000",
+                "Qty" => "0.0",
+                "QtyInStock" => ".0000",
+                "Remaining" => "0.0",
+            ]
+        ];
+        //return $this->httpRequest('post', '', $data);
+    }
+
+    public function apiCountOnSalesOrder($data)
+    {
+        return [
+            (object) [
+                'Qty' => "0.0"
+            ]
+        ];
+        //return $this->httpRequest('post', '', $data);
     }
 }

@@ -4,11 +4,11 @@ namespace App\Traits;
 
 use Exception;
 use Illuminate\Support\Facades\Http;
-use App\Traits\UtilityTrait;
+use App\Traits\UtilityDependencyTrait;
 
 trait ApiTrait
 {
-    use UtilityTrait;
+    use UtilityDependencyTrait;
 
     /**
      * This function is used for make the http request for the flowgear and handle the failed request
@@ -18,16 +18,22 @@ trait ApiTrait
      * @param array $data
      * @param bool $isConvertToMultiple
      */
-    public function httpRequest($method, $url, $data = [], $isConvertToMultiple = false)
+    public function httpRequest($method, $url, $data = [], $isConvertToMultiple = false, $isMainUrl = false)
     {
         $returnResponse = [];
         try {
-            $user = auth()->guard('central_api_user')->user();
-            $data = $this->addAdditionalDetailsToApiData($user, $data);
-            $data = $this->setBlankInsteadOfBlank($data);
+            $authToken = config('custom.MAIN_API_AUTHTOKEN');
+            $baseURL = config('custom.MAIN_API_URL');
+            if (!$isMainUrl) {
+                $user = auth()->guard('central_api_user')->user();
+                $data = $this->addAdditionalDetailsToApiData($user, $data);
+                $data = $this->setBlankInsteadOfBlank($data);
+                $authToken = $user->erp_apiauthtoken;
+                $baseURL = $user->erp_apiurl;
+            }
             $response = Http::withHeaders([
-                'Authorization' => 'Key=' . $user->erp_apiauthtoken,
-            ])->$method($user->erp_apiurl . $url, $data);
+                'Authorization' => 'Key=' . $authToken,
+            ])->$method($baseURL . $url, $data);
             $returnResponse = $response->json();
             if ($isConvertToMultiple && $returnResponse && !isset($returnResponse[0])) {
                 $returnResponse = [$returnResponse];
@@ -58,8 +64,12 @@ trait ApiTrait
      */
     private function addAdditionalDetailsToApiData($user, $data)
     {
-        $data['companyid'] = $user->company_id;
-        $data['UserID'] = $user->erp_user_id;
+        if (!isset($data['companyid'])) {
+            $data['companyid'] = $user->company_id;
+        }
+        if (!isset($data['UserID'])) {
+            $data['UserID'] = $user->erp_user_id;
+        }
 
         return $data;
     }

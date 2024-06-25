@@ -2736,8 +2736,7 @@
 
 
         //On click show available
-        $('#table tbody').on('click', 'tr', function() {
-
+        $(document).on('click', '#table tbody tr td .prodQty_', function(e) {
             var $this = $(this);
             var row_closestTrColumns = $this.closest('tr');
             var prodCode1 = row_closestTrColumns.find('.theProductCode_').val();
@@ -2746,8 +2745,6 @@
             } else {
                 console.debug('product code length*******' + prodCode1.length);
             }
-
-
         });
 
         datePicker();
@@ -5062,7 +5059,7 @@
                     columns: columnsD,
                     autoFocus: true,
                     minLength: getMinimumLengthOnSearch(),
-                    delay: 500,
+                    delay: getCommonDelay(),
                     multiple: true,
                     multipleSeparator: ",",
                     select: function(e, ui) {
@@ -5155,8 +5152,8 @@
                     },
                     columns: columnsC,
                     minLength: getMinimumLengthOnSearch(),
+                    delay: getCommonDelay(),
                     autoFocus: true,
-                    delay: 500,
                     select: function(e, ui) {
 
                         var n = ID.indexOf("_");
@@ -6129,7 +6126,7 @@
             var fieldQuantity = $(this).find(".prodQty_").val();
             var theOrdersDetailsId = $(this).find("#theOrdersDetailsId").val();
             var prodCell = $('#' + $cellsId).val();
-            focusoutcaladditionalcost(theProductCode_, fieldQuantity, additionalcostcolumn);
+            //focusoutcaladditionalcost(theProductCode_, fieldQuantity, additionalcostcolumn);
             var margin = marginCalculator($costFromTheDatabase, prodCell);
             var companyMargin = ($('#' + $iTHasMargin).val() / 100); //this a field
 
@@ -7078,6 +7075,20 @@
             });
         }
 
+    });
+    $(document).on('focusout', '.prodQty_', function(e) {
+        var curTR = $(this).closest('tr');
+        var theProductCode_ = curTR.find(".theProductCode_").val();
+        var fieldQuantity = curTR.find(".prodQty_").val();
+        var additionalcostcolumn = curTR.find(".additionalcost_").attr("id");
+        focusoutcaladditionalcost(theProductCode_, fieldQuantity, additionalcostcolumn);
+    });
+    $(document).on('focusout', '.additionalcost_', function(e) {
+        var curTR = $(this).closest('tr');
+        var theProductCode_ = curTR.find(".theProductCode_").val();
+        var fieldQuantity = curTR.find(".prodQty_").val();
+        var additionalcostcolumn = curTR.find(".additionalcost_").attr("id");
+        focusoutcaladditionalcost(theProductCode_, fieldQuantity, additionalcostcolumn);
     });
 
 

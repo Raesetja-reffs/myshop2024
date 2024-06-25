@@ -3,7 +3,7 @@
 if (!function_exists('getMenuItems')) {
     function getMenuItems()
     {
-        return [
+        $menuItems = [
             [
                 'name' => 'Extras',
                 'icon' => 'ki-outline ki-printer fs-2',
@@ -485,6 +485,30 @@ if (!function_exists('getMenuItems')) {
                 'href' => route('company-permissions.set-permissions'),
             ],
         ];
+        if (config('app.IS_API_BASED')) {
+            $menuItems = array_merge($menuItems, [
+                [
+                    'name' => 'Central Users',
+                    'icon' => 'ki-outline ki-people fs-2',
+                    'submenuitems' => [
+                        [
+                            'name' => 'Add Central User',
+                            'icon' => 'ki-outline ki-minus fs-2',
+                            'href' => route('central-users.create'),
+                            'target' => '',
+                        ],
+                        [
+                            'name' => 'Central Users Listing',
+                            'icon' => 'ki-outline ki-minus fs-2',
+                            'href' => route('central-users.index'),
+                            'target' => '',
+                        ]
+                    ]
+                ]
+            ]);
+        }
+
+        return $menuItems;
     }
 }
 

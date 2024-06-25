@@ -1,4 +1,5 @@
 $(document).ready(function() {
+    $("form.addnovalidate").attr('noValidate', true);
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -135,4 +136,9 @@ function debounce(func, delay) {
       clearTimeout(debounceTimer);
       debounceTimer = setTimeout(() => func.apply(context, args), delay);
     };
+}
+
+function getCommonDelay()
+{
+    return 500;
 }
