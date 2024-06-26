@@ -264,4 +264,54 @@ trait SalesFormFunctionsTrait
         ];
         //return $this->httpRequest('post', '', $data);
     }
+
+    public function apiProductPriceLookUp($data)
+    {
+        return [
+            "priceList" => [
+                [
+                    "PriceList" => "Retail",
+                    "PriceListId" => "1",
+                    "PastelCode" => "5010VEST",
+                    "PastelDescription" => "SAVLON SOAP ORIGINAL 3x12x175g",
+                    "Price" => "115.00",
+                    "Date" => "1980-01-01 00:00:00.000",
+                    "PriceInc" => "132.25",
+                    "StatusId" => "1"
+                ]
+            ],
+            "productPriceForCust" => [
+                [
+                    "Price" => "115.0",
+                    "ProductId" => "2931",
+                    "Tax" => "0.14999999999999999",
+                    "Prohibited" => "0",
+                    "AvailableToSell" => "4.0",
+                    "mustAuthLine" => "0",
+                    "LineDisc" => "0.0",
+                    "PriceType" => "LP",
+                    "intAssociated" => "0",
+                    "NettPrice" => "115.0"
+                ]
+            ],
+            "stock" => [
+                [
+                    "Code" => "5010VEST",
+                    "Qty" => "0.0",
+                    "QtyInStock" => "4.0000",
+                    "Remaining" => "4.0",
+                    "Cost" => "63.6750",
+                    "AvgCost" => "63.6750"
+                ]
+            ],
+            "currentPrices" => [
+                [
+                    "info" => "List Price",
+                    "ProductId" => "2931",
+                    "Price" => "115.0"
+                ]
+            ]
+        ];
+        //return $this->httpRequest('post', '', $data);
+    }
 }

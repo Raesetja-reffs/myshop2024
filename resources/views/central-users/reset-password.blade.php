@@ -30,7 +30,7 @@
                     <form action="{{ route('central-users.store.reset.password', $centralUser->id) }}" method="POST" class="addnovalidate">
                         @csrf
 
-                        @if (auth()->guard('central_api_user')->user()->isAdmin())
+                        @if (auth()->guard('central_api_user')->user()->isSuperAdmin())
                             <div class="row">
                                 <div class="col-md-2">
                                   <label for="exampleLabel" class="form-label">Company Id:</label>

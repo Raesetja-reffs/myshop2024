@@ -31,7 +31,7 @@
                                 @csrf
                                 @method('PUT')
 
-                                @if (auth()->guard('central_api_user')->user()->isAdmin())
+                                @if (auth()->guard('central_api_user')->user()->isSuperAdmin())
                                     <!-- Company Name-->
                                     <div class="mb-3">
                                         <x-input-label for="company_id" :value="__('Company Name')" class="required" />
@@ -117,6 +117,20 @@
                                         required
                                     />
                                 </div>
+
+                                @if (auth()->guard('central_api_user')->user()->isSuperAdmin())
+                                    <div class="mb-3">
+                                        <x-input-label for="user_role" :value="__('User Role')" class="required" />
+                                        <x-select-input id='user_role'
+                                            name='user_role'
+                                            :value="old('user_role', $centralUser->user_role)"
+                                            :options="config('custom.user_roles')"
+                                            :messages='$errors->get("user_role")'
+                                            placeholder="Please select user role"
+                                            required autofocus autocomplete='user_role'
+                                        />
+                                    </div>
+                                @endif
 
                                 <div class="flex items-center gap-4">
                                     <x-primary-button class="btn-sm">{{ __('Update') }}</x-primary-button>

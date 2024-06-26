@@ -30,7 +30,7 @@
                             <form method="POST" action="{{ route('central-users.store') }}" class="addnovalidate">
                                 @csrf
 
-                                @if (auth()->guard('central_api_user')->user()->isAdmin())
+                                @if (auth()->guard('central_api_user')->user()->isSuperAdmin())
                                     <div class="mb-3">
                                         <x-input-label for="company_id" :value="__('Company Name')" class="required" />
                                         <x-select-input id='company_id'
@@ -139,6 +139,20 @@
                                         required
                                     />
                                 </div>
+
+                                @if (auth()->guard('central_api_user')->user()->isSuperAdmin())
+                                    <div class="mb-3">
+                                        <x-input-label for="user_role" :value="__('User Role')" class="required" />
+                                        <x-select-input id='user_role'
+                                            name='user_role'
+                                            :value="old('user_role')"
+                                            :options="config('custom.user_roles')"
+                                            :messages='$errors->get("user_role")'
+                                            placeholder="Please select user role"
+                                            required autofocus autocomplete='user_role'
+                                        />
+                                    </div>
+                                @endif
 
                                 <div class="flex items-center gap-4">
                                     <x-primary-button class="btn-sm">{{ __('Save') }}</x-primary-button>

@@ -276,26 +276,33 @@ class SalesFormFunctions extends Controller
         $prodId = $request->get('prodId');
         $custId = $request->get('custId');
         $deliveryDate = (new \DateTime())->format('Y-m-d');
-        $userid = Auth::user()->UserID;
-        $returnCustProdPrice = DB::connection('sqlsrv3')
-            ->select('exec spCustomerPriceLookUp ?,?,?,?,?',
-                array($deliveryDate,$prodCode,$customerCode,-1,$userid)
-            );
+        if (config('app.IS_API_BASED')) {
+            $outPut = $this->apiProductPriceLookUp([
+                'prodCode' => $prodCode,
+                'customerCode' => $customerCode
+            ]);
+        } else {
+            $userid = Auth::user()->UserID;
+            $returnCustProdPrice = DB::connection('sqlsrv3')
+                ->select('exec spCustomerPriceLookUp ?,?,?,?,?',
+                    array($deliveryDate,$prodCode,$customerCode,-1,$userid)
+                );
 
-        $GetProductPrices= DB::connection('sqlsrv3')
-            ->select("EXEC spGeneralPriceCheck '".$prodCode."'");
+            $GetProductPrices= DB::connection('sqlsrv3')
+                ->select("EXEC spGeneralPriceCheck '".$prodCode."'");
 
-        $GetProductStockOnHand= DB::connection('sqlsrv3')
-            ->select("EXEC spGetProductStockOnHand '".$prodCode."',".$userid);
+            $GetProductStockOnHand= DB::connection('sqlsrv3')
+                ->select("EXEC spGetProductStockOnHand '".$prodCode."',".$userid);
 
-        $GetCurrentPrices= DB::connection('sqlsrv3')
-            ->select("select * from  dbo.fnCustomerCurrentPrice ($prodId,$custId,'$deliveryDate')");
+            $GetCurrentPrices= DB::connection('sqlsrv3')
+                ->select("select * from  dbo.fnCustomerCurrentPrice ($prodId,$custId,'$deliveryDate')");
 
-        // dd("select * from  dbo.fnCustomerCurrentPrice ($prodId,$custId,'$deliveryDate')");
-        $outPut['priceList'] = $GetProductPrices;
-        $outPut['productPriceForCust'] = $returnCustProdPrice;
-        $outPut['stock'] = $GetProductStockOnHand;
-        $outPut['currentPrices'] = $GetCurrentPrices;
+            // dd("select * from  dbo.fnCustomerCurrentPrice ($prodId,$custId,'$deliveryDate')");
+            $outPut['priceList'] = $GetProductPrices;
+            $outPut['productPriceForCust'] = $returnCustProdPrice;
+            $outPut['stock'] = $GetProductStockOnHand;
+            $outPut['currentPrices'] = $GetCurrentPrices;
+        }
 
         return $outPut;
     }

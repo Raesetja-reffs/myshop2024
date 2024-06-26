@@ -27,11 +27,11 @@ class CentralUserPolicy
      */
     public function delete(CentralUser $centralUser, CentralUser $model): bool
     {
-        if ($model->is_admin == '1') {// if admin user then don't allow to remove
+        if ($model->user_role == 1) {// if admin user then don't allow to remove
 
             return false;
         }
-        if ($centralUser->is_admin == '1') {
+        if ($centralUser->user_role == 1) {
 
             return true;
         }
@@ -44,12 +44,12 @@ class CentralUserPolicy
      */
     public function resetPassword(CentralUser $centralUser, CentralUser $model): bool
     {
-        if ($centralUser->is_admin == '1') {
+        if ($centralUser->user_role != 1 && $model->user_role == 1) {// if admin user then don't allow to remove
 
-            return true;
+            return false;
         }
 
-        return false;
+        return $this->isAdminCompanyMember($centralUser, $model);
     }
 
     /**
@@ -57,11 +57,11 @@ class CentralUserPolicy
      */
     private function isAdminCompanyMember(CentralUser $centralUser, CentralUser $model): bool
     {
-        if ($centralUser->is_admin == '1') {
+        if (in_array($centralUser->user_role, [1, 2])) {
 
             return true;
         }
-        if ($centralUser->company_id == $model->company_id) {
+        if ($centralUser->user_role == 3 && $centralUser->company_id == $model->company_id) {
 
             return true;
         }

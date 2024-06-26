@@ -1,5 +1,19 @@
 <?php
 
+$user_roles_values = [
+    '1' => 'Super Admin',
+    '2' => 'System Admin',
+    '3' => 'Company Admin',
+    '4' => 'Normal User',
+];
+$user_roles = [];
+foreach ($user_roles_values as $roleId => $roleName) {
+    $user_roles[] = [
+        'id' => $roleId,
+        'name' => $roleName,
+    ];
+}
+
 return [
     'pagination' => 10,
     'flash_messages' => [
@@ -14,4 +28,7 @@ return [
     ],
     'MAIN_API_URL' => env('MAIN_API_URL'),
     'MAIN_API_AUTHTOKEN' => env('MAIN_API_AUTHTOKEN'),
+    'user_roles' => $user_roles,
+    'user_roles_values' => $user_roles_values,
+    'default_user_role' => 4,
 ];

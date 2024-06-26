@@ -16,7 +16,7 @@ class CentralUser extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'is_admin',
+        'user_role',
         'username',
         'password',
         'company_id',
@@ -32,8 +32,8 @@ class CentralUser extends Authenticatable
     /**
      * This function is used for check the user is admin or not
      */
-    public function isAdmin()
+    public function isSuperAdmin()
     {
-        return $this->is_admin == '1';
+        return $this->user_role == '1';
     }
 }

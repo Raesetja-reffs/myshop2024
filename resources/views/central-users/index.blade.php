@@ -27,7 +27,7 @@
                         >
                     </div>
                     <button type="submit" class="btn btn-info btn-sm me-1 mb-1 mb-sm-0">Search</button>
-                    @if (auth()->guard('central_api_user')->user()->isAdmin())
+                    @if (auth()->guard('central_api_user')->user()->isSuperAdmin())
                         <div class="w-200px">
                             <x-select-input id='selectedCompanies'
                                 name='selectedCompanies[]'
@@ -57,21 +57,29 @@
                     <thead>
                         <tr class="fw-bold fs-6 text-gray-800 border-bottom-2 border-gray-200 text-uppercase">
                             <th class="">Id</th>
-                            @if (auth()->guard('central_api_user')->user()->isAdmin())
+                            @if (auth()->guard('central_api_user')->user()->isSuperAdmin())
+                                <th class="">User Role</th>
                                 <th class="">Company ID</th>
                             @endif
                             <th class="">UserName</th>
                             <th class="">ERP User Id</th>
                             <th class="">ERP API URL</th>
                             <th class="">Creared At</th>
-                            <th style="width: {{ auth()->guard('central_api_user')->user()->isAdmin() ? '360': '150' }}px;">Actions</th>
+                            <th style="width: {{ auth()->guard('central_api_user')->user()->isSuperAdmin() ? '360': '150' }}px;">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse ($centralUsers as $centralUser)
                             <tr>
                                 <td>{{ $centralUser->id }}</td>
-                                @if (auth()->guard('central_api_user')->user()->isAdmin())
+                                @if (auth()->guard('central_api_user')->user()->isSuperAdmin())
+                                    <td>
+                                        @isset(config('custom.user_roles_values')[$centralUser->user_role])
+                                            {{ config('custom.user_roles_values')[$centralUser->user_role] }}
+                                        @else
+                                            -
+                                        @endisset
+                                    </td>
                                     <td>
                                         {{ $centralUser->company_id }}
                                     </td>
@@ -80,7 +88,7 @@
                                 <td>{{ $centralUser->erp_user_id }}</td>
                                 <td>{{ $centralUser->erp_apiurl }}</td>
                                 <td>{{ $centralUser->created_at }}</td>
-                                <td class="d-flex" style="width: {{ auth()->guard('central_api_user')->user()->isAdmin() ? '360': '150' }}px;">
+                                <td class="d-flex" style="width: {{ auth()->guard('central_api_user')->user()->isSuperAdmin() ? '360': '150' }}px;">
                                     <a href="{{ route('central-users.show', $centralUser->id) }}" class="btn btn-info btn-sm me-1">View</a>
                                     <a href="{{ route('central-users.edit', $centralUser->id) }}" class="btn btn-primary btn-sm me-1">Edit</a>
                                     @if (auth()->guard('central_api_user')->user()->can('delete', $centralUser))

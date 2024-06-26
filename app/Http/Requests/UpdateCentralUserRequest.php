@@ -36,8 +36,9 @@ class UpdateCentralUserRequest extends FormRequest
             'erp_apiauthtoken' => ['required', 'string', 'max:255'],
             'location_id' => ['required', 'string', 'max:255'],
         ];
-        if (auth()->guard('central_api_user')->user()->isAdmin()) {
+        if (auth()->guard('central_api_user')->user()->isSuperAdmin()) {
             $validationArr['company_id'] = ['required', 'string', 'max:255'];
+            $validationArr['user_role'] = ['required'];
         }
 
         return $validationArr;

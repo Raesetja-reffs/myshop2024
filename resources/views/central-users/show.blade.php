@@ -51,7 +51,7 @@
                                             <td><strong>Id</strong></td>
                                             <td>{{ $centralUser->id }}</td>
                                         </tr>
-                                        @if (auth()->guard('central_api_user')->user()->isAdmin())
+                                        @if (auth()->guard('central_api_user')->user()->isSuperAdmin())
                                             <tr>
                                                 <td><strong>Company Id</strong></td>
                                                 <td>
@@ -60,8 +60,14 @@
                                             </tr>
                                         @endif
                                         <tr>
-                                            <td><strong>Id Admin</strong></td>
-                                            <td>{{ $centralUser->is_admin }}</td>
+                                            <td><strong>User Role</strong></td>
+                                            <td>
+                                                @isset(config('custom.user_roles_values')[$centralUser->user_role])
+                                                    {{ config('custom.user_roles_values')[$centralUser->user_role] }}
+                                                @else
+                                                    -
+                                                @endisset
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td><strong>UserName</strong></td>

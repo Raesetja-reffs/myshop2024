@@ -21,7 +21,7 @@ class CentralUserController extends Controller
     public function index(Request $request)
     {
         $centralUsers = CentralUser::latest();
-        if (!auth()->guard('central_api_user')->user()->isAdmin()) {
+        if (!auth()->guard('central_api_user')->user()->isSuperAdmin()) {
             $users = $centralUsers->where('company_id', auth()->guard('central_api_user')->user()->company_id);
         }
 
@@ -73,6 +73,7 @@ class CentralUserController extends Controller
             'PasswordString' => $data['password'],
             'CentralUserId' => $centralUser->id,
             'LocationId' => $centralUser->location_id,
+            'UserType' => $centralUser->user_role,
             'companyid' => $centralUser->company_id,
         ]);
         if (isset($response[0]['Result']) && $response[0]['Result'] == 'SUCCESS') {
@@ -136,8 +137,10 @@ class CentralUserController extends Controller
     private function getRequestData($data, $isUpdate = false)
     {
         $companyId = auth()->guard('central_api_user')->user()->company_id;
-        if (auth()->guard('central_api_user')->user()->isAdmin()) {
+        $userRole = config('custom.default_user_role');
+        if (auth()->guard('central_api_user')->user()->isSuperAdmin()) {
             $companyId = $data['company_id'];
+            $userRole = $data['user_role'];
         }
         $returnData = [
             'company_id' => $companyId,
@@ -147,6 +150,7 @@ class CentralUserController extends Controller
             'erp_apipassword' => $data['erp_apipassword'],
             'erp_apiauthtoken' => $data['erp_apiauthtoken'],
             'location_id' => $data['location_id'],
+            'user_role' => $userRole,
         ];
         if (!$isUpdate) {
             $returnData['password'] = Hash::make($data['password']);
