@@ -66,6 +66,17 @@
                                         </a>
                                     </div>
                                 @endif
+                                @if (auth()->guard('central_api_user')->user())
+                                    <div class="d-flex flex-column">
+                                        <div class="fw-bold d-flex align-items-center fs-5">
+                                            {{ auth()->guard('central_api_user')->user()->username }}
+                                        </div>
+
+                                        <a href="javascript:void(0);" class="fw-semibold text-muted text-hover-primary fs-7">
+                                            {{ auth()->guard('central_api_user')->user()->company_name }}
+                                        </a>
+                                    </div>
+                                @endif
                                 <!--end::Username-->
                             </div>
                         </div>

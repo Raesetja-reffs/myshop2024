@@ -59,7 +59,7 @@
                             <th class="">Id</th>
                             @if (auth()->guard('central_api_user')->user()->isSuperAdmin())
                                 <th class="">User Role</th>
-                                <th class="">Company ID</th>
+                                <th class="">Company Name</th>
                             @endif
                             <th class="">UserName</th>
                             <th class="">ERP User Id</th>
@@ -81,7 +81,7 @@
                                         @endisset
                                     </td>
                                     <td>
-                                        {{ $centralUser->company_id }}
+                                        {{ $centralUser->company_name }}
                                     </td>
                                 @endif
                                 <td>{{ $centralUser->username }}</td>

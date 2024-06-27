@@ -31,13 +31,14 @@ class UpdateCentralUserRequest extends FormRequest
                 Rule::unique(CentralUser::class)->ignore($this->central_user->id),
             ],
             'erp_apiurl' => ['required', 'string', 'max:255'],
-            'erp_apiusername' => ['required', 'string', 'max:255'],
-            'erp_apipassword' => ['required', 'string', 'max:255'],
-            'erp_apiauthtoken' => ['required', 'string', 'max:255'],
+            'erp_apiusername' => ['nullable', 'string', 'max:255'],
+            'erp_apipassword' => ['nullable', 'string', 'max:255'],
+            'erp_apiauthtoken' => ['nullable', 'string', 'max:255'],
             'location_id' => ['required', 'string', 'max:255'],
         ];
         if (auth()->guard('central_api_user')->user()->isSuperAdmin()) {
             $validationArr['company_id'] = ['required', 'string', 'max:255'];
+            $validationArr['company_name'] = ['nullable'];
             $validationArr['user_role'] = ['required'];
         }
 

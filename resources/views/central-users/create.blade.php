@@ -41,6 +41,7 @@
                                             placeholder="Please select company"
                                             required autofocus autocomplete='company_id'
                                         />
+                                        <input type="hidden" id="company_name" name="company_name" value="{{ old('company_name') }}" />
                                     </div>
                                 @endif
 

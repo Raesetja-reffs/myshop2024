@@ -27,6 +27,7 @@ class CentralUser extends Authenticatable
         'erp_apiauthtoken',
         'location_id',
         'internal_pass',
+        'company_name',
     ];
 
     /**

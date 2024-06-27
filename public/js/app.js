@@ -55,6 +55,12 @@ $(document).ready(function() {
     $(document).on('click', 'form button[type="submit"]', function() {
         $(this).attr("data-kt-indicator", "on");
     });
+
+    $(document).ready(function() {
+        $(document).on('change', '#company_id', function() {
+            $("#company_name").val($("#company_id option:selected").text());
+        })
+    });
 });
 
 function showAlert(type, message, timeout = 3000) {

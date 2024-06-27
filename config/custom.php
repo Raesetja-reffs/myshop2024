@@ -22,6 +22,7 @@ return [
         'delete' => ' has been deleted successfully.',
         'is_active'=> ' is active so please deactivate first and try again!',
         'unauthorized' => 'You are not allow to edit this customer',
+        'error_contact_to_administrator' => 'There was a failure please contact to administrator or try to reload the page.',
     ],
     'debug_log_message' => [
         'flowgear_api' => 'Flowgear API Response',

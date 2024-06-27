@@ -20,38 +20,39 @@
             Dashboard </li>
         <!--end::Item-->
     </x-slot>
-    <?php
-    $thingsAllowDiscount = hasThingRole('Discountinput');
-    $userActions = hasThingRole('Access User Actions');
-    $discountProperty = "";
-    if($thingsAllowDiscount != 1)
-    {
-        $discountProperty = "readonly";
-    }
-
-    ?>
-    <x-slot name="salestotalorder">
-        <table class="table flex-end w-400px mt-5">
-            <tr>
-                <td class="p-1">No.Orders Today</td>
-                <td class="p-1">Order Val</td>
-                <td class="p-1">Avg Ord Val</td>
-            </tr>
-            @foreach ($userperformance as $value)
+    @if (!session('error'))
+        <?php
+            $thingsAllowDiscount = hasThingRole('Discountinput');
+            $userActions = hasThingRole('Access User Actions');
+            $discountProperty = "";
+            if($thingsAllowDiscount != 1)
+            {
+                $discountProperty = "readonly";
+            }
+        ?>
+        <x-slot name="salestotalorder">
+            <table class="table flex-end w-400px mt-5">
                 <tr>
-                    <td class="p-1">{{ $value->NoOfOrders }}</td>
-                    <td class="p-1">{{ round($value->OrderValue, 2) }}</td>
-                    <td class="p-1">{{ round($value->AvgOrderValue, 2) }}</td>
+                    <td class="p-1">No.Orders Today</td>
+                    <td class="p-1">Order Val</td>
+                    <td class="p-1">Avg Ord Val</td>
                 </tr>
-            @endforeach
-        </table>
-    </x-slot>
-    @include('dims.sales-order.partials.searchbar')
-    @include('dims.sales-order.partials.order-details')
-    @include('dims.sales-order.partials.order-listing')
-    @include('dims.sales-order.partials.alldialogs')
-    @include('dims.on_order')
-    @include('dims.oninvoiced')
-    <!-- Script: -->
-    @include('dims.sales-order.partials.allscript')
+                @foreach ($userperformance as $value)
+                    <tr>
+                        <td class="p-1">{{ $value->NoOfOrders }}</td>
+                        <td class="p-1">{{ round($value->OrderValue, 2) }}</td>
+                        <td class="p-1">{{ round($value->AvgOrderValue, 2) }}</td>
+                    </tr>
+                @endforeach
+            </table>
+        </x-slot>
+        @include('dims.sales-order.partials.searchbar')
+        @include('dims.sales-order.partials.order-details')
+        @include('dims.sales-order.partials.order-listing')
+        @include('dims.sales-order.partials.alldialogs')
+        @include('dims.on_order')
+        @include('dims.oninvoiced')
+        <!-- Script: -->
+        @include('dims.sales-order.partials.allscript')
+    @endif
 </x-app-layout>

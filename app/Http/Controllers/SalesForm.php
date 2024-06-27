@@ -29,6 +29,11 @@ class SalesForm extends Controller
             $queryCustomersDontCareStatus = [];
             $queryProducts = [];
             $commonData = $this->apiGetSalesOrderPageData();
+            if (!$commonData) {
+                $request->session()->now('error', config('custom.flash_messages.error_contact_to_administrator'));
+
+                return view('dims/sales-order/index');
+            }
             $userPerfomance = $commonData['userPerfomance'];
             $trueFalse = $commonData['trueFalse'];
             $getLastInserted = $commonData['getLastInserted'];

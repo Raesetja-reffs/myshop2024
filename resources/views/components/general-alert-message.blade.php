@@ -14,5 +14,5 @@
         if ($("#kt_content_container").find('div.alert.alert-' + {{ $type }}).length > 0) {
             $("#kt_content_container").find('div.alert.alert-' + {{ $type }}).remove();
         }
-    }, 5000, '{{ $type }}');
+    }, 8000, '{{ $type }}');
 </script>

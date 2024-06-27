@@ -172,6 +172,7 @@
             link.href += "/" + date; // append the date as a parameter to the href attribute
         }
     </script>
+    @stack('scripts')
 </body>
 
 </html>

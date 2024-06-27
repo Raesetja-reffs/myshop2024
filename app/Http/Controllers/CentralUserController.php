@@ -137,10 +137,12 @@ class CentralUserController extends Controller
     private function getRequestData($data, $isUpdate = false)
     {
         $companyId = auth()->guard('central_api_user')->user()->company_id;
+        $companyName = auth()->guard('central_api_user')->user()->company_name;
         $userRole = config('custom.default_user_role');
         if (auth()->guard('central_api_user')->user()->isSuperAdmin()) {
             $companyId = $data['company_id'];
             $userRole = $data['user_role'];
+            $companyName = $data['company_name'];
         }
         $returnData = [
             'company_id' => $companyId,
@@ -151,6 +153,7 @@ class CentralUserController extends Controller
             'erp_apiauthtoken' => $data['erp_apiauthtoken'],
             'location_id' => $data['location_id'],
             'user_role' => $userRole,
+            'company_name' => $companyName,
         ];
         if (!$isUpdate) {
             $returnData['password'] = Hash::make($data['password']);

@@ -53,22 +53,12 @@
                                         </tr>
                                         @if (auth()->guard('central_api_user')->user()->isSuperAdmin())
                                             <tr>
-                                                <td><strong>Company Id</strong></td>
+                                                <td><strong>Company Name</strong></td>
                                                 <td>
-                                                    {{ $centralUser->company_id }}
+                                                    {{ $centralUser->company_name }}
                                                 </td>
                                             </tr>
                                         @endif
-                                        <tr>
-                                            <td><strong>User Role</strong></td>
-                                            <td>
-                                                @isset(config('custom.user_roles_values')[$centralUser->user_role])
-                                                    {{ config('custom.user_roles_values')[$centralUser->user_role] }}
-                                                @else
-                                                    -
-                                                @endisset
-                                            </td>
-                                        </tr>
                                         <tr>
                                             <td><strong>UserName</strong></td>
                                             <td>{{ $centralUser->username }}</td>
@@ -78,7 +68,11 @@
                                             <td>{{ $centralUser->erp_user_id }}</td>
                                         </tr>
                                         <tr>
-                                            <td><strong>ERP UserName</strong></td>
+                                            <td><strong>ERP API URL</strong></td>
+                                            <td>{{ $centralUser->erp_apiurl }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>ERP API UserName</strong></td>
                                             <td>{{ $centralUser->erp_apiusername }}</td>
                                         </tr>
                                         <tr>
@@ -92,6 +86,16 @@
                                         <tr>
                                             <td><strong>Location Id</strong></td>
                                             <td>{{ $centralUser->location_id }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>User Role</strong></td>
+                                            <td>
+                                                @isset(config('custom.user_roles_values')[$centralUser->user_role])
+                                                    {{ config('custom.user_roles_values')[$centralUser->user_role] }}
+                                                @else
+                                                    -
+                                                @endisset
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td><strong>Created At</strong></td>
