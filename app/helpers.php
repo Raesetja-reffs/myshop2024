@@ -473,13 +473,9 @@ if (!function_exists('getMenuItems')) {
                 ],
                 'permission_slug' => 'isallowecommerce',
             ],
-            [
-                'name' => 'Company Permissions',
-                'icon' => 'ki-outline ki-key-square fs-2',
-                'href' => route('company-permissions.set-permissions'),
-            ],
         ];
-        if (config('app.IS_API_BASED')) {
+        if (config('app.IS_API_BASED')
+            && auth()->guard('central_api_user')->user()->can('index', App\Models\CentralUser::class)) {
             $menuItems = array_merge($menuItems, [
                 [
                     'name' => 'Central Users',
@@ -501,6 +497,13 @@ if (!function_exists('getMenuItems')) {
                 ]
             ]);
         }
+        $menuItems = array_merge($menuItems, [
+            [
+                'name' => 'Company Permissions',
+                'icon' => 'ki-outline ki-key-square fs-2',
+                'href' => route('company-permissions.set-permissions'),
+            ],
+        ]);
 
         return $menuItems;
     }

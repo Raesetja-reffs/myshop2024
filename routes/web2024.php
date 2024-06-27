@@ -2,11 +2,10 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CompanyPermissionController;
-use App\Http\Middleware\AuthenticateUsersAndCentralUser;
 use App\Http\Controllers\SalesForm;
 use App\Http\Controllers\CentralUserController;
 
-Route::middleware('db_api_auth')->group(function () {
+Route::middleware('auth:web,central_api_user')->group(function () {
     Route::get('company-permissions/set-permissions', [CompanyPermissionController::class, 'setPermissions'])
         ->name('company-permissions.set-permissions');
     Route::post('company-permissions/save-permissions', [CompanyPermissionController::class, 'savePermissions'])

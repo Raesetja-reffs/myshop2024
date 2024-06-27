@@ -37,7 +37,11 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
-        Auth::guard('web')->logout();
+        $auth = auth();
+        if (config('app.IS_API_BASED')) {
+            $auth = $auth->guard('central_api_user');
+        }
+        $auth->logout();
 
         $request->session()->invalidate();
 

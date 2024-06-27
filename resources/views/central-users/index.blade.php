@@ -42,9 +42,11 @@
                         </div>
                         <button type="submit" class="btn btn-info btn-sm ms-1 me-1">Apply Filter</button>
                     @endif
-                    <a href="{{ route('central-users.create') }}" class="btn btn-primary btn-sm">
-                        Add Central User
-                    </a>
+                    @if (auth()->guard('central_api_user')->user()->can('create', App\Models\CentralUser::class))
+                        <a href="{{ route('central-users.create') }}" class="btn btn-primary btn-sm">
+                            Add Central User
+                        </a>
+                    @endif
                 </div>
             </div>
         </form>
@@ -65,7 +67,7 @@
                             <th class="">ERP User Id</th>
                             <th class="">ERP API URL</th>
                             <th class="">Creared At</th>
-                            <th style="width: {{ auth()->guard('central_api_user')->user()->isSuperAdmin() ? '360': '150' }}px;">Actions</th>
+                            <th style="width: 360px;">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -88,9 +90,13 @@
                                 <td>{{ $centralUser->erp_user_id }}</td>
                                 <td>{{ $centralUser->erp_apiurl }}</td>
                                 <td>{{ $centralUser->created_at }}</td>
-                                <td class="d-flex" style="width: {{ auth()->guard('central_api_user')->user()->isSuperAdmin() ? '360': '150' }}px;">
-                                    <a href="{{ route('central-users.show', $centralUser->id) }}" class="btn btn-info btn-sm me-1">View</a>
-                                    <a href="{{ route('central-users.edit', $centralUser->id) }}" class="btn btn-primary btn-sm me-1">Edit</a>
+                                <td class="d-flex" style="width: 360px;">
+                                    @if (auth()->guard('central_api_user')->user()->can('view', $centralUser))
+                                        <a href="{{ route('central-users.show', $centralUser->id) }}" class="btn btn-info btn-sm me-1">View</a>
+                                    @endif
+                                    @if (auth()->guard('central_api_user')->user()->can('update', $centralUser))
+                                        <a href="{{ route('central-users.edit', $centralUser->id) }}" class="btn btn-primary btn-sm me-1">Edit</a>
+                                    @endif
                                     @if (auth()->guard('central_api_user')->user()->can('delete', $centralUser))
                                         <form action="{{ route('central-users.destroy', $centralUser->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this central user?');">
                                             @csrf

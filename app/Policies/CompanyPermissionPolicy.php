@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\User;
+use Illuminate\Contracts\Auth\Authenticatable;
 
 class CompanyPermissionPolicy
 {
-    public function isAllowCompanyPermission(User $user, $companyRoleSlug)
+    public function isAllowCompanyPermission(Authenticatable $user, $companyRoleSlug)
     {
         return $user->checkCompanyPermission($companyRoleSlug);
     }

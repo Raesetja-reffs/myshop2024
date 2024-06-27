@@ -4,12 +4,14 @@ namespace App\Traits;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use App\Traits\ApiTrait;
+use App\Models\CompanyPermission;
 
 trait UtilityTrait
 {
     use ApiTrait;
+    protected $companyPermissions = null;
+
     public function commonGetThings($thing, $groupId = null)
     {
         $things = 0;
@@ -77,6 +79,10 @@ trait UtilityTrait
                 $company['id'] = $company['strGUID'];
                 $company['name'] = $company['strCompanyName'];
             }
+            $companies[] = [
+                'id' => '5730aaa7-fd77-e46f-298d',
+                'name' => 'Linx Demo2'
+            ];
         }
 
         return $companies;
@@ -84,11 +90,33 @@ trait UtilityTrait
 
     /**
      * This function is used for get the companies list for dropdown
-     * 
+     *
      * @param array $data
      */
     public function createCentralDimsUser($data)
     {
         return $this->httpRequest('post', 'Post_CreateDimsUser', $data, false, true);
+    }
+
+    /**
+     * This function is used for check the company permission
+     * @param string $companyRoleSlug
+     */
+    public function checkCompanyPermission($companyRoleSlug)
+    {
+        if ($this->companyPermissions === null) {
+            $this->companyPermissions = CompanyPermission::where('intCompanyId', 0)
+                ->where('bitActive', 1)
+                ->join('tblCompanyRoles', 'tblCompanyRoles.intAutoId', '=', 'tblCompanyPermissions.intCompanyRoleId')
+                ->select('tblCompanyRoles.strSlug', 'tblCompanyPermissions.bitActive')
+                ->pluck('bitActive', 'strSlug')
+                ->toArray();
+        }
+
+        if (isset($this->companyPermissions[$companyRoleSlug]) && $this->companyPermissions[$companyRoleSlug] == 1) {
+            return true;
+        }
+
+        return false;
     }
 }

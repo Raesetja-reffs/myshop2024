@@ -20,6 +20,7 @@ class CentralUserController extends Controller
      */
     public function index(Request $request)
     {
+        Gate::forUser(auth('central_api_user')->user())->authorize('index', CentralUser::class);
         $centralUsers = CentralUser::latest();
         if (!auth()->guard('central_api_user')->user()->isSuperAdmin()) {
             $users = $centralUsers->where('company_id', auth()->guard('central_api_user')->user()->company_id);
@@ -56,6 +57,7 @@ class CentralUserController extends Controller
      */
     public function create()
     {
+        Gate::forUser(auth('central_api_user')->user())->authorize('create', CentralUser::class);
         $companies = $this->getCompaniesListForDropdown();
 
         return view('central-users.create', compact('companies'));
@@ -66,6 +68,7 @@ class CentralUserController extends Controller
      */
     public function store(StoreCentralUserRequest $request)
     {
+        Gate::forUser(auth('central_api_user')->user())->authorize('create', CentralUser::class);
         $data = $request->validated();
         $centralUser = CentralUser::create($this->getRequestData($data));
         $response = $this->createCentralDimsUser([

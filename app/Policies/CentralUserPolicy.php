@@ -9,6 +9,32 @@ class CentralUserPolicy
     /**
      * Determine whether the user can view the model.
      */
+    public function index(CentralUser $centralUser): bool
+    {
+        if ($centralUser->user_role == 4) {
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Determine whether the user can view the model.
+     */
+    public function create(CentralUser $centralUser): bool
+    {
+        if ($centralUser->user_role == 4) {
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Determine whether the user can view the model.
+     */
     public function view(CentralUser $centralUser, CentralUser $model): bool
     {
         return $this->isAdminCompanyMember($centralUser, $model);
@@ -19,6 +45,11 @@ class CentralUserPolicy
      */
     public function update(CentralUser $centralUser, CentralUser $model): bool
     {
+        if ($model->user_role == 1) {// if admin user then don't allow to update
+
+            return false;
+        }
+
         return $this->isAdminCompanyMember($centralUser, $model);
     }
 

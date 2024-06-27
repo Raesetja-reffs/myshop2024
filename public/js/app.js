@@ -56,11 +56,12 @@ $(document).ready(function() {
         $(this).attr("data-kt-indicator", "on");
     });
 
-    $(document).ready(function() {
-        $(document).on('change', '#company_id', function() {
-            $("#company_name").val($("#company_id option:selected").text());
-        })
-    });
+    if ($("#company_name").length > 0 && $("#company_name").val() == '') {
+        $("#company_name").val($("#company_id option:selected").text());
+    }
+    $(document).on('change', '#company_id', function() {
+        $("#company_name").val($("#company_id option:selected").text());
+    })
 });
 
 function showAlert(type, message, timeout = 3000) {
