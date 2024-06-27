@@ -83,6 +83,10 @@ trait UtilityTrait
                 'id' => '5730aaa7-fd77-e46f-298d',
                 'name' => 'Linx Demo2'
             ];
+            $companies[] = [
+                'id' => '5730aaa7-fd77-e46f-300d',
+                'name' => 'Linx Demo3'
+            ];
         }
 
         return $companies;

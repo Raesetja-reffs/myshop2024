@@ -94,7 +94,7 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <x-input-label for="erp_apiusername" :value="__('ERP API UserName')" class="required" />
+                                    <x-input-label for="erp_apiusername" :value="__('ERP API UserName')" />
                                     <x-text-input id="erp_apiusername"
                                         name="erp_apiusername"
                                         type="text"
@@ -106,7 +106,7 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <x-input-label for="erp_apipassword" :value="__('ERP API Password')" class="required" />
+                                    <x-input-label for="erp_apipassword" :value="__('ERP API Password')" />
                                     <x-text-input id="erp_apipassword"
                                         name="erp_apipassword"
                                         type="text"
@@ -118,7 +118,7 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <x-input-label for="erp_apiauthtoken" :value="__('ERP API AuthToken')" class="required" />
+                                    <x-input-label for="erp_apiauthtoken" :value="__('ERP API AuthToken')" />
                                     <x-text-input id="erp_apiauthtoken"
                                         name="erp_apiauthtoken"
                                         type="text"
