@@ -2991,14 +2991,15 @@
 
         });
         var custCodeOnOrder = $('#custCodeOnOrder').flexdatalist({
-            minLength: 1,
+            minLength: getMinimumLengthOnSearch(),
             valueProperty: '*',
             selectionRequired: true,
             searchContain: true,
             focusFirstResult: true,
             visibleProperties: ["CustomerPastelCode", "StoreName"],
             searchIn: 'CustomerPastelCode',
-            data: finalData
+            //data: finalData,
+            url: "{{  route('sales-order.get-sales-order-customers') }}",
         });
         custCodeOnOrder.on('select:flexdatalist', function(event, data) {
 
@@ -3007,14 +3008,15 @@
 
         });
         var custCodePl = $('#custCodePl').flexdatalist({
-            minLength: 1,
+            minLength: getMinimumLengthOnSearch(),
             valueProperty: '*',
             selectionRequired: true,
             searchContain: true,
             focusFirstResult: true,
             visibleProperties: ["CustomerPastelCode", "StoreName"],
             searchIn: 'CustomerPastelCode',
-            data: finalData
+            //data: finalData,
+            url: "{{  route('sales-order.get-sales-order-customers') }}",
         });
         custCodePl.on('select:flexdatalist', function(event, data) {
 
@@ -3024,14 +3026,15 @@
 
         });
         var custDescOnOrder = $('#custDescOnOrder').flexdatalist({
-            minLength: 1,
+            minLength: getMinimumLengthOnSearch(),
             valueProperty: '*',
             selectionRequired: true,
             searchContain: true,
             focusFirstResult: true,
             visibleProperties: ["CustomerPastelCode", "StoreName"],
             searchIn: 'StoreName',
-            data: finalData
+            //data: finalData,
+            url: "{{  route('sales-order.get-sales-order-customers') }}",
         });
         custDescOnOrder.on('select:flexdatalist', function(event, data) {
 
@@ -3041,14 +3044,15 @@
         });
 
         var custDescPl = $('#custDescPl').flexdatalist({
-            minLength: 1,
+            minLength: getMinimumLengthOnSearch(),
             valueProperty: '*',
             selectionRequired: true,
             searchContain: true,
             focusFirstResult: true,
             visibleProperties: ["CustomerPastelCode", "StoreName"],
             searchIn: 'StoreName',
-            data: finalData
+            //data: finalData,
+            url: "{{  route('sales-order.get-sales-order-customers') }}",
         });
         custDescPl.on('select:flexdatalist', function(event, data) {
 
@@ -3061,7 +3065,11 @@
         $("#productCodeOnOrder").mcautocomplete({
             //source: finalDataProduct,
             source: function(req, response) {
-                $.ajax({
+                requestName = 'productCodeOnOrder';
+                if (ajaxRequests[requestName]) {
+                    ajaxRequests[requestName].abort();
+                }
+                ajaxRequests[requestName] = $.ajax({
                     url: "{{ route('sales-order.get-sales-order-products') }}",
                     dataType: "json",
                     data: {
@@ -3104,7 +3112,11 @@
         $("#productCodeOnOrder").mcautocomplete({
             //source: finalDataProduct,
             source: function(req, response) {
-                $.ajax({
+                requestName = 'productCodeOnOrder';
+                if (ajaxRequests[requestName]) {
+                    ajaxRequests[requestName].abort();
+                }
+                ajaxRequests[requestName] = $.ajax({
                     url: "{{ route('sales-order.get-sales-order-products') }}",
                     dataType: "json",
                     data: {
@@ -3129,7 +3141,11 @@
         $("#productCodeOnInvoice").mcautocomplete({
             //source: finalDataProduct,
             source: function(req, response) {
-                $.ajax({
+                requestName = 'productCodeOnInvoice';
+                if (ajaxRequests[requestName]) {
+                    ajaxRequests[requestName].abort();
+                }
+                ajaxRequests[requestName] = $.ajax({
                     url: "{{ route('sales-order.get-sales-order-products') }}",
                     dataType: "json",
                     data: {
@@ -3155,7 +3171,11 @@
         $("#productCodePl").mcautocomplete({
             //source: finalDataProduct,
             source: function(req, response) {
-                $.ajax({
+                requestName = 'productCodePl';
+                if (ajaxRequests[requestName]) {
+                    ajaxRequests[requestName].abort();
+                }
+                ajaxRequests[requestName] = $.ajax({
                     url: "{{ route('sales-order.get-sales-order-products') }}",
                     dataType: "json",
                     data: {
@@ -3199,7 +3219,11 @@
         $("#productDescOnOrder").mcautocomplete({
             //source: finalDataProductTest,
             source: function(req, response) {
-                $.ajax({
+                requestName = 'productDescOnOrder';
+                if (ajaxRequests[requestName]) {
+                    ajaxRequests[requestName].abort();
+                }
+                ajaxRequests[requestName] = $.ajax({
                     url: "{{ route('sales-order.get-sales-order-products') }}",
                     dataType: "json",
                     data: {
@@ -3226,7 +3250,11 @@
         $("#productDescOnInvoiced").mcautocomplete({
             //source: finalDataProductTest,
             source: function(req, response) {
-                $.ajax({
+                requestName = 'productDescOnInvoiced';
+                if (ajaxRequests[requestName]) {
+                    ajaxRequests[requestName].abort();
+                }
+                ajaxRequests[requestName] = $.ajax({
                     url: "{{ route('sales-order.get-sales-order-products') }}",
                     dataType: "json",
                     data: {
@@ -3253,7 +3281,11 @@
         $("#productDescPl").mcautocomplete({
             //source: finalDataProductTest,
             source: function(req, response) {
-                $.ajax({
+                requestName = 'productDescPl';
+                if (ajaxRequests[requestName]) {
+                    ajaxRequests[requestName].abort();
+                }
+                ajaxRequests[requestName] = $.ajax({
                     url: "{{ route('sales-order.get-sales-order-products') }}",
                     dataType: "json",
                     data: {

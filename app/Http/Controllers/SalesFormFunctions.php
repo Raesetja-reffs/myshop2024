@@ -278,8 +278,9 @@ class SalesFormFunctions extends Controller
         $deliveryDate = (new \DateTime())->format('Y-m-d');
         if (config('app.IS_API_BASED')) {
             $outPut = $this->apiProductPriceLookUp([
-                'prodCode' => $prodCode,
-                'customerCode' => $customerCode
+                'DelvDate' => $deliveryDate,
+                'ProductCode' => $prodCode,
+                'CustomerCode' => $customerCode,
             ]);
         } else {
             $userid = Auth::user()->UserID;
@@ -1229,7 +1230,7 @@ class SalesFormFunctions extends Controller
         $productCode = $request->get('productCode');
         if (config('app.IS_API_BASED')) {
             $getProductPrices = $this->apiGeneralPriceChecking([
-                'productCode' => $productCode,
+                'ProductCode' => $productCode,
             ]);
         } else {
             $getProductPrices = DB::connection('sqlsrv3')
@@ -1298,26 +1299,36 @@ class SalesFormFunctions extends Controller
     }
     public function getCallList(Request $request)
     {
-
-        $UserId= $request->get('userId');
-        $RouteId= $request->get('routeId');
-        $UserName= $request->get('UserName');
+        $UserId = $request->get('userId');
+        $RouteId = $request->get('routeId');
+        $UserName = $request->get('UserName');
         $routeName = $request->get('routeName');
-
-        $sessionUserId = Auth::user()->UserID;
-        $DeliveryDate=(new \DateTime($request->get('deliveryDate')))->format('Y-m-d');
-        $OrderDate= (new \DateTime($request->get('OrderDate')))->format('Y-m-d');
-        //echo "EXEC spCallList '".$UserId."','".$RouteId."','".$DeliveryDate."','".$OrderDate."'";
-        $getCallistSp= DB::connection('sqlsrv3')
-            ->select("EXEC spCallList '".$UserId."','".$RouteId."','".$DeliveryDate."','".$OrderDate."'");
-        DB::connection('sqlsrv3')->table('tblCallistFilters')
-            ->where('intSessionUserId',$sessionUserId )
-            ->delete();
-        DB::connection('sqlsrv3')->table('tblCallistFilters')->insert(
-            ['strUserName' => $UserName, 'intUserId' => $UserId,
-                'strRouteName' => $routeName,'intRouteId'=>$RouteId,'dteSessionDate'=>$DeliveryDate,
-                'intSessionUserId'=>$sessionUserId
+        $DeliveryDate = (new \DateTime($request->get('deliveryDate')))->format('Y-m-d');
+        $OrderDate = (new \DateTime($request->get('OrderDate')))->format('Y-m-d');
+        if (config('app.IS_API_BASED')) {
+            $getCallistSp = $this->apiGetCallList([
+                'UserId' => $UserId,
+                'RouteId' => $RouteId,
+                'UserName' => $UserName,
+                'routeName' => $routeName,
+                'DeliveryDate' => $DeliveryDate,
+                'OrderDate' => $OrderDate,
             ]);
+        } else {
+            $sessionUserId = Auth::user()->UserID;
+            //echo "EXEC spCallList '".$UserId."','".$RouteId."','".$DeliveryDate."','".$OrderDate."'";
+            $getCallistSp = DB::connection('sqlsrv3')
+                ->select("EXEC spCallList '".$UserId."','".$RouteId."','".$DeliveryDate."','".$OrderDate."'");
+            DB::connection('sqlsrv3')->table('tblCallistFilters')
+                ->where('intSessionUserId',$sessionUserId )
+                ->delete();
+            DB::connection('sqlsrv3')->table('tblCallistFilters')->insert(
+                ['strUserName' => $UserName, 'intUserId' => $UserId,
+                    'strRouteName' => $routeName,'intRouteId'=>$RouteId,'dteSessionDate'=>$DeliveryDate,
+                    'intSessionUserId'=>$sessionUserId
+                ]);
+        }
+
         return response()->json($getCallistSp);
     }
 
@@ -1353,11 +1364,16 @@ class SalesFormFunctions extends Controller
         $Dates= $deliverydate;
         $Show= $request->get('Show'); // i don't know what it does or it means
         $DeliveryAddressId= $request->get('DeliveryAddressId');
+        if (config('app.IS_API_BASED')) {
+            $getCallistSp = $this->apiInsertCallID([]);
+        } else {
+            $getCallistSp = DB::connection('sqlsrv3')
+                ->statement('exec spInsertInotTempCallOnCallList ?,?,?,?,?',
+                    array($CustomerCode,$Dates,$Show,$DeliveryAddressId,$notes)
+                );
+        }
 
-        $getCallistSp= DB::connection('sqlsrv3')
-            ->statement('exec spInsertInotTempCallOnCallList ?,?,?,?,?',
-                array($CustomerCode,$Dates,$Show,$DeliveryAddressId,$notes)
-            );
+        return response()->json($getCallistSp);
     }
     public function insertDeliveryAddressOnOrder(Request $request)
     {
@@ -1519,7 +1535,7 @@ class SalesFormFunctions extends Controller
         $orderid = $request->get('orderID');
         if (config('app.IS_API_BASED')) {
             $returndata = $this->apiSplitorders([
-                'orderid' => $orderid
+                'OrderId' => $orderid
             ]);
         } else {
             $returndata = DB::connection('sqlsrv3')
@@ -2179,15 +2195,20 @@ class SalesFormFunctions extends Controller
     {
         $productCode = $request->get('productCode');
         $customerCode = $request->get('customerCode');
-        $userid = Auth::user()->UserID;
-
         $customerCode = str_replace("'", "''", $customerCode);
-        $GetProductsOrder= DB::connection('sqlsrv3')->select("EXEC spOnOrder '".$productCode."','".$customerCode."',".$userid);
-        // $output['recordsTotal'] = count($GetProductsOrder);
-        // $output['data'] = $GetProductsOrder;
-        // $output['recordsFiltered'] = count($GetProductsOrder);
+        if (config('app.IS_API_BASED')) {
+            $GetProductsOrder = $this->apiProductsOnOrder([
+                'productCode' => $productCode
+            ]);
+        } else {
+            $userid = Auth::user()->UserID;
+            $GetProductsOrder = DB::connection('sqlsrv3')->select("EXEC spOnOrder '".$productCode."','".$customerCode."',".$userid);
+            // $output['recordsTotal'] = count($GetProductsOrder);
+            // $output['data'] = $GetProductsOrder;
+            // $output['recordsFiltered'] = count($GetProductsOrder);
 
-        // $output['draw'] = intval($request->input('draw'));
+            // $output['draw'] = intval($request->input('draw'));
+        }
 
         return response()->json($GetProductsOrder);
     }
@@ -2220,10 +2241,17 @@ class SalesFormFunctions extends Controller
     {
         $productCode = $request->get('productCode');
         $customerCode = $request->get('customerCode');
-        $userid = Auth::user()->UserID;
         $customerCode = str_replace("'", "''", $customerCode);
-        $GetProductsOrder= DB::connection('sqlsrv3')
-            ->select("EXEC spOnInvoiced '".$productCode."','".$customerCode."',".$userid);
+        if (config('app.IS_API_BASED')) {
+            $GetProductsOrder = $this->apiProductsOnInvoiced([
+                'productCode' => $productCode
+            ]);
+        } else {
+            $userid = Auth::user()->UserID;
+            $GetProductsOrder = DB::connection('sqlsrv3')
+                ->select("EXEC spOnInvoiced '".$productCode."','".$customerCode."',".$userid);
+        }
+
         $output['recordsTotal'] = count($GetProductsOrder);
         $output['data'] = $GetProductsOrder;
         $output['recordsFiltered'] = count($GetProductsOrder);

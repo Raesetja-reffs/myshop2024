@@ -9,26 +9,28 @@
         <div class="menu menu-rounded menu-column menu-lg-row menu-root-here-bg-desktop menu-active-bg menu-state-primary menu-title-gray-800 menu-arrow-gray-400 align-items-stretch my-5 my-lg-0 px-2 px-lg-0 fw-semibold fs-6"
             id="#kt_header_menu" data-kt-menu="true">
 
-            @if(Auth::guard('web')->check() || Auth::guard('central_api_user')->check())
+            @if((Auth::guard('web')->check() || Auth::guard('central_api_user')->check()))
                 @php $navBarItems = getNavBarItems(); @endphp
                 @foreach ($navBarItems as $navBarItem)
-                    <div class="menu-item  menu-lg-down-accordion me-0 me-lg-2" style="{{ isset($navBarItem['menu_item_style']) ? $navBarItem['menu_item_style'] : '' }} ">
-                        @if (isset($navBarItem['isLink']) && $navBarItem['isLink'])
-                            <a class="menu-link py-3 {{ request()->routeIs($navBarItem['route']) ? 'active' : '' }}"
-                                href="{{ route($navBarItem['route']) }}">
-                                <span class="menu-title">
-                                    {{ $navBarItem['name'] }}
-                                </span>
-                            </a>
-                        @else
-                            <a href="javascript:void(0);" id="{{ $navBarItem['id'] }}"
-                                class="menu-link py-3 {{ request()->routeIs($navBarItem['route']) ? 'active' : '' }}">
-                                <span class="menu-title">
-                                    {{ $navBarItem['name'] }}
-                                </span>
-                            </a>
-                        @endif
-                    </div>
+                    @if (request()->routeIs('home') || $navBarItem['route'] == 'home')
+                        <div class="menu-item  menu-lg-down-accordion me-0 me-lg-2" style="{{ isset($navBarItem['menu_item_style']) ? $navBarItem['menu_item_style'] : '' }} ">
+                            @if (isset($navBarItem['isLink']) && $navBarItem['isLink'])
+                                <a class="menu-link py-3 {{ request()->routeIs($navBarItem['route']) ? 'active' : '' }}"
+                                    href="{{ route($navBarItem['route']) }}">
+                                    <span class="menu-title">
+                                        {{ $navBarItem['name'] }}
+                                    </span>
+                                </a>
+                            @else
+                                <a href="javascript:void(0);" id="{{ $navBarItem['id'] }}"
+                                    class="menu-link py-3 {{ request()->routeIs($navBarItem['route']) ? 'active' : '' }}">
+                                    <span class="menu-title">
+                                        {{ $navBarItem['name'] }}
+                                    </span>
+                                </a>
+                            @endif
+                        </div>
+                    @endif
                 @endforeach
             @else
                 <div class="menu-item me-lg-1">

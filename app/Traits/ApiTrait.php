@@ -35,8 +35,8 @@ trait ApiTrait
                 'Authorization' => 'Key=' . $authToken,
             ])->$method($baseURL . $url, $data);
             $returnResponse = $response->json();
-            if ($isConvertToMultiple && $returnResponse && !isset($returnResponse[0])) {
-                $returnResponse = [$returnResponse];
+            if ($isConvertToMultiple) {
+                $returnResponse = $this->convertToMultipleArray($returnResponse);
             }
             if (!$returnResponse) {
                 $returnResponse = [];

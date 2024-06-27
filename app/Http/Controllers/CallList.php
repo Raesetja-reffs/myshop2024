@@ -10,9 +10,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Auth;
+use App\Traits\CallListTrait;
 
 class CallList extends Controller
 {
+    use CallListTrait;
+
     public function index()
     {
         $queryCustomers =DB::connection('sqlsrv3')->table("viewtblCustomers" )->select('CustomerId','StoreName','CustomerPastelCode','CreditLimit','BalanceDue','UserField5','Email','Routeid')->where('StatusId',1)->orderBy('CustomerPastelCode','ASC')->get();
@@ -229,11 +232,22 @@ class CallList extends Controller
         //dd($result[]);
         return $result;
     }
+
     public function getPhoneBook()
     {
-        $queryCustomers =DB::connection('sqlsrv3')->table("viewtblCustomers" )->select('CustomerId','StoreName','CustomerPastelCode','CreditLimit','BalanceDue','UserField5','Email','Routeid','Discount','OtherImportantNotes','strRoute','mnyCustomerGp','ID','Warehouse')->where('StatusId',1)->orderBy('CustomerPastelCode','ASC')->get();
+        if (config('app.IS_API_BASED')) {
+            $queryCustomers = $this->apiGetPhoneBook();
+        } else {
+            $queryCustomers = DB::connection('sqlsrv3')->table("viewtblCustomers")
+                ->select('CustomerId','StoreName','CustomerPastelCode','CreditLimit','BalanceDue','UserField5','Email','Routeid','Discount','OtherImportantNotes','strRoute','mnyCustomerGp','ID','Warehouse')
+                ->where('StatusId',1)
+                ->orderBy('CustomerPastelCode','ASC')
+                ->get();
+        }
+
         return view('dims/call-list/phonebook')->with('customers',$queryCustomers);
     }
+
     public function customerphonebookcontacts(Request $request)
     {
         $customerId = $request->get('customerId');

@@ -3,22 +3,13 @@
         {{ __('Price Check') }}
     </x-slot>
     <x-slot name="breadcrum">
-        <!--begin::Item-->
         <li class="breadcrumb-item text-muted">
-            <a href="{{ route('home') }}" class="text-muted text-hover-primary">
-                Home </a>
+            <a href="{{ route('home') }}" class="text-muted text-hover-primary">Home </a>
         </li>
-        <!--end::Item-->
-        <!--begin::Item-->
         <li class="breadcrumb-item">
             <span class="bullet bg-gray-300 w-5px h-2px"></span>
         </li>
-        <!--end::Item-->
-
-        <!--begin::Item-->
-        <li class="breadcrumb-item text-dark">
-            Price Check </li>
-        <!--end::Item-->
+        <li class="breadcrumb-item text-dark">Price Check </li>
     </x-slot>
 
     <div id="dialog2" title="Price Check">
@@ -82,6 +73,8 @@
                                     <th>Price Inc</th>
                                 </tr>
                             </thead>
+                            <tbody>
+                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -103,7 +96,7 @@
 
                 <div class="card">
                     <div class="card-body">
-                        <table class="table table-bordered table-hover" id="appendOnPurchasesAnsSalesOrders">
+                        <table class="table table-bordered" id="appendOnPurchasesAnsSalesOrders" style="background-color: greenyellow;">
                         </table>
                     </div>
                 </div>
@@ -180,7 +173,7 @@
             select: function(e, ui) {
                 $('#productDescriptionSearchPrice').val($.trim(ui.item.PastelDescription));
                 $('#productCodeSearchPrice').val(ui.item.PastelCode);
-                $('#priceCheckingOnCall').empty();
+                $('#priceCheckingOnCall tbody').empty();
                 $.ajax({
                     url: '{!! url('/generalPriceChecking') !!}',
                     type: "POST",
@@ -200,7 +193,7 @@
                                 value.PriceInc + '</td><td>' +
                                 '</td></tr>';
                         });
-                        $('#priceCheckingOnCall').append(trHTML);
+                        $('#priceCheckingOnCall tbody').append(trHTML);
                         $.ajax({
                             url: '{!! url('/getProductStockOnHand') !!}',
                             type: "POST",
@@ -350,7 +343,7 @@
             select: function(e, ui) {
                 $('#productDescriptionSearchPrice').val($.trim(ui.item.PastelDescription));
                 $('#productCodeSearchPrice').val($.trim(ui.item.PastelCode));
-                $('#priceCheckingOnCall').empty();
+                $('#priceCheckingOnCall tbody').empty();
                 $('#costs').val(ui.item.Cost);
                 $('#avgCost').val(ui.item.AvgCost);
                 $.ajax({
@@ -372,7 +365,7 @@
                                 value.PriceInc + '</td><td>' +
                                 '</td></tr>';
                         });
-                        $('#priceCheckingOnCall').append(trHTML);
+                        $('#priceCheckingOnCall tbody').append(trHTML);
 
                         $.ajax({
                             url: '{!! url('/getProductStockOnHand') !!}',

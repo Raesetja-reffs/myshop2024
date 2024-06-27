@@ -10,6 +10,6 @@ trait UserFeatureTrait
 
     public function apiGetDimsUsers()
     {
-        return $this->httpRequest('post', 'Post_GetThings');
+        return $this->httpRequest('post', 'Post_GetDimsUsers');
     }
 }

@@ -22,4 +22,18 @@ trait UtilityDependencyTrait
 
         Log::debug($message, $context);
     }
+
+    /**
+     * This function is used for convert the single array to multiple array
+     *
+     * @param array $data
+     */
+    public function convertToMultipleArray($data)
+    {
+        if ($data && !isset($data[0])) {
+            $data = [$data];
+        }
+
+        return $data;
+    }
 }

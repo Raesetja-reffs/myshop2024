@@ -162,7 +162,7 @@ class SalesForm extends Controller
     }
     public function pl()
     {
-        return view('dims/sales-order/pricelookup')->with('products',[]);
+        return view('dims/sales-order/pricelookup');
     }
 
     public function getProducts()
