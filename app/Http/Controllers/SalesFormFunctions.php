@@ -1513,13 +1513,21 @@ class SalesFormFunctions extends Controller
             ->select("EXEC spGetDeliveryAddressWithRouteAndUsers '".$CustCode."',".$DeliveryAddressIId);
         return response()->json($getAddress);
     }
+
     public function splitorders(Request $request)
     {
-        $orderid= $request->get('orderID');
-        $returndata = DB::connection('sqlsrv3')
-            ->select("EXEC spGetProductForBackOrder ".$orderid);
+        $orderid = $request->get('orderID');
+        if (config('app.IS_API_BASED')) {
+            $returndata = $this->apiSplitorders([
+                'orderid' => $orderid
+            ]);
+        } else {
+            $returndata = DB::connection('sqlsrv3')
+                ->select("EXEC spGetProductForBackOrder ".$orderid);
+        }
         return response()->json($returndata);
     }
+
     public function splitordersmake(Request $request)
     {
         $backorder = $request->get('backorder');

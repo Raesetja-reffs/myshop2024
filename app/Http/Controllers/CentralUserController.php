@@ -126,8 +126,13 @@ class CentralUserController extends Controller
     public function destroy(CentralUser $centralUser)
     {
         Gate::forUser(auth('central_api_user')->user())->authorize('delete', $centralUser);
-
+        $data = [
+            'CentralUserId' => $centralUser->id,
+            'ErpUserId' => $centralUser->erp_user_id,
+        ];
         $centralUser->delete();
+
+        $this->deleteCentralDimsUser($data);
 
         return redirect()->route('central-users.index')->with('success', 'Central User' . config('custom.flash_messages')['delete']);
     }

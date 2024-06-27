@@ -223,6 +223,11 @@ trait SalesFormFunctionsTrait
         return $this->httpRequest('post', 'Post_CheckIfOrderExists', $data);
     }
 
+    public function apiSplitorders($data)
+    {
+        return $this->httpRequest('post', 'Post_RetrieveGetProductForBackOrder', $data);
+    }
+
     public function apiGeneralPriceChecking($data)
     {
         return [

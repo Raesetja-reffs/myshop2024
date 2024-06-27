@@ -103,6 +103,16 @@ trait UtilityTrait
     }
 
     /**
+     * This function is used for get the companies list for dropdown
+     *
+     * @param array $data
+     */
+    public function deleteCentralDimsUser($data)
+    {
+        return $this->httpRequest('post', 'Post_DeleteALocalUser', $data, false, true);
+    }
+
+    /**
      * This function is used for check the company permission
      * @param string $companyRoleSlug
      */

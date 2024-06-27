@@ -11,7 +11,7 @@ trait SalesFormTrait
     public function apiGetSalesOrderPageData()
     {
         $response = $this->httpRequest('post', 'Get_apiGetSalesOrderPageData');
-        if ($response) {
+        if (isset($response['Table'])) {
             return [
                 'getRoutes' => $this->convertToCollectionObject($response['Table']),
                 'deliverTypes' => $response['Table1'],
