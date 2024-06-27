@@ -31,9 +31,11 @@
                         <div class="card-header align-items-center py-5 gap-2 gap-md-5">
                             <!--begin::Card toolbar-->
                             <div class="card-toolbar flex-row-fluid justify-content-end gap-5">
-                                <a href="{{ route('central-users.edit', $centralUser->id) }}" class="btn btn-primary btn-sm">
-                                    Edit Central User
-                                </a>
+                                @if (auth()->guard('central_api_user')->user()->can('update', $centralUser))
+                                    <a href="{{ route('central-users.edit', $centralUser->id) }}" class="btn btn-primary btn-sm">
+                                        Edit Central User
+                                    </a>
+                                @endif
                                 <a href="{{ route('central-users.index') }}" class="btn btn-primary btn-sm">
                                     Central Users Listing
                                 </a>
