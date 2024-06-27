@@ -45,7 +45,7 @@ class CentralUserPolicy
      */
     public function update(CentralUser $centralUser, CentralUser $model): bool
     {
-        if ($model->user_role == 1) {// if admin user then don't allow to update
+        if ($model->user_role == 1 && $centralUser->user_role != 1) {// if admin user then don't allow to update
 
             return false;
         }

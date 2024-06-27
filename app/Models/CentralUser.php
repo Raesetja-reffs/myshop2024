@@ -38,16 +38,4 @@ class CentralUser extends Authenticatable
     {
         return $this->user_role == '1';
     }
-
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'user_role' => 'integer',
-        ];
-    }
 }
