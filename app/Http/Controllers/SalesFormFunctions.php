@@ -1541,26 +1541,30 @@ class SalesFormFunctions extends Controller
             $returndata = DB::connection('sqlsrv3')
                 ->select("EXEC spGetProductForBackOrder ".$orderid);
         }
+
         return response()->json($returndata);
     }
 
     public function splitordersmake(Request $request)
     {
         $backorder = $request->get('backorder');
-        $orderid= $request->get('orderID');
-        $userid  = Auth::user()->UserID;
-        $username  = Auth::user()->UserName;
-
+        $orderid = $request->get('orderID');
         $backorderxml = $this->toxml($backorder, "xml", array("result"));
-       // $returndata = DB::connection('sqlsrv3')
-        //    ->select("EXEC spXMLSplitOrder '".$backorderxml."','".$username."',".$userid.",".$orderid);
+        if (config('app.IS_API_BASED')) {
+            $returndata = $this->apiSplitordersmake([
+                'OrderId' => $orderid,
+                'Xml' => $backorderxml
+            ]);
+        } else {
+            $userid = Auth::user()->UserID;
+            $username = Auth::user()->UserName;
+            $returndata = DB::connection('sqlsrv4')
+                ->select("Exec spXMLSplitOrder ?,?,?,?",
+                    array($backorderxml,$username,$userid,$orderid));
+        }
 
-        $returndata= DB::connection('sqlsrv4')
-            ->select("Exec spXMLSplitOrder ?,?,?,?",
-                array($backorderxml,$username,$userid,$orderid));
-  //      dd($returndata);
-//dd( $returndata[0]->Result);
         $outPut['Result'] = $returndata[0]->Result;
+
         return $outPut;
     }
     public function postOrderDetailsAsJsonArray(Request $request)
@@ -2198,7 +2202,8 @@ class SalesFormFunctions extends Controller
         $customerCode = str_replace("'", "''", $customerCode);
         if (config('app.IS_API_BASED')) {
             $GetProductsOrder = $this->apiProductsOnOrder([
-                'productCode' => $productCode
+                'ProductCode' => $productCode,
+                'CustomerCode' => $customerCode,
             ]);
         } else {
             $userid = Auth::user()->UserID;
@@ -2244,7 +2249,8 @@ class SalesFormFunctions extends Controller
         $customerCode = str_replace("'", "''", $customerCode);
         if (config('app.IS_API_BASED')) {
             $GetProductsOrder = $this->apiProductsOnInvoiced([
-                'productCode' => $productCode
+                'ProductCode' => $productCode,
+                'CustomerCode' => $customerCode,
             ]);
         } else {
             $userid = Auth::user()->UserID;
@@ -2266,7 +2272,7 @@ class SalesFormFunctions extends Controller
         $productCode = $request->get('prodCode');
         if (config('app.IS_API_BASED')) {
             $sumQtyOrder = $this->apiCountOnSalesOrder([
-                'productCode' => $productCode,
+                'ProductCode' => $productCode,
             ]);
         } else {
             $sumQtyOrder = DB::connection('sqlsrv3')->select("EXEC spOnCountOnOrder '".$productCode."'");
