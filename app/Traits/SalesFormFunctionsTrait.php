@@ -616,7 +616,7 @@ trait SalesFormFunctionsTrait
 
     public function apiInsertCallID($data)
     {
-        return [];
+        return $this->httpRequest('post', 'Post_InsertInotTempCallOnCallList', $data);
     }
 
     public function apiProductsOnOrder($data)
@@ -628,7 +628,7 @@ trait SalesFormFunctionsTrait
     {
         return $this->httpRequest('post', 'Post_OnInvoiced', $data);
     }
-    
+
     public function apiSplitordersmake($data)
     {
         $data = $this->setUserNameInApiData($data);

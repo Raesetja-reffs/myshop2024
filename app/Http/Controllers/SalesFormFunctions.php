@@ -1361,11 +1361,17 @@ class SalesFormFunctions extends Controller
         }
         $notes = str_replace("'", ' ', $notes);
         //$CustomerId = DB::connection('sqlsrv3')->table('tblCustomers')->select('CustomerId')->where('CustomerPastelCode',$CustomerCode)->get();
-        $Dates= $deliverydate;
-        $Show= $request->get('Show'); // i don't know what it does or it means
-        $DeliveryAddressId= $request->get('DeliveryAddressId');
+        $Dates = $deliverydate;
+        $Show = $request->get('Show'); // i don't know what it does or it means
+        $DeliveryAddressId = $request->get('DeliveryAddressId');
         if (config('app.IS_API_BASED')) {
-            $getCallistSp = $this->apiInsertCallID([]);
+            $getCallistSp = $this->apiInsertCallID([
+                'CustomerCode' => $CustomerCode,
+                'Dates' => $Dates,
+                'Show' => $Show,
+                'DeliveryAddressId' => $DeliveryAddressId,
+                'Notes' => $notes
+            ]);
         } else {
             $getCallistSp = DB::connection('sqlsrv3')
                 ->statement('exec spInsertInotTempCallOnCallList ?,?,?,?,?',

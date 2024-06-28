@@ -846,6 +846,7 @@
                 $('#invoiceNoOrderListing').val('');
                 $('#customerCodeOrderListing').val('');
                 $('#deliveryDateOrderListing').val('');
+                $('#customerDescriptionOrderListing').val('');
                 otable = $('#createdOrders').DataTable({
                     "ajax": {
                         url: '{!! url('/getOrderListing') !!}',
@@ -2893,37 +2894,33 @@
         //////////////////////////////////////////////////
 
         var custAcc = $('#customerCodeOrderListing').flexdatalist({
-            minLength: 1,
+            minLength: getMinimumLengthOnSearch(),
             valueProperty: '*',
             selectionRequired: true,
             searchContain: true,
             focusFirstResult: true,
             visibleProperties: ["CustomerPastelCode", "StoreName"],
             searchIn: 'CustomerPastelCode',
-            data: finalDataAll
+            url: "{{  route('sales-order.get-sales-order-customers') }}",
         });
 
         var custDescriptionOrderListing = $('#customerDescriptionOrderListing').flexdatalist({
-            minLength: 1,
+            minLength: getMinimumLengthOnSearch(),
             valueProperty: '*',
             selectionRequired: true,
             searchContain: true,
             focusFirstResult: true,
             visibleProperties: ["CustomerPastelCode", "StoreName"],
             searchIn: 'StoreName',
-            data: finalDataAll
+            url: "{{  route('sales-order.get-sales-order-customers') }}",
         });
         custDescriptionOrderListing.on('select:flexdatalist', function(event, data) {
-
             $('#customerCodeOrderListing').val(data.CustomerPastelCode);
             $('#customerDescriptionOrderListing').val(data.StoreName);
-
         });
         custAcc.on('select:flexdatalist', function(event, data) {
-
             $('#customerCodeOrderListing').val(data.CustomerPastelCode);
             $('#customerDescriptionOrderListing').val(data.StoreName);
-
         });
 
         ///////////////////
@@ -2936,7 +2933,6 @@
             focusFirstResult: true,
             visibleProperties: ["CustomerPastelCode", "StoreName"],
             searchIn: 'CustomerPastelCode',
-            //data: finalData
             url: "{{  route('sales-order.get-sales-order-customers') }}",
         });
         inputCustAccount.on('select:flexdatalist', function(event, data) {
