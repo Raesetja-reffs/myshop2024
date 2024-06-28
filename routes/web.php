@@ -257,6 +257,14 @@ Route::post('updateMessage',[DimsCommon::class,'updateMessage'] );
 Route::post('checkifhasmultiaddress',[DimsCommon::class,'checkifhasmultiaddress'] );
 Route::get('backorders',[DimsCommon::class,'backorders']);
 
+# Added by Kyle 20240212
+Route::get('customerSpecials',[DimsCommon::class,'customerSpecials']);
+Route::get('getOverallCustomerSpecials', [DimsCommon::class,'getOverallCustomerSpecials']);
+Route::post('updateCustomerSpecial', [DimsCommon::class,'updateCustomerSpecial']);
+Route::get('groupSpecialsOverall',[DimsCommon::class,'groupSpecialsOverall']);
+Route::get('getOverallGroupSpecials',[DimsCommon::class,'getOverallGroupSpecials']);
+Route::post('updateGroupSpecial',[DimsCommon::class,'updateGroupSpecial']);
+
 //DIMS COMMON ENDS HERE HERE!!!!
 
 //SALES FORM FUNCTIONS STARTS HERE!!!

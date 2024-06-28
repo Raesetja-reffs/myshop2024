@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\SalesForm;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use \Cache;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Middleware\AuthenticateUsersAndCentralUser;
 use App\Traits\DimsCommonTrait;
@@ -1446,22 +1446,19 @@ class DimsCommon extends Controller
     }
     public function XmlCreateCustomerSpecials(Request $request)
     {
-        $customerCode = $request->get('customerCode');
-        $customerId = $request->get('customerId');
-        $orderDetails = $request->get('orderDetails');
-        $orderDetailsxml = $this->toxml($orderDetails, "xml", array("result"));
-        $date = (new \DateTime($request->get('contractDateFrom')))->format('Y-m-d');
-        $dateTo = (new \DateTime($request->get('contractDateTo')))->format('Y-m-d');
-        $userid = Auth::user()->UserID;
-        $userName = Auth::user()->UserName;
+        $lines = $request->get('lines');
+        $XML = $this->toxml($lines, "xml", array("result"));
+        $UserId = Auth::user()->UserID;
+        $CustomerIds = $request->get('CustomerIds');
+        $dteFrom = (new \DateTime($request->get('dteFrom')))->format('Y-m-d');
+        $dteTo = (new \DateTime($request->get('dteTo')))->format('Y-m-d');
+        $DealName = $request->get('DealName');
 
+        // dd("'$XML', $UserId, '$CustomerIds', '$dteFrom', '$dteTo', '$DealName'");
 
-        //dd($orderDetailsxml);
-        //echo "EXEC spXMLCustomerSpecials '".$orderDetailsxml."',".$userid.",'".$userName."','".$date."','".$dateTo."',".$customerId,$contractId;
-        $returnresults = DB::connection('sqlsrv3')
-            ->select("EXEC spXMLCustomerSpecials '".$orderDetailsxml."',".$userid.",'".$userName."','".$date."','".$dateTo."',".$customerId);
-        $outPut['result'] = $returnresults[0]->Result;
-        return $outPut;
+        $post = DB::connection('sqlsrv3')->select("EXEC sp_CU_XMLCustomerSpecials '$XML', $UserId, '$CustomerIds', '$dteFrom', '$dteTo', '$DealName'");
+
+        return response()->json($post);
 
     }
     public function XmlBulkEditingCustomerSpecials(Request $request)
@@ -1502,24 +1499,24 @@ class DimsCommon extends Controller
         $orderDetails = $request->get('orderDetails');
         $date = (new \DateTime($request->get('contractDateFrom')))->format('Y-m-d');
         $dateTo = (new \DateTime($request->get('contractDateTo')))->format('Y-m-d');
-       // $sessionUserName = Auth::user()->UserName;
+        $dealName = $request->get('dealName');
+        // $sessionUserName = Auth::user()->UserName;
         $UserID = Auth::user()->UserID;
         $UserName = Auth::user()->UserName;
         $statement = 'Insert';
+
         $id = DB::connection('sqlsrv3')->table('tblGroupSpecialsHeader')->insertGetId(
-            ['GroupId' => $customerCode, 'DateFrom' => $date, 'DateTo' => $dateTo]
+            ['GroupId' => $customerCode, 'DateFrom' => $date, 'DateTo' => $dateTo, 'strDealName' => $dealName]
         );
+
         foreach ($orderDetails as $value) {
             $innerDateFrom = (new \DateTime($value['dateFrom']))->format('Y-m-d');
             $innerDateTo = (new \DateTime($value['dateTo']))->format('Y-m-d');
-          DB::connection('sqlsrv3')
-                ->statement("EXEC spCRUDGroupSpecials ".$customerCode.",'".$value['productCode']."',
-                '".$innerDateFrom."','".$innerDateTo."',".$value['price'].",".$value['cost_'].",".$value['gp_'].",".$id.",".$UserID.",'".$UserName."','".$statement."'");
 
+            DB::connection('sqlsrv3')->statement("EXEC spCRUDGroupSpecials ".$customerCode.",'".$value['productCode']."','".$innerDateFrom."','".$innerDateTo."',".$value['price'].",".$value['cost_'].",".$value['gp_'].",".$id.",".$UserID.",'".$UserName."','".$statement."'");
         }
 
         return response()->json($id);
-
     }
     public function createOverallSpecials(Request $request)
     {
@@ -2218,6 +2215,75 @@ class DimsCommon extends Controller
     {
         $this->authorize('isAllowCompanyPermission', ['App\Models\CompanyPermission', 'isallowremoteorders']);
         return view('dims/backorders');
+    }
+
+    # ADDED BY KYLE 2024/01/08
+
+    public function customerSpecials(){
+        $customers =DB::connection('sqlsrv3')->table("vwTestTblCustomers" )->select('CustomerId','StoreName','CustomerPastelCode','CreditLimit','BalanceDue','UserField5','Email','Routeid','Discount','OtherImportantNotes','strRoute')->where('StatusId',1)->orderBy('CustomerPastelCode','ASC')->get();
+
+        $products =DB::connection('sqlsrv3')->table("viewActiveProductWithVat" )->select('ProductId','PastelCode','PastelDescription','UnitSize','Tax','Cost','QtyInStock','Margin','Alcohol','Available','PurchOrder')->orderBy('PastelDescription','ASC')->distinct()->get();
+
+        return view('specials.customerSpecials')
+            ->with('customers', $customers)
+            ->with('products', $products);
+    }
+
+    public function getOverallCustomerSpecials(Request $request){
+        $dateFrom = $request->get('dateFrom');
+        $dateTo = $request->get('dateTo');
+        $customerId = $request->get('customerId');
+        $productId = $request->get('productId');
+        $dealName = $request->get('dealName');
+
+        // dd("EXEC spGridMassCustomerSpecialDateFilter '$dateFrom','$dateTo','$marginless','$margingreater','$dealName'");
+
+        $massData=  DB::connection('sqlsrv3')->select("EXEC sp_R_FilteredCustomerSpecials '$dateFrom','$dateTo','$customerId','$productId','$dealName'");
+
+        return response()->json($massData);
+    }
+
+    public function updateCustomerSpecial(Request $request){
+        $specialLineId = $request->get('specialLineId');
+        $price = $request->get('price');
+        $dateFrom = $request->get('dateFrom');
+        $dateTo = $request->get('dateTo');
+
+        $result =  DB::connection('sqlsrv3')->select("EXEC spUpdateCustomerSpecial $specialLineId, $price,'$dateFrom','$dateTo'");
+
+        return response()->json($result);
+    }
+
+    public function groupSpecialsOverall(){
+        $groups =  DB::connection('sqlsrv3')->select("EXEC spGetCustomerGroups 'Select' ");
+
+        $products =DB::connection('sqlsrv3')->table("viewActiveProductWithVat" )->select('ProductId','PastelCode','PastelDescription','UnitSize','Tax','Cost','QtyInStock','Margin','Alcohol','Available','PurchOrder')->orderBy('PastelDescription','ASC')->distinct()->get();
+
+        return view('specials.groupSpecials')
+            ->with('groups', $groups)
+            ->with('products', $products);
+    }
+
+    public function getOverallGroupSpecials(Request $request){
+        $dateFrom = $request->get('dateFrom');
+        $dateTo = $request->get('dateTo');
+        $groupId = $request->get('groupId');
+        $dealName = $request->get('dealName');
+
+        $massData=  DB::connection('sqlsrv3')->select("EXEC spGetFilteredGroupSpecials '$dateFrom','$dateTo','$groupId','$dealName'");
+
+        return response()->json($massData);
+    }
+
+    public function updateGroupSpecial(Request $request){
+        $specialLineId = $request->get('specialLineId');
+        $price = $request->get('price');
+        $dateFrom = $request->get('dateFrom');
+        $dateTo = $request->get('dateTo');
+
+        $result =  DB::connection('sqlsrv3')->select("EXEC spUpdateGroupSpecial $specialLineId, $price,'$dateFrom','$dateTo'");
+
+        return response()->json($result);
     }
 
     private static function getTabs($tabcount)
