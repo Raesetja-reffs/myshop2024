@@ -129,6 +129,7 @@ class CentralUserController extends Controller
         $data = [
             'CentralUserId' => $centralUser->id,
             'ErpUserId' => $centralUser->erp_user_id,
+            'companyid' => $centralUser->company_id,
         ];
         $centralUser->delete();
 

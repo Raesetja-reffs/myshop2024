@@ -1307,12 +1307,11 @@ class SalesFormFunctions extends Controller
         $OrderDate = (new \DateTime($request->get('OrderDate')))->format('Y-m-d');
         if (config('app.IS_API_BASED')) {
             $getCallistSp = $this->apiGetCallList([
-                'UserId' => $UserId,
-                'RouteId' => $RouteId,
-                'UserName' => $UserName,
-                'routeName' => $routeName,
-                'DeliveryDate' => $DeliveryDate,
                 'OrderDate' => $OrderDate,
+                'DeliveryDate' => $DeliveryDate,
+                'RouteId' => $RouteId,
+                'UserID' => $UserId,
+                'RouteName' => $routeName,
             ]);
         } else {
             $sessionUserId = Auth::user()->UserID;
