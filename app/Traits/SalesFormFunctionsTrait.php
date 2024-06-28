@@ -27,7 +27,7 @@ trait SalesFormFunctionsTrait
 
     public function apiGetCustomerRouteWithOtherRoutesByPriority($data)
     {
-        return $this->httpRequest('post', 'GetCustomerRoutes', $data);
+        return $this->convertToMultipleArray($this->httpRequest('post', 'GetCustomerRoutes', $data));
     }
 
     public function apiCombinedSpecials($data)

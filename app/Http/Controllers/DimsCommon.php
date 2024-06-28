@@ -216,14 +216,23 @@ class DimsCommon extends Controller
 
         return response()->json($activeUser);
     }
-    public function customerflexgrid(){
-        $queryCustomers =DB::connection('sqlsrv3')->table("viewCustomerGrid" )->select('*')->distinct()->get();
-        $queryRoutes=DB::connection('sqlsrv3')->table("tblRoutes")->select('Route','RouteId')->distinct()->get();
-        $queryGroups=DB::connection('sqlsrv3')->table("tblGroups")->select('GroupId','GroupName')->distinct()->get();
-        $querySalesMen=DB::connection('sqlsrv3')->table("tblDIMSUSERS")->select('UserName', 'strSalesmanCode')->distinct()->get();
-        $queryUsers=DB::connection('sqlsrv3')->table("tblDIMSUSERS")->select('UserName', 'UserID')->distinct()->get();
-                return view('dims/customergridwithflex')->with('routes',$queryCustomers)->with('routesonly', $queryRoutes)
-                ->with('groups',$queryGroups)->with('salesmen',$querySalesMen)->with('users',$queryUsers);
+    public function customerflexgrid()
+    {
+        if (config('app.IS_API_BASED')) {
+            $this->apiCustomerflexgrid();
+        } else {
+            $queryCustomers = DB::connection('sqlsrv3')->table("viewCustomerGrid" )->select('*')->distinct()->get();
+            $queryRoutes = DB::connection('sqlsrv3')->table("tblRoutes")->select('Route','RouteId')->distinct()->get();
+            $queryGroups = DB::connection('sqlsrv3')->table("tblGroups")->select('GroupId','GroupName')->distinct()->get();
+            $querySalesMen = DB::connection('sqlsrv3')->table("tblDIMSUSERS")->select('UserName', 'strSalesmanCode')->distinct()->get();
+            $queryUsers = DB::connection('sqlsrv3')->table("tblDIMSUSERS")->select('UserName', 'UserID')->distinct()->get();
+        }
+
+        return view('dims/customergridwithflex')->with('routes',$queryCustomers)
+            ->with('routesonly', $queryRoutes)
+            ->with('groups',$queryGroups)
+            ->with('salesmen',$querySalesMen)
+            ->with('users',$queryUsers);
     }
 
     public function updateCustomerGrid(Request $request){

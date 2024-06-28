@@ -311,3 +311,28 @@ label {
     border-radius: 0;
     min-height: 25px;
 }
+.green {
+    background-color: green !important;
+    color: wheat;
+    font-weight: 600;
+}
+.up {
+    background-color: #e0fa90 !important;
+    color: black;
+    font-weight: 600;
+}
+.down {
+    background-color: #d5d5e5 !important;
+    color: black;
+    font-weight: 600;
+}
+.stopped {
+    background-color: #f79b9b !important;
+    color: black;
+    font-weight: 600;
+}
+.circle {
+    background-color: white !important;
+    color: black;
+    font-weight: 600;
+}
