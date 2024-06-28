@@ -1,3 +1,10 @@
+@php $jsByWho = ''; @endphp
+@if (Auth::user())
+    @php $jsByWho = Auth::user()->UserName; @endphp
+@elseif (Auth::guard("central_api_user")->user())
+    @php $jsByWho = Auth::guard("central_api_user")->user()->username; @endphp
+@endif
+
 <script>
     $(document).on('focus', ':input', function() {
 
@@ -89,7 +96,7 @@
     // console.debug(jArrayCustomer);
     // var computerName = '<?php echo gethostname(); ?>';
     var computerName = '<?php echo php_uname('n'); ?>';
-    var byWho = '<?php echo Auth::user() ? Auth::user()->UserName : Auth::guard("central_api_user")->user() ? Auth::guard("central_api_user")->user()->username : ''; ?>';
+    var byWho = '<?php echo $jsByWho;?>';
     $(function() {
         $(document).keydown(function(e) {
             booze = $('#boozeLisence').val();
