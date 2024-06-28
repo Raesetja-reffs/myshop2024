@@ -222,7 +222,7 @@ trait SalesFormFunctionsTrait
 
     public function apiCheckIfOrderExists($data)
     {
-        return $this->httpRequest('post', 'Post_CheckIfOrderExists', $data);
+        return $this->convertToMultipleArray($this->httpRequest('post', 'Post_CheckIfOrderExists', $data));
     }
 
     public function apiSplitorders($data)
