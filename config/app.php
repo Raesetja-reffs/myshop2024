@@ -186,7 +186,7 @@ return [
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 
-    'js_version' => '1719556069',
-    'css_version' => '1719556069',
+    'js_version' => '1719556070',
+    'css_version' => '1719556070',
     'IS_API_BASED' => env('IS_API_BASED', 0)
 ];
