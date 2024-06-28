@@ -13,8 +13,8 @@ trait SalesFormTrait
         $response = $this->httpRequest('post', 'Get_apiGetSalesOrderPageData');
         if (isset($response['Table'])) {
             return [
-                'getRoutes' => $this->convertToCollectionObject($response['Table']),
-                'deliverTypes' => $response['Table1'],
+                'getRoutes' => $this->convertToCollectionObject($this->convertToMultipleArray($response['Table'])),
+                'deliverTypes' => $this->convertToMultipleArray($response['Table1']),
                 'userPerfomance' => [
                     (object) [
                         'NoOfOrders' => $response['Table2']['NoOfOrders'],
@@ -36,11 +36,11 @@ trait SalesFormTrait
                     ]
                 ],
                 'printinvoices' => $response['Table2']['AllowPrintInvoices'],
-                'getDeliveryDates' => $response['Table3'],
-                'getviewWareHouseLocations' => $response['Table4'],
-                'saleman' => $this->convertToCollectionObject($response['Table5']),
-                'trueFalse' => $response['Table6'],
-                'callListUserInfo' => $this->convertToCollectionObject($response['Table7']),
+                'getDeliveryDates' => $this->convertToMultipleArray(isset($response['Table3']) ? $response['Table3'] : ['DeliveryDate' => date('Y-m-d')]),
+                'getviewWareHouseLocations' => $this->convertToMultipleArray($response['Table4']),
+                'saleman' => $this->convertToCollectionObject($this->convertToMultipleArray($response['Table5'])),
+                'trueFalse' => $this->convertToMultipleArray($response['Table6']),
+                'callListUserInfo' => $this->convertToCollectionObject($this->convertToMultipleArray($response['Table7'])),
                 'callListDeliveryDate' => [
                     (object) [
                         'dteSessionDate' => $response['Table2']['dteSessionDate']
