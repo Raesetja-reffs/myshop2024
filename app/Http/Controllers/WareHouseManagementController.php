@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Auth;
+use App\Traits\WareHouseManagementControllerTrait;
 
 class WareHouseManagementController extends Controller
 {
+    use WareHouseManagementControllerTrait;
+
     public function productscats(){
         $getProducts= DB::connection('barcoding')->select("Select * from viewWhsmainCats ORDER BY group1");
         return view('dims/whstmaincats')
@@ -100,13 +103,19 @@ ORDER BY [GROUP 2],[GROUP 3] ,Description_1 ");
 
         return redirect("getProductsnames/$cat");
     }
+
     public function massProducts()
     {
-        $pickingTeams =DB::connection('sqlsrv3')
-            ->select('Select * from tblPickingTeams');
-        return view('dims/mass_product')->with('pickingTeams',$pickingTeams);
+        if (config('app.IS_API_BASED')) {
+            $pickingTeams = $this->apiMassProducts();
+        } else {
+            $pickingTeams = DB::connection('sqlsrv3')
+                ->select('Select * from tblPickingTeams');
+        }
 
+        return view('dims/mass_product')->with('pickingTeams', $pickingTeams);
     }
+
     public function getProductgriddata(){
         $getRouteProducts =DB::connection('sqlsrv3')
             ->select('Select * from viewMassProducts');

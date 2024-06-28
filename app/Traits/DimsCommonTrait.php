@@ -79,4 +79,9 @@ trait DimsCommonTrait
     {
         return $this->httpRequest('post', 'Post_NoStockOnALine', $data);
     }
+
+    public function apiCustomerflexgrid()
+    {
+        return [];
+    }
 }
