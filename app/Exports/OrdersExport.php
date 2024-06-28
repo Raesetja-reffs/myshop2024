@@ -7,13 +7,13 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 //use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithHeadings;
-use App\Traits\ApiTrait;
+use App\Traits\UtilityTrait;
 use Illuminate\Support\Collection;
 
 class OrdersExport implements FromCollection, WithHeadings
 {
     use Exportable;
-    use ApiTrait;
+    use UtilityTrait;
 
     public function __construct(string $orderid)
     {

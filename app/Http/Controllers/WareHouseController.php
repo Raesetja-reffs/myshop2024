@@ -7,11 +7,13 @@
  */
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\DB;
-use Auth;
+use App\Traits\WareHouseControllerTrait;
 
 class WareHouseController extends Controller
 {
+    use WareHouseControllerTrait;
 
     public function warehouseInvetoryItems()
     {
@@ -21,9 +23,12 @@ class WareHouseController extends Controller
     }
     public function onOrderAdvanced()
     {
+        if (config('app.IS_API_BASED')) {
+            $onorders = $this->apiOnOrderAdvanced();
+        } else {
+            $onorders = DB::connection('sqlsrv3')->select("EXEC spOnOrderAdvanced ");
+        }
 
-        $onorders = DB::connection('sqlsrv3')
-            ->select("EXEC spOnOrderAdvanced ");
         return response()->json($onorders);
     }
 }

@@ -231,21 +231,24 @@ class JasperReports extends Controller
     }
 
     public function PDFDelDate($ID){
-        $UserID = Auth::user()->UserID;
-        // dd($UserID);
-        // $UserID = 28;
+        if (config('app.IS_API_BASED')) {
+            $createdBy = auth()->guard('central_api_user')->user()->erp_apiusername;
+            $response = $this->apiPDFDelDate();
+            $orderheader = $response['orderheader'];
+            $companyInfo = $response['companyInfo'];
+        } else {
+            $UserID = Auth::user()->UserID;
+            $createdBy = Auth::user()->UserName;
+            $orderheader = DB::connection('sqlsrv3')->select("EXEC [spGetOrderHeaderPrintDIMS] ?,?", array($ID, $UserID));
+            $companyInfo = DB::connection('sqlsrv3')->select("EXEC spStaticCompanyInfoHeader ?", array($ID));
+        }
 
-        $orderheader = DB::connection('sqlsrv3')->select("EXEC [spGetOrderHeaderPrintDIMS] ?,?", array($ID, $UserID));
-
-        // dd($orderheader);
         $Logo = "{{asset('images/goodfoodlogo.png')}}";
-        $companyInfo = $orderheader[0]->CustomerNumber;
         $soldTo = $orderheader[0]->SoldTo;
         $shippedTo = $orderheader[0]->ShipTo;
 
         $docNo = $orderheader[0]->DocNumber;
         $deliveryDate = $orderheader[0]->DocDate;
-        $createdBy = Auth::user()->UserName;
         $orderNumber = $orderheader[0]->DIMS_OrderNo;
 
         $currency = $orderheader[0]->strCurrency;
@@ -253,10 +256,8 @@ class JasperReports extends Controller
         $vat = $orderheader[0]->tax;
         $total = $orderheader[0]->Total;
 
-        $companyInfo = DB::connection('sqlsrv3')->select("EXEC spStaticCompanyInfoHeader ?", array($ID));
         $header = $companyInfo[0]->strHtmlHeader;
         $footer = $companyInfo[0]->strHtmlFooter;
-        // dd($companyInfo);
 
         return view('dims/printorderdelnote')->with('Logo', $Logo)->with('companyInfo', $companyInfo)->with('soldTo', $soldTo)->with('shippedTo', $shippedTo)->with('docNo', $docNo)->with('deliveryDate', $deliveryDate)->with('createdBy', $createdBy)->with('orderNumber', $orderNumber)->with('orderheader', $orderheader)->with('ID', $ID)->with('footer', $footer)->with('header', $header)->with('subTotal', $subTotal)->with('vat', $vat)->with('total', $total)->with('currency', $currency);
 

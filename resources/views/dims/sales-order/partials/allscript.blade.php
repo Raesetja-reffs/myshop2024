@@ -89,7 +89,7 @@
     // console.debug(jArrayCustomer);
     // var computerName = '<?php echo gethostname(); ?>';
     var computerName = '<?php echo php_uname('n'); ?>';
-    var byWho = '<?php echo Auth::user() ? Auth::user()->UserName : ''; ?>';
+    var byWho = '<?php echo Auth::user() ? Auth::user()->UserName : Auth::guard("central_api_user")->user() ? Auth::guard("central_api_user")->user()->username : ''; ?>';
     $(function() {
         $(document).keydown(function(e) {
             booze = $('#boozeLisence').val();
@@ -3072,7 +3072,7 @@
                         term: req.term
                     },
                     success: function(data) {
-                        console.log(data);
+                        //console.log(data);
                         response(data);
                     }
                 });
@@ -3119,7 +3119,7 @@
                         term: req.term
                     },
                     success: function(data) {
-                        console.log(data);
+                        //console.log(data);
                         response(data);
                     }
                 });
@@ -3148,7 +3148,7 @@
                         term: req.term
                     },
                     success: function(data) {
-                        console.log(data);
+                        //console.log(data);
                         response(data);
                     }
                 });
@@ -3178,7 +3178,7 @@
                         term: req.term
                     },
                     success: function(data) {
-                        console.log(data);
+                        //console.log(data);
                         response(data);
                     }
                 });
@@ -3226,7 +3226,7 @@
                         term: req.term
                     },
                     success: function(data) {
-                        console.log(data);
+                        //console.log(data);
                         response(data);
                     }
                 });
@@ -3257,7 +3257,7 @@
                         term: req.term
                     },
                     success: function(data) {
-                        console.log(data);
+                        //console.log(data);
                         response(data);
                     }
                 });
@@ -3288,7 +3288,7 @@
                         term: req.term
                     },
                     success: function(data) {
-                        console.log(data);
+                        //console.log(data);
                         response(data);
                     }
                 });
@@ -4216,7 +4216,7 @@
                 customerCode: $('#custCodeOnOrder').val(),
             },
             success: function(data) {
-                console.log(data);
+                //console.log(data);
                 getGrid(data);
             }
         });

@@ -22,6 +22,9 @@
                             @if (Auth::user())
                                 <option value="{{ Auth::user()->UserID }}">{{ Auth::user()->UserName }}</option>
                             @endif
+                            @if (Auth::guard('central_api_user')->user())
+                                <option value="{{ Auth::guard('central_api_user')->user()->id }}">{{ Auth::guard('central_api_user')->user()->username }}</option>
+                            @endif
                         </select>
                     </div>
                     <div class="col-md-2 mb-2">
