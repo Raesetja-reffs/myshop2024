@@ -84,4 +84,28 @@ trait DimsCommonTrait
     {
         return [];
     }
+
+    public function apiCustomerSpecialsCustomers(){
+        return $this->httpRequest('get', 'Get_CustomerSpecialsCustomers');
+    }
+
+    public function apiCustomerSpecialsProducts(){
+        return $this->httpRequest('get', 'Get_CustomerSpecialsProducts');
+    }
+
+    public function apiCustomerSpecialsDeals(){
+        return $this->httpRequest('get', 'Get_CustomerSpecialsDeals');
+    }
+
+    public function apiGetOverallCustomerSpecials($data){
+        return $this->httpRequest('get', 'Get_OverallCustomerSpecials', $data);
+    }
+
+    public function apiXmlCreateCustomerSpecials($data){
+        return $this->httpRequest('post', 'Post_XmlCreateCustomerSpecials', $data);
+    }
+
+    public function apiRemoveCustomerSpecial($data){
+        return $this->httpRequest('post', 'Post_RemoveCustomerSpecial', $data);
+    }
 }

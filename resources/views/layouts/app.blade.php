@@ -29,7 +29,7 @@
     <link href="{{ asset('css/contextMenu.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('css/jquery.flexdatalist.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('css/datatables.bundle.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('css/dx.material.blue.light.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('css/dx.material.dims-theme.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('css/app.css?v=' . config('app.css_version')) }}" rel="stylesheet" type="text/css" />
 
     <!--begin::Global Javascript Bundle(mandatory for all pages)-->
@@ -52,6 +52,7 @@
     <script src="{{ asset('js/dx.all.js') }}"></script>
     <script src="{{ asset('js/exceljs.min.js') }}"></script>
     <script src="{{ asset('js/select2.min.js') }}"></script>
+    <script src="{{ asset('js/jspdf.umd.min.js') }}"></script>
     <!-- end: Page level JS -->
     <script src="{{ asset('js/commonScript.js?v=' . config('app.js_version')) }}"></script>
     <script src="{{ asset('js/app.js?v=' . config('app.js_version')) }}"></script>
