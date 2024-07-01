@@ -477,6 +477,7 @@ class SalesFormFunctions extends Controller
                     'OrderId' => $orderId,
                     'XmlOrderLines' => $orderlinesrxml,
                     'XmlOrderHeaders' => $orderheaderxml,
+                    'DocumentType' => $request->get('type')
                 ]);
             } else {
                 $userid = Auth::user()->UserID;
