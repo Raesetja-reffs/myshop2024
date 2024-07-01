@@ -129,10 +129,20 @@ class JasperReports extends Controller
     public function PDFOrders($ID)
     {
         if (config('app.IS_API_BASED')) {
-            $response = $this->apiPDFOrders();
+            $createdBy = auth()->guard('central_api_user')->user()->erp_apiusername;
+            $response = $this->apiPDFOrders([
+                'OrderId' => $ID
+            ]);
+            $orderlines = $this->apiGetOrderLines([
+                'OrderId' => $ID
+            ]);
+            foreach ($orderlines as $orderline) {
+                for ($i=1; $i<=200; $i++) {
+                    $orderlines[] = $orderline;
+                }
+            }
             $orderheader = $response['orderheader'];
             $companyInfo = $response['companyInfo'];
-            $createdBy = auth()->guard('central_api_user')->user()->erp_apiusername;
         } else {
             $UserID = Auth::user()->UserID;
             $createdBy = Auth::user()->UserName;
@@ -152,11 +162,16 @@ class JasperReports extends Controller
         $subTotal = $orderheader[0]->subtotal;
         $vat = $orderheader[0]->tax;
         $total = $orderheader[0]->Total;
+        $customerPastelCode = $orderheader[0]->CustomerPastelCode;
+        $paymentTerms = $orderheader[0]->PaymentTerms;
+        $invDiscAmnt = $orderheader[0]->InvDiscAmnt;
 
         $header = $companyInfo[0]->strHtmlHeader;
         $footer = $companyInfo[0]->strHtmlFooter;
+        $strDisclaimer = $companyInfo[0]->strDisclaimer;
+        $strCompanyLogoName = $companyInfo[0]->strCompanyLogoName;
 
-        return view('dims/printorder')
+        return view('printreports/pdfInvoice')
             ->with('Logo', $Logo)
             ->with('companyInfo', $companyInfo)
             ->with('soldTo', $soldTo)
@@ -172,15 +187,29 @@ class JasperReports extends Controller
             ->with('subTotal', $subTotal)
             ->with('vat', $vat)
             ->with('total', $total)
-            ->with('currency', $currency);
+            ->with('currency', $currency)
+            ->with('strDisclaimer', $strDisclaimer)
+            ->with('strCompanyLogoName', $strCompanyLogoName)
+            ->with('orderlines', $orderlines)
+            ->with('customerPastelCode', $customerPastelCode)
+            ->with('paymentTerms', $paymentTerms)
+            ->with('invDiscAmnt', $invDiscAmnt);
     }
 
-    public function getOrderLines(Request $request){
+    public function getOrderLines(Request $request)
+    {
         $ID = $request->get('ID');
-        $orderlines = DB::connection('sqlsrv3')->select("EXEC [spGetOrderLinesPrint] ?", array($ID));
-        // dd($orderlines);
+        if (config('app.IS_API_BASED')) {
+            $orderlines = $this->apiGetOrderLines([
+                'OrderId' => $ID
+            ]);
+        } else {
+            $orderlines = DB::connection('sqlsrv3')->select("EXEC [spGetOrderLinesPrint] ?", array($ID));
+        }
+
         return response()->json($orderlines);
     }
+
     public function getOrderLinesDeliveryNote(Request $request){
         $ID = $request->get('ID');
         $orderlines = DB::connection('sqlsrv3')->select("EXEC [spGetDeliveryNoteLinesPDF] ?", array($ID));
@@ -233,7 +262,9 @@ class JasperReports extends Controller
     public function PDFDelDate($ID){
         if (config('app.IS_API_BASED')) {
             $createdBy = auth()->guard('central_api_user')->user()->erp_apiusername;
-            $response = $this->apiPDFDelDate();
+            $response = $this->apiPDFOrders([
+                'OrderId' => $ID
+            ]);
             $orderheader = $response['orderheader'];
             $companyInfo = $response['companyInfo'];
         } else {

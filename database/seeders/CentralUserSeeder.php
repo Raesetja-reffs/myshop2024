@@ -21,7 +21,7 @@ class CentralUserSeeder extends Seeder
             'company_id' => '5730aaa7-fd77-e46f-298d-e8eca042d6a9',
             'erp_user_id' => 1,
             'erp_apiurl' => 'https://linxsystems.flowgear.net/dims24/',
-            'erp_apiusername' => '',
+            'erp_apiusername' => 'Admin',
             'erp_apipassword' => '',
             'erp_apiauthtoken' => 'xKPL-wgePSBi_eQaLkxNkbFq3T39OPEm3ka7xZo3wYzPzzvTXWTjASi0ShYLyMOu8TE-OK-DtmQDeZZdMdxtxw',
             'location_id' => 1,
