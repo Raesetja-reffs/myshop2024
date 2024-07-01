@@ -136,11 +136,6 @@ class JasperReports extends Controller
             $orderlines = $this->apiGetOrderLines([
                 'OrderId' => $ID
             ]);
-            foreach ($orderlines as $orderline) {
-                for ($i=1; $i<=200; $i++) {
-                    $orderlines[] = $orderline;
-                }
-            }
             $orderheader = $response['orderheader'];
             $companyInfo = $response['companyInfo'];
         } else {
