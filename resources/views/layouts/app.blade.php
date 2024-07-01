@@ -119,6 +119,30 @@
     <!--begin::Scrolltop-->
     @include('layouts.app.scrolltop')
     <!--end::Scrolltop-->
+    <!-- Auth modal -->
+    <div class="modal fade" id="authModal" tabindex="-1" aria-labelledby="authModalLabel" aria-hidden="true" style="z-index: 99999 !important;">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-3 border-danger">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="authModalLabel">Special below margin, please authorize.</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="closeauthModal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="AuthForm">
+                        <div class="form-group">
+                            <label for="username">Username:</label>
+                            <input type="text" class="form-control" id="username" placeholder="Enter username">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password:</label>
+                            <input type="password" class="form-control" id="password" placeholder="Enter password">
+                        </div>
+                        <button type="submit" class="btn btn-danger mt-2" style="height:40px;">Authorize</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Scripts -->
     <script>
         $(document).ready(function() {

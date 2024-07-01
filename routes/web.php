@@ -259,6 +259,8 @@ Route::get('customerSpecials', [DimsCommon::class,'customerSpecials']);
 Route::get('getOverallCustomerSpecials', [DimsCommon::class,'getOverallCustomerSpecials']);
 Route::post('XmlCreateCustomerSpecials',  [DimsCommon::class,'XmlCreateCustomerSpecials']);
 Route::post('removeCustomerSpecial',[DimsCommon::class,'removeCustomerSpecial']);
+Route::post('adminAuthorize',[DimsCommon::class,'adminAuthorize']);
+
 
 //DIMS COMMON ENDS HERE HERE!!!!
 

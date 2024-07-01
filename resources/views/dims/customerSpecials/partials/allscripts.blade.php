@@ -111,7 +111,8 @@
                         },
                         valueExpr: 'ProductId',
                         displayExpr: function(item) {
-                            return item && '[' + item.PastelCode + '] ' + item.PastelDescription;
+                            return item && '[' + item.PastelCode + '] ' + item
+                            .PastelDescription;
                         },
                     },
                 },
@@ -148,7 +149,7 @@
                     dataField: "mnyMargin",
                     caption: "Min Margin",
                     allowEditing: false,
-                    // visible: false,
+                    visible: false,
                     dataType: "number",
                     format: {
                         type: "fixedPoint",
@@ -181,11 +182,14 @@
                     let lastRowIndex = dataGrid.getVisibleRows().length - 1;
 
                     $(e.cellElement).on('keydown', function(event) {
-                        if ((event.key === "Enter" || event.key === "Tab") && e.row.rowIndex === lastRowIndex) {
+                        if ((event.key === "Enter" || event.key === "Tab") && e.row
+                            .rowIndex === lastRowIndex) {
                             setTimeout(function() {
                                 dataGrid.addRow().done(function() {
-                                    let newRowIndex = dataGrid.getVisibleRows().length - 1;
-                                    dataGrid.editCell(newRowIndex, "ProductId");
+                                    let newRowIndex = dataGrid
+                                        .getVisibleRows().length - 1;
+                                    dataGrid.editCell(newRowIndex,
+                                        "ProductId");
                                 });
                             }, 100);
                         }
@@ -198,13 +202,16 @@
                     selectBoxInstance.option('onValueChanged', function(args) {
                         e.setValue(args.value);
                         // Find the corresponding product
-                        var selectedProduct = products.find(product => product.ProductId == args.value);
+                        var selectedProduct = products.find(product => product.ProductId ==
+                            args.value);
                         if (selectedProduct) {
                             var rowIndex = e.row.rowIndex;
                             gridProducts.cellValue(rowIndex, "dteFrom", formattedFrom);
                             gridProducts.cellValue(rowIndex, "dteTo", formattedTo);
-                            gridProducts.cellValue(rowIndex, "mnyCost", selectedProduct.Cost);
-                            gridProducts.cellValue(rowIndex, "mnyMargin", selectedProduct.Margin);
+                            gridProducts.cellValue(rowIndex, "mnyCost", selectedProduct
+                                .Cost);
+                            gridProducts.cellValue(rowIndex, "mnyMargin", selectedProduct
+                                .Margin);
 
                             gridProducts.editCell(rowIndex, "mnyPrice");
                         }
@@ -225,30 +232,29 @@
         // Note from Kyle - If you add to the popup, make sure you initialize the components before the popup
         const popupSpecials = $("#popupSpecials").dxPopup({
             showTitle: true,
-            title: isAddMode? 'Create New Customer Special':'Edit Customer Special',
+            title: isAddMode ? 'Create New Customer Special' : 'Edit Customer Special',
             footer: {
                 text: "Copyright © 2024 My Company",
                 showCancelButton: false,
                 showConfirmButton: false
             },
-            onHidden: function(e){
+            onHidden: function(e) {
                 inputDealName.option('value', null);
                 selectCustomers.option('value', null);
-                selectDateRange.option('value', [null,null]);
+                selectDateRange.option('value', [null, null]);
                 gridProducts.option('dataSource', []);
                 isAddMode = true;
                 isEditMode = false;
                 selectCustomers.option('disabled', !isAddMode);
                 inputDealName.option('disabled', !isAddMode);
-                
+
                 refreshPopup();
             },
-            hideOnOutsideClick: true,
+            hideOnOutsideClick: false,
             showCloseButton: true,
             width: 1200,
             height: 600,
-            toolbarItems: [
-                {
+            toolbarItems: [{
                     widget: 'dxButton',
                     toolbar: 'bottom',
                     location: 'after',
@@ -282,8 +288,9 @@
 
                             // console.log(specialLines);
 
-                            postLines(custIds, dteFrom, dteTo, specialLines, dealName, updateDeal)
-                            
+                            postLines(custIds, dteFrom, dteTo, specialLines, dealName,
+                                updateDeal)
+
                         },
                     },
                 },
@@ -315,13 +322,15 @@
                                     'mnyPrice': line.mnyPrice,
                                     'mnyCost': line.mnyCost,
                                     'mnyMargin': marginCalculator(line.mnyCost, line.mnyPrice),
+                                    'mnyMinMargin': line.mnyMargin,
                                 });
                             });
 
                             // console.log(specialLines);
 
-                            postLines(custIds, dteFrom, dteTo, specialLines, dealName, updateDeal)
-                            
+                            postLines(custIds, dteFrom, dteTo, specialLines, dealName,
+                                updateDeal)
+
                         },
                     },
                 }
@@ -480,7 +489,7 @@
                     dataField: "PastelCode",
                     caption: "Item Code",
                     allowEditing: false,
-                },{
+                }, {
                     dataField: "ProductId",
                     caption: "ProductId",
                     allowEditing: false,
@@ -535,6 +544,17 @@
                 {
                     dataField: "mnyMargin",
                     caption: "Margin",
+                    dataType: "number",
+                    format: {
+                        type: "fixedPoint",
+                        precision: 2
+                    },
+                    allowEditing: false,
+                },
+                {
+                    dataField: "mnyMinMargin",
+                    caption: "Min Margin",
+                    visible: false,
                     dataType: "number",
                     format: {
                         type: "fixedPoint",
@@ -611,7 +631,8 @@
                         showClearButton: true,
                         width: 250,
                         displayExpr: function(item) {
-                            return item && '[' + item.CustomerPastelCode + '] ' + item.StoreName;
+                            return item && '[' + item.CustomerPastelCode + '] ' + item
+                                .StoreName;
                         },
                         onValueChanged: function(e) {
                             customerId = e.value;
@@ -632,7 +653,8 @@
                         showClearButton: true,
                         width: 250,
                         displayExpr: function(item) {
-                            return item && '[' + item.PastelCode + '] ' + item.PastelDescription;
+                            return item && '[' + item.PastelCode + '] ' + item
+                                .PastelDescription;
                         },
                         onValueChanged: function(e) {
                             productId = e.value;
@@ -757,7 +779,8 @@
 
         // copies an existing special to create for a new customer
         function copyCustomerSpecial(groupData) {
-            selectDateRange.option('value', [new Date(groupData[0]['dteFrom']), new Date(groupData[0]['dteTo'])]);
+            selectDateRange.option('value', [new Date(groupData[0]['dteFrom']), new Date(groupData[0][
+                'dteTo'])]);
             inputDealName.option('value', groupData[0]['strDealName']);
 
             var lines = groupData.map(function(item) {
@@ -782,13 +805,15 @@
 
         // copies an existing special to create for a new customer
         function editCustomerSpecial(groupData) {
-            selectDateRange.option('value', [new Date(groupData[0]['dteFrom']), new Date(groupData[0]['dteTo'])]);
+            selectDateRange.option('value', [new Date(groupData[0]['dteFrom']), new Date(groupData[0][
+                'dteTo'])]);
             inputDealName.option('value', groupData[0]['strDealName']);
 
-            var custDets = customers.find(customer => customer.CustomerPastelCode == groupData[0]['CustomerPastelCode']);
+            var custDets = customers.find(customer => customer.CustomerPastelCode == groupData[0][
+                'CustomerPastelCode'
+            ]);
 
             selectCustomers.option('value', [parseInt(custDets.CustomerId)]);
-
 
             var lines = groupData.map(function(item) {
                 return {
@@ -797,9 +822,9 @@
                     mnyCost: item.mnyCost,
                     dteFrom: item.dteFrom,
                     dteTo: item.dteTo,
+                    mnyMargin: item.mnyMinMargin,
                 };
             });
-
             gridProducts.option('dataSource', lines);
             gridProducts.refresh();
 
@@ -807,7 +832,7 @@
             isEditMode = true;
 
             checkDeal();
-            
+
             selectCustomers.option('disabled', !isAddMode);
             inputDealName.option('disabled', !isAddMode);
             refreshPopup();
@@ -841,13 +866,70 @@
         function checkMarginsAuth(lines) {
             let requireAuth = 0;
             $.each(lines, function(index, row) {
-                console.log('Margin: ' + row.mnyMargin + ' MinMargin: '+ row.mnyMinMargin)
+                console.log('Margin: ' + row.mnyMargin + ' MinMargin: ' + row.mnyMinMargin)
                 if (row.mnyMargin < row.mnyMinMargin) {
                     requireAuth = 1;
                 }
             });
 
             return requireAuth;
+        };
+
+        function authorize(userRole) {
+            return new Promise(function(resolve, reject) {
+
+                if (userRole !== "Admin") {
+                    // Show the login modal
+                    $('#authModal').modal('show');
+
+                    // Handle login form submission
+                    $('#AuthForm').submit(function(e) {
+                        e.preventDefault(); // Prevent form submission
+
+                        // Disable the submit button to prevent double submission
+                        var submitButton = $(this).find('button[type="submit"]');
+                        submitButton.prop('disabled', true);
+
+                        // Get entered username and password
+                        var UserName = $('#username').val();
+                        var Password = $('#password').val();
+
+                        // Perform AJAX request to verify credentials
+                        $.ajax({
+                            url: '{!! url('/adminAuthorize') !!}',
+                            type: "POST",
+                            data: {
+                                userName: UserName,
+                                userPassword: Password,
+                                requiredAuth: 'Customer Special Margin',
+                            },
+                            success: function(data) {
+                                if ($.isEmptyObject(data)) {
+                                    alert(
+                                        "Wrong Credentials Or You don't have permissions, Please Try Again Or Talk to your manager!");
+                                    $('#authModal').modal('hide');
+                                    $('#username').val('');
+                                    $('#password').val('');
+                                    resolve(0); // Resolve with 0
+                                } else {
+                                    $('#authModal').modal('hide');
+                                    $('#username').val('');
+                                    $('#password').val('');
+                                    resolve(1); // Resolve with 1
+                                }
+                                submitButton.prop('disabled', false);
+                            },
+                            error: function() {
+                                reject(new Error(
+                                "AJAX request failed")); // Reject with an error
+                                submitButton.prop('disabled', false);
+                            }
+                        });
+                    });
+                } else {
+                    resolve(approved); // Resolve with 0
+                }
+            });
         };
 
         // calculates margin
@@ -865,44 +947,89 @@
         function postLines(custIds, dteFrom, dteTo, lines, dealName, updateDeal) {
             var reqAuth = checkMarginsAuth(lines);
 
-            alert(reqAuth);
-            
-            // $.ajax({
-            //     url: '{!! url('/XmlCreateCustomerSpecials') !!}',
-            //     type: "POST",
-            //     data: {
-            //         lines: lines,
-            //         CustomerIds: custIds,
-            //         dteFrom: dteFrom,
-            //         dteTo: dteTo,
-            //         DealName: dealName,
-            //         updateDeal: updateDeal,
-            //     },
-            //     success: function(data) {
-            //         console.log(data);
-            //         if (data.result != "SUCCESS") {
-            //             // alert(data.result);
-            //             DevExpress.ui.notify({
-            //                 message: data.result,
-            //                 type: 'error', // 'info', 'error', 'warning'
-            //                 displayTime: 3500,
-            //             });
+            var userRole = "Not Admin";
 
-            //         } else {
-            //             DevExpress.ui.notify({
-            //                 message: data.result,
-            //                 type: 'success', // 'info', 'error', 'warning'
-            //                 displayTime: 3500,
-            //             });
+            if (reqAuth != 1) {
+                $.ajax({
+                    url: '{!! url('/XmlCreateCustomerSpecials') !!}',
+                    type: "POST",
+                    data: {
+                        lines: lines,
+                        CustomerIds: custIds,
+                        dteFrom: dteFrom,
+                        dteTo: dteTo,
+                        DealName: dealName,
+                        updateDeal: updateDeal,
+                    },
+                    success: function(data) {
+                        console.log(data);
+                        if (data.result != "SUCCESS") {
+                            // alert(data.result);
+                            DevExpress.ui.notify({
+                                message: data.result,
+                                type: 'error', // 'info', 'error', 'warning'
+                                displayTime: 3500,
+                            });
 
-            //             popupSpecials.hide();
+                        } else {
+                            DevExpress.ui.notify({
+                                message: data.result,
+                                type: 'success', // 'info', 'error', 'warning'
+                                displayTime: 3500,
+                            });
 
-            //             getOverallCustomerSpecials();
-            //         }
+                            popupSpecials.hide();
+
+                            getOverallCustomerSpecials();
+                        }
 
 
-            //     }
-            // });
+                    }
+                });
+            } else {
+                authorize(userRole).then(function(approved) {
+                    if (approved == 1) {
+                        $.ajax({
+                            url: '{!! url('/XmlCreateCustomerSpecials') !!}',
+                            type: "POST",
+                            data: {
+                                lines: lines,
+                                CustomerIds: custIds,
+                                dteFrom: dteFrom,
+                                dteTo: dteTo,
+                                DealName: dealName,
+                                updateDeal: updateDeal,
+                            },
+                            success: function(data) {
+                                console.log(data);
+                                if (data.result != "SUCCESS") {
+                                    // alert(data.result);
+                                    DevExpress.ui.notify({
+                                        message: data.result,
+                                        type: 'error', // 'info', 'error', 'warning'
+                                        displayTime: 3500,
+                                    });
+
+                                } else {
+                                    DevExpress.ui.notify({
+                                        message: data.result,
+                                        type: 'success', // 'info', 'error', 'warning'
+                                        displayTime: 3500,
+                                    });
+
+                                    popupSpecials.hide();
+
+                                    getOverallCustomerSpecials();
+                                }
+                            }
+                        });
+                    }
+                }).catch(function(error) {
+                    console.error("Error:", error);
+                });
+            }
+
+
         };
 
     });

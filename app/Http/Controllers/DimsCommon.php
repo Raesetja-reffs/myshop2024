@@ -2288,6 +2288,25 @@ class DimsCommon extends Controller
         return  response()->json($CustomerSpecial);
     }
 
+    public function adminAuthorize(Request $request){
+        $userName = $request->get('userName');
+        $userPassword = $request->get('userPassword');
+        $requiredAuth = $request->get('requiredAuth');
+        $UserId = Auth::user()->UserID;
+
+        if (config('app.IS_API_BASED')) {
+            $activeUser = $this->apiAdminAuthorize([
+                'userName' => $userName,
+                'userPassword' => $userPassword,
+                'requiredAuth' => $requiredAuth,
+            ]);
+        }else{
+            $activeUser= DB::connection('sqlsrv3')->select("EXEC sp_API_R_AdminAuthorize '$userName', '$userPassword', $UserId, '$requiredAuth'");
+        }
+        
+        return  response()->json($activeUser);
+    }
+
     // public function groupSpecialsOverall(){
     //     $groups =  DB::connection('sqlsrv3')->select("EXEC spGetCustomerGroups 'Select' ");
 

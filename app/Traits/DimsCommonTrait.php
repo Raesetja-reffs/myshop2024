@@ -108,4 +108,8 @@ trait DimsCommonTrait
     public function apiRemoveCustomerSpecial($data){
         return $this->httpRequest('post', 'Post_RemoveCustomerSpecial', $data);
     }
+
+    public function apiAdminAuthorize($data){
+        return $this->httpRequest('post', 'Post_AdminAuthorize', $data);
+    }
 }
