@@ -2,77 +2,25 @@
 
 namespace App\Traits;
 
-use App\Traits\ApiTrait;
+use App\Traits\UtilityTrait;
 
 trait JasperReportsTrait
 {
-    use ApiTrait;
+    use UtilityTrait;
 
-    public function apiPDFOrders()
+    public function apiPDFOrders($data)
     {
+        $companyHeader = $this->httpRequest('post', 'Pdf_RetrieveOrderHeaderPrint', $data);
+        $companyInfo = $this->httpRequest('post', 'Pdf_StaticCompanyInfoHeader', $data);
+
         return [
-            'orderheader' => [
-                (object) [
-                    "CustomerNumber" => "000017",
-                    "SoldTo" => "000017Customer
-                        Del Address 1
-                        Del Address 2",
-                    "ShipTo" => "000017Customer
-                        Del Address 1
-                        Del Address 2",
-                    "DocNumber" => "366724",
-                    "DocDate" => "2020-03-26 00:00:00.000",
-                    "DIMS_OrderNo" => "Mariena",
-                    "strCurrency" => "R",
-                    "subtotal" => ".00",
-                    "Total" => ".00",
-                    "tax" => ".00"
-                ]
-            ],
-            'companyInfo' => [
-                (object) [
-                    "intAutoReportID" => "1",
-                    "strHtmlHeader" => "",
-                    "strFormName" => "HeaderFooter",
-                    "dtm" => "2023-03-10 15:24:30.800",
-                    "intOwnerID" => "1",
-                    "strHtmlFooter" => "<h5>Footer</h5>"
-                ]
-            ],
+            'orderheader' => $this->convertToCollectionObject($companyHeader),
+            'companyInfo' => $this->convertToCollectionObject($companyInfo),
         ];
     }
 
-    public function apiPDFDelDate()
+    public function apiGetOrderLines($data)
     {
-        return [
-            'orderheader' => [
-                (object) [
-                    "CustomerNumber" => "000017",
-                    "SoldTo" => "000017Customer
-                        Del Address 1
-                        Del Address 2",
-                    "ShipTo" => "000017Customer
-                        Del Address 1
-                        Del Address 2",
-                    "DocNumber" => "366724",
-                    "DocDate" => "2020-03-26 00:00:00.000",
-                    "DIMS_OrderNo" => "Mariena",
-                    "strCurrency" => "R",
-                    "subtotal" => ".00",
-                    "Total" => ".00",
-                    "tax" => ".00"
-                ]
-            ],
-            'companyInfo' => [
-                (object) [
-                    "intAutoReportID" => "1",
-                    "strHtmlHeader" => "",
-                    "strFormName" => "HeaderFooter",
-                    "dtm" => "2023-03-10 15:24:30.800",
-                    "intOwnerID" => "1",
-                    "strHtmlFooter" => "<h5>Footer</h5>"
-                ]
-            ],
-        ];
+        return $this->convertToCollectionObject($this->httpRequest('post', 'Pdf_RetrieveLines', $data));
     }
 }
