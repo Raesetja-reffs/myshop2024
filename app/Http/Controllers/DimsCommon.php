@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\SalesForm;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use \Cache;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Middleware\AuthenticateUsersAndCentralUser;
 use App\Traits\DimsCommonTrait;
@@ -1482,7 +1482,6 @@ class DimsCommon extends Controller
         return response()->json($id);
 
     }
-    
     public function XmlBulkEditingCustomerSpecials(Request $request)
     {
 
@@ -1521,24 +1520,24 @@ class DimsCommon extends Controller
         $orderDetails = $request->get('orderDetails');
         $date = (new \DateTime($request->get('contractDateFrom')))->format('Y-m-d');
         $dateTo = (new \DateTime($request->get('contractDateTo')))->format('Y-m-d');
-       // $sessionUserName = Auth::user()->UserName;
+        $dealName = $request->get('dealName');
+        // $sessionUserName = Auth::user()->UserName;
         $UserID = Auth::user()->UserID;
         $UserName = Auth::user()->UserName;
         $statement = 'Insert';
+
         $id = DB::connection('sqlsrv3')->table('tblGroupSpecialsHeader')->insertGetId(
-            ['GroupId' => $customerCode, 'DateFrom' => $date, 'DateTo' => $dateTo]
+            ['GroupId' => $customerCode, 'DateFrom' => $date, 'DateTo' => $dateTo, 'strDealName' => $dealName]
         );
+
         foreach ($orderDetails as $value) {
             $innerDateFrom = (new \DateTime($value['dateFrom']))->format('Y-m-d');
             $innerDateTo = (new \DateTime($value['dateTo']))->format('Y-m-d');
-          DB::connection('sqlsrv3')
-                ->statement("EXEC spCRUDGroupSpecials ".$customerCode.",'".$value['productCode']."',
-                '".$innerDateFrom."','".$innerDateTo."',".$value['price'].",".$value['cost_'].",".$value['gp_'].",".$id.",".$UserID.",'".$UserName."','".$statement."'");
 
+            DB::connection('sqlsrv3')->statement("EXEC spCRUDGroupSpecials ".$customerCode.",'".$value['productCode']."','".$innerDateFrom."','".$innerDateTo."',".$value['price'].",".$value['cost_'].",".$value['gp_'].",".$id.",".$UserID.",'".$UserName."','".$statement."'");
         }
 
         return response()->json($id);
-
     }
     public function createOverallSpecials(Request $request)
     {
@@ -2313,7 +2312,7 @@ class DimsCommon extends Controller
         }else{
             DB::connection('sqlsrv3')->select("EXEC sp_API_D_CustomerSpecialLine $CustomerSpecial");
         }
-        
+
         return  response()->json($CustomerSpecial);
     }
 
@@ -2332,7 +2331,7 @@ class DimsCommon extends Controller
             $UserId = Auth::user()->UserID;
             $activeUser= DB::connection('sqlsrv3')->select("EXEC sp_API_R_AdminAuthorize '$userName', '$userPassword', $UserId, '$requiredAuth'");
         }
-        
+
         return  response()->json($activeUser);
     }
 
