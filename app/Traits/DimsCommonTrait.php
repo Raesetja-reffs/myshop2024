@@ -102,7 +102,7 @@ trait DimsCommonTrait
     }
 
     public function apiXmlCreateCustomerSpecials($data){
-        return $this->httpRequest('post', 'Post_XmlCreateCustomerSpecials', $data);
+        return $this->convertToCollectionObject($this->httpRequest('post', 'Post_XmlCreateCustomerSpecials', $data));
     }
 
     public function apiRemoveCustomerSpecial($data){
