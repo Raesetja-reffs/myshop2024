@@ -219,52 +219,81 @@ class DimsCommon extends Controller
     public function customerflexgrid()
     {
         if (config('app.IS_API_BASED')) {
-            $this->apiCustomerflexgrid();
+            $response = $this->apiCustomerflexgrid();
+            $customers = $response['customers'];
+            $routes = $response['routes'];
+            $groups = $response['groups'];
+            $salesmen = $response['salesmen'];
+            $users = $response['users'];
         } else {
-            $queryCustomers = DB::connection('sqlsrv3')->table("viewCustomerGrid" )->select('*')->distinct()->get();
-            $queryRoutes = DB::connection('sqlsrv3')->table("tblRoutes")->select('Route','RouteId')->distinct()->get();
-            $queryGroups = DB::connection('sqlsrv3')->table("tblGroups")->select('GroupId','GroupName')->distinct()->get();
-            $querySalesMen = DB::connection('sqlsrv3')->table("tblDIMSUSERS")->select('UserName', 'strSalesmanCode')->distinct()->get();
-            $queryUsers = DB::connection('sqlsrv3')->table("tblDIMSUSERS")->select('UserName', 'UserID')->distinct()->get();
+            $customers = DB::connection('sqlsrv3')->select("EXEC sp_API_R_CustomersGridCustomers");
+            $routes = DB::connection('sqlsrv3')->select("EXEC sp_API_R_CustomersGridRoutes");
+            $groups = DB::connection('sqlsrv3')->select("EXEC sp_API_R_CustomersGridGroups");
+            $salesmen = DB::connection('sqlsrv3')->select("EXEC sp_API_R_CustomersGridSalesmen");
+            $users = DB::connection('sqlsrv3')->select("EXEC sp_API_R_CustomersGridUsers");
         }
 
-        return view('dims/customergridwithflex')->with('routes',$queryCustomers)
-            ->with('routesonly', $queryRoutes)
-            ->with('groups',$queryGroups)
-            ->with('salesmen',$querySalesMen)
-            ->with('users',$queryUsers);
+        return view('dims.customers.index')->with('customers',$customers)
+            ->with('routes', $routes)
+            ->with('groups',$groups)
+            ->with('salesmen',$salesmen)
+            ->with('users',$users);
     }
 
     public function updateCustomerGrid(Request $request){
+        $CustomerId = $request->get('CustomerId');
+        $Routeid = $request->get('Routeid');
+        $Email = $request->get('Email');
+        $ContactPerson = $request->get('ContactPerson');
+        $ContactTel = $request->get('ContactTel');
+        $GroupId = $request->get('GroupId');
+        $SalesAnalysisCode = $request->get('SalesAnalysisCode');
+        $DeliverySequence = $request->get('DeliverySequence');
+        $DocPrintOrEmail = $request->get('DocPrintOrEmail');
+        $Discount = $request->get('Discount');
+        $CreditLimit = $request->get('CreditLimit');
+        $UniqueDelivery = $request->get('UniqueDelivery');
+        $PriorityCustomer = $request->get('PriorityCustomer');
+        $CustomerOnHold = $request->get('CustomerOnHold');
+        $MarkupPercentage = $request->get('MarkupPercentage');
+        $UserId = $request->get('UserId');
+        $DeliveryAddress1 = $request->get('DeliveryAddress1');
+        $DeliveryAddress2 = $request->get('DeliveryAddress2');
+        $DeliveryAddress3 = $request->get('DeliveryAddress3');
+        $DeliveryAddress4 = $request->get('DeliveryAddress4');
+        $DeliveryAddress5 = $request->get('DeliveryAddress5');
 
-        $Userid = Auth::user()->UserID;
-        $User= Auth::user()->UserName;
-        $customerid = $request->get('customerid');
-        $route = $request->get('route');
-        $email= $request->get('email');
-        $contactperson = $request->get('contactperson');
-        $contactno  = $request->get('contactno');
-        $groupname = $request->get('groupname');
-        $salesrep = $request->get('salesrep');
-        $deliveryseq = $request->get('deliveryseq');
-        $receivesemail = $request->get('receivesemail');
-        $uniquedel = $request->get('uniquedel');
-        $priocust = $request->get('priocust');
-        $onhold = $request->get('onhold');
-        $markupperc = $request->get('markupperc');
-		$selecteduser = $request->get('selecteduser');
-		$deladd1 = $request->get('deladd1');
-		$deladd2 = $request->get('deladd2');
-		$deladd3 = $request->get('deladd3');
-		$deladd4 = $request->get('deladd4');
-		$deladd5 = $request->get('deladd5');
+        if (config('app.IS_API_BASED')) {
+            $update = $this->apiUpdateCustomerGrid([
+                'CustomerId' => $CustomerId,
+                'Routeid' => $Routeid,
+                'Email' => $Email,
+                'ContactPerson' => $ContactPerson,
+                'ContactTel' => $ContactTel,
+                'GroupId' => $GroupId,
+                'SalesAnalysisCode' => $SalesAnalysisCode,
+                'DeliverySequence' => $DeliverySequence,
+                'DocPrintOrEmail' => $DocPrintOrEmail,
+                'Discount' => $Discount,
+                'CreditLimit' => $CreditLimit,
+                'UniqueDelivery' => $UniqueDelivery,
+                'PriorityCustomer' => $PriorityCustomer,
+                'CustomerOnHold' => $CustomerOnHold,
+                'MarkupPercentage' => $MarkupPercentage,
+                'UserId' => $UserId,
+                'DeliveryAddress1' => $DeliveryAddress1,
+                'DeliveryAddress2' => $DeliveryAddress2,
+                'DeliveryAddress3' => $DeliveryAddress3,
+                'DeliveryAddress4' => $DeliveryAddress4,
+                'DeliveryAddress5' => $DeliveryAddress5,
+            ]);
+        }else{
+            //dd("exec sp_API_U_CustomerDetails $CustomerId, $Routeid, '$Email', '$ContactPerson', '$ContactTel', $GroupId, $SalesAnalysisCode, $DeliverySequence, $DocPrintOrEmail, $Discount, $CreditLimit, $UniqueDelivery, $PriorityCustomer, $CustomerOnHold, $MarkupPercentage, $UserId, '$DeliveryAddress1', '$DeliveryAddress2', '$DeliveryAddress3', '$DeliveryAddress4', '$DeliveryAddress5'");
 
+            $update = DB::connection('sqlsrv3')->statement("EXEC sp_API_U_CustomerDetails '$CustomerId', '$Routeid', '$Email', '$ContactPerson', '$ContactTel', $GroupId, '$SalesAnalysisCode', '$DeliverySequence', '$DocPrintOrEmail', '$Discount', '$CreditLimit', '$UniqueDelivery', '$PriorityCustomer', '$CustomerOnHold', '$MarkupPercentage', '$UserId', '$DeliveryAddress1', '$DeliveryAddress2', '$DeliveryAddress3', '$DeliveryAddress4', '$DeliveryAddress5'");
+        }
 
-        DB::connection('sqlsrv3')
-        ->statement('exec spUpdateCustomerGrid ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?',
-        array($Userid,$User,$customerid,$route,$email,$contactperson,$contactno
-    ,$groupname,$salesrep,$deliveryseq,$receivesemail,$uniquedel,$priocust,$onhold,$markupperc,
-	$selecteduser,$deladd1,$deladd2,$deladd3,$deladd4,$deladd5));
+        return response()->json($update);
 
     }
     public function verifyAuthOnAdmin(Request $request)

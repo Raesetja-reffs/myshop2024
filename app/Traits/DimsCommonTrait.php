@@ -82,7 +82,23 @@ trait DimsCommonTrait
 
     public function apiCustomerflexgrid()
     {
-        return [];
+        $customers = $this->httpRequest('post', 'Post_CustomersGridCustomers');
+        $routes = $this->httpRequest('post', 'Post_CustomersGridRoutes');
+        $groups = $this->httpRequest('post', 'Post_CustomersGridGroups');
+        $salesmen = $this->httpRequest('post', 'Post_CustomersGridSalesmen');
+        $users = $this->httpRequest('post', 'Post_CustomersGridUsers');
+
+        return [
+            'customers' => $this->convertToCollectionObject($customers),
+            'routes' => $this->convertToCollectionObject($routes),
+            'groups' => $this->convertToCollectionObject($groups),
+            'salesmen' => $this->convertToCollectionObject($salesmen),
+            'users' => $this->convertToCollectionObject($users),
+        ];
+    }
+
+    public function apiUpdateCustomerGrid(){
+        return $this->httpRequest('post', 'Post_UpdateCustomerGrid');
     }
 
     public function apiCustomerSpecialsCustomers(){
