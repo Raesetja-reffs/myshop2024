@@ -219,52 +219,81 @@ class DimsCommon extends Controller
     public function customerflexgrid()
     {
         if (config('app.IS_API_BASED')) {
-            $this->apiCustomerflexgrid();
+            $response = $this->apiCustomerflexgrid();
+            $customers = $response['customers'];
+            $routes = $response['routes'];
+            $groups = $response['groups'];
+            $salesmen = $response['salesmen'];
+            $users = $response['users'];
         } else {
-            $queryCustomers = DB::connection('sqlsrv3')->table("viewCustomerGrid" )->select('*')->distinct()->get();
-            $queryRoutes = DB::connection('sqlsrv3')->table("tblRoutes")->select('Route','RouteId')->distinct()->get();
-            $queryGroups = DB::connection('sqlsrv3')->table("tblGroups")->select('GroupId','GroupName')->distinct()->get();
-            $querySalesMen = DB::connection('sqlsrv3')->table("tblDIMSUSERS")->select('UserName', 'strSalesmanCode')->distinct()->get();
-            $queryUsers = DB::connection('sqlsrv3')->table("tblDIMSUSERS")->select('UserName', 'UserID')->distinct()->get();
+            $customers = DB::connection('sqlsrv3')->select("EXEC sp_API_R_CustomersGridCustomers");
+            $routes = DB::connection('sqlsrv3')->select("EXEC sp_API_R_CustomersGridRoutes");
+            $groups = DB::connection('sqlsrv3')->select("EXEC sp_API_R_CustomersGridGroups");
+            $salesmen = DB::connection('sqlsrv3')->select("EXEC sp_API_R_CustomersGridSalesmen");
+            $users = DB::connection('sqlsrv3')->select("EXEC sp_API_R_CustomersGridUsers");
         }
 
-        return view('dims/customergridwithflex')->with('routes',$queryCustomers)
-            ->with('routesonly', $queryRoutes)
-            ->with('groups',$queryGroups)
-            ->with('salesmen',$querySalesMen)
-            ->with('users',$queryUsers);
+        return view('dims.customers.index')->with('customers',$customers)
+            ->with('routes', $routes)
+            ->with('groups',$groups)
+            ->with('salesmen',$salesmen)
+            ->with('users',$users);
     }
 
     public function updateCustomerGrid(Request $request){
+        $CustomerId = $request->get('CustomerId');
+        $Routeid = $request->get('Routeid');
+        $Email = $request->get('Email');
+        $ContactPerson = $request->get('ContactPerson');
+        $ContactTel = $request->get('ContactTel');
+        $GroupId = $request->get('GroupId');
+        $SalesAnalysisCode = $request->get('SalesAnalysisCode');
+        $DeliverySequence = $request->get('DeliverySequence');
+        $DocPrintOrEmail = $request->get('DocPrintOrEmail');
+        $Discount = $request->get('Discount');
+        $CreditLimit = $request->get('CreditLimit');
+        $UniqueDelivery = $request->get('UniqueDelivery');
+        $PriorityCustomer = $request->get('PriorityCustomer');
+        $CustomerOnHold = $request->get('CustomerOnHold');
+        $MarkupPercentage = $request->get('MarkupPercentage');
+        $UserId = $request->get('UserId');
+        $DeliveryAddress1 = $request->get('DeliveryAddress1');
+        $DeliveryAddress2 = $request->get('DeliveryAddress2');
+        $DeliveryAddress3 = $request->get('DeliveryAddress3');
+        $DeliveryAddress4 = $request->get('DeliveryAddress4');
+        $DeliveryAddress5 = $request->get('DeliveryAddress5');
 
-        $Userid = Auth::user()->UserID;
-        $User= Auth::user()->UserName;
-        $customerid = $request->get('customerid');
-        $route = $request->get('route');
-        $email= $request->get('email');
-        $contactperson = $request->get('contactperson');
-        $contactno  = $request->get('contactno');
-        $groupname = $request->get('groupname');
-        $salesrep = $request->get('salesrep');
-        $deliveryseq = $request->get('deliveryseq');
-        $receivesemail = $request->get('receivesemail');
-        $uniquedel = $request->get('uniquedel');
-        $priocust = $request->get('priocust');
-        $onhold = $request->get('onhold');
-        $markupperc = $request->get('markupperc');
-		$selecteduser = $request->get('selecteduser');
-		$deladd1 = $request->get('deladd1');
-		$deladd2 = $request->get('deladd2');
-		$deladd3 = $request->get('deladd3');
-		$deladd4 = $request->get('deladd4');
-		$deladd5 = $request->get('deladd5');
+        if (config('app.IS_API_BASED')) {
+            $update = $this->apiUpdateCustomerGrid([
+                'CustomerId' => $CustomerId,
+                'Routeid' => $Routeid,
+                'Email' => $Email,
+                'ContactPerson' => $ContactPerson,
+                'ContactTel' => $ContactTel,
+                'GroupId' => $GroupId,
+                'SalesAnalysisCode' => $SalesAnalysisCode,
+                'DeliverySequence' => $DeliverySequence,
+                'DocPrintOrEmail' => $DocPrintOrEmail,
+                'Discount' => $Discount,
+                'CreditLimit' => $CreditLimit,
+                'UniqueDelivery' => $UniqueDelivery,
+                'PriorityCustomer' => $PriorityCustomer,
+                'CustomerOnHold' => $CustomerOnHold,
+                'MarkupPercentage' => $MarkupPercentage,
+                'UserId' => $UserId,
+                'DeliveryAddress1' => $DeliveryAddress1,
+                'DeliveryAddress2' => $DeliveryAddress2,
+                'DeliveryAddress3' => $DeliveryAddress3,
+                'DeliveryAddress4' => $DeliveryAddress4,
+                'DeliveryAddress5' => $DeliveryAddress5,
+            ]);
+        }else{
+            //dd("exec sp_API_U_CustomerDetails $CustomerId, $Routeid, '$Email', '$ContactPerson', '$ContactTel', $GroupId, $SalesAnalysisCode, $DeliverySequence, $DocPrintOrEmail, $Discount, $CreditLimit, $UniqueDelivery, $PriorityCustomer, $CustomerOnHold, $MarkupPercentage, $UserId, '$DeliveryAddress1', '$DeliveryAddress2', '$DeliveryAddress3', '$DeliveryAddress4', '$DeliveryAddress5'");
 
+            $update = DB::connection('sqlsrv3')->statement("EXEC sp_API_U_CustomerDetails '$CustomerId', '$Routeid', '$Email', '$ContactPerson', '$ContactTel', $GroupId, '$SalesAnalysisCode', '$DeliverySequence', '$DocPrintOrEmail', '$Discount', '$CreditLimit', '$UniqueDelivery', '$PriorityCustomer', '$CustomerOnHold', '$MarkupPercentage', '$UserId', '$DeliveryAddress1', '$DeliveryAddress2', '$DeliveryAddress3', '$DeliveryAddress4', '$DeliveryAddress5'");
+        }
 
-        DB::connection('sqlsrv3')
-        ->statement('exec spUpdateCustomerGrid ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?',
-        array($Userid,$User,$customerid,$route,$email,$contactperson,$contactno
-    ,$groupname,$salesrep,$deliveryseq,$receivesemail,$uniquedel,$priocust,$onhold,$markupperc,
-	$selecteduser,$deladd1,$deladd2,$deladd3,$deladd4,$deladd5));
+        return response()->json($update);
 
     }
     public function verifyAuthOnAdmin(Request $request)
@@ -1453,23 +1482,6 @@ class DimsCommon extends Controller
         return response()->json($id);
 
     }
-    public function XmlCreateCustomerSpecials(Request $request)
-    {
-        $lines = $request->get('lines');
-        $XML = $this->toxml($lines, "xml", array("result"));
-        $UserId = Auth::user()->UserID;
-        $CustomerIds = $request->get('CustomerIds');
-        $dteFrom = (new \DateTime($request->get('dteFrom')))->format('Y-m-d');
-        $dteTo = (new \DateTime($request->get('dteTo')))->format('Y-m-d');
-        $DealName = $request->get('DealName');
-
-        // dd("'$XML', $UserId, '$CustomerIds', '$dteFrom', '$dteTo', '$DealName'");
-
-        $post = DB::connection('sqlsrv3')->select("EXEC sp_CU_XMLCustomerSpecials '$XML', $UserId, '$CustomerIds', '$dteFrom', '$dteTo', '$DealName'");
-
-        return response()->json($post);
-
-    }
     public function XmlBulkEditingCustomerSpecials(Request $request)
     {
 
@@ -1699,14 +1711,6 @@ class DimsCommon extends Controller
             return  response()->json(1);
     }
 
-    public function removeCustomerSpecial(Request $request)
-    {
-        $itemCode = $request->get('removeSpecial');
-        DB::connection('sqlsrv3')->table('tblCustomerSpecials')
-            ->where('CustomerSpecial',$itemCode)
-            ->delete();
-        return  response()->json($itemCode);
-    }
     public function removeGroupSpecial(Request $request)
     {
         $itemCode = $request->get('removeSpecial');
@@ -2229,13 +2233,21 @@ class DimsCommon extends Controller
     # ADDED BY KYLE 2024/01/08
 
     public function customerSpecials(){
-        $customers =DB::connection('sqlsrv3')->table("vwTestTblCustomers" )->select('CustomerId','StoreName','CustomerPastelCode','CreditLimit','BalanceDue','UserField5','Email','Routeid','Discount','OtherImportantNotes','strRoute')->where('StatusId',1)->orderBy('CustomerPastelCode','ASC')->get();
+        if (config('app.IS_API_BASED')) {
+            $customers = $this->apiCustomerSpecialsCustomers();
+            $products = $this->apiCustomerSpecialsProducts();
+            $deals = $this->apiCustomerSpecialsDeals();
 
-        $products =DB::connection('sqlsrv3')->table("viewActiveProductWithVat" )->select('ProductId','PastelCode','PastelDescription','UnitSize','Tax','Cost','QtyInStock','Margin','Alcohol','Available','PurchOrder')->orderBy('PastelDescription','ASC')->distinct()->get();
+        }else{
+            $customers = DB::connection('sqlsrv3')->select("EXEC sp_API_R_CustomerSpecialsCustomers");
+            $products = DB::connection('sqlsrv3')->select("EXEC sp_API_R_CustomerSpecialsProducts");
+            $deals = DB::connection('sqlsrv3')->select("EXEC sp_API_R_CustomerSpecialsDeals");
+        }
 
-        return view('specials.customerSpecials')
+        return view('dims.customerSpecials.index')
             ->with('customers', $customers)
-            ->with('products', $products);
+            ->with('products', $products)
+            ->with('deals', $deals);
     }
 
     public function getOverallCustomerSpecials(Request $request){
@@ -2246,54 +2258,103 @@ class DimsCommon extends Controller
         $dealName = $request->get('dealName');
 
         // dd("EXEC spGridMassCustomerSpecialDateFilter '$dateFrom','$dateTo','$marginless','$margingreater','$dealName'");
-
-        $massData=  DB::connection('sqlsrv3')->select("EXEC sp_R_FilteredCustomerSpecials '$dateFrom','$dateTo','$customerId','$productId','$dealName'");
-
-        return response()->json($massData);
-    }
-
-    public function updateCustomerSpecial(Request $request){
-        $specialLineId = $request->get('specialLineId');
-        $price = $request->get('price');
-        $dateFrom = $request->get('dateFrom');
-        $dateTo = $request->get('dateTo');
-
-        $result =  DB::connection('sqlsrv3')->select("EXEC spUpdateCustomerSpecial $specialLineId, $price,'$dateFrom','$dateTo'");
-
-        return response()->json($result);
-    }
-
-    public function groupSpecialsOverall(){
-        $groups =  DB::connection('sqlsrv3')->select("EXEC spGetCustomerGroups 'Select' ");
-
-        $products =DB::connection('sqlsrv3')->table("viewActiveProductWithVat" )->select('ProductId','PastelCode','PastelDescription','UnitSize','Tax','Cost','QtyInStock','Margin','Alcohol','Available','PurchOrder')->orderBy('PastelDescription','ASC')->distinct()->get();
-
-        return view('specials.groupSpecials')
-            ->with('groups', $groups)
-            ->with('products', $products);
-    }
-
-    public function getOverallGroupSpecials(Request $request){
-        $dateFrom = $request->get('dateFrom');
-        $dateTo = $request->get('dateTo');
-        $groupId = $request->get('groupId');
-        $dealName = $request->get('dealName');
-
-        $massData=  DB::connection('sqlsrv3')->select("EXEC spGetFilteredGroupSpecials '$dateFrom','$dateTo','$groupId','$dealName'");
+        if (config('app.IS_API_BASED')) {
+            $massData = $this->apiGetOverallCustomerSpecials([
+                'dateFrom' => $dateFrom,
+                'dateTo' => $dateTo,
+                'customerId' => $customerId,
+                'productId' => $productId,
+                'dealName' => $dealName,
+            ]);
+        }else{
+            $massData =  DB::connection('sqlsrv3')->select("EXEC sp_API_R_FilteredCustomerSpecials '$dateFrom','$dateTo','$customerId','$productId','$dealName'");
+        }
 
         return response()->json($massData);
     }
 
-    public function updateGroupSpecial(Request $request){
-        $specialLineId = $request->get('specialLineId');
-        $price = $request->get('price');
-        $dateFrom = $request->get('dateFrom');
-        $dateTo = $request->get('dateTo');
+    public function XmlCreateCustomerSpecials(Request $request){
+        $lines = $request->get('lines');
+        $xml = $this->toxml($lines, "xml", array("result"));
+        $CustomerIds = $request->get('CustomerIds');
+        $dteFrom = $request->get('dteFrom');
+        $dteTo = $request->get('dteTo');
+        $DealName = $request->get('DealName');
+        $updateDeal = $request->get('updateDeal');
 
-        $result =  DB::connection('sqlsrv3')->select("EXEC spUpdateGroupSpecial $specialLineId, $price,'$dateFrom','$dateTo'");
+        //dd("'$xml', $UserId, '$CustomerIds', '$dteFrom', '$dteTo', '$DealName', $updateDeal");
 
-        return response()->json($result);
+        if (config('app.IS_API_BASED')) {
+            $returnresults = $this->apiXmlCreateCustomerSpecials([
+                'xml' => $xml,
+                'CustomerIds' => $CustomerIds,
+                'dteFrom' => $dteFrom,
+                'dteTo' => $dteTo,
+                'DealName' => $DealName,
+                'updateDeal' => $updateDeal,
+            ]);
+        } else{
+            $UserId = Auth::user()->UserID;
+            $returnresults = DB::connection('sqlsrv3')->select("EXEC sp_API_CU_XMLCustomerSpecials '$xml', $UserId, '$CustomerIds', '$dteFrom', '$dteTo', '$DealName', $updateDeal");
+        }
+
+        $outPut['result'] = $returnresults[0]->Result;
+        return $outPut;
     }
+
+    public function removeCustomerSpecial(Request $request){
+        $CustomerSpecial = $request->get('removeSpecial');
+
+        if (config('app.IS_API_BASED')) {
+            $this->apiRemoveCustomerSpecial([
+                'CustomerSpecial' => $CustomerSpecial,
+            ]);
+        }else{
+            DB::connection('sqlsrv3')->select("EXEC sp_API_D_CustomerSpecialLine $CustomerSpecial");
+        }
+
+        return  response()->json($CustomerSpecial);
+    }
+
+    public function adminAuthorize(Request $request){
+        $userName = $request->get('userName');
+        $userPassword = $request->get('userPassword');
+        $requiredAuth = $request->get('requiredAuth');
+
+        if (config('app.IS_API_BASED')) {
+            $activeUser = $this->apiAdminAuthorize([
+                'userName' => $userName,
+                'userPassword' => $userPassword,
+                'requiredAuth' => $requiredAuth,
+            ]);
+        }else{
+            $UserId = Auth::user()->UserID;
+            $activeUser= DB::connection('sqlsrv3')->select("EXEC sp_API_R_AdminAuthorize '$userName', '$userPassword', $UserId, '$requiredAuth'");
+        }
+
+        return  response()->json($activeUser);
+    }
+
+    // public function groupSpecialsOverall(){
+    //     $groups =  DB::connection('sqlsrv3')->select("EXEC spGetCustomerGroups 'Select' ");
+
+    //     $products =DB::connection('sqlsrv3')->table("viewActiveProductWithVat" )->select('ProductId','PastelCode','PastelDescription','UnitSize','Tax','Cost','QtyInStock','Margin','Alcohol','Available','PurchOrder')->orderBy('PastelDescription','ASC')->distinct()->get();
+
+    //     return view('specials.groupSpecials')
+    //         ->with('groups', $groups)
+    //         ->with('products', $products);
+    // }
+
+    // public function getOverallGroupSpecials(Request $request){
+    //     $dateFrom = $request->get('dateFrom');
+    //     $dateTo = $request->get('dateTo');
+    //     $groupId = $request->get('groupId');
+    //     $dealName = $request->get('dealName');
+
+    //     $massData=  DB::connection('sqlsrv3')->select("EXEC spGetFilteredGroupSpecials '$dateFrom','$dateTo','$groupId','$dealName'");
+
+    //     return response()->json($massData);
+    // }
 
     private static function getTabs($tabcount)
 {

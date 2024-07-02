@@ -165,7 +165,6 @@ Route::post('XmlBulkEditingCustomerSpecials',[DimsCommon::class,'XmlBulkEditingC
 Route::post('XmlBulkEditingGroupSpecials', [DimsCommon::class,'XmlBulkEditingGroupSpecials']);
 Route::get('managementcosoleresult/{consoletype}/{OrderId}/{InvoiceNo}/{ProductCode}', [ConsoleManagement::class,'managementcosoleresult']);
 Route::post('createCustomerSpecials', [DimsCommon::class,'createCustomerSpecials']);
-Route::post('XmlCreateCustomerSpecials',  [DimsCommon::class,'XmlCreateCustomerSpecials']);
 Route::post('overallSpecialHeader', [DimsCommon::class,'overallSpecialHeader']);
 Route::post('createGroupSpecials',  [DimsCommon::class,'createGroupSpecials']);
 Route::post('createOverallSpecials',  [DimsCommon::class,'createOverallSpecials']);
@@ -194,7 +193,6 @@ Route::post('intoTblPrintedDocPickingSlips',[DimsCommon::class,'intoTblPrintedDo
 Route::post('emailOrder',[DimsCommon::class,'InsertToEmail']);
 Route::post('printInvoiceNow',[DimsCommon::class,'printInvoiceNow']);
 Route::post('printTruckControlID', [DimsCommon::class,'printTruckControlID']);
-Route::post('removeCustomerSpecial',[DimsCommon::class,'removeCustomerSpecial']);
 Route::post('increasePriceUsingMargin',[DimsCommon::class,'increasePriceUsingMargin']);
 Route::get('masscusterspecialdatefilter/{datefrom}/{dateto}/{marginless}/{margingreater}/{rep}',[DimsCommon::class,'masscusterspecialdatefilter']);
 Route::get('changefiltereddatamassspecials/{dateFromFilter}/{dateToFilter}/{marginfilterless}/{marginfiltergreater}/{rep}', [DimsCommon::class,'changefiltereddatamassspecials']);
@@ -257,13 +255,12 @@ Route::post('updateMessage',[DimsCommon::class,'updateMessage'] );
 Route::post('checkifhasmultiaddress',[DimsCommon::class,'checkifhasmultiaddress'] );
 Route::get('backorders',[DimsCommon::class,'backorders']);
 
-# Added by Kyle 20240212
-Route::get('customerSpecials',[DimsCommon::class,'customerSpecials']);
+Route::get('customerSpecials', [DimsCommon::class,'customerSpecials']);
 Route::get('getOverallCustomerSpecials', [DimsCommon::class,'getOverallCustomerSpecials']);
-Route::post('updateCustomerSpecial', [DimsCommon::class,'updateCustomerSpecial']);
-Route::get('groupSpecialsOverall',[DimsCommon::class,'groupSpecialsOverall']);
-Route::get('getOverallGroupSpecials',[DimsCommon::class,'getOverallGroupSpecials']);
-Route::post('updateGroupSpecial',[DimsCommon::class,'updateGroupSpecial']);
+Route::post('XmlCreateCustomerSpecials',  [DimsCommon::class,'XmlCreateCustomerSpecials']);
+Route::post('removeCustomerSpecial',[DimsCommon::class,'removeCustomerSpecial']);
+Route::post('adminAuthorize',[DimsCommon::class,'adminAuthorize']);
+
 
 //DIMS COMMON ENDS HERE HERE!!!!
 
@@ -289,7 +286,7 @@ Route::post('orderheaderAndOrderLines', [SalesFormFunctions::class,'orderheaderA
 Route::post('getCutomerPriceOnOrderForm', [SalesFormFunctions::class,'returnProductPrice']);
 Route::post('getextracomunsforItems', [SalesFormFunctions::class,'getextracomunsforItems']);
 Route::post('getCutomerPastInvoices', [SalesFormFunctions::class,'getCustomerPast10Invoices']);
-Route::post('customerSpecials', [SalesFormFunctions::class,'getCustomerSpecials']);
+// Route::post('customerSpecials', [SalesFormFunctions::class,'getCustomerSpecials']);
 Route::post('groupSpecials', [SalesFormFunctions::class,'getGroupSpecials']);
 Route::post('combinedSpecials',[SalesFormFunctions::class,'combinedSpecials']);
 Route::post('priceSearch', [SalesFormFunctions::class,'priceLookUpOntab']);

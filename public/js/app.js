@@ -149,3 +149,14 @@ function getCommonDelay()
 {
     return 500;
 }
+
+// formats date to yyyy-MM-dd
+function formatDate(date) {
+    returnFormat = date.toLocaleDateString("en-ZA", {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+    });
+
+    return returnFormat.replace(/\//g, '-');
+}

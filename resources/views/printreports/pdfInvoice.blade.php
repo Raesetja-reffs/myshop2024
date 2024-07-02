@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
-    <title>{{ $docNo }} PDF</title>
+    <title>{{ $orderheader[0]->DocNumber }} PDF</title>
     <link rel="icon" href="{{asset('images/1024.png')}}" type="image/icon type">
     <!-- CSS only -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
@@ -80,12 +80,12 @@
                         <div class="col-sm-6 p-2" id="left">
                             <div class="d-inline-flex w-100">
                                 <div class="col-sm-12 h-100 d-flex aligns-items-center">
-                                    <img src="{{ $strCompanyLogoName }}" alt="" style="width: 85%; height: auto; padding: 10px;"/>
+                                    <img src="{{ $companyInfo[0]->strCompanyLogoName }}" alt="" style="width: 85%; height: auto; padding: 10px;"/>
                                 </div>
                             </div>
                             <div class="d-inline-flex w-100">
                                 <div class="col-sm-12 h-100">
-                                    {!! $header !!}
+                                    {!! $companyInfo[0]->strHtmlHeader !!}
                                 </div>
                             </div>
                         </div>
@@ -96,7 +96,7 @@
                                     <p class="text-start">DOCUMENT NO:</p>
                                 </div>
                                 <div class="col-sm-6 " id="right">
-                                    <p class="text-start"><strong>{{ $docNo }}</strong></p>
+                                    <p class="text-start"><strong>{{ $orderheader[0]->DocNumber }}</strong></p>
                                 </div>
                             </div>
 
@@ -105,7 +105,7 @@
                                     <p class="text-start">DELIVERY DATE:</p>
                                 </div>
                                 <div class="col-sm-6 " id="right">
-                                    <p class="text-start"><strong>{{ $deliveryDate }}</strong></p>
+                                    <p class="text-start"><strong>{{ $orderheader[0]->DocDate }}</strong></p>
                                 </div>
                             </div>
 
@@ -114,7 +114,7 @@
                                     <p class="text-start">ORDER NO:</p>
                                 </div>
                                 <div class="col-sm-6 " id="right">
-                                    <p class="text-start"><strong>{{ $orderNumber }}</strong></p>
+                                    <p class="text-start"><strong>{{ $orderheader[0]->DIMS_OrderNo }}</strong></p>
                                 </div>
                             </div>
 
@@ -132,7 +132,7 @@
                                     <p class="text-start">Account:</p>
                                 </div>
                                 <div class="col-sm-6 " id="right">
-                                    <p class="text-start"><strong>{{ $customerPastelCode }}</strong></p>
+                                    <p class="text-start"><strong>{{ $orderheader[0]->CustomerPastelCode }}</strong></p>
                                 </div>
                             </div>
                             <div class="d-inline-flex col-sm-12">
@@ -140,7 +140,7 @@
                                     <p class="text-start">Terms:</p>
                                 </div>
                                 <div class="col-sm-6 " id="right">
-                                    <p class="text-start"><strong>{{ $paymentTerms }}</strong></p>
+                                    <p class="text-start"><strong>{{ $orderheader[0]->PaymentTerms }}</strong></p>
                                 </div>
                             </div>
 
@@ -150,7 +150,7 @@
                                         <p class="text-start">SOLD TO:</p>
                                     </div>
                                     <div class="col-sm-12">
-                                        <p class="text-start"><strong>{{ $soldTo }}</strong></p>
+                                        <p class="text-start"><strong>{{ $orderheader[0]->SoldTo }}</strong></p>
                                     </div>
                                 </div>
                                 <div class="col-sm-6 p-2 border-top border-end border-bottom border-dark rounded-end">
@@ -158,7 +158,7 @@
                                         <p class="text-start">SHIPPED TO:</p>
                                     </div>
                                     <div class="col-sm-12">
-                                        <p class="text-start"><strong>{{ $shippedTo }}</strong></p>
+                                        <p class="text-start"><strong>{{ $orderheader[0]->ShipTo }}</strong></p>
                                     </div>
                                 </div>
                             </div>
@@ -199,7 +199,7 @@
                 <td colspan="9" class="m-0 p-0 border border-dark">
                     <div id="page-footer" class="d-inline-flex w-100 p-2" style="height: 4.06cm;">
                         <div class="col-sm-8">
-                            {!! $footer !!}
+                            {!! $companyInfo[0]->strHtmlFooter !!}
                         </div>
                         <div class="col-sm-4">
                             <div class="d-inline-flex col-sm-12">
@@ -207,7 +207,7 @@
                                     <p class="text-start">SUB TOTAL:</p>
                                 </div>
                                 <div class="col-sm-6 " id="right">
-                                    <p class="text-start"><strong>{{ $currency }}{{ $subTotal }}</strong></p>
+                                    <p class="text-start"><strong>{{ $orderheader[0]->strCurrency }}{{ $orderheader[0]->subtotal }}</strong></p>
                                 </div>
                             </div>
 
@@ -216,7 +216,7 @@
                                     <p class="text-start">Discount:</p>
                                 </div>
                                 <div class="col-sm-6 " id="right">
-                                    <p class="text-start"><strong>{{ $currency }}{{ $invDiscAmnt }}</strong></p>
+                                    <p class="text-start"><strong>{{ $orderheader[0]->strCurrency }}{{ $orderheader[0]->InvDiscAmnt }}</strong></p>
                                 </div>
                             </div>
 
@@ -234,7 +234,7 @@
                                     <p class="text-start">VAT:</p>
                                 </div>
                                 <div class="col-sm-6 " id="right">
-                                    <p class="text-start"><strong>{{ $currency }}{{ $vat }}</strong></p>
+                                    <p class="text-start"><strong>{{ $orderheader[0]->strCurrency }}{{ $orderheader[0]->tax }}</strong></p>
                                 </div>
                             </div>
 
@@ -243,7 +243,7 @@
                                     <p class="text-start">TOTAL:</p>
                                 </div>
                                 <div class="col-sm-6 " id="right">
-                                    <p class="text-start"><strong>{{ $currency }}{{ $total }}</strong></p>
+                                    <p class="text-start"><strong>{{ $orderheader[0]->strCurrency }}{{ $orderheader[0]->Total }}</strong></p>
                                 </div>
                             </div>
                         </div>
@@ -252,7 +252,7 @@
             </tr>
             <tr>
                 <td colspan="9" class="text-center">
-                    {!! $strDisclaimer !!}
+                    {!! $companyInfo[0]->strDisclaimer !!}
                 </td>
             </tr>
         </tfoot>

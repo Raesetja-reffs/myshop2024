@@ -82,6 +82,50 @@ trait DimsCommonTrait
 
     public function apiCustomerflexgrid()
     {
-        return [];
+        $customers = $this->httpRequest('post', 'Post_CustomersGridCustomers');
+        $routes = $this->httpRequest('post', 'Post_CustomersGridRoutes');
+        $groups = $this->httpRequest('post', 'Post_CustomersGridGroups');
+        $salesmen = $this->httpRequest('post', 'Post_CustomersGridSalesmen');
+        $users = $this->httpRequest('post', 'Post_CustomersGridUsers');
+
+        return [
+            'customers' => $customers,
+            'routes' => $routes,
+            'groups' => $groups,
+            'salesmen' => $salesmen,
+            'users' => $users,
+        ];
+    }
+
+    public function apiUpdateCustomerGrid(){
+        return $this->httpRequest('post', 'Post_UpdateCustomerGrid');
+    }
+
+    public function apiCustomerSpecialsCustomers(){
+        return $this->httpRequest('post', 'Post_CustomerSpecialsCustomers');
+    }
+
+    public function apiCustomerSpecialsProducts(){
+        return $this->httpRequest('post', 'Post_CustomerSpecialsProducts');
+    }
+
+    public function apiCustomerSpecialsDeals(){
+        return $this->httpRequest('post', 'Post_CustomerSpecialsDeals');
+    }
+
+    public function apiGetOverallCustomerSpecials($data){
+        return $this->httpRequest('post', 'Post_OverallCustomerSpecials', $data);
+    }
+
+    public function apiXmlCreateCustomerSpecials($data){
+        return $this->convertToCollectionObject($this->httpRequest('post', 'Post_XmlCreateCustomerSpecials', $data));
+    }
+
+    public function apiRemoveCustomerSpecial($data){
+        return $this->httpRequest('post', 'Post_RemoveCustomerSpecial', $data);
+    }
+
+    public function apiAdminAuthorize($data){
+        return $this->httpRequest('post', 'Post_AdminAuthorize', $data);
     }
 }
