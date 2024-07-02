@@ -280,7 +280,7 @@ class DimsCommon extends Controller
                 'PriorityCustomer' => $PriorityCustomer,
                 'CustomerOnHold' => $CustomerOnHold,
                 'MarkupPercentage' => $MarkupPercentage,
-                'UserId' => $UserId,
+                'User' => $UserId,
                 'DeliveryAddress1' => $DeliveryAddress1,
                 'DeliveryAddress2' => $DeliveryAddress2,
                 'DeliveryAddress3' => $DeliveryAddress3,
