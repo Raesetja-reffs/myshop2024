@@ -2248,7 +2248,6 @@ class DimsCommon extends Controller
     public function XmlCreateCustomerSpecials(Request $request){
         $lines = $request->get('lines');
         $xml = $this->toxml($lines, "xml", array("result"));
-        $UserId = Auth::user()->UserID;
         $CustomerIds = $request->get('CustomerIds');
         $dteFrom = $request->get('dteFrom');
         $dteTo = $request->get('dteTo');
@@ -2267,6 +2266,7 @@ class DimsCommon extends Controller
                 'updateDeal' => $updateDeal,
             ]);
         } else{
+            $UserId = Auth::user()->UserID;
             $returnresults = DB::connection('sqlsrv3')->select("EXEC sp_API_CU_XMLCustomerSpecials '$xml', $UserId, '$CustomerIds', '$dteFrom', '$dteTo', '$DealName', $updateDeal");
         }
 
@@ -2292,7 +2292,6 @@ class DimsCommon extends Controller
         $userName = $request->get('userName');
         $userPassword = $request->get('userPassword');
         $requiredAuth = $request->get('requiredAuth');
-        $UserId = Auth::user()->UserID;
 
         if (config('app.IS_API_BASED')) {
             $activeUser = $this->apiAdminAuthorize([
@@ -2301,6 +2300,7 @@ class DimsCommon extends Controller
                 'requiredAuth' => $requiredAuth,
             ]);
         }else{
+            $UserId = Auth::user()->UserID;
             $activeUser= DB::connection('sqlsrv3')->select("EXEC sp_API_R_AdminAuthorize '$userName', '$userPassword', $UserId, '$requiredAuth'");
         }
         
