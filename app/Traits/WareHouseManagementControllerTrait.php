@@ -10,6 +10,11 @@ trait WareHouseManagementControllerTrait
 
     public function apiMassProducts()
     {
-        return $this->httpRequest('post', '');
+        return $this->convertToMultipleArray($this->httpRequest('post', 'Post_tblPickingTeams'));
+    }
+
+    public function apiGetProductgriddata()
+    {
+        return $this->httpRequest('post', 'Post_RetreiveProductsGrid');
     }
 }

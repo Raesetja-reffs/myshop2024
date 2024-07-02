@@ -145,50 +145,12 @@ class JasperReports extends Controller
             $companyInfo = DB::connection('sqlsrv3')->select("EXEC spStaticCompanyInfoHeader ?", array($ID));
         }
 
-        $Logo = "{{asset('images/logo-01.png')}}";
-        $soldTo = $orderheader[0]->SoldTo;
-        $shippedTo = $orderheader[0]->ShipTo;
-
-        $docNo = $orderheader[0]->DocNumber;
-        $deliveryDate = $orderheader[0]->DocDate;
-        $orderNumber = $orderheader[0]->DIMS_OrderNo;
-
-        $currency = $orderheader[0]->strCurrency;
-        $subTotal = $orderheader[0]->subtotal;
-        $vat = $orderheader[0]->tax;
-        $total = $orderheader[0]->Total;
-        $customerPastelCode = $orderheader[0]->CustomerPastelCode;
-        $paymentTerms = $orderheader[0]->PaymentTerms;
-        $invDiscAmnt = $orderheader[0]->InvDiscAmnt;
-
-        $header = $companyInfo[0]->strHtmlHeader;
-        $footer = $companyInfo[0]->strHtmlFooter;
-        $strDisclaimer = $companyInfo[0]->strDisclaimer;
-        $strCompanyLogoName = $companyInfo[0]->strCompanyLogoName;
-
         return view('printreports/pdfInvoice')
-            ->with('Logo', $Logo)
-            ->with('companyInfo', $companyInfo)
-            ->with('soldTo', $soldTo)
-            ->with('shippedTo', $shippedTo)
-            ->with('docNo', $docNo)
-            ->with('deliveryDate', $deliveryDate)
-            ->with('createdBy', $createdBy)
-            ->with('orderNumber', $orderNumber)
-            ->with('orderheader', $orderheader)
             ->with('ID', $ID)
-            ->with('footer', $footer)
-            ->with('header', $header)
-            ->with('subTotal', $subTotal)
-            ->with('vat', $vat)
-            ->with('total', $total)
-            ->with('currency', $currency)
-            ->with('strDisclaimer', $strDisclaimer)
-            ->with('strCompanyLogoName', $strCompanyLogoName)
-            ->with('orderlines', $orderlines)
-            ->with('customerPastelCode', $customerPastelCode)
-            ->with('paymentTerms', $paymentTerms)
-            ->with('invDiscAmnt', $invDiscAmnt);
+            ->with('createdBy', $createdBy)
+            ->with('companyInfo', $companyInfo)
+            ->with('orderheader', $orderheader)
+            ->with('orderlines', $orderlines);
     }
 
     public function getOrderLines(Request $request)
@@ -205,10 +167,11 @@ class JasperReports extends Controller
         return response()->json($orderlines);
     }
 
-    public function getOrderLinesDeliveryNote(Request $request){
+    public function getOrderLinesDeliveryNote(Request $request)
+    {
         $ID = $request->get('ID');
         $orderlines = DB::connection('sqlsrv3')->select("EXEC [spGetDeliveryNoteLinesPDF] ?", array($ID));
-        // dd($orderlines);
+
         return response()->json($orderlines);
     }
 
@@ -260,6 +223,9 @@ class JasperReports extends Controller
             $response = $this->apiPDFOrders([
                 'OrderId' => $ID
             ]);
+            $orderlines = $this->apiGetOrderLines([
+                'OrderId' => $ID
+            ]);
             $orderheader = $response['orderheader'];
             $companyInfo = $response['companyInfo'];
         } else {
@@ -269,24 +235,13 @@ class JasperReports extends Controller
             $companyInfo = DB::connection('sqlsrv3')->select("EXEC spStaticCompanyInfoHeader ?", array($ID));
         }
 
-        $Logo = "{{asset('images/goodfoodlogo.png')}}";
-        $soldTo = $orderheader[0]->SoldTo;
-        $shippedTo = $orderheader[0]->ShipTo;
 
-        $docNo = $orderheader[0]->DocNumber;
-        $deliveryDate = $orderheader[0]->DocDate;
-        $orderNumber = $orderheader[0]->DIMS_OrderNo;
-
-        $currency = $orderheader[0]->strCurrency;
-        $subTotal = $orderheader[0]->subtotal;
-        $vat = $orderheader[0]->tax;
-        $total = $orderheader[0]->Total;
-
-        $header = $companyInfo[0]->strHtmlHeader;
-        $footer = $companyInfo[0]->strHtmlFooter;
-
-        return view('dims/printorderdelnote')->with('Logo', $Logo)->with('companyInfo', $companyInfo)->with('soldTo', $soldTo)->with('shippedTo', $shippedTo)->with('docNo', $docNo)->with('deliveryDate', $deliveryDate)->with('createdBy', $createdBy)->with('orderNumber', $orderNumber)->with('orderheader', $orderheader)->with('ID', $ID)->with('footer', $footer)->with('header', $header)->with('subTotal', $subTotal)->with('vat', $vat)->with('total', $total)->with('currency', $currency);
-
+        return view('printreports/printorderdelnote')
+            ->with('ID', $ID)
+            ->with('createdBy', $createdBy)
+            ->with('companyInfo', $companyInfo)
+            ->with('orderheader', $orderheader)
+            ->with('orderlines', $orderlines);
     }
     public function FreshOrders()
     {

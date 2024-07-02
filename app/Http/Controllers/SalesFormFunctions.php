@@ -414,7 +414,7 @@ class SalesFormFunctions extends Controller
         $statement = $request->get('statement');
         $discount = $request->get('discount');
         $OrderNo = str_replace("'", " ", $OrderNo);
-        $DeliveryAddressID =0;
+        $DeliveryAddressID = 0;
         if (config('app.IS_API_BASED')) {
             $response = $this->apiInsertOrderHearder([
                 'CustomerCode' => $customerCode,
