@@ -89,11 +89,11 @@ trait DimsCommonTrait
         $users = $this->httpRequest('post', 'Post_CustomersGridUsers');
 
         return [
-            'customers' => $this->convertToCollectionObject($customers),
-            'routes' => $this->convertToCollectionObject($routes),
-            'groups' => $this->convertToCollectionObject($groups),
-            'salesmen' => $this->convertToCollectionObject($salesmen),
-            'users' => $this->convertToCollectionObject($users),
+            'customers' => $customers,
+            'routes' => $routes,
+            'groups' => $groups,
+            'salesmen' => $salesmen,
+            'users' => $users,
         ];
     }
 
