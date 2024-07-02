@@ -117,10 +117,16 @@ ORDER BY [GROUP 2],[GROUP 3] ,Description_1 ");
     }
 
     public function getProductgriddata(){
-        $getRouteProducts =DB::connection('sqlsrv3')
-            ->select('Select * from viewMassProducts');
+        if (config('app.IS_API_BASED')) {
+            $getRouteProducts = $this->apiGetProductgriddata();
+        } else {
+            $getRouteProducts =DB::connection('sqlsrv3')
+                ->select('Select * from viewMassProducts');
+        }
+
         return response()->json($getRouteProducts);
     }
+
     public function postProductInfo(Request $request){
 
         $productid = $request->get("ProductID");
