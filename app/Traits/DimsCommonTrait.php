@@ -97,8 +97,8 @@ trait DimsCommonTrait
         ];
     }
 
-    public function apiUpdateCustomerGrid(){
-        return $this->httpRequest('post', 'Post_UpdateCustomerGrid');
+    public function apiUpdateCustomerGrid($data){
+        return $this->httpRequest('post', 'Post_UpdateCustomerGrid', $data);
     }
 
     public function apiCustomerSpecialsCustomers(){
