@@ -257,7 +257,7 @@ if (!function_exists('getMenuItems')) {
                     [
                         'name' => 'Customer Specials',
                         'icon' => 'fa mi-overallspecials',
-                        'href' => url("/andNewSpecialKF"),
+                        'href' => url("/customerSpecials"),
                         'windowopen' => [
                             'name' => 'massGrid',
                             'width' => 1600,
