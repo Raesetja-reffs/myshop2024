@@ -234,31 +234,31 @@
                                             Add.Cst:
                                         </td>
                                         <td class="text-end">
-                                            <input id="totaddidtionalcst" class="form-control">
+                                            <input id="totaddidtionalcst" class="form-control" readonly>
                                         </td>
                                     </tr>
-                                    <tr>
+                                    {{-- <tr>
                                         <td colspan="4" class="text-end">
                                             Total GP %
                                         </td>
                                         <td class="text-end">
                                             <input type="text" id="totalmargin" class="form-control" readonly>
                                         </td>
+                                    </tr> --}}
+                                    <tr>
+                                        <td colspan="4" class="text-end">
+                                            SubTotal
+                                        </td>
+                                        <td class="text-end">
+                                            <input id="totalEx" class="form-control" readonly>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td colspan="4" class="text-end">
-                                            Total Disc
+                                            VAT
                                         </td>
                                         <td class="text-end">
-                                            <input id="totalInOrder" class="form-control">
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="4" class="text-end">
-                                            Total Exc
-                                        </td>
-                                        <td class="text-end">
-                                            <input id="totalEx" class="form-control">
+                                            <input id="totalVAT" class="form-control" readonly>
                                         </td>
                                     </tr>
                                     <tr>
@@ -266,7 +266,7 @@
                                             Grand Total
                                         </td>
                                         <td class="text-gray-900 fs-3 fw-bolder text-end">
-                                            <input id="totalInOrder" class="form-control">
+                                            <input id="totalInOrder" class="form-control" readonly>
                                         </td>
                                     </tr>
                                 </tbody>

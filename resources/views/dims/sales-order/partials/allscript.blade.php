@@ -1639,13 +1639,10 @@
 
                                     }
 
-                                    $('#totalEx').val(
-                                        InvoiceTotalPriceExcl);
-                                    $('#totalInc').val(
-                                        InvoiceTotalPriceInc);
-                                    $('#totalInOrder').val(
-                                        InvoiceTotalPriceIncLineDisc
-                                        );
+                                    $('#totalEx').val(InvoiceTotalPriceExcl);
+                                    $('#totalVAT').val(InvoiceTotalPriceInc - InvoiceTotalPriceExcl);
+                                    $('#totalInc').val(InvoiceTotalPriceInc);
+                                    $('#totalInOrder').val(InvoiceTotalPriceIncLineDisc);
                                     calculator();
                                 }
 
@@ -1659,6 +1656,7 @@
                                 isAllowedToChangeInv != 1) {
                                 $("#orederNumber").prop("disabled", true);
                                 $("#totalEx").prop("disabled", true);
+                                $("#totalVAT").prop("disabled", true);
                                 $("#totalInc").prop("disabled", true);
                                 $("#button_row").prop("disabled", true);
                                 $("#routeonabutton").prop("disabled", true);
@@ -5430,6 +5428,7 @@
 
         $('#numberOfLines').append(arrayProductsCode.length + " Line Item(s)");
         $('#totalEx').val(parseFloat(sumarrayOnExclusiveForDiscount).toFixed(2));
+        $('#totalVAT').val((parseFloat(sumarrayOnInclusiveForDiscount) - parseFloat(sumarrayOnExclusiveForDiscount)).toFixed(2));
         $('#totalInc').val(parseFloat(sumarrayOnInclusiveForDiscount).toFixed(2));
         $('#totalInOrder').val(parseFloat(sumarrayOnInclusiveForDiscountAndLineDisc).toFixed(2));
         $('#totalmargin').val(totalMargin.toFixed(2));
@@ -8358,11 +8357,8 @@
                             $('#orderIds').val(orderidChange);
                             $('#DeliveryDate').val('');
                             $('#totalEx').val('');
-                            $('#tot' +
-                                '' +
-                                '' +
-                                '' +
-                                'alInc').val('');
+                            $('#totalVAT').val('');
+                            $('#totalInc').val('');
                             arrayOfCustomerInfo[0] = '';
                             arrayOfCustomerInfo[1] = '';
                             arrayOfCustomerInfo[2] = '';
