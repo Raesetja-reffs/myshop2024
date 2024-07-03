@@ -236,9 +236,9 @@ if (!function_exists('getMenuItems')) {
                     [
                         'name' => 'Group Specials',
                         'icon' => 'fa mi-overallspecials',
-                        'href' => url("/groupspecials"),
+                        'href' => url("/groupSpecials"),
                         'windowopen' => [
-                            'name' => 'roupspecials',
+                            'name' => 'groupspecials',
                             'width' => 1300,
                             'height' => 1250,
                         ]

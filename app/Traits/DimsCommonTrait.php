@@ -128,4 +128,24 @@ trait DimsCommonTrait
     public function apiAdminAuthorize($data){
         return $this->httpRequest('post', 'Post_AdminAuthorize', $data);
     }
+
+    public function apiGetOverallGroupSpecials($data){
+        return $this->httpRequest('post', 'Post_OverallGroupSpecials', $data);
+    }
+
+    public function apiXmlCreateGroupSpecials($data){
+        return $this->convertToCollectionObject($this->httpRequest('post', 'Post_XmlCreateGroupSpecials', $data));
+    }
+
+    public function apiRemoveGroupSpecial($data){
+        return $this->httpRequest('post', 'Post_RemoveGroupSpecial', $data);
+    }
+
+    public function apiGroupSpecialsGroups(){
+        return $this->httpRequest('post', 'Post_GroupSpecialsGroups');
+    }
+
+    public function apiGroupSpecialsDeals(){
+        return $this->httpRequest('post', 'Post_GroupSpecialsDeals');
+    }
 }

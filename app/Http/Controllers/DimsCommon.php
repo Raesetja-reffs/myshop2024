@@ -1208,16 +1208,6 @@ class DimsCommon extends Controller
 
         return response()->json($queryCustomers);
     }
-    public function groupspecials()
-    {
-        $queryProducts =DB::connection('sqlsrv3')->table("viewActiveProductWithVat" )->select('ProductId','PastelCode','PastelDescription','UnitSize','Tax','Cost','QtyInStock','Margin','Alcohol','Available','PurchOrder')->orderBy('PastelDescription','ASC')->distinct()->get();
-        $statement = "Select";
-        $queryCustomers =  DB::connection('sqlsrv3')
-            ->select("EXEC spGetCustomerGroups '".$statement."'");
-            return view('dims/groupspecials/index')
-                ->with('products',$queryProducts)
-                ->with('customers',$queryCustomers);
-    }
     public function viewgroupinexcel($dateFrom,$dateTo,$groupId)
     {
         return view('dims/viewgroupspecialsexcel')
@@ -1482,6 +1472,7 @@ class DimsCommon extends Controller
         return response()->json($id);
 
     }
+    
     public function XmlBulkEditingCustomerSpecials(Request $request)
     {
 
@@ -1521,7 +1512,7 @@ class DimsCommon extends Controller
         $date = (new \DateTime($request->get('contractDateFrom')))->format('Y-m-d');
         $dateTo = (new \DateTime($request->get('contractDateTo')))->format('Y-m-d');
         $dealName = $request->get('dealName');
-        // $sessionUserName = Auth::user()->UserName;
+       // $sessionUserName = Auth::user()->UserName;
         $UserID = Auth::user()->UserID;
         $UserName = Auth::user()->UserName;
         $statement = 'Insert';
@@ -1711,14 +1702,6 @@ class DimsCommon extends Controller
             return  response()->json(1);
     }
 
-    public function removeGroupSpecial(Request $request)
-    {
-        $itemCode = $request->get('removeSpecial');
-        DB::connection('sqlsrv3')->table('tblGroupSpecials')
-            ->where('SpecialGroupid',$itemCode)
-            ->delete();
-        return  response()->json($itemCode);
-    }
     public function removeOverallSpecial(Request $request)
     {
         $itemCode = $request->get('removeSpecial');
@@ -2312,7 +2295,7 @@ class DimsCommon extends Controller
         }else{
             DB::connection('sqlsrv3')->select("EXEC sp_API_D_CustomerSpecialLine $CustomerSpecial");
         }
-
+        
         return  response()->json($CustomerSpecial);
     }
 
@@ -2331,40 +2314,104 @@ class DimsCommon extends Controller
             $UserId = Auth::user()->UserID;
             $activeUser= DB::connection('sqlsrv3')->select("EXEC sp_API_R_AdminAuthorize '$userName', '$userPassword', $UserId, '$requiredAuth'");
         }
-
+        
         return  response()->json($activeUser);
     }
 
-    // public function groupSpecialsOverall(){
-    //     $groups =  DB::connection('sqlsrv3')->select("EXEC spGetCustomerGroups 'Select' ");
+    public function groupSpecials()
+    {
+        if (config('app.IS_API_BASED')) {
+            $groups = $this->apiGroupSpecialsGroups();
+            $products = $this->apiCustomerSpecialsProducts();
+            $deals = $this->apiGroupSpecialsDeals();
 
-    //     $products =DB::connection('sqlsrv3')->table("viewActiveProductWithVat" )->select('ProductId','PastelCode','PastelDescription','UnitSize','Tax','Cost','QtyInStock','Margin','Alcohol','Available','PurchOrder')->orderBy('PastelDescription','ASC')->distinct()->get();
+        }else{
+            $groups = DB::connection('sqlsrv3')->select("EXEC sp_API_R_CustomerGroups");
+            $products = DB::connection('sqlsrv3')->select("EXEC sp_API_R_CustomerSpecialsProducts");
+            $deals = DB::connection('sqlsrv3')->select("EXEC sp_API_R_GroupSpecialsDeals");
+        }
 
-    //     return view('specials.groupSpecials')
-    //         ->with('groups', $groups)
-    //         ->with('products', $products);
-    // }
+        return view('dims.groupSpecials.index')
+            ->with('groups',$groups)
+            ->with('products',$products)
+            ->with('deals',$deals);
+    }
 
-    // public function getOverallGroupSpecials(Request $request){
-    //     $dateFrom = $request->get('dateFrom');
-    //     $dateTo = $request->get('dateTo');
-    //     $groupId = $request->get('groupId');
-    //     $dealName = $request->get('dealName');
+    public function getOverallGroupSpecials(Request $request){
+        $dateFrom = $request->get('dateFrom');
+        $dateTo = $request->get('dateTo');
+        $groupId = $request->get('groupId');
+        $productId = $request->get('productId');
+        $dealName = $request->get('dealName');
 
-    //     $massData=  DB::connection('sqlsrv3')->select("EXEC spGetFilteredGroupSpecials '$dateFrom','$dateTo','$groupId','$dealName'");
+        // dd("EXEC spGridMassCustomerSpecialDateFilter '$dateFrom','$dateTo','$marginless','$margingreater','$dealName'");
+        if (config('app.IS_API_BASED')) {
+            $massData = $this->apiGetOverallGroupSpecials([
+                'dateFrom' => $dateFrom,
+                'dateTo' => $dateTo,
+                'groupId' => $groupId,
+                'productId' => $productId,
+                'dealName' => $dealName,
+            ]);
+        }else{
+            $massData =  DB::connection('sqlsrv3')->select("EXEC sp_API_R_FilteredGroupSpecials '$dateFrom','$dateTo','$groupId','$productId','$dealName'");
+        }
 
-    //     return response()->json($massData);
-    // }
+        return response()->json($massData);
+    }
+
+    public function XmlCreateGroupSpecials(Request $request){
+        $lines = $request->get('lines');
+        $xml = $this->toxml($lines, "xml", array("result"));
+        $GroupIds = $request->get('GroupIds');
+        $dteFrom = $request->get('dteFrom');
+        $dteTo = $request->get('dteTo');
+        $DealName = $request->get('DealName');
+        $updateDeal = $request->get('updateDeal');
+
+        //dd("'$xml', $UserId, '$CustomerIds', '$dteFrom', '$dteTo', '$DealName', $updateDeal");
+
+        if (config('app.IS_API_BASED')) {
+            $returnresults = $this->apiXmlCreateGroupSpecials([
+                'xml' => $xml,
+                'GroupIds' => $GroupIds,
+                'dteFrom' => $dteFrom,
+                'dteTo' => $dteTo,
+                'DealName' => $DealName,
+                'updateDeal' => $updateDeal,
+            ]);
+        } else{
+            $UserId = Auth::user()->UserID;
+            $returnresults = DB::connection('sqlsrv3')->select("EXEC sp_API_CU_XMLGroupSpecials '$xml', $UserId, '$GroupIds', '$dteFrom', '$dteTo', '$DealName', $updateDeal");
+        }
+
+        $outPut['result'] = $returnresults[0]->Result;
+        return $outPut;
+    }
+
+    public function removeGroupSpecial(Request $request){
+        $GroupSpecial = $request->get('removeSpecial');
+
+        if (config('app.IS_API_BASED')) {
+            $this->apiRemoveGroupSpecial([
+                'GroupSpecial' => $GroupSpecial,
+            ]);
+        }else{
+            DB::connection('sqlsrv3')->select("EXEC sp_API_D_GroupSpecialLine $GroupSpecial");
+        }
+        
+        return response()->json($GroupSpecial);
+    }
 
     private static function getTabs($tabcount)
-{
-    $tabs = '';
-    for($i = 0; $i < $tabcount; $i++)
     {
-        $tabs .= "\t";
+        $tabs = '';
+        for($i = 0; $i < $tabcount; $i++)
+        {
+            $tabs .= "\t";
+        }
+        return $tabs;
     }
-    return $tabs;
-}
 
     private static function asxml($arr, $elements = Array(), $tabcount = 0)
     {
