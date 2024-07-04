@@ -145,7 +145,7 @@ class JasperReports extends Controller
             $companyInfo = DB::connection('sqlsrv3')->select("EXEC spStaticCompanyInfoHeader ?", array($ID));
         }
 
-        return view('printreports/pdfInvoice')
+        return view('dims/printorder')
             ->with('ID', $ID)
             ->with('createdBy', $createdBy)
             ->with('companyInfo', $companyInfo)

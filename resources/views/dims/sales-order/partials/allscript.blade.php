@@ -2703,8 +2703,8 @@
                                 readyMadeLineOrderLine('#table tbody', producutDescr,
                                     productCode, '', price, Prodcost, ProdQnt, titles,
                                     tax, UnitSizes, '0', UnitWeight, SoldByWeight,
-                                    strBulkUnit, ProductMargin, multiLines, data[0]
-                                    .LineDisc, linediscount, weneedauth);
+                                    strBulkUnit, ProductMargin, multiLines, data[0].LineDisc,
+                                    linediscount, weneedauth, data[0].shelf);
                             } else {
                                 price = parseFloat(data[0].Price).toFixed(2);
                                 console.debug('something' + data[0].LineDisc);
@@ -2718,7 +2718,7 @@
                                         titles, tax, UnitSizes, data[0].Prohibited,
                                         UnitWeight, SoldByWeight, strBulkUnit,
                                         ProductMargin, multiLines, data[0].LineDisc,
-                                        linediscount, weneedauth);
+                                        linediscount, weneedauth, data[0].shelf);
 
                                 } else {
                                     console.debug('margin not 5' + data[0].LineDisc);
@@ -2728,7 +2728,7 @@
                                         titles, tax, UnitSizes, data[0].Prohibited,
                                         UnitWeight, SoldByWeight, strBulkUnit,
                                         multiLines, data[0].LineDisc, linediscount,
-                                        weneedauth);
+                                        weneedauth, data[0].shelf);
                                 }
                             }
 
@@ -3977,6 +3977,9 @@
                 var counter = 0;
                 var dimsPlusIcon = '<i class="ki-outline ki-plus text-primary cursor-pointer pe-1"></i>';
                 $.each(data.pastInvoices, function(key, value) {
+                    if (value.UnitSize == undefined) {
+                        value.UnitSize = '';
+                    }
                     if (inv != value.InvoiceNo) {
                         var k = parseInt(counter) + parseInt(1);
                         trHTML += `
