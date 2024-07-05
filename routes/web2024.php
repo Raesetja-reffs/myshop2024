@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CompanyPermissionController;
 use App\Http\Controllers\SalesForm;
 use App\Http\Controllers\CentralUserController;
+use App\Http\Controllers\JasperReports;
 
 Route::middleware('auth:web,central_api_user')->group(function () {
     Route::get('company-permissions/set-permissions', [CompanyPermissionController::class, 'setPermissions'])
@@ -17,3 +18,5 @@ Route::middleware('auth:web,central_api_user')->group(function () {
 
 Route::get('/getSalesOrderCustomers', [SalesForm::class,'getSalesOrderCustomers'])->name('sales-order.get-sales-order-customers');
 Route::get('/getSalesOrderProducts', [SalesForm::class,'getSalesOrderProducts'])->name('sales-order.get-sales-order-products');
+
+Route::get('/order/getPdfData', [JasperReports::class,'getPdfDataFromApi'])->name('order.get-pdf-data');

@@ -348,4 +348,18 @@ class JasperReports extends Controller
         return view('dims/groupspecailjasper', compact('entityName', 'groupSpecialData', 'companyDetails'));
     }
 
+    public function getPdfDataFromApi(Request $request)
+    {
+        auth()->guard('central_api_user')->loginUsingId($request->get('user_id'));
+        $requestData = [
+            'OrderId' => $request->get('order_id'),
+            'companyid' => $request->get('company_id'),
+        ];
+        $response = $this->apiPDFOrders($requestData);
+        $orderlines = $this->apiGetOrderLines($requestData);
+        $response['orderlines'] = $orderlines;
+
+        return response()->json($response);
+    }
+
 }
