@@ -257,11 +257,6 @@
                         <th class="text-left">Item</th>
                         <th>Description</th>
                         <th class="text-center">Quantity</th>
-                        <th class="text-center">Unit</th>
-                        <th class="text-center">Price</th>
-                        <th class="text-center">Discount</th>
-                        <th class="text-center">VAT</th>
-                        <th class="text-right">Total</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -271,11 +266,6 @@
                         <td class="col-1 text-left">{{ $lines->PartNumber }}</td>
                         <td class="col-4">{{ $lines->PDesc }}</td>
                         <td class="col-1 text-center">{{ number_format($lines->qty, 2) }}</td>
-                        <td class="col-1 text-center">{{ $lines->UnitOfMeasure }}</td>
-                        <td class="col-1 text-center">{{ number_format($lines->UnitPrice, 2) }}</td>
-                        <td class="col-1 text-center">{{ number_format($lines->LineDiscount, 2) }}</td>
-                        <td class="col-1 text-center">{{ number_format($lines->LineTax, 2) }}</td>
-                        <td class="col-1 text-right">{{ number_format($lines->LineTotal, 2) }}</td>
                     </tr>
                     @endforeach
                 </tbody>
@@ -294,7 +284,7 @@
                             <p class="text-start">SUB TOTAL:</p>
                         </div>
                         <div class="col-sm-6 " id="right">
-                            <p class="text-start"><strong>{{ $orderheader[0]->strCurrency }}{{ $orderheader[0]->subtotal }}</strong></p>
+                            <p class="text-start"><strong></strong></p>
                         </div>
                     </div>
 
@@ -303,7 +293,7 @@
                             <p class="text-start">VAT:</p>
                         </div>
                         <div class="col-sm-6 " id="right">
-                            <p class="text-start"><strong>{{ $orderheader[0]->strCurrency }}{{ $orderheader[0]->tax }}</strong></p>
+                            <p class="text-start"><strong></strong></p>
                         </div>
                     </div>
 
@@ -312,7 +302,7 @@
                             <p class="text-start">TOTAL:</p>
                         </div>
                         <div class="col-sm-6 " id="right">
-                            <p class="text-start"><strong>{{ $orderheader[0]->strCurrency }}{{ $orderheader[0]->Total }}</strong></p>
+                            <p class="text-start"><strong></strong></p>
                         </div>
                     </div>
 
