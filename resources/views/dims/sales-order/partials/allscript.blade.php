@@ -705,6 +705,7 @@
                                     class: "btn btn-success btn-sm",
                                     click: function() {
                                         $(this).dialog("close");
+                                        $('#dialog').dialog("close");
                                         if ($('#orderId').val().length < 3) {
                                             $('#orderId').val(data.OrderId);
                                             $("#checkOrders").click();
