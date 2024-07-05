@@ -236,7 +236,7 @@ class JasperReports extends Controller
         }
 
 
-        return view('printreports/printorderdelnote')
+        return view('printreports/printorderdelnote_new_design')
             ->with('ID', $ID)
             ->with('createdBy', $createdBy)
             ->with('companyInfo', $companyInfo)
