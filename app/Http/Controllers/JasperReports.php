@@ -357,6 +357,10 @@ class JasperReports extends Controller
         ];
         $response = $this->apiPDFOrders($requestData);
         $orderlines = $this->apiGetOrderLines($requestData);
+        $lineCount = $request->has('linecount') ? $request->get('linecount') : 20;
+        for ($i = 0; $i <= $lineCount; $i++) {
+            $orderlines[] = $orderlines[0];
+        }
         $response['orderlines'] = $orderlines;
 
         return response()->json($response);
