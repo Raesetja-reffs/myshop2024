@@ -19,7 +19,7 @@ trait DriversControllerTrait
             'routes' => $routes,
         ];
     }
-    public function apiUpdateDeliveryAddressInformation()
+    public function apiUpdateDeliveryAddressInformation($data)
     {
         return $this->httpRequest('post', 'Post_UpdateCustomerDeliveryAddress', $data);
        

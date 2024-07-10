@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\DimsCommon;
 use App\Traits\DriversControllerTrait;
 
@@ -188,9 +188,9 @@ class DriversController extends Controller
         ->with('routes', $routes);
 
     }
-public function updateDeliveryAddressesGrid(Request $request){
-        $sessionUserId = Auth::user()->UserID;
-        $userName = Auth::user()->UserName;
+    public function updateDeliveryAddressesGrid(Request $request){
+       // $sessionUserId = Auth::user()->UserID;
+       // $userName = Auth::user()->UserName;
         $deladdID = $request->get('ID');
         $deladd1 = $request->get('DAddress1');
         $deladd2 = $request->get('DAddress2');
@@ -207,8 +207,8 @@ public function updateDeliveryAddressesGrid(Request $request){
              'deladd4' => $deladd5,
              'deladd5' => $deladd4,
              'route' => $route,
-             'sessionUserId' => $sessionUserId,
-             'userName' => $userName,
+            // 'sessionUserId' => $sessionUserId,
+          //   'userName' => $userName,
           ]);
           } else {
        DB::connection('sqlsrv3')
