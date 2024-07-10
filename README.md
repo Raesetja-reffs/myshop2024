@@ -41,27 +41,37 @@ Install all the dependencies using composer
 
     composer install
 
-Copy the example env file and make the required configuration changes in the .env file
+If you need to setup the Database Based Dims then please follow below steps
 
-    cp .env.example .env
+- Copy the example env file and make the required configuration changes in the .env file
 
-Migrate the company roles and company permission in local database
-    php artisan migrate
+        cp .env.example .env
 
-Migrate the company roles and company permission in universal database
-    php artisan migrate --database=your_database_connection
+- Migrate the company roles and company permission in local database
+    
+        php artisan migrate
 
-Run the seeder for add Linx System Company
+- Migrate the company roles and company permission in universal database (optional step)
+    
+        php artisan migrate --database=your_database_connection
 
-    php artisan db:seed LinxCompanySeeder
+- Run the seeder for add Linx System Company
 
-Run the API Central Database tables
+        php artisan db:seed LinxCompanySeeder
 
-    php artisan migrate --path=database/migrations/api_based_migrations
+If you need to setup the API Based Dims then please follow below steps
 
-Run the seeder for seed the default admin user
+- Copy the example env file and make the required configuration changes in the .env file
 
-    php artisan db:seed --class=CentralUserSeeder
+        cp .env.api .env
+
+- Run the API Central Database tables
+
+        php artisan migrate --path=database/migrations/api_based_migrations
+
+- Run the seeder for seed the default admin user
+
+        php artisan db:seed --class=CentralUserSeeder
 
 ## License
 
