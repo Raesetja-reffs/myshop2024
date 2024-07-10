@@ -6,9 +6,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Auth;
 use App\Http\Controllers\DimsCommon;
+use App\Traits\DriversControllerTrait;
 
 class DriversController extends Controller
 {
+    use DriversControllerTrait;
     //Drivers
     public function addItem(Request $request)
     {
@@ -172,27 +174,47 @@ class DriversController extends Controller
     }
     public function deliveryaddresspage()
     {
-       $routes=  DB::connection('sqlsrv3')
-            ->select("Select Routeid, Route from tblRoutes");
 
-       $deliveryaddress=  DB::connection('sqlsrv3')
-       ->select("Select * from viewCustomerDeliveryAddress");
+        if (config('app.IS_API_BASED')) {
+            $response = $this->apiGetDeliveryAddressPreloadData();
+            $deliveryaddress = $response['customeradds'];
+            $routes = $response['routes'];
+        } else {
+            $deliveryaddress = DB::connection('sqlsrv3')->select("EXEC sp_API_R_CustomersDeliveryAddress");
+            $routes = DB::connection('sqlsrv3')->select("EXEC sp_API_R_CustomersGridRoutes");
+        }
+
         return view('dims/deliveryaddresseditor')->with('deliveryaddress',$deliveryaddress)
         ->with('routes', $routes);
+
     }
 public function updateDeliveryAddressesGrid(Request $request){
-    $sessionUserId = Auth::user()->UserID;
-    $userName = Auth::user()->UserName;
-    $deladdID = $request->get('ID');
-    $deladd1 = $request->get('DAddress1');
-    $deladd2 = $request->get('DAddress2');
-    $deladd3 = $request->get('DAddress3');
-    $deladd4 = $request->get('DAddress4');
-    $deladd5 = $request->get('DAddress5');
-    $route = $request->get('Route');
-    DB::connection('sqlsrv3')
-                ->statement("EXEC spDeliveryAddressUpdate ?,?,?,?,?,?,?,?,?",
+        $sessionUserId = Auth::user()->UserID;
+        $userName = Auth::user()->UserName;
+        $deladdID = $request->get('ID');
+        $deladd1 = $request->get('DAddress1');
+        $deladd2 = $request->get('DAddress2');
+        $deladd3 = $request->get('DAddress3');
+        $deladd4 = $request->get('DAddress4');
+        $deladd5 = $request->get('DAddress5');
+        $route = $request->get('Route'); 
+      if (config('app.IS_API_BASED')) {
+           $this->apiUpdateDeliveryAddressInformation([
+               'deladdid' => $deladdID,
+               'deladd1' => $deladd1,
+             'deladd2' => $deladd2,
+            'deladd3' => $deladd3,
+             'deladd4' => $deladd5,
+             'deladd5' => $deladd4,
+             'route' => $route,
+             'sessionUserId' => $sessionUserId,
+             'userName' => $userName,
+          ]);
+          } else {
+       DB::connection('sqlsrv3')
+                ->statement("EXEC [sp_API_U_DeliveryAddressUpdate] ?,?,?,?,?,?,?,?,?",
                     array($deladdID,$deladd1,$deladd2,$deladd3,$deladd4,$deladd5,$route,$sessionUserId,$userName));
+                }
 }
     public function editRoutesItem(Request $request)
     {

@@ -69,7 +69,8 @@
 
     });
 
-
+    console.log(routeinfo);
+    console.log(deliveryaddinfo);
 
         $( document ).on( 'focus', ':input', function(){
 
