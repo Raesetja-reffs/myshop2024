@@ -2202,9 +2202,18 @@ class DimsCommon extends Controller
     }
     public function deleteordersJson($date1,$date2)
     {
+        if (config('app.IS_API_BASED')) {
+            $returncosts = $this->apiGetDeletedOrdersJson([
+                'DateFrom' => $date1,
+                'DateTo' => $date2,
+            ]);
+
+        }else{
         $returncosts = DB::connection('sqlsrv3')
-            ->select("Exec spViewDeletedOrdes '".$date1."','".$date2."'");
-        return response()->json($returncosts);
+            ->select("Exec spViewDeletedOrdes ?,?",array($date1,$date2));
+        }
+        
+        return response($returncosts);
     }
 
     public function backorders()

@@ -74,6 +74,10 @@ trait DimsCommonTrait
     {
         return $this->httpRequest('post', 'Post_DeleteOrderLocksPerUserAndDept');
     }
+    public function apiGetDeletedOrdersJson($data)
+    {
+        return $this->httpRequest('post', 'Post_GetDeletedOrdersJson',$data);
+    }
 
     public function apiVerifyAuthMario($data)
     {
