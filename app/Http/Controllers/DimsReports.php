@@ -564,11 +564,22 @@ $salesMonthToDate = DB::connection('sqlsrv3')
 
         $from  = (new \DateTime( $request->get('from')))->format('Y-m-d')  ;
         $to  =(new \DateTime( $request->get('to')))->format('Y-m-d');
-        $shorloadedJasper=  DB::connection('sqlsrv3')
-            ->select('exec spUserActionsByDate ?,?',
-                array($from,$to)
-            );
-        return response()->json($shorloadedJasper);
+
+
+
+        if (config('app.IS_API_BASED')) {
+            $shorloadedJasper = $this->apiGetUserActionsByDateRange([
+                'DateFrom' => $from,
+                'DateTo' => $to,
+            ]);
+            return response($shorloadedJasper);
+
+        }else{
+        $shorloadedJasper = DB::connection('sqlsrv3')
+            ->select("Exec [sp_API_R_UserActionsByDate] ?,?",array($from,$to));
+            return response()->json($shorloadedJasper);
+        }
+        
     }
     public function jsonawaitingstockorders(Request $request){
         $productId  = $request->get('productId');

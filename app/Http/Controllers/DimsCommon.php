@@ -2208,12 +2208,14 @@ class DimsCommon extends Controller
                 'DateTo' => $date2,
             ]);
 
+            return response($returncosts);
         }else{
         $returncosts = DB::connection('sqlsrv3')
-            ->select("Exec spViewDeletedOrdes ?,?",array($date1,$date2));
+            ->select("Exec [sp_API_R_ViewDeletedOrders] ?,?",array($date1,$date2));
+            
+        return response()->json($returncosts);
         }
         
-        return response($returncosts);
     }
 
     public function backorders()

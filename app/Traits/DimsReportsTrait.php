@@ -12,4 +12,8 @@ trait DimsReportsTrait
     {
         return $this->httpRequest('post', 'Post_BackOrderAndAwaitingStock', $data);
     }
+    public function apiGetUserActionsByDateRange($data)
+    {
+        return $this->httpRequest('post', 'Post_GetUserActionsByDate', $data);
+    }
 }
