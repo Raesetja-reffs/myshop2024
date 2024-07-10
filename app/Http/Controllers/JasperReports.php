@@ -359,7 +359,27 @@ class JasperReports extends Controller
         $orderlines = $this->apiGetOrderLines($requestData);
         $lineCount = $request->has('linecount') ? $request->get('linecount') : 20;
         for ($i = 0; $i <= $lineCount; $i++) {
-            $orderlines[] = $orderlines[0];
+            $orderlines[] = (object) [
+                "OrderId" => "387545",
+                "DocNumber" => null,
+                "PartNumber" => "DRC3503C-1",
+                "qty" => "1",
+                "UnitOfMeasure" => "EA",
+                "UnitPrice" => "340.00",
+                "LineTax" => "51.00",
+                "LineTotal" => "391.00",
+                "DIMS_OrderDetailID" => "1",
+                "PDesc" => "NTSU SNUFF SMALL           12s",
+                "LineDiscount" => "0",
+                "Location" => "PICKING",
+                "UserDef1" => null,
+                "UserDef2" => null,
+                "UserDef3" => null,
+            ];
+        }
+        $i = 1;
+        foreach ($orderlines as &$orderline) {
+            $orderline->DisplayLine = $i++;
         }
         $response['orderlines'] = $orderlines;
 
