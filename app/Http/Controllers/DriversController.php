@@ -189,8 +189,6 @@ class DriversController extends Controller
 
     }
     public function updateDeliveryAddressesGrid(Request $request){
-       // $sessionUserId = Auth::user()->UserID;
-       // $userName = Auth::user()->UserName;
         $deladdID = $request->get('ID');
         $deladd1 = $request->get('DAddress1');
         $deladd2 = $request->get('DAddress2');
@@ -207,13 +205,11 @@ class DriversController extends Controller
              'deladd4' => $deladd5,
              'deladd5' => $deladd4,
              'route' => $route,
-            // 'sessionUserId' => $sessionUserId,
-          //   'userName' => $userName,
           ]);
           } else {
        DB::connection('sqlsrv3')
-                ->statement("EXEC [sp_API_U_DeliveryAddressUpdate] ?,?,?,?,?,?,?,?,?",
-                    array($deladdID,$deladd1,$deladd2,$deladd3,$deladd4,$deladd5,$route,$sessionUserId,$userName));
+                ->statement("EXEC [sp_API_U_DeliveryAddressUpdate] ?,?,?,?,?,?,?,?",
+                    array($deladdID,$deladd1,$deladd2,$deladd3,$deladd4,$deladd5,$route,$sessionUserId));
                 }
 }
     public function editRoutesItem(Request $request)

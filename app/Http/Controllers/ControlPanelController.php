@@ -6,10 +6,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Auth;
 use App\Http\Controllers\DimsCommon;
+use App\Traits\ControlPanelControllerTrait;
 
 class ControlPanelController extends Controller
 {
-
+	use ControlPanelControllerTrait;
 	public function test(Request $request)
    {
 	  $test=0;
@@ -295,7 +296,7 @@ class ControlPanelController extends Controller
 
 
 	//PickingTeam
-
+ 
 	public function addPickingTeam(Request $request)
    {
 
@@ -303,12 +304,18 @@ class ControlPanelController extends Controller
 	   $PickingTeam = $request->get('PickingTeam');
 	   $Commision = $request->get('Commision');
 	   $PickingSlipPath = $request->get('PickingSlipPath');
-	   //dd("EXEC spCRUDPickingTeams NULL,'".$PickingTeam."','".$Commision."','".$PickingSlipPath."','Insert'");
-
-
-
-	 $insertPickingTeam = DB::connection('sqlsrv3')
-                    ->statement("EXEC spCRUDPickingTeams NULL,'".$PickingTeam."','".$Commision."','".$PickingSlipPath."','Insert'");
+	   if (config('app.IS_API_BASED')) {
+		$insertPickingTeam = $this->apiPickingTeamCRUD([
+			'PickingTeamId' => 0,
+            'PickingTeam' => $PickingTeam,
+            'Commision' => $Commision,
+            'PickingSlipPath' => $PickingSlipPath,
+            'Statement' => 'Insert',
+		]);
+	}else {
+		$insertPickingTeam = DB::connection('sqlsrv3')
+		->select("EXEC sp_API_CRUD_PickingTeams ?,?,?,?,?",array(0,$PickingTeam,$Commision,$PickingSlipPath,'Insert'));
+	   }
 	return response()->json($insertPickingTeam);
 
 	}
@@ -320,13 +327,23 @@ class ControlPanelController extends Controller
 	   $PickingTeam = "NULL";
 	   $Commision = 0;
 	   $PickingSlipPath = "NULL";
+	   if (config('app.IS_API_BASED')) {
+		$readPickingTeam = $this->apiPickingTeamCRUD([
+			'PickingTeamId' => $PickingTeamId,
+            'PickingTeam' => $PickingTeam,
+            'Commision' => $Commision,
+            'PickingSlipPath' => $PickingSlipPath,
+            'Statement' => 'Select',
 
+		]);
+	} else {
+		$readPickingTeam = DB::connection('sqlsrv3')
+						 ->select("EXEC sp_API_CRUD_PickingTeams ?,?,?,?,?",array($PickingTeamId,$PickingTeam,$Commision,$PickingSlipPath,'Select'));
+	}
 
-	   $readPickingTeam = DB::connection('sqlsrv3')
-                        ->select("EXEC spCRUDPickingTeams ".$PickingTeamId.",'".$PickingTeam."','".$Commision."','".$PickingSlipPath."','Select'");
-
-
-
+	$readPickingTeam = array_map(function($item) {
+		return (object) $item;
+	}, $readPickingTeam);
 		return view('dims/pickingteam')
 		->with('readPickingTeam',$readPickingTeam);
 
@@ -339,10 +356,19 @@ class ControlPanelController extends Controller
 	   $Commision = $request->get('Commision');
 	   $PickingSlipPath = $request->get('PickingSlipPath');
 
+	   if (config('app.IS_API_BASED')) {
 
-
+		$updatePickingTeam = $this->apiPickingTeamCRUD([
+			'PickingTeamId' => $PickingTeamId,
+            'PickingTeam' => $PickingTeam,
+            'Commision' => $Commision,
+            'PickingSlipPath' => $PickingSlipPath,
+            'Statement' => 'Update',
+		]);
+	}else {
 	   $updatePickingTeam = DB::connection('sqlsrv3')
-                        ->statement("EXEC spCRUDPickingTeams ".$PickingTeamId.",'".$PickingTeam."','".$Commision."','".$PickingSlipPath."','Update'");
+	   ->select("EXEC sp_API_CRUD_PickingTeams ?,?,?,?,?",array($PickingTeamId,$PickingTeam,$Commision,$PickingSlipPath,'Update'));
+	}
 		return response()->json($updatePickingTeam);
 
 	}
@@ -354,10 +380,21 @@ class ControlPanelController extends Controller
 	   $PickingTeam = $request->get('PickingTeam');
 	   $Commision = $request->get('Commision');
 	   $PickingSlipPath = $request->get('PickingSlipPath');
+	   if (config('app.IS_API_BASED')) {
+		$deletePickingTeam = $this->apiPickingTeamCRUD([
+			'PickingTeamId' => $PickingTeamId,
+            'PickingTeam' => $PickingTeam,
+            'Commision' => $Commision,
+            'PickingSlipPath' => $PickingSlipPath,
+            'Statement' => 'Delete',
 
+		]);
+	}else {
 
 	   $deletePickingTeam = DB::connection('sqlsrv3')
-                        ->statement("EXEC spCRUDPickingTeams ".$PickingTeamId.",'".$PickingTeam."',".$Commision.",'".$PickingSlipPath."','Delete'");
+	   ->select("EXEC sp_API_CRUD_PickingTeams ?,?,?,?,?",array($PickingTeamId,$PickingTeam,$Commision,$PickingSlipPath,'Delete'));
+	}
+
 		return response()->json($deletePickingTeam);
 	}
 

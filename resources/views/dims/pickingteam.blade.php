@@ -68,7 +68,7 @@
                         </div>
                         <div class="form-group mb-3">
                             <label for="PickingSlipPath">Picking Slip Path</label>
-                            <input type="text" class="form-control" id="PickingSlipPath" placeholder="Enter a Picking Team" required>
+                            <input type="text" class="form-control" id="PickingSlipPath" placeholder="Enter a Picking Slip Path" >
                         </div>
                         <button class="btn btn-success btn-sm w-100" type="submit" id="add">
                             <i class="fas fa-plus-circle fs-4 me-2"></i>ADD
@@ -129,7 +129,7 @@
                         </div>
                         <div class="col-md-12 mb-3">
                             <label for="PickingSlipPathEdit">Picking Slip Path</label>
-                            <input type="text" class="form-control" id="PickingSlipPathEdit" placeholder="Enter a Picking Slip Path" required>
+                            <input type="text" class="form-control" id="PickingSlipPathEdit" placeholder="Enter a Picking Slip Path">
                         </div>
                         <div class="col-md-12">
                             <button class="btn btn-primary btn-sm" type="submit" id="edit">UPDATE</button>
@@ -164,7 +164,7 @@
                     url: '{!!url("/addPickingTeam")!!}',
                     type: "POST",
                     data: {
-                        PickingTeamId: $('#PickingTeamId').val(),
+                        PickingTeamId: 0,
                         PickingTeam: $('#PickingTeam').val(),
                         Commision: $('#Commision').val(),
                         PickingSlipPath: $('#PickingSlipPath').val(),
@@ -245,7 +245,7 @@
                     },
                     error: function(xhr){
                         $(".general-loader").hide();
-                    }
+                   }
                 });
             });
         });
