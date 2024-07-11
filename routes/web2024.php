@@ -5,6 +5,7 @@ use App\Http\Controllers\CompanyPermissionController;
 use App\Http\Controllers\SalesForm;
 use App\Http\Controllers\CentralUserController;
 use App\Http\Controllers\JasperReports;
+use App\Http\Controllers\LaravelLogController;
 
 Route::middleware('auth:web,central_api_user')->group(function () {
     Route::get('company-permissions/set-permissions', [CompanyPermissionController::class, 'setPermissions'])
@@ -20,3 +21,4 @@ Route::get('/getSalesOrderCustomers', [SalesForm::class,'getSalesOrderCustomers'
 Route::get('/getSalesOrderProducts', [SalesForm::class,'getSalesOrderProducts'])->name('sales-order.get-sales-order-products');
 
 Route::get('/order/getPdfData', [JasperReports::class,'getPdfDataFromApi'])->name('order.get-pdf-data');
+Route::get('/logs', [LaravelLogController::class,'index'])->name('laravel.log');
