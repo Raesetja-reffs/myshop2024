@@ -128,29 +128,7 @@ class JasperReports extends Controller
 
     public function PDFOrders($ID)
     {
-        if (config('app.IS_API_BASED')) {
-            $createdBy = auth()->guard('central_api_user')->user()->erp_apiusername;
-            $response = $this->apiPDFOrders([
-                'OrderId' => $ID
-            ]);
-            $orderlines = $this->apiGetOrderLines([
-                'OrderId' => $ID
-            ]);
-            $orderheader = $response['orderheader'];
-            $companyInfo = $response['companyInfo'];
-        } else {
-            $UserID = Auth::user()->UserID;
-            $createdBy = Auth::user()->UserName;
-            $orderheader = DB::connection('sqlsrv3')->select("EXEC [spGetOrderHeaderPrintDIMS] ?,?", array($ID, $UserID));
-            $companyInfo = DB::connection('sqlsrv3')->select("EXEC spStaticCompanyInfoHeader ?", array($ID));
-        }
-
-        return view('dims/printorder')
-            ->with('ID', $ID)
-            ->with('createdBy', $createdBy)
-            ->with('companyInfo', $companyInfo)
-            ->with('orderheader', $orderheader)
-            ->with('orderlines', $orderlines);
+        return $this->OrderInvoiceViewer($ID);
     }
 
     public function getOrderLines(Request $request)
@@ -217,32 +195,11 @@ class JasperReports extends Controller
         return response()->file($output.'/Blank_A4_Landscape.'.$ext);
     }
 
-    public function PDFDelDate($ID){
-        if (config('app.IS_API_BASED')) {
-            $createdBy = auth()->guard('central_api_user')->user()->erp_apiusername;
-            $response = $this->apiPDFOrders([
-                'OrderId' => $ID
-            ]);
-            $orderlines = $this->apiGetOrderLines([
-                'OrderId' => $ID
-            ]);
-            $orderheader = $response['orderheader'];
-            $companyInfo = $response['companyInfo'];
-        } else {
-            $UserID = Auth::user()->UserID;
-            $createdBy = Auth::user()->UserName;
-            $orderheader = DB::connection('sqlsrv3')->select("EXEC [spGetOrderHeaderPrintDIMS] ?,?", array($ID, $UserID));
-            $companyInfo = DB::connection('sqlsrv3')->select("EXEC spStaticCompanyInfoHeader ?", array($ID));
-        }
-
-
-        return view('printreports/printorderdelnote_new_design')
-            ->with('ID', $ID)
-            ->with('createdBy', $createdBy)
-            ->with('companyInfo', $companyInfo)
-            ->with('orderheader', $orderheader)
-            ->with('orderlines', $orderlines);
+    public function PDFDelDate($ID)
+    {
+        return $this->OrderInvoiceViewer($ID, true);
     }
+
     public function FreshOrders()
     {
         $input = public_path('/reports/freshorders.jasper');
@@ -357,26 +314,6 @@ class JasperReports extends Controller
         ];
         $response = $this->apiPDFOrders($requestData);
         $orderlines = $this->apiGetOrderLines($requestData);
-        $lineCount = $request->has('linecount') ? $request->get('linecount') : 20;
-        for ($i = 0; $i <= $lineCount; $i++) {
-            $orderlines[] = (object) [
-                "OrderId" => "387545",
-                "DocNumber" => null,
-                "PartNumber" => "DRC3503C-1",
-                "qty" => "1",
-                "UnitOfMeasure" => "EA",
-                "UnitPrice" => "340.00",
-                "LineTax" => "51.00",
-                "LineTotal" => "391.00",
-                "DIMS_OrderDetailID" => "1",
-                "PDesc" => "NTSU SNUFF SMALL           12s",
-                "LineDiscount" => "0",
-                "Location" => "PICKING",
-                "UserDef1" => null,
-                "UserDef2" => null,
-                "UserDef3" => null,
-            ];
-        }
         $i = 1;
         foreach ($orderlines as &$orderline) {
             $orderline->DisplayLine = $i++;
@@ -384,6 +321,22 @@ class JasperReports extends Controller
         $response['orderlines'] = $orderlines;
 
         return response()->json($response);
+    }
+
+    /**
+     * This function is used for view the order invoice
+     *
+     * @param $ID ID
+     * @param $isWithoutPrice isWithoutPrice
+     */
+    private function OrderInvoiceViewer($ID, $isWithoutPrice = false)
+    {
+        $view = view('dims/printorder')->with('ID', $ID);
+        if ($isWithoutPrice) {
+            $view = $view->with('isWithoutPrice', true);
+        }
+
+        return $view;
     }
 
 }

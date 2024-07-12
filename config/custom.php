@@ -32,4 +32,6 @@ return [
     'user_roles' => $user_roles,
     'user_roles_values' => $user_roles_values,
     'default_user_role' => 4,
+    'DIMS_REPORT_BUILDER_URL' => env('DIMS_REPORT_BUILDER_URL'),
+    'execute_query_secret_key' => 'eyJpdiI6IlBVZnpIaEppeE5EYk5vVHR0K3k1clE9PSIsInZhbHVlIjoiekRSSm52bUh2cUhNT3Rlem8zQks1b1BRRHBqZTNQRU5iZG56VGtYd2FqNUZlMzYyRmlyY0RyVlMxV2cvVEZCNiIsIm1hYyI6IjZjN2QzNTQ2MGQyMDgyYWU4N2RlM2VjNzJkOGExOWU4MzMwNmRkMTkwYjhjNTM4ZTg5MDg2NzcxNmQyYjQwYjgiLCJ0YWciOiIifQ==',
 ];
