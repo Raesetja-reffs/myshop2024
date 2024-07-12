@@ -29,6 +29,7 @@ use App\Http\Controllers\KerstonSpecialController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CallList;
 use App\Http\Controllers\WareHouseController;
+use App\Http\Controllers\StockTakeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -864,6 +865,18 @@ Route::get('markbackordertobeawaitingstock',[BackOrderController::class,'markbac
 
 //BACK ORDERCONTROLLER CONTROLLER ENDS HERE
 /********************************************************END **************************************************************************/
+
+
+//STOCKTAKECONTROLLER CONTROLLER STARTS HERE !!!
+
+Route::get('stocktake',[StockTakeController::class,'stocktake']);
+Route::post('getStockTakes',[StockTakeController::class,'getStockTakes']);
+Route::post('createStockTake',[StockTakeController::class,'createStockTake']);
+Route::get('confirmStocktakeFor/{reference}',[StockTakeController::class,'confirmStocktakeFor']);
+Route::get('assignStockTakeProductBinMappings/{reference}/{username}',[StockTakeController::class,'assignStockTakeProductBinMappings']);
+Route::get('viewStockTakeMappings/{reference}/{username}',[StockTakeController::class,'viewStockTakeMappings']);
+
+//STOCKTAKECONTROLLER CONTROLLER ENDS HERE !!!
 
 
 

@@ -311,6 +311,16 @@ if (!function_exists('getMenuItems')) {
                         ]
                     ],
                     [
+                        'name' => 'Stock Take',
+                        'icon' => 'fa mi-pteams',
+                        'href' => url("/stocktake"),
+                        'windowopen' => [
+                            'name' => 'stocktake',
+                            'width' => 1250,
+                            'height' => 1250,
+                        ]
+                    ],
+                    [
                         'name' => 'Driver BI Report',
                         'icon' => 'fa fa-circle-question fa-lg',
                         'href' => url("/getDriverBIReport"),
