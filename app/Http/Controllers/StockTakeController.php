@@ -79,11 +79,34 @@ class StockTakeController extends Controller
 
 
     public function assignStockTakeProductBinMappings($reference,$username){
-        $assignMappingsData = $this->apiGetAssignMappingData([
-            'reference'=>$reference,
-            'username'=>$username
-        ]);
-        return view('dims.stockTakeAssignMappings.index')->with('assignMappingsData',$assignMappingsData);
+
+        $productData = $this->apiGetProductData();
+        $binData = $this->apiGetBinData();
+        return view('dims.stockTakeAssigning.index')->with('productData',$productData)->with('binData',$binData)
+        ->with('stocktakename',$reference)->with('username',$username);
+    }
+
+    public function submitMappedStockData(Request $request){
+        $stocktakename= $request->get('stocktakename');
+        $username= $request->get('username');
+        $bins= $request->get('bins');
+        $warehouses= $request->get('warehouses');
+        $stocktaketype= $request->get('stocktaketype');
+        $itemlist= $request->get('itemlist');
+        if (config('app.IS_API_BASED')) {
+                $this->apiSubmitMappedStockData([
+                    'stocktakename'=>$stocktakename,
+                    'username'=>$username,
+                    'bins'=>$bins,
+                    'warehouses'=>$warehouses,
+                    'stocktaketype'=>$stocktaketype,
+                    'itemlist'=>$itemlist,
+                ]);
+            }else{
+                
+            DB::connection('sqlsrv3')->statement("EXEC sp_API_C_SubmitMappedStockData ?,?,?,?,?,?",array($stocktakename,$username,$bins,$warehouses,$stocktaketype,$itemlist));
+            }
+            
     }
 
     public function viewStockTakeMappings($reference,$username){

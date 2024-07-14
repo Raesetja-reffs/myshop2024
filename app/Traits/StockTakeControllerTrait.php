@@ -31,12 +31,19 @@ trait StockTakeControllerTrait
         return $this->httpRequest('post','Post_GetStockTakeDataOnName',$data);
     }
 
-    
-    public function apiGetAssignMappingData($data)
+    public function apiGetProductData()
     {
-        return $this->httpRequest('post','Post_GetAssignMappingData',$data);
+        return $this->httpRequest('post', 'Post_GetProductData');
     }
     
+    public function apiGetBinData()
+    {
+        return $this->httpRequest('post', 'Post_GetBinData');
+    }
+    public function apiSubmitMappedStockData($data)
+    {
+        return $this->httpRequest('post','Post_SubmitMappedStockData',$data);
+    }
     public function apiGetMappedData($data)
     {
         return $this->httpRequest('post','Post_GetMappedData',$data);
