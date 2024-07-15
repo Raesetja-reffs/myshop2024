@@ -155,6 +155,11 @@
                     var statusId = e.data.blnIsOpened;
                     updateStockTakeStatus(stockTakeId, statusId)
                 },
+                onRowDblClick: function(e) {
+                    
+                        window.open('{!!url("/confirmStocktakeFor/")!!}' + '/' + e.data.strStockTakeName, "_blank");
+                        
+                },
                 onToolbarPreparing: function(e) {
                     // Create a custom header on the left side
                     e.toolbarOptions.items.unshift({
