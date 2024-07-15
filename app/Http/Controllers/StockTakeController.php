@@ -70,18 +70,29 @@ class StockTakeController extends Controller
 
     public function confirmStocktakeFor($reference)
     {
-        
-        $stocktakedata = $this->apiGetReferenceData([
-            'reference'=>$reference
-        ]);
+        if (config('app.IS_API_BASED')) {
+            $stocktakedata = $this->apiGetReferenceData([
+                'reference'=>$reference
+            ]);
+            }else{
+
+
+                $stocktakedata  =DB::connection('sqlsrv3')->select("Exec sp_API_R_GetStockTakeDataOnName ?",array($reference));
+                  
+            }
         return view('dims.stockTakeConfirm.index')->with('stocktakedata',$stocktakedata);
     }
 
 
     public function assignStockTakeProductBinMappings($reference,$username){
 
+        if (config('app.IS_API_BASED')) {
         $productData = $this->apiGetProductData();
         $binData = $this->apiGetBinData();
+        }else{
+            $productData  =DB::connection('sqlsrv3')->select("Exec sp_API_R_GetProductData");
+            $binData =DB::connection('sqlsrv3')->select("Exec [sp_API_R_GetBinData]");
+                }
         return view('dims.stockTakeAssigning.index')->with('productData',$productData)->with('binData',$binData)
         ->with('stocktakename',$reference)->with('username',$username);
     }
@@ -111,10 +122,15 @@ class StockTakeController extends Controller
 
     public function viewStockTakeMappings($reference,$username){
 
+        if (config('app.IS_API_BASED')) {
         $viewMappingsData = $this->apiGetMappedData([
             'reference'=>$reference,
             'username'=>$username
         ]);
+        }else{
+                
+        $viewMappingsData =DB::connection('sqlsrv3')->select("EXEC sp_API_R_GetMappedStocktakeData ?,?",array($reference,$username));
+            }
         return view('dims.stockTakeViewAssigned.index')->with('viewMappings',$viewMappingsData);
     }
 
