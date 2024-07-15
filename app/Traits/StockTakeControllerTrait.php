@@ -49,11 +49,4 @@ trait StockTakeControllerTrait
         return $this->httpRequest('post','Post_GetMappedData',$data);
     }
 
-    /*
-    public function apiPickingTeamCRUD($data)
-    {
-        return $this->httpRequest('post', 'Post_CRUDPickingTeamData', $data);
-       
-    }*/
-
 }
