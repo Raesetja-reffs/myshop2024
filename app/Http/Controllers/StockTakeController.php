@@ -100,7 +100,7 @@ class StockTakeController extends Controller
                     'bins'=>$bins,
                     'warehouses'=>$warehouses,
                     'stocktaketype'=>$stocktaketype,
-                    'itemlist'=>$itemlist,
+                    'itemstringxml'=>$itemlist,
                 ]);
             }else{
                 
@@ -115,7 +115,7 @@ class StockTakeController extends Controller
             'reference'=>$reference,
             'username'=>$username
         ]);
-        return view('dims.stockTakeViewMappings.index')->with('viewMappings',$viewMappingsData);
+        return view('dims.stockTakeViewAssigned.index')->with('viewMappings',$viewMappingsData);
     }
 
     private static function getTabs($tabcount)

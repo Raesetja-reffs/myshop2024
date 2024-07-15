@@ -29,17 +29,7 @@
                 },
             }).dxTagBox("instance");
 
-            const selectBins = $("#selectBins").dxTagBox({
-                dataSource: bins,
-                valueExpr: 'intBinId',
-                displayExpr: 'strBin',
-                applyValueMode: 'useButtons',
-                showSelectionControls: true,
-                showClearButton: true,
-                searchEnabled: true,
-                onValueChanged: function(e) {
-                },
-            }).dxTagBox("instance");
+
 
             
             const selectStockTakeTypes = $("#selectStockTakeTypes").dxTagBox({
@@ -53,6 +43,18 @@
                 },
                 valueExpr: 'strStockTakeType',
                 displayExpr: 'strDisplayName',
+                applyValueMode: 'useButtons',
+                showSelectionControls: true,
+                showClearButton: true,
+                searchEnabled: true,
+                onValueChanged: function(e) {
+                },
+            }).dxTagBox("instance");
+            
+            const selectBins = $("#selectBins").dxTagBox({
+                dataSource: bins,
+                valueExpr: 'intBinId',
+                displayExpr: 'strBin',
                 applyValueMode: 'useButtons',
                 showSelectionControls: true,
                 showClearButton: true,
