@@ -34,6 +34,24 @@
                 },
                 scrolling: {
                     mode: 'virtual'
+                }, 
+                  export: {
+                enabled: true
+                },
+                onExporting(e) {
+                const workbook = new ExcelJS.Workbook();
+                const worksheet = workbook.addWorksheet('binvariance');
+
+                DevExpress.excelExporter.exportDataGrid({
+                    component: e.component,
+                    worksheet,
+                    autoFilterEnabled: true,
+                        }).then(() => {
+                         workbook.xlsx.writeBuffer().then((buffer) => {
+                          saveAs(new Blob([buffer], { type: 'application/octet-stream' }), 'binvariance.xlsx');
+                                      });
+                        });
+                        e.cancel = true;
                 },
                 columns: [
 						{
@@ -96,6 +114,16 @@
 						}, {
 						   dataField: "Color",
 						   caption: "Item Color",
+						   width: 100,
+
+						}, {
+						   dataField: "binloc",
+						   caption: "Bin Location",
+						   width: 100,
+
+						},  {
+						   dataField: "warehouse",
+						   caption: "Warehouse",
 						   width: 100,
 
 						}, 

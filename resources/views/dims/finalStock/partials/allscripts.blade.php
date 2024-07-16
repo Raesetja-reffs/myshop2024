@@ -35,6 +35,24 @@
                 scrolling: {
                     mode: 'virtual'
                 },
+                export: {
+                enabled: true
+                },
+                onExporting(e) {
+                const workbook = new ExcelJS.Workbook();
+                const worksheet = workbook.addWorksheet('finalstock');
+
+                DevExpress.excelExporter.exportDataGrid({
+                    component: e.component,
+                    worksheet,
+                    autoFilterEnabled: true,
+                        }).then(() => {
+                         workbook.xlsx.writeBuffer().then((buffer) => {
+                          saveAs(new Blob([buffer], { type: 'application/octet-stream' }), 'finalstock.xlsx');
+                                      });
+                        });
+                        e.cancel = true;
+                },
                 columns: [
 						{
 						   dataField: "stockName",
@@ -85,7 +103,17 @@
 						   caption: "Product Category",
 						   width: 100
 
-						},  
+						},  {
+						   dataField: "binloc",
+						   caption: "Bin Location",
+						   width: 100,
+
+						},  {
+						   dataField: "warehouse",
+						   caption: "Warehouse",
+						   width: 100,
+
+						}, 
 					],
                 onToolbarPreparing: function(e) {
                     // Create a custom header on the left side
