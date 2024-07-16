@@ -44,6 +44,10 @@ trait StockTakeControllerTrait
     {
         return $this->httpRequest('post','Post_SubmitMappedStockData',$data);
     }
+    public function apiGetProductDataFromBins($data)
+    {
+        return $this->httpRequest('post','Post_GetProductDataFromBins',$data);
+    }
     public function apiGetMappedData($data)
     {
         return $this->httpRequest('post','Post_GetMappedData',$data);

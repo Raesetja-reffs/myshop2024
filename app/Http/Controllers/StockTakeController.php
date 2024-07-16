@@ -120,6 +120,23 @@ class StockTakeController extends Controller
             
     }
 
+    public function getProductDataFromBins(Request $request){
+        $bins= $request->get('bins');
+        
+        if (config('app.IS_API_BASED')) {
+              $productdata=  $this->apiGetProductDataFromBins([
+                    'bins'=>$bins,
+                ]);
+            }else{
+                
+                $productdata=  DB::connection('sqlsrv3')->select("EXEC sp_API_R_GetProductDataFromBins ?",array($bins));
+            }
+            
+            return response()->json($productdata);
+    }
+
+
+
     public function viewStockTakeMappings($reference,$username){
 
         if (config('app.IS_API_BASED')) {

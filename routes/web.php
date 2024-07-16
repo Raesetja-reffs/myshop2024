@@ -874,6 +874,7 @@ Route::post('getStockTakes',[StockTakeController::class,'getStockTakes']);
 Route::post('createStockTake',[StockTakeController::class,'createStockTake']);
 Route::get('confirmStocktakeFor/{reference}',[StockTakeController::class,'confirmStocktakeFor']);
 Route::get('assignStockTakeProductBinMappings/{reference}/{username}',[StockTakeController::class,'assignStockTakeProductBinMappings']);
+Route::post('getProductDataFromBins',[StockTakeController::class,'getProductDataFromBins']);
 Route::post('submitMappedStockData',[StockTakeController::class,'submitMappedStockData']);
 Route::get('viewStockTakeMappings/{reference}/{username}',[StockTakeController::class,'viewStockTakeMappings']);
 

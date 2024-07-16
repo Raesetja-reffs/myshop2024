@@ -60,11 +60,29 @@
                 showClearButton: true,
                 searchEnabled: true,
                 onValueChanged: function(e) {
+                    // Get selected bin IDs
+                    const selectedBins = e.value.join(",");
+                    
+                    $.ajax({
+                        url: '{!! url('/getProductDataFromBins') !!}',
+                        type: "POST",
+                        data: {
+                            bins: selectedBins
+                        },
+                        success: function(newData) {
+                            // Update the DataGrid's data source with the new data
+                            gridStockTake.option('dataSource', newData);
+                        },
+                        error: function(xhr, status, error) {
+                            // Handle errors here
+                            console.error("Error fetching data: ", error);
+                        }
+                    });
                 },
             }).dxTagBox("instance");
 
             const gridStockTake = $("#gridStockTake").dxDataGrid({
-                dataSource: items,
+                dataSource: [],
                 showBorders: true,
                 showRowLines: true,
                 showColumnLines: true,
@@ -79,7 +97,7 @@
                     visible: true
                 },
                 paging: {
-                    pageSize: 25
+                    pageSize: 25, // Number of rows per page
                 },
                 pager: {
                     showPageSizeSelector: true,
@@ -97,7 +115,7 @@
                     enabled: true,
                 },
                 scrolling: {
-                    mode: 'virtual'
+                    mode: 'standard' // Use standard scrolling instead of virtual
                 },
                 columns: [{
                     visible:false,
