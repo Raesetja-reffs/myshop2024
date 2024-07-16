@@ -878,6 +878,11 @@ Route::post('getProductDataFromBins',[StockTakeController::class,'getProductData
 Route::post('submitMappedStockData',[StockTakeController::class,'submitMappedStockData']);
 Route::get('viewStockTakeMappings/{reference}/{username}',[StockTakeController::class,'viewStockTakeMappings']);
 
+Route::get('binvariance',[StockTakeController::class,'binvariance']);
+Route::post('getBinVariance',[StockTakeController::class,'getBinVariance']);
+Route::get('finalstock',[StockTakeController::class,'finalstock']);
+Route::post('getFinalStock',[StockTakeController::class,'getFinalStock']);
+
 //STOCKTAKECONTROLLER CONTROLLER ENDS HERE !!!
 
 

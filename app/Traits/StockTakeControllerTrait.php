@@ -52,5 +52,13 @@ trait StockTakeControllerTrait
     {
         return $this->httpRequest('post','Post_GetMappedData',$data);
     }
+    public function apiGetBinVarianceData($data)
+    {
+        return $this->httpRequest('post','Post_GetBinVarianceData',$data);
+    }
+    public function apiGetBinFinalStockData($data)
+    {
+        return $this->httpRequest('post','Post_GetFinalStockData',$data);
+    }
 
 }

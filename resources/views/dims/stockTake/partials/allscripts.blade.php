@@ -202,6 +202,27 @@
                             },
                         },
                     });
+                    e.toolbarOptions.items.push({
+                        location: 'after',
+                        widget: "dxButton",
+                        options: {
+                            icon: "fa-solid fa-add",
+                            text: "FINAL STOCKTAKE",
+                            onClick: function(args) {
+                                redirectFinalStockTake();
+                            },
+                        },
+                    });e.toolbarOptions.items.push({
+                        location: 'after',
+                        widget: "dxButton",
+                        options: {
+                            icon: "fa-solid fa-add",
+                            text: "BIN VARIANCE",
+                            onClick: function(args) {
+                                redirectBinVariance();
+                            },
+                        },
+                    });
                 }
             }).dxDataGrid('instance');
 
@@ -267,6 +288,16 @@
                         getStockTakes();
                     }
                 });
+            }
+            function redirectFinalStockTake(){
+
+                window.open('{!!url("/finalstock/")!!}', "_blank");
+
+            }
+            function redirectBinVariance(){
+
+                window.open('{!!url("/binvariance/")!!}', "_blank");
+
             }
         });
     </script>

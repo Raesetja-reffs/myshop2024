@@ -150,7 +150,51 @@ class StockTakeController extends Controller
             }
         return view('dims.stockTakeViewAssigned.index')->with('viewMappings',$viewMappingsData);
     }
+    public function binvariance(){
 
+		return view ('dims.binVariance.index');
+	}
+    public function getBinVariance(Request $request){    
+        $date = (new \DateTime($request->get('dateFrom')))->format('Y-m-d');
+        $dateTo = (new \DateTime($request->get('dateTo')))->format('Y-m-d');
+        
+        if (config('app.IS_API_BASED')) {
+            $binvariances= $this->apiGetBinVarianceData([
+                'dateFrom'=>$date,
+                'dateTo'=>$dateTo,
+            ]);
+            return response($binvariances);
+        }
+        else{
+            $binvariances = DB::connection('sqlsrv2')
+                ->select('exec sp_API_R_BinVariance ?,?',array($date,$dateTo));
+                return response()->json($binvariances);
+             }
+            
+        }
+
+        public function finalstock(){
+            return view ('dims.finalStock.index');
+        }
+        public function getFinalStock(Request $request){   
+
+        $date = (new \DateTime($request->get('dateFrom')))->format('Y-m-d');
+        $dateTo = (new \DateTime($request->get('dateTo')))->format('Y-m-d');
+        if (config('app.IS_API_BASED')) {
+            $finalstock= $this->apiGetBinFinalStockData([
+                'dateFrom'=>$date,
+                'dateTo'=>$dateTo,
+            ]);
+            return response($finalstock);
+        }
+        else{
+            $finalstock = DB::connection('sqlsrv2')
+                ->select('exec sp_API_R_FinalStock ?,?',array($date,$dateTo));
+                return response()->json($finalstock);
+             }
+              
+            
+        }
     private static function getTabs($tabcount)
     {
         $tabs = '';
