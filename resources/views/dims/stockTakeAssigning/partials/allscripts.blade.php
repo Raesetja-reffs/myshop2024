@@ -174,7 +174,9 @@
                         itemlist: itemListXML,
                     },
                     success: function(data) {
-                        
+                        alert("Stocktake Data Submitted");
+                        window.close();
+
                     }
                 });
             }
