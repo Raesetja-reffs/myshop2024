@@ -559,438 +559,355 @@
             });
         });
 
-        /**
-         * List Top 1000 orders and order them  by date in desc
-         * */
-        $('#orderListing').click(function() {
-            otable = $('#createdOrders').DataTable({
-                "ajax": {
-                    url: '{!! url('/getOrderListing') !!}',
-                    "type": "POST",
-                    data: function(data) {
-                        data.OrderId = $('#orderIdOrderListing').val();
-                        data.InvNo = $('#invoiceNoOrderListing').val();
-                        data.CustCode = $('#customerCodeOrderListing').val();
-                        data.delDate = $('#deliveryDateOrderListing').val();
-                    }
+
+        // New Order Listing Related Code
+        let orderListingCustomers = {!! json_encode($customersDontcareStatus) !!};
+        let orderListingInvoiceNo = null;
+        let orderListingOrderId = null;
+        let orderListingCustomerCode = null;
+        let orderListingDeliveryDate = null;
+        let orderListingSelectedOrderId = null;
+        
+        const btnPDFOrder = $('#btnPDFOrder').dxButton({
+            stylingMode: 'contained',
+            text: '',
+            type: 'default',
+            width: '100%',
+            onClick() {
+                window.open('{!! url('/pdforder') !!}/'+orderListingSelectedOrderId);
+            },
+        }).dxButton("instance");
+
+        const btnDeliveryNote = $('#btnDeliveryNote').dxButton({
+            stylingMode: 'contained',
+            text: '',
+            type: 'default',
+            width: '100%',
+            onClick() {
+                window.open('{!! url('/PDFDelDate') !!}/'+orderListingSelectedOrderId, '_blank');
+            },
+        }).dxButton("instance");
+
+        const gridOrderListing = $("#gridOrderListing").dxDataGrid({
+            dataSource: [], //as json
+            hoverStateEnabled: true,
+            showBorders: true,
+            keyExpr: 'ListKey',
+            focusedRowEnabled: true,
+            focusedRowKey: 1,
+            autoNavigateToFocusedRow: true,
+            filterRow: {
+                visible: true
+            },
+            allowColumnResizing: true,
+            columnAutoWidth: true,
+            paging: {
+                pageSize: 20,
+            },
+            selection: {
+                mode: 'single',
+            },
+            pager: {
+                visible: true,
+                allowedPageSizes: [5, 10, 20, 50, 'all'],
+                showPageSizeSelector: true,
+                showInfo: true,
+                showNavigationButtons: true,
+            },
+            columns: [
+                {
+                    dataField: "ListKey",
+                    caption: "Key", 
+                },{
+                    dataField: "OrderId",
+                    caption: "Order Id", 
+                },{
+                    dataField: "InvoiceNo",
+                    caption: "Invoice No", 
+                },{
+                    dataField: "CustomerPastelCode",
+                    caption: "Customer Code", 
+                },{
+                    dataField: "StoreName",
+                    caption: "Customer Name", 
+                },{
+                    dataField: "LateOrder",
+                    caption: "Order Type", 
+                },{
+                    dataField: "Route",
+                    caption: "Route", 
+                },{
+                    dataField: "DeliveryDate",
+                    caption: "Delivery Date", 
+                },{
+                    dataField: "OrderDate",
+                    caption: "Order Date", 
+                },{
+                    dataField: "OrderNo",
+                    caption: "Reference No", 
+                },{
+                    dataField: "UserName",
+                    caption: "Created By", 
+                },{
+                    dataField: "inclusives",
+                    caption: "Total Inv", 
+                },{
+                    dataField: "Terms",
+                    caption: "Terms", 
+                },{
+                    dataField: "BalanceDue",
+                    caption: "Bal. Due", 
+                },{
+                    dataField: "GPperc",
+                    caption: "GP(%)", 
                 },
-                "processing": false,
-                "serverSide": false,
-                "stateSave": false,
-                "columns": [{
-                        "data": "OrderId",
-                        "bSortable": true
-                    },
-                    {
-                        "data": "InvoiceNo",
-                    },
-                    {
-                        "data": "CustomerPastelCode",
-                    },
-                    {
-                        "data": "StoreName",
-                    },
-                    {
-                        "data": "LateOrder",
-                    },
-                    {
-                        "data": "Route",
-                    },
-                    {
-                        "data": "DeliveryDate",
-                    },
-                    {
-                        "data": "OrderDate",
-                    },
-                    {
-                        "data": "OrderNo",
-                    },
-                    {
-                        "data": "UserName",
-                    },
-                    {
-                        "data": "inclusives",
-                    },
-                    {
-                        "data": "Terms",
-                    },
-                    {
-                        "data": "BalanceDue",
-                    },
-                    {
-                        "data": "GPperc",
-                        render: function(data, type, row, meta) {
-                            // check to see if this is JSON
-                            try {
-                                var jsn = JSON.parse(data);
-                                //console.log(" parsing json" + jsn);
-                            } catch (e) {
-
-                                return jsn.data;
-                            }
-                            return parseFloat(jsn).toFixed(2);
-
-                        }
-                    }
-
-                ],
-                "order": [
-                    [0, "desc"]
-                ],
-                "deferRender": true,
-                "scrollY": "370px",
-                "scrollCollapse": true,
-                searching: true,
-                bPaginate: false,
-                bFilter: false,
-                "LengthChange": true,
-                "info": false,
-                "ordering": true,
-                "initComplete": function() {
-                    this.api().columns().every(function() {
-                        var column = this;
-                        var select = $(
-                                '<select class="form-control form-select"><option value=""></option></select>')
-                            .appendTo($(column.footer()).empty())
-                            .on('change', function() {
-                                var val = $.fn.dataTable.util.escapeRegex(
-                                    $(this).val()
-                                );
-
-                                column
-                                    .search(val ? '^' + val + '$' : '', true,
-                                        false)
-                                    .draw();
-                            });
-
-                        column.data().unique().sort().each(function(d, j) {
-                            select.append('<option value="' + d + '">' + d +
-                                '</option>')
-                        });
-                    });
-                },
-                "bDestroy": true,
-                scrollX: true,
-            });
-
-            $('#createdOrders tbody').on('dblclick', 'tr', function() {
-                var data = otable.row(this).data();
-                $("#evil").dialog("close");
-                console.debug(data.StoreName);
+            ],
+            onRowDblClick: function(e){
                 if ($('#orderId').val().length > 0) {
-                    alert('There is Currently an order Opened Please Close it !');
+                    alert('There is Currently an order, Opened Please Close it!');
                 } else {
+                    orderListingSelectedOrderId = e.data.OrderId;
+                    
+                    btnPDFOrder.option('text', 'View Order PDF')
+                    btnDeliveryNote.option('text', 'View Delivery Note')
 
-                    $('<div id="evil" style="z-index: 60000 !important;"></div>')
-                        .html('<div ><h6><a href={!! url('/pdforder') !!}/' + data.OrderId +
-                            ' target="blank">View PDF (' + data.StoreName + ' - ' + data
-                            .OrderId + ' )</a><br><a href={!! url('/PDFDelDate') !!}/' + data
-                            .OrderId +
-                            ' target="blank" style="background: #43bbc8;text-decoration: underline;">DELIVERY NOTE (' +
-                            data.StoreName + ' - ' + data.OrderId +
-                            ' )</a><br><a href={!! url('/exportorder') !!}/' + data.OrderId +
-                            '  style="text-decoration: underline;">EXCEL Order(' + data
-                            .StoreName + ' - ' + data.OrderId + ' )</a><br></h6></div>')
-                        .dialog({
-
-                            modal: true,
-                            title: 'Do you want to view this order?',
-                            autoOpen: true,
-                            width: '66%',
-                            resizable: false,
-
-                            buttons: {
-                                Yes: {
-                                    text: "Yes",
-                                    class: "btn btn-success btn-sm",
-                                    click: function() {
-                                        $(this).dialog("close");
-                                        $('#dialog').dialog("close");
-                                        if ($('#orderId').val().length < 3) {
-                                            $('#orderId').val(data.OrderId);
-                                            $("#checkOrders").click();
-                                        }
-                                        $("#dialog").dialogExtend("minimize");
-                                        $(this).prop("disable", true);
-                                    }
-                                },
-                                No: {
-                                    text: "No",
-                                    class: "btn btn-primary btn-sm",
-                                    click: function() {
-                                        $(this).dialog("close");
-                                    }
-                                }
-                            },
-                            close: function(event, ui) {
-                                $(this).remove();
-                            }
-                        });
-
-                    $("body").on("click", ".ui-widget-overlay", function() {
-                        $('#evil').dialog("close");
-                    });
-
+                    popupOrderListingSelect.show();
 
                 }
-                //document.location.href = '/operator/'+data['slug'];
-            });
-            $('#createdOrders tbody').on('click', 'tr', function(e) {
-                $("#createdOrders tbody tr").removeClass('row_selectedYellowish');
-                $(this).addClass('row_selectedYellowish');
-            });
-            $('#passFiltersOnOrderListing').on('click change', function(event) {
-                let curObj = $(this);
-                curObj.prop("disabled", true);
-                // otable.draw();
-                otable = $('#createdOrders').DataTable({
-                    "ajax": {
-                        url: '{!! url('/getOrderListing') !!}',
-                        "type": "POST",
-                        data: function(data) {
-                            data.OrderId = $('#orderIdOrderListing').val();
-                            data.InvNo = $('#invoiceNoOrderListing').val();
-                            data.CustCode = $('#customerCodeOrderListing').val();
-                            data.delDate = $('#deliveryDateOrderListing').val();
+            },
+            onFocusedRowChanging(e) {
+                const rowsCount = e.component.getVisibleRows().length;
+                const pageCount = e.component.pageCount();
+                const pageIndex = e.component.pageIndex();
+                const key = e.event && e.event.key;
+
+                if (key && e.prevRowIndex === e.newRowIndex) {
+                    if (e.newRowIndex === rowsCount - 1 && pageIndex < pageCount - 1) {
+                    e.component.pageIndex(pageIndex + 1).done(() => {
+                        e.component.option('focusedRowIndex', 0);
+                    });
+                    } else if (e.newRowIndex === 0 && pageIndex > 0) {
+                    e.component.pageIndex(pageIndex - 1).done(() => {
+                        e.component.option('focusedRowIndex', rowsCount - 1);
+                    });
+                    }
+                }
+            },
+            onKeyDown: function(e) {  
+                if (e.event.key == "Enter") {  
+                    const focusedRowKey = e.component.option("focusedRowKey");  
+                    let rowData = e.component.byKey(focusedRowKey);  
+                    rowData.done(function(data) {  
+                        if ($('#orderId').val().length > 0) {
+                            alert('There is Currently an order, Opened Please Close it!');
+                        } else {
+                            orderListingSelectedOrderId = data.OrderId;
+                            
+                            btnPDFOrder.option('text', 'View Order PDF')
+                            btnDeliveryNote.option('text', 'View Delivery Note')
+
+                            popupOrderListingSelect.show();
+
+                        }
+                    })  
+                }  
+            },
+            onToolbarPreparing: function(e) {
+                let chooseInvoice, chooseOrderId, chooseCustomer, chooseDeliveryDate;
+                e.toolbarOptions.items.push({
+                    location: 'before',
+                    widget: "dxButton",
+                    options: {
+                        icon: "fa fa-refresh",
+                        text: "REFRESH",
+                        type: 'default',
+                        stylingMode: 'contained',
+                        onClick: function(args) {
+                            chooseInvoice.reset();
+                            chooseOrderId.reset();
+                            chooseCustomer.reset();
+                            chooseDeliveryDate.reset();
+                            getOrderListing();
                         },
-                        complete: function(xhr, status) {
-                            curObj.prop("disabled", false);
+                        elementAttr: {
+                            class: "menu-button"
                         },
                     },
-                    "processing": false,
-                    "serverSide": false,
-                    "stateSave": false,
-                    "columns": [{
-                            "data": "OrderId",
-                            "class": "small"
-                        },
-                        {
-                            "data": "InvoiceNo",
-                            "class": "small"
-                        },
-                        {
-                            "data": "CustomerPastelCode",
-                            "class": "small"
-                        },
-                        {
-                            "data": "StoreName",
-                            "class": "small"
-                        },
-                        {
-                            "data": "LateOrder",
-                            "class": "small"
-                        },
-                        {
-                            "data": "Route",
-                            "class": "small"
-                        },
-                        {
-                            "data": "DeliveryDate",
-                            "class": "small",
-                            "bSortable": true
-                        },
-                        {
-                            "data": "OrderDate",
-                            "class": "small"
-                        },
-                        {
-                            "data": "OrderNo",
-                            "class": "small"
-                        },
-                        {
-                            "data": "UserName",
-                            "class": "small"
-                        },
-                        {
-                            "data": "inclusives",
-                            "class": "small"
-                        },
-                        {
-                            "data": "Terms",
-                            "class": "small"
-                        },
-                        {
-                            "data": "BalanceDue",
-                            "class": "small"
-                        },
-                        {
-                            "data": "GPperc",
-                            "class": "small",
-                            render: function(data, type, row, meta) {
-                                // check to see if this is JSON
-                                try {
-                                    var jsn = JSON.parse(data);
-                                    //console.log(" parsing json" + jsn);
-                                } catch (e) {
-
-                                    return jsn.data;
-                                }
-                                return parseFloat(jsn).toFixed(2);
-
-                            }
-                        }
-
-                    ],
-                    "order": [
-                        [6, "desc"]
-                    ],
-                    "deferRender": true,
-                    "scrollY": "389px",
-                    "scrollCollapse": true,
-                    searching: true,
-                    bPaginate: false,
-                    bFilter: false,
-                    "LengthChange": false,
-                    "info": false,
-                    "ordering": true,
-                    "bDestroy": true
                 });
-            });
-            $('#refreshOrderListing').on('click change', function(event) {
-                let curObj = $(this);
-                curObj.prop("disabled", true);
-                // otable.draw();
-                $('#orderIdOrderListing').val('');
-                $('#invoiceNoOrderListing').val('');
-                $('#customerCodeOrderListing').val('');
-                $('#deliveryDateOrderListing').val('');
-                $('#customerDescriptionOrderListing').val('');
-                otable = $('#createdOrders').DataTable({
-                    "ajax": {
-                        url: '{!! url('/getOrderListing') !!}',
-                        "type": "POST",
-                        data: function(data) {
-                            data.OrderId = $('#orderIdOrderListing').val();
-                            data.InvNo = $('#invoiceNoOrderListing').val();
-                            data.CustCode = $('#customerCodeOrderListing').val();
-                            data.delDate = $('#deliveryDateOrderListing').val();
+                e.toolbarOptions.items.push({
+                    location: 'before',
+                    widget: "dxTextBox",
+                    options: {
+                        showClearButton: true,
+                        width: 150,
+                        label: "Invoice No",
+                        onInitialized: function(e) {
+                            chooseInvoice = e.component;
                         },
-                        complete: function(xhr, status) {
-                            curObj.prop("disabled", false);
+                        onValueChanged: function(e) {
+                            orderListingInvoiceNo = e.value;
+                        }
+                    }
+                });
+                e.toolbarOptions.items.push({
+                    location: 'before',
+                    widget: "dxTextBox",
+                    options: {
+                        showClearButton: true,
+                        width: 150,
+                        label: "Order Id",
+                        onInitialized: function(e) {
+                            chooseOrderId = e.component;
+                        },
+                        onValueChanged: function(e) {
+                            orderListingOrderId = e.value;
+                        }
+                    }
+                });
+                e.toolbarOptions.items.push({
+                    location: 'before',
+                    widget: "dxSelectBox",
+                    options: {
+                        dataSource: {
+                            store: orderListingCustomers,
+                            paginate: true,
+                            pageSize: 100
+                        },
+                        valueExpr: 'CustomerPastelCode',
+                        displayExpr: function(item) {
+                            return item && item.CustomerPastelCode + ' - ' + item.StoreName;
+                        },
+                        showClearButton: true,
+                        searchEnabled: true,
+                        width: 300,
+                        placeholder: "Customer",
+                        onInitialized: function(e) {
+                            chooseCustomer = e.component;
+                        },
+                        onValueChanged: function(e) {
+                            orderListingCustomerCode = e.value;
+                        }
+                    }
+                });
+                e.toolbarOptions.items.push({
+                    location: 'before',
+                    widget: "dxDateBox",
+                    options: {
+                        showClearButton: true,
+                        displayFormat: 'yyyy-MM-dd',
+                        width: 150,
+                        label: "Delivery Date",
+                        onInitialized: function(e) {
+                            chooseDeliveryDate = e.component;
+                        },
+                        onValueChanged: function(e) {
+                            orderListingDeliveryDate = e.value;
+                        }
+                    }
+                });
+                e.toolbarOptions.items.push({
+                    location: 'after',
+                    widget: "dxButton",
+                    options: {
+                        icon: "fa fa-search",
+                        text: "SEARCH",
+                        type: 'default',
+                        stylingMode: 'contained',
+                        onClick: function(args) {
+                            getOrderListing();
+                        },
+                        elementAttr: {
+                            class: "menu-button"
                         },
                     },
-                    "order": [
-                        [6, "desc"]
-                    ],
-                    "processing": false,
-                    "serverSide": false,
-                    "stateSave": false,
-                    "columns": [{
-                            "data": "OrderId",
-                            "class": "small"
-                        },
-                        {
-                            "data": "InvoiceNo",
-                            "class": "small"
-                        },
-                        {
-                            "data": "CustomerPastelCode",
-                            "class": "small"
-                        },
-                        {
-                            "data": "StoreName",
-                            "class": "small"
-                        },
-                        {
-                            "data": "LateOrder",
-                            "class": "small"
-                        },
-                        {
-                            "data": "Route",
-                            "class": "small"
-                        },
-                        {
-                            "data": "DeliveryDate",
-                            "class": "small",
-                            "bSortable": true
-                        },
-                        {
-                            "data": "OrderDate",
-                            "class": "small"
-                        },
-                        {
-                            "data": "OrderNo",
-                            "class": "small"
-                        },
-                        {
-                            "data": "UserName",
-                            "class": "small"
-                        },
-                        {
-                            "data": "inclusives",
-                            "class": "small"
-                        },
-                        {
-                            "data": "Terms",
-                            "class": "small"
-                        },
-                        {
-                            "data": "BalanceDue",
-                            "class": "small"
-                        },
-                        {
-                            "data": "GPperc",
-                            "class": "small",
-                            render: function(data, type, row, meta) {
-                                // check to see if this is JSON
-                                try {
-                                    var jsn = JSON.parse(data);
-                                    //console.log(" parsing json" + jsn);
-                                } catch (e) {
-
-                                    return jsn.data;
-                                }
-                                return parseFloat(jsn).toFixed(2);
-
-                            }
-                        }
-
-
-                    ],
-
-                    "deferRender": true,
-                    "scrollY": "389px",
-                    "scrollCollapse": true,
-                    searching: true,
-                    bPaginate: false,
-                    bFilter: false,
-                    "LengthChange": false,
-                    "info": false,
-                    "ordering": true,
-                    "bDestroy": true
                 });
-            });
-            $('#dialog').show();
-            $("#dialog").dialog({
-                height: 700,
-                width: 1350,
-                containment: false
-            }).dialogExtend({
-                "closable": true, // enable/disable close button
-                "maximizable": false, // enable/disable maximize button
-                "minimizable": true, // enable/disable minimize button
-                "collapsable": true, // enable/disable collapse button
-                "dblclick": "collapse", // set action on double click. false, 'maximize', 'minimize', 'collapse'
-                "titlebar": "transparent", // false, 'none', 'transparent'
-                "minimizeLocation": "right", // sets alignment of minimized dialogues
-                "icons": { // jQuery UI icon class
-                    "close": "ui-icon-circle-close",
-                    "maximize": "ui-icon-circle-plus",
-                    "minimize": "ui-icon-circle-minus",
-                    "collapse": "ui-icon-triangle-1-s",
-                    "restore": "ui-icon-bullet"
+            }
+        }).dxDataGrid("instance");
+
+        const popupOrderListing = $("#popupOrderListing").dxPopup({
+            showTitle: true,
+            title: 'Order Listing',
+            onHidden: function(e) {
+                // selectPushed.option('value', null);
+                // selectProhibited.option('value', null);
+            },
+            hideOnOutsideClick: false,
+            showCloseButton: true,
+            width: '80vw',
+            height: '80vh',
+        }).dxPopup("instance");
+
+        const popupOrderListingSelect = $("#popupOrderListingSelect").dxPopup({
+            showTitle: true,
+            title: 'Do you want to view this order?',
+            hideOnOutsideClick: false,
+            showCloseButton: true,
+            width: '500px',
+            height: 'auto',
+            toolbarItems: [{
+                    widget: 'dxButton',
+                    toolbar: 'bottom',
+                    location: 'after',
+                    options: {
+                        type: 'success',
+                        stylingMode: 'contained',
+                        icon: "fa fa-plus-circle",
+                        text: "Yes",
+                        onClick: function(args) {
+                            if ($('#orderId').val().length < 3) {
+                                $('#orderId').val(orderListingSelectedOrderId);
+                                $("#checkOrders").click();
+                            }
+                            popupOrderListingSelect.hide();
+                            popupOrderListing.hide();
+                        },
+                    },
+                },{
+                    widget: 'dxButton',
+                    toolbar: 'bottom',
+                    location: 'after',
+                    options: {
+                        type: 'danger',
+                        stylingMode: 'contained',
+                        icon: "fa fa-plus-circle",
+                        text: "No",
+                        onClick: function(args) {
+                            popupOrderListingSelect.hide();
+                        },
+                    },
                 },
-                "load": function(evt, dlg) {}, // event
-                "beforeCollapse": function(evt, dlg) {}, // event
-                "beforeMaximize": function(evt, dlg) {}, // event
-                "beforeMinimize": function(evt, dlg) {}, // event
-                "beforeRestore": function(evt, dlg) {}, // event
-                "collapse": function(evt, dlg) {}, // event
-                "maximize": function(evt, dlg) {}, // event
-                "minimize": function(evt, dlg) {}, // event
-                "restore": function(evt, dlg) {} // event
-            });
+            ],
+        }).dxPopup("instance");
+
+        $('#orderListing').click(function() {
+            popupOrderListing.show();
+            getOrderListing();
         });
+
+        function getOrderListing(){
+            $.ajax({
+                url: '{!! url('/getOrderListing') !!}',
+                type: "POST",
+                data: {
+                    OrderId: orderListingOrderId,
+                    InvNo: orderListingInvoiceNo,
+                    CustCode: orderListingCustomerCode,
+                    delDate: formatDate(orderListingDeliveryDate),
+                },
+                success: function(data) {
+
+                    data.data.forEach((item, index) => {
+                        item.ListKey = index + 1;
+                    });
+
+                    gridOrderListing.option('dataSource', data.data);
+                    gridOrderListing.refresh();
+                }
+            });
+        }
+
+        // New Order Listing Related Code
+
         /**
          * General Plrice check for any customer on a product
          * */

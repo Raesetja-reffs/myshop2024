@@ -941,6 +941,9 @@ Route::get('qtyadjustmentsstagingimoveit', [WareHouseManagementController::class
 Route::get('qtyadjustmentspicking', [WareHouseManagementController::class,'qtyadjustmentspicking']);
 Route::get('jsonadjustmentstagingtoimoveit/{from}/{to}', [WareHouseManagementController::class,'jsonadjustmentstagingtoimoveit']);
 Route::get('jsonadjustmentspicking/{from}/{to}', [WareHouseManagementController::class,'jsonadjustmentspicking']);
+Route::get('getPushedAndProhibitedCustomers', [WareHouseManagementController::class,'getPushedAndProhibitedCustomers']);
+Route::post('pushAndProhibitProductForCustomers', [WareHouseManagementController::class,'pushAndProhibitProductForCustomers']);
+
 
 //WAREHOUSECONTROLLER CONTROLLER STARTS HERE !!!
 

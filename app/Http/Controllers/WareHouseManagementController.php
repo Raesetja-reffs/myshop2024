@@ -3,7 +3,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 use App\Traits\WareHouseManagementControllerTrait;
 
 class WareHouseManagementController extends Controller
@@ -57,6 +57,45 @@ ORDER BY [GROUP 2],[GROUP 3] ,Description_1 ");
        // dd($driver);
         return response()->json($driver);
     }
+
+    public function getPushedAndProhibitedCustomers(Request $request)
+    {
+        $ProductId = $request->get("ProductId");
+        $Type = $request->get("Type");
+
+        if (config('app.IS_API_BASED')) {
+            $result = $this->apiGetPushedAndProhibitedCustomers([
+                'ProductId' => $ProductId,
+                'Type' => $Type,
+            ]);
+        }else{
+            $result = DB::connection('sqlsrv3')->select("EXEC sp_API_R_PushedProhibitedCustomers $ProductId, '$Type'");
+        }
+        
+        return response()->json($result);
+    }
+
+    public function pushAndProhibitProductForCustomers(Request $request)
+    {
+        $ProductId = $request->get("ProductId");
+        $PushedList = $request->get("PushedList");
+        $ProhibitedList = $request->get("ProhibitedList");
+
+        if (config('app.IS_API_BASED')) {
+            $result = $this->apiPushAndProhibitProductForCustomers([
+                'ProductId' => $ProductId,
+                'PushedList' => $PushedList,
+                'ProhibitedList' => $ProhibitedList,
+            ]);
+        }else{
+            $UserId = Auth::user()->UserID;
+            // dd("EXEC sp_API_CU_PushAndProhibitCustomers $ProductId, '$PushedList', '$ProhibitedList', $UserId");
+            $result = DB::connection('sqlsrv3')->select("EXEC sp_API_CU_PushAndProhibitCustomers $ProductId, '$PushedList', '$ProhibitedList', $UserId");
+        }
+        
+        return response()->json($result);
+    }
+
     public function reprintingInvoicesPage(){
         $deliverTypes = DB::connection('sqlsrv3')->table('tblOrderTypes')->select('OrderTypeId','OrderType')->get();
         $getRoutes =  DB::connection('sqlsrv3')->table('tblRoutes')->select('Routeid', 'Route')->where('NotInUse','0')->orderBy('Route', 'asc')->get();
@@ -113,7 +152,7 @@ ORDER BY [GROUP 2],[GROUP 3] ,Description_1 ");
                 ->select('Select * from tblPickingTeams');
         }
 
-        return view('dims/mass_product')->with('pickingTeams', $pickingTeams);
+        return view('dims.products.index')->with('pickingTeams', $pickingTeams);
     }
 
     public function getProductgriddata(){
