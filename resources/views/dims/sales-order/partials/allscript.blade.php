@@ -561,12 +561,14 @@
 
 
         // New Order Listing Related Code
-        let orderListingCustomers = {!! json_encode($customersDontcareStatus) !!};
+        let orderListingCustomers;
         let orderListingInvoiceNo = null;
         let orderListingOrderId = null;
         let orderListingCustomerCode = null;
         let orderListingDeliveryDate = null;
         let orderListingSelectedOrderId = null;
+
+        let chooseInvoice, chooseOrderId, chooseCustomer, chooseDeliveryDate;
         
         const btnPDFOrder = $('#btnPDFOrder').dxButton({
             stylingMode: 'contained',
@@ -713,7 +715,6 @@
                 }  
             },
             onToolbarPreparing: function(e) {
-                let chooseInvoice, chooseOrderId, chooseCustomer, chooseDeliveryDate;
                 e.toolbarOptions.items.push({
                     location: 'before',
                     widget: "dxButton",
@@ -882,6 +883,7 @@
         $('#orderListing').click(function() {
             popupOrderListing.show();
             getOrderListing();
+            getOrderListingCustomers();
         });
 
         function getOrderListing(){
@@ -904,6 +906,25 @@
                     gridOrderListing.refresh();
                 }
             });
+        }
+
+        function getOrderListingCustomers(){
+            $.ajax({
+                url: '{{  route('sales-order.get-sales-order-customers') }}',
+                type: "GET",
+                success: function(data) {
+
+                    orderListingCustomers = {
+                        store: data,
+                        paginate: true,
+                        pageSize: 100
+                    };
+
+                    chooseCustomer.option('dataSource', orderListingCustomers);
+                }
+            });
+            
+            
         }
 
         // New Order Listing Related Code
