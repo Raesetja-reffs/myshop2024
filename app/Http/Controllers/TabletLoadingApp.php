@@ -223,7 +223,7 @@ class TabletLoadingApp extends Controller
                 'deliveryDate' => $deliveryDate,
                 'dateTo' => $dateTo,
                 'OrderType' => $OrderType,
-                'status' => $status
+                'OrderStatus' => $status
             ]);
         } else {
             $stops = DB::connection('sqlsrv3')->select("EXEC sp_API_R_getRoutePlannerStops '$deliveryDate', '$dateTo', $OrderType, '$routeId', '$status'");
