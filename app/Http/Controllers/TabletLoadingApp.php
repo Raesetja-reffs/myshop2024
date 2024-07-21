@@ -284,8 +284,14 @@ class TabletLoadingApp extends Controller
 
         foreach ($ordersToStop as $value) {
             if (strlen($value['orderId']) > 1) {
-                
-                $sequence = DB::connection('sqlsrv4')->select("EXEC sp_API_U_SequenceStops " . $value['orderId'] . "," . $value['index']);
+                if (config('app.IS_API_BASED')) {
+                    $sequence = $this->apiSequenceStops([
+                        'orderId' => $value['orderId'],
+                        'indexNum' => $value['index'],
+                    ]);
+                } else {
+                    $sequence = DB::connection('sqlsrv4')->select("EXEC sp_API_U_SequenceStops " . $value['orderId'] . "," . $value['index']);
+                }
                 $array[$i] = $sequence;
             }
             $i++;
