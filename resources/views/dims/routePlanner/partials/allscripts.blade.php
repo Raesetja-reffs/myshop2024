@@ -195,7 +195,6 @@
             }, {
                 dataField: "DeliverySequence",
                 caption: "Seq",
-                sortOrder: "asc"
             }, {
                 dataField: "Mass",
                 caption: "Mass",
