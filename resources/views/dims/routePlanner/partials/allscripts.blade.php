@@ -1,6 +1,8 @@
 <script>
     var orderTypes = {!! json_encode($orderTypes) !!};
     var routes = {!! json_encode($routes) !!};
+    
+    orderTypes.unshift({ OrderTypeId: "-99", OrderType: "All" });
 
     var statuses = [{
         id: "3",
@@ -33,7 +35,7 @@
 
         const selectOrderType = $("#selectOrderType").dxSelectBox({
             dataSource: orderTypes,
-            value: '1',
+            value: '-99',
             searchEnabled: true,
             valueExpr: 'OrderTypeId',
             displayExpr: 'OrderType',
