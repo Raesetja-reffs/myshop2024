@@ -576,7 +576,7 @@
             });
 
             $.ajax({
-                url: '{!! url('/sequencingTheStops') !!}',
+                url: '{!! url('/sequenceStops') !!}',
                 type: "POST",
                 data: {
                     ordersToStop: sortedSequence

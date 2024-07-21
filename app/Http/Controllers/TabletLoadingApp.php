@@ -275,8 +275,6 @@ class TabletLoadingApp extends Controller
 
     }
 
-
-    // TODO set up api for this
     public function sequenceStops(Request $request)
     {
         $array = array();
