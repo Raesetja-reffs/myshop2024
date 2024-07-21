@@ -95,13 +95,13 @@
                             <div id="btnNotifyPickers"></div>
                         </div>
                     </div>
-                    @can('isAllowCompanyPermission', ['App\Models\CompanyPermission', 'isallowrouteoptomo'])
+                    {{-- @can('isAllowCompanyPermission', ['App\Models\CompanyPermission', 'isallowrouteoptomo']) --}}
                         <div class="field mb-2">
                             <div class="value">
                                 <div id="btnRouteOptimization"></div>
                             </div>
                         </div>
-                    @endcan
+                    {{-- @endcan --}}
 
                     <div class="field mb-2">
                         <div class="value">
