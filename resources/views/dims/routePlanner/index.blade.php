@@ -23,14 +23,6 @@
         <!--end::Item-->
     </x-slot>
 
-    <?php
-    if (Auth::guest()) {
-    } else {
-        $v = new \App\Http\Controllers\SalesForm();
-        $routeplanner = $v->getThings(Auth::user()->GroupId, 'Route Planner Particulars');
-        $logistic = $v->getThings(Auth::user()->GroupId, 'Logistic Planner');
-    }
-    ?>
     <div class="row p-2">
         <div class="row h-100">
             <div class="col-10">
@@ -82,7 +74,7 @@
                         <div id="btnGetStops"></div>
                     </div>
                 </div>
-                @if($routeplanner !="1")
+                {{-- @if($routeplanner !="1") --}}
                     <div class="field mb-2">
                         <div class="value">
                             <div id="btnMoveOrders"></div>
@@ -136,7 +128,7 @@
                             <div id="btnAssignTruck"></div>
                         </div>
                     </div>
-                @endif
+                {{-- @endif --}}
             </div>
         </div>
     </div>
