@@ -30,6 +30,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CallList;
 use App\Http\Controllers\WareHouseController;
 use App\Http\Controllers\StockTakeController;
+use App\Http\Controllers\RouteOptimizationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -401,7 +402,6 @@ Route::post('deselectIsPressed', [TabletLoadingApp::class,'deselectIsPressed']);
 Route::get('truckControlId',[TabletLoadingApp::class,'truckControlId']);
 Route::get('routePlannerPrintPreview/{date}/{dateTo}/{ordertype}/{route}/{status}',[TabletLoadingApp::class,'routePlannerPrintPreview']);
 Route::post('moveTheOrder',[TabletLoadingApp::class,'moveTheOrder']);
-Route::post('moveTheOrderArray', [TabletLoadingApp::class,'moveTheOrderArray']);
 Route::get('truckControlFromDate',[TabletLoadingApp::class,'truckControlFromDate']);
 Route::get('amalgamation',[TabletLoadingApp::class,'amalgamation']);
 Route::get('retrieve/{del}/{route}/{ordertype}',[TabletLoadingApp::class,'retrieve']);
@@ -411,7 +411,6 @@ Route::get('bulkPickingPerUserView', [TabletLoadingApp::class,'bulkPickingPerUse
 Route::get('designPickingInformationPerTeam/{del}/{route}/{ordertype}', [TabletLoadingApp::class,'designPickingInformationPerTeam']);
 Route::get('truckControlSheetDetails', [TabletLoadingApp::class,'truckControlSheetDetails']);
 Route::post('stopsUnmapped', [TabletLoadingApp::class,'stopsUnmapped']);
-Route::post('getRouteDataMultiSelected', [TabletLoadingApp::class,'getRouteDataMultiSelected']);
 
 Route::get('routePlannerExt', [TabletLoadingApp::class,'routePlannerExt']);
 Route::get('invoicesnotprinting', [TabletLoadingApp::class,'invoicesnotprinting']);
@@ -440,7 +439,6 @@ Route::get('getRouteDifference',[TabletLoadingApp::class,'getRouteDifference']);
 Route::get('ordersNotONDefaultRoutes', [TabletLoadingApp::class,'ordersNotONDefaultRoutes']);
 Route::get('productontheminiorderform/{orderId}',[TabletLoadingApp::class,'spTabletLoading']);
 Route::get('updateTableLoadingAppProducts', [TabletLoadingApp::class,'updateTableLoadingAppProducts']);
-Route::post('sequencingTheStops', [TabletLoadingApp::class,'sequencingTheStops']);
 Route::post('orderDetailsWithDeliveryAddress', [TabletLoadingApp::class,'orderDetailsWithDeliveryAddress']);
 Route::post('orderDetailsWithDeliveryAddressOnOrder',[TabletLoadingApp::class,'orderDetailsWithDeliveryAddressOnOrder'] );
 Route::post('forceinvoicetoprint', [TabletLoadingApp::class,'forceinvoicetoprint']);
@@ -458,6 +456,12 @@ Route::get('pickingslipsbydep',[TabletLoadingApp::class,'pickingslipsbydep']);
 Route::post('getPickingSlipbyDeptInfo', [TabletLoadingApp::class,'getPickingSlipbyDeptInfo']);
 Route::post('printselectedCustomers', [TabletLoadingApp::class,'printselectedCustomers']);
 Route::get('routePlannerExtParamdrivers/{date}/{ordertype}/{route}/{status}', [TabletLoadingApp::class,'routePlannerExtParamDrivers']);
+
+Route::get('routeplanner',[TabletLoadingApp::class,'routePlanner']);
+Route::post('getRoutePlannerStops', [TabletLoadingApp::class,'getRoutePlannerStops']);
+Route::get('getRouteMassAndValueOnPlanner',[TabletLoadingApp::class,'getRouteMassAndValueOnPlanner']);
+Route::post('moveOrder', [TabletLoadingApp::class,'moveOrder']);
+Route::post('sequenceStops', [TabletLoadingApp::class,'sequenceStops']);
 
 //TABLET LOADING APP ENDS HERE !!!
 
@@ -986,11 +990,6 @@ Route::group(['middleware' => 'auth'], function() {
     Route::get('saveinfocardwalking', [LayaltyProgramController::class,'saveinfocardWalking']);
     Route::get('verifyemail', [LayaltyProgramController::class,'verifyemail']);
     Route::get('checkifIdexists',[LayaltyProgramController::class,'checkifIdexists'] );
-    Route::get('routeplanner',[TabletLoadingApp::class,'routeplanner']);
-    Route::get('getRouteMassOnPlanner',[TabletLoadingApp::class,'getRouteMassOnPlanner']);
-
-
-
 });
 //KERSTON SPECIAL CONTROLLER STARTS HERE !!!
 Route::group(['middleware' => 'auth'], function() {
@@ -1076,3 +1075,12 @@ Route::get('sendfcm',[ApisController::class,'sendFCMMessage'] );
 
 
 Route::get('regTestJsonCall',[TestControllerReg::class,'regTestJsonCall'] );
+
+
+/***********************Route Optimization**********************************************************************/
+Route::group(['middleware' => 'auth'], function() {
+
+    Route::get('routeOptimization', [RouteOptimizationController::class,'routeOptimization']);
+    Route::get('getRoutesToOptimize', [RouteOptimizationController::class,'getRoutesToOptimize']);
+
+});

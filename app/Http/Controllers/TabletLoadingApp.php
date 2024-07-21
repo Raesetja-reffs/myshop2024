@@ -12,11 +12,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Client;
-//use App\Http\Co
-use Auth;
+use Illuminate\Support\Facades\Auth;
+use App\Traits\TabletLoadingAppTrait;
 
 class TabletLoadingApp extends Controller
 {
+    use TabletLoadingAppTrait;
 
     public function getRouteData(Request $request)
     {
@@ -46,37 +47,7 @@ class TabletLoadingApp extends Controller
         return response()->json($getInvoicesOnRouteOrderDetailsOnOrder);
     }
 
-    public function sequencingTheStops(Request $request)
-    {
-        $array = array();
-        $ordersToStop = $request->get('ordersToStop');
 
-        /*$delivDate =(new \DateTime($request->get('delivDate')))->format('Y-m-d H:m:s');
-        $createdDate = (new \DateTime($request->get('createdDate')))->format('Y-m-d H:m:s');
-        $truckId = $request->get('truckId');
-        $assistant = $request->get('assistant');
-        $driverId = $request->get('driverId');
-        $route = $request->get('route');*/
-
-        $i = 0;
-        /*   $insertIntoTruckControlSheet = DB::connection('sqlsrv3')
-               ->select("EXEC spInsertIntoTruckControlSheet " . $truckId . "," . $assistant.",".$driverId.",".$route.",'".$createdDate."','".$delivDate."'");
-   */
-
-        foreach ($ordersToStop as $value) {
-            if (strlen($value['orderId']) > 1) {
-                $sequence = DB::connection('sqlsrv4')
-                    ->select("EXEC spUpdateOrderDeliverySequence " . $value['orderId'] . "," . $value['index']);
-                $array[$i] = $sequence;
-                // echo "EXEC spUpdateOrderDeliverySequence " . $value['orderId'] . "," . $value['index'];
-            }
-            $i++;
-
-        }
-        $outPut['count'] = count($array);
-
-        return $outPut;
-    }
 
     public function stopsUnmapped(Request $request)
     {
@@ -114,34 +85,6 @@ class TabletLoadingApp extends Controller
         $outPut['unsequenced'] = count($array);
         $outPut['truckId'] = $truckControlKeeper;
         return $outPut;
-    }
-
-    public function getRouteDataMultiSelected(Request $request)
-    {
-        $routeId = $request->get('routeId');
-        // dd($routeId);
-        $routeId = implode(", ", $routeId);
-        $deliveryDate = $request->get('deliveryDate');
-        $dateTo = $request->get('dateTo');
-
-        $OrderType = $request->get('OrderType');
-        $status = $request->get('status');
-
-        $getInvoicesOnRoute = DB::connection('sqlsrv3')
-            ->select("EXEC spGetStopsToSort '" . $deliveryDate . "','".$dateTo."'," . $OrderType . ",'" . $routeId."','".$status."'" );
-        // echo "EXEC spGetStopsToSort '" . $deliveryDate . "'," . $OrderType . "," . $routeId.",'".$status."'";
-
-        return response()->json($getInvoicesOnRoute);
-        //old
-        /*$routeId = $request->get('routeId');
-        $routeId = implode(", ", $routeId);
-        $deliveryDate = $request->get('deliveryDate');
-        $orderIDs = DB::connection('sqlsrv4')->table('tblOrderTypes')->select('OrderTypeId')->get();
-        $OrderType = $request->get('OrderType');
-        $status = $request->get('status');
-        $getInvoicesOnRoute = DB::connection('sqlsrv4')
-            ->select("EXEC spGetStopsToSort '" . $deliveryDate . "'," . $OrderType . ",'" . $routeId . "','" . $status . "'");
-        return response()->json($getInvoicesOnRoute);*/
     }
 
     public function spTabletLoading($orderId)
@@ -249,21 +192,113 @@ class TabletLoadingApp extends Controller
         return response()->json($getSearchTheInoice);
     }
 
-    public function routeplanner()
+    public function routePlanner()
     {
-        $GroupId = Auth::user()->GroupId;
-        $things = (new SalesForm())->getThings($GroupId, 'Allow Call Logger');
-        $deliverTypes = DB::connection('sqlsrv4')->table('tblOrderTypes')->select('OrderTypeId', 'OrderType')->get();
-        $trucks = DB::connection('sqlsrv4')->table('tblTrucks')->select('TruckName', 'TruckId', 'RegNo')->orderBy('TruckName', 'ASC')->get();
-        $tblDrivers = DB::connection('sqlsrv4')->table('tblDrivers')->select('DriverName', 'DriverId')->orderBy('DriverName', 'ASC')->get();
-        $getDeliveryDates = DB::connection('sqlsrv4')->table('vwDistinctDelvDates')->select('DeliveryDate')->orderBy('DeliveryDate', 'desc')->get();
-        //$truckControlIds = DB::connection('sqlsrv3')->table('viewRecentTruckControlIds')->select('TruckControlId','Route')->orderBy('TruckControlId', 'desc')->get();
-        $getRoutes = DB::connection('sqlsrv4')->table('tblRoutes')->select('Routeid', 'Route')->where('NotInUse', '0')->orderBy('Route', 'asc')->get();
+        if (config('app.IS_API_BASED')) {
+            
+            $routes = $this->apiGetRoutes();
+            $orderTypes = $this->apiGetOrderTypes();
+        } else {
+            $routes = DB::connection('sqlsrv4')->select("EXEC sp_API_GetRoutes 0");
+            $orderTypes = DB::connection('sqlsrv4')->select("EXEC sp_API_GetOrderTypes 0");
+        }   
 
-        return view('dims/route_planner')->with('routes', $getRoutes)->with('trucks', $trucks)->with('drivers', $tblDrivers)
-            ->with('orderTypes', $deliverTypes)->with('delivDates', $getDeliveryDates)->with('things', $things);
+        return view('dims.routePlanner.index')
+            ->with('routes', $routes)
+            ->with('orderTypes', $orderTypes);
     }
 
+    public function getRoutePlannerStops(Request $request)
+    {
+        $routeId = $request->get('routeId');
+        $routeId = implode(", ", $routeId);
+        $deliveryDate = $request->get('deliveryDate');
+        $dateTo = $request->get('dateTo');
+        $OrderType = $request->get('OrderType');
+        $status = $request->get('status');
+
+        if (config('app.IS_API_BASED')) {
+            $stops = $this->apiGetRoutePlannerStops([
+                'routeId' => $routeId,
+                'deliveryDate' => $deliveryDate,
+                'dateTo' => $dateTo,
+                'OrderType' => $OrderType,
+                'status' => $status
+            ]);
+        } else {
+            $stops = DB::connection('sqlsrv3')->select("EXEC sp_API_R_getRoutePlannerStops '$deliveryDate', '$dateTo', $OrderType, '$routeId', '$status'");
+        } 
+
+        return response()->json($stops);
+    }
+
+    public function getRouteMassAndValueOnPlanner(Request $request)
+    {
+        $dateFrom = $request->get("dateFrom");
+        $dateTo = $request->get("dateTo");
+
+        if (config('app.IS_API_BASED')) {
+            $result = $this->apiGetRouteMassAndValueOnPlanner([
+                'dateFrom' => $dateFrom,
+                'dateTo' => $dateTo,
+            ]);
+        } else {
+            $result =DB::connection('sqlsrv3')->select("EXEC sp_API_R_GetRouteMassAndValueOnPlanner '$dateFrom','$dateTo'");
+        } 
+
+        return response()->json($result);
+    }
+
+    public function moveOrder(Request $request)
+    {
+        $orderId = $request->get('orderId');
+        $routeId = $request->get('routeId');
+        $orderTypeId = $request->get('orderTypeId');
+        $delivDate= (new \DateTime($request->get('delivDate')))->format('Y-m-d');
+
+        foreach ($orderId as $value) {
+
+            if (config('app.IS_API_BASED')) {
+                $this->apiMoveOrder([
+                    'routeId' => $routeId,
+                    'orderTypeId' => $orderTypeId,
+                    'delivDate' => $delivDate,
+                    'orderId' => $value['orderId'],
+                ]);
+            } else {
+                $userid = Auth::user()->UserID;
+                $userName = Auth::user()->UserName;
+
+                DB::connection('sqlsrv3')->statement("EXEC sp_API_U_MoveOrder " . $value['orderId'].",'".$delivDate."',".$routeId.",".$orderTypeId.",".$userid.",'".$userName."'");
+            }
+        }
+
+    }
+
+
+    // TODO set up api for this
+    public function sequenceStops(Request $request)
+    {
+        $array = array();
+        $ordersToStop = $request->get('ordersToStop');
+
+        $i = 0;
+
+        foreach ($ordersToStop as $value) {
+            if (strlen($value['orderId']) > 1) {
+                
+                $sequence = DB::connection('sqlsrv4')->select("EXEC sp_API_U_SequenceStops " . $value['orderId'] . "," . $value['index']);
+                $array[$i] = $sequence;
+            }
+            $i++;
+
+        }
+        $outPut['count'] = count($array);
+
+        return $outPut;
+    }
+
+    // TODO find out if we can delete these old route planners
     public function routePlannerExt()
     {
         $deliverTypes = DB::connection('sqlsrv4')->table('tblOrderTypes')->select('OrderTypeId', 'OrderType')->get();
@@ -300,6 +335,7 @@ class TabletLoadingApp extends Controller
             ->with('status',$status)
             ->with('delivDates',$getDeliveryDates);
     }
+    // TODO find out if we can delete these old route planners
 
     public function getRouteDifference(Request $request)
     {
@@ -462,29 +498,6 @@ class TabletLoadingApp extends Controller
 
         //management console
         echo $orderId;
-    }
-
-    public function moveTheOrderArray(Request $request)
-    {
-
-        $userid = \Illuminate\Support\Facades\Auth::user()->UserID;
-        $userName = \Illuminate\Support\Facades\Auth::user()->UserName;
-
-        $orderId = $request->get('orderId');
-        $routeId = $request->get('routeId');
-        $orderTypeId = $request->get('orderTypeId');
-        $delivDate= (new \DateTime($request->get('delivDate')))->format('Y-m-d');
-//
-        foreach ($orderId as $value) {
-
-            /*DB::connection('sqlsrv3')->table('tblOrders')
-                ->where('OrderId', $value['orderId'])->
-                update(['LateOrder' => $orderTypeId, 'RouteId' => $routeId,
-                    'DeliverySequence' => 0,'DeliveryDate'=>$delivDate]);*/
-            $getTruckControlSheetDetails = DB::connection('sqlsrv3')
-                ->statement("EXEC spMoveOrder " . $value['orderId'].",'".$delivDate."',".$routeId.",".$orderTypeId.",".$userid.",'".$userName."'");
-        }
-
     }
 
     public function sequenceOrdersByMode(Request $request)
@@ -1036,6 +1049,17 @@ and  cast(dteDeliveryDate as date) = cast(tdd.DeliveryDate as date)
             ->with('status',$status)
             ->with('delivDates',$getDeliveryDates);
     }
+
+    function selectInvoicesToPrint($deliveryDate, $dateTo, $OrderType, $routeId, $status){
+        $invoices = DB::connection('sqlsrv3')
+            ->select("EXEC spGetStopsToInvoice '" . $deliveryDate . "','".$dateTo."'," . $OrderType . ",'" . $routeId."','".$status."'" );
+
+        // dd($invoices);
+
+        return view('dims.selectInvoicesToPrint')
+            ->with('invoices',$invoices);
+    }
+
     public function printLoadingSheet($routingId)
     {
 
@@ -1323,28 +1347,18 @@ EOD;
                 array($routeid,$ordertypeid,$deliverydate,$deptype)
             );
         return response()->json($getlist);
-    }public function printselectedCustomers(Request $request){
-    $Orderid = $request->get("Orderid");
-    $deptId = $request->get("deptId");
-    $routeid = $request->get("routeid");
-    $ordertypeid = $request->get("ordertypeid");
-    $deliverydate =(new \DateTime($request->get('deliverydate')))->format('Y-m-d') ;
-    $orderheaderxml = $this->toxml($Orderid, "xml", array("result"));
+    }
+    public function printselectedCustomers(Request $request){
+        $Orderid = $request->get("Orderid");
+        $deptId = $request->get("deptId");
+        $routeid = $request->get("routeid");
+        $ordertypeid = $request->get("ordertypeid");
+        $deliverydate =(new \DateTime($request->get('deliverydate')))->format('Y-m-d') ;
+        $orderheaderxml = $this->toxml($Orderid, "xml", array("result"));
 
-    $create =DB::connection('sqlsrv3')
-        ->select('exec spCreatePickingSlips ?,?,?,?,?',
-            array($orderheaderxml,$routeid,$ordertypeid,$deliverydate,$deptId)
-        );
-}
-public function getRouteMassOnPlanner(Request $request)
-{
-    $dateFrom = $request->get("dateFrom");
-    $dateTo = $request->get("dateTo");
-    $valandmass =DB::connection('sqlsrv3')
-        ->select('exec spGetRouteMassOnPlanner ?,?',
-            array($dateFrom,$dateTo)
-        );
-    return response()->json($valandmass);
-}
-
+        $create =DB::connection('sqlsrv3')
+            ->select('exec spCreatePickingSlips ?,?,?,?,?',
+                array($orderheaderxml,$routeid,$ordertypeid,$deliverydate,$deptId)
+            );
+    }
 }
