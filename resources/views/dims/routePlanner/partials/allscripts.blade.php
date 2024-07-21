@@ -13,9 +13,6 @@
         value: "Invoiced",
     }, ];
 
-    var computerName = '<?php echo gethostname(); ?>';
-    var loggedIn = '{{ auth()->check() ? 'true' : 'false' }}';
-
     let orderMass = 0;
     let orderVal = 0;
 
