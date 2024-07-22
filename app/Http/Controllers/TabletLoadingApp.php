@@ -726,6 +726,10 @@ class TabletLoadingApp extends Controller
                 return view('bulkpicking/bulkpickingperformanceseafood')
                     ->with('performance', $livebulk);
                 break;
+            case "Linx Systems":
+                return view('bulkpicking/bulkpickingperformancedemo')
+                    ->with('performance', $livebulk);
+                break;
             case "Foodgistics":
                 return view('bulkpicking/bulkpickingperformancefoodgistics')
                     ->with('performance', $livebulk);
