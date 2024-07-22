@@ -1082,5 +1082,7 @@ Route::group(['middleware' => 'auth'], function() {
 
     Route::get('routeOptimization', [RouteOptimizationController::class,'routeOptimization']);
     Route::get('getRoutesToOptimize', [RouteOptimizationController::class,'getRoutesToOptimize']);
+    Route::post('optimizeStops', [RouteOptimizationController::class,'optimizeStops']);
+    Route::post('updateCustomerGeoCoordinates', [RouteOptimizationController::class,'updateCustomerGeoCoordinates']);
 
 });

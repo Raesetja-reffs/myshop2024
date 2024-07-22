@@ -356,12 +356,11 @@
         const btnRouteOptimization = $('#btnRouteOptimization').dxButton({
             stylingMode: 'contained',
             height: '50px',
-            visible: false,
             text: 'Route Optimization',
             type: 'default',
             width: '100%',
             onClick() {
-                console.log('1');
+                window.open('{!! url('/routeOptimization') !!}', '_blank');
             },
         }).dxButton("instance");
 
