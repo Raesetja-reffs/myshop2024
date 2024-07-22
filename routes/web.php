@@ -1078,7 +1078,7 @@ Route::get('regTestJsonCall',[TestControllerReg::class,'regTestJsonCall'] );
 
 
 /***********************Route Optimization**********************************************************************/
-Route::group(['middleware' => 'auth'], function() {
+Route::group(['middleware' => 'auth:web,central_api_user'], function() {
 
     Route::get('routeOptimization', [RouteOptimizationController::class,'routeOptimization']);
     Route::get('getRoutesToOptimize', [RouteOptimizationController::class,'getRoutesToOptimize']);

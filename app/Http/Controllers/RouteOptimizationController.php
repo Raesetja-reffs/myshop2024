@@ -11,7 +11,7 @@ use App\Traits\RouteOptimizationTrait;
 class RouteOptimizationController extends Controller
 {
     use RouteOptimizationTrait;
-    
+
     public $companyLat;
     public $companyLng;
     public $companyName;
@@ -19,13 +19,17 @@ class RouteOptimizationController extends Controller
     public $hasRO;
 
     public function __construct(){
-        // Retrieve values from environment variables
-        // we can handle this here if it is multi-company
-        $this->companyLat = $this->getCompanyThings('CompanyLatitude', '-29.776056128512103', 'String')[0]->thing;
-        $this->companyLng = $this->getCompanyThings('CompanyLongitude', '30.85026669894635', 'String')[0]->thing;
-        $this->companyName = $this->getCompanyThings('CompanyName', 'Linx Systems', 'String')[0]->thing;
-        $this->companyAbv = $this->getCompanyThings('CompanyAbv', 'LX', 'String')[0]->thing;
-        $this->hasRO = $this->getCompanyThings('bitHasRouteOptimization', 0, 'Bool')[0]->thing;
+        $this->middleware(function ($request, $next) {
+            // Retrieve values from environment variables
+            // we can handle this here if it is multi-company
+            $this->companyLat = $this->getCompanyThings('CompanyLatitude', '-29.776056128512103', 'String')[0]->thing;
+            $this->companyLng = $this->getCompanyThings('CompanyLongitude', '30.85026669894635', 'String')[0]->thing;
+            $this->companyName = $this->getCompanyThings('CompanyName', 'Linx Systems', 'String')[0]->thing;
+            $this->companyAbv = $this->getCompanyThings('CompanyAbv', 'LX', 'String')[0]->thing;
+            $this->hasRO = $this->getCompanyThings('bitHasRouteOptimization', 0, 'Bool')[0]->thing;
+
+            return $next($request);
+        });
     }
 
     public function routeOptimization(){
@@ -40,7 +44,7 @@ class RouteOptimizationController extends Controller
             } else {
                 $routes = DB::connection('sqlsrv3')->select("EXEC sp_API_GetRoutes 0");
                 $types = DB::connection('sqlsrv3')->select("EXEC sp_API_GetOrderTypes 0");
-            } 
+            }
 
             return view('dims.routeOptimization.index')
                 ->with('routes', $routes)
@@ -94,7 +98,7 @@ class RouteOptimizationController extends Controller
                 // Increment the counter
                 $counter++;
             }
-        
+
             // Create the fleet array
             $fleet = [
                 "truck" => [
@@ -112,7 +116,7 @@ class RouteOptimizationController extends Controller
                     ],
                 ],
             ];
-        
+
             // Combine the visits and fleet arrays into the final array
             $routesArray = [
                 "visits" => $visits,
@@ -120,7 +124,7 @@ class RouteOptimizationController extends Controller
             ];
 
             // dd($routesArray);
-        
+
             // Convert the array to JSON
             $routes = json_encode($routesArray);
 
@@ -132,7 +136,7 @@ class RouteOptimizationController extends Controller
             $UserId = Auth::user()->UserID;
 
             $xmlData = $this->xmlConvert($data);
-            
+
             // DB::connection('sqlsrv3')->statement("EXEC spLogRouteOptimizationUsage $ConsoleTypeId, '$LoggedBy', $Qty, '$Message', $Reviewed, $UserId, '$xmlData'");
 
             $curl = curl_init();
@@ -217,7 +221,7 @@ class RouteOptimizationController extends Controller
 
     public function optimizeStops(Request $request){
         $data = json_decode($request->get('routes'));
-        
+
         // dd($data);
 
         $optimizedRoute = $this->optimizeRoutesRoutific($data);
@@ -242,8 +246,8 @@ class RouteOptimizationController extends Controller
 
             $result = DB::connection('sqlsrv3')->statement("EXEC sp_API_U_UpdateCustomerGeoCoordinates $OrderId, $lat, $lng, $userId, '$UserName'");
         }
-        
-        
+
+
 
         return response()->json($result);
     }
@@ -264,7 +268,7 @@ class RouteOptimizationController extends Controller
 
     function xmlConvert($array) {
         $xml = new \SimpleXMLElement('<data/>');
-        
+
         foreach ($array as $productData) {
             $line = $xml->addChild('line');
             foreach ($productData as $key => $value) {
@@ -274,7 +278,7 @@ class RouteOptimizationController extends Controller
 
         $xml = $xml->asXML();
         $xml = str_replace("<?xml version=\"1.0\"?>\n", '', $xml);
-    
+
         return $xml;
     }
 }
