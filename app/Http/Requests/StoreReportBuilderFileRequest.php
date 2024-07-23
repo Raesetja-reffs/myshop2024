@@ -3,11 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules;
-use Illuminate\Validation\Rule;
-use App\Models\CentralUser;
 
-class StoreReportEngineFileRequest extends FormRequest
+class StoreReportBuilderFileRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,12 +21,12 @@ class StoreReportEngineFileRequest extends FormRequest
      */
     public function rules(): array
     {
-        $validationArr = [];
-        $validationArr['company_id'] = ['required', 'string', 'max:255'];
-        $validationArr['company_name'] = ['nullable'];
-        $validationArr['file_url'] = ['nullable', 'file'];
-
-        return $validationArr;
+        return [
+            'company_id' => ['required', 'string', 'max:255'],
+            'company_name' => ['nullable'],
+            'report_type' => ['required', 'string'],
+            'file_url' => ['required', 'file'],
+        ];
     }
 
     public function attributes()

@@ -12,17 +12,34 @@
         </li>
         <li class="breadcrumb-item text-dark">Report Engine Files Listing </li>
     </x-slot>
+    <x-slot name="toolbarrightside">
+        <div class="d-flex justify-end sample-download-div">
+            <div class="w-200px">
+                <x-select-input id='DimsReport'
+                    name='DimsReport'
+                    value=""
+                    :options="config('custom.dims_report')"
+                    placeholder="Select report"
+                    class="me-1 mb-1 mb-sm-0"
+                    data-allow-clear="true"
+                    required autofocus
+                />
+            </div>
+            <a class="downloadLink" style="display: none;"></a>
+            <button class="btn btn-info btn-sm ms-1 me-1 download-sample-file" url="{{ route('report-builder-files.download-sample-file', [0]) }}">Download Sample Report</button>
+        </div>
+    </x-slot>
 
     <div class="card card-flush m-3 mb-2 mt-2">
         <!--begin::Card header-->
-        <form id="searchForm" action="{{ route('report-engine-files.index') }}" method="GET" class="addnovalidate">
+        <form id="searchForm" action="{{ route('report-builder-files.index') }}" method="GET" class="addnovalidate">
             <div class="card-header align-items-center py-5 gap-2 gap-md-5">
                 <div class="d-flex w-100 align-items-center flex-wrap">
                     <div class="d-flex align-items-center position-relative my-1 flex-grow-1">
                         <i class="ki-outline ki-magnifier fs-3 position-absolute ms-4"></i>
                         <input type="text" name="search"
                             class="form-control ps-12"
-                            placeholder="Search central users by username, erp user id, erp username"
+                            placeholder="Search report builder file by company name"
                             value="{{ request()->query('search') }}"
                         >
                     </div>
@@ -43,7 +60,7 @@
                         <button type="submit" class="btn btn-info btn-sm ms-1 me-1">Apply Filter</button>
                     @endif
                     @if (auth()->guard('central_api_user')->user()->can('create', App\Models\CentralUser::class))
-                        <a href="{{ route('report-engine-files.create') }}" class="btn btn-primary btn-sm">
+                        <a href="{{ route('report-builder-files.create') }}" class="btn btn-primary btn-sm">
                             Add Report Engine File
                         </a>
                     @endif
@@ -60,46 +77,45 @@
                         <tr class="fw-bold fs-6 text-gray-800 border-bottom-2 border-gray-200 text-uppercase">
                             <th class="">Id</th>
                             <th class="">Company Name</th>
+                            <th class="">Report Type</th>
                             <th class="">File URL</th>
                             <th class="">Creared At</th>
-                            <th style="width: 360px;">Actions</th>
+                            <th style="width: 200px;">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse ($reportEngineFiles as $reportEngineFile)
+                        @forelse ($reportBuilderFiles as $reportBuilderFile)
                             <tr>
-                                <td>{{ $reportEngineFile->id }}</td>
+                                <td>{{ $reportBuilderFile->id }}</td>
                                 <td>
-                                    {{ $reportEngineFile->company_name }}
+                                    {{ $reportBuilderFile->company_name }}
                                 </td>
-                                <td>{{ $reportEngineFile->file_url }}</td>
-                                <td>{{ $reportEngineFile->created_at }}</td>
-                                <td class="d-flex" style="width: 360px;">
-                                    @if (auth()->guard('central_api_user')->user()->can('view', $reportEngineFile))
-                                        <a href="{{ route('report-engine-files.show', $reportEngineFile->id) }}" class="btn btn-info btn-sm me-1">View</a>
-                                    @endif
-                                    @if (auth()->guard('central_api_user')->user()->can('update', $reportEngineFile))
-                                        <a href="{{ route('report-engine-files.edit', $reportEngineFile->id) }}" class="btn btn-primary btn-sm me-1">Edit</a>
-                                    @endif
-                                    @if (auth()->guard('central_api_user')->user()->can('delete', $reportEngineFile))
-                                        <form action="{{ route('report-engine-files.destroy', $reportEngineFile->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this central user?');">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm me-1">Delete</button>
-                                        </form>
-                                    @endcan
-                                    @if (auth()->guard('central_api_user')->user()->can('resetPassword', $reportEngineFile))
-                                        <a href="{{ route('report-engine-files.reset.password', $reportEngineFile->id) }}" class="btn btn-primary btn-sm">Reset Password</a>
-                                    @endcan
+                                <td>
+                                    {{ config('custom.dims_report_values')[$reportBuilderFile->report_type] }}
+                                </td>
+                                <td>
+                                    <a href="{{ $reportBuilderFile->file_url }}" title="{{ $reportBuilderFile->report_type }}" alt="{{ $reportBuilderFile->report_type }}">
+                                        Download File
+                                    </a>
+                                </td>
+                                <td>{{ $reportBuilderFile->created_at }}</td>
+                                <td class="d-flex" style="width: 200px;">
+                                    <a href="{{ route('report-builder-files.show', $reportBuilderFile->id) }}" class="btn btn-info btn-sm me-1">View</a>
+                                    <a href="{{ route('report-builder-files.edit', $reportBuilderFile->id) }}" class="btn btn-primary btn-sm me-1">Edit</a>
+                                    <form action="{{ route('report-builder-files.destroy', $reportBuilderFile->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this report builder file?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-danger btn-sm me-1">Delete</button>
+                                    </form>
                                 </td>
                             </tr>
                         @empty
-                            <x-no-record-found colspan="5" />
+                            <x-no-record-found colspan="6" />
                         @endforelse
                     </tbody>
                 </table>
             </div>
-            {{ $reportEngineFiles->appends([
+            {{ $reportBuilderFiles->appends([
                 'search' => request()->query('search'),
                 'selectedCompanies' => request()->query('selectedCompanies')
             ])->links() }}
@@ -114,6 +130,28 @@
                     if (event.keyCode === 13) { // Check if Enter key is pressed (key code 13)
                         event.preventDefault();
                         $("#searchForm").submit(); // Submit the search form
+                    }
+                });
+                $(document).on('click', '.download-sample-file', function() {
+                    let parentDiv = $(this).parents(".sample-download-div:first");
+                    if (parentDiv.find("#DimsReport").val() != '') {
+                        let paramsArray = $(this).attr('url').split('/');
+                        if (paramsArray.length > 0) {
+                            paramsArray.pop();
+                        }
+                        paramsArray.push(parentDiv.find("#DimsReport").val());
+                        var fileUrl = paramsArray.join('/');
+                        var $downloadLink = parentDiv.find('.downloadLink');
+                        console.log($downloadLink)
+
+                        // Set the href and download attributes
+                        $downloadLink.attr('href', fileUrl);
+                        //$downloadLink.attr('download', 'filename.pdf'); // Optional: Set desired file name here
+
+                        // Trigger the click event to download the file
+                        $downloadLink.get(0).click();
+                    } else {
+                        alert("Please select the report type.")
                     }
                 });
             });

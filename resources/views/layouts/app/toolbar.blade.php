@@ -6,6 +6,11 @@
             {{ $salestotalorder }}
         </div>
     @endif
+    @if (isset($toolbarrightside))
+        <div class="d-flex d-sm-none w-500px ms-6">
+            {{ $toolbarrightside }}
+        </div>
+    @endif
     <!--end::This is for mobile screen-->
     <!--begin::Container-->
     <div id="kt_toolbar_container" class=" container-fluid  d-flex flex-stack">
@@ -41,6 +46,11 @@
     @if (isset($salestotalorder))
         <div class="d-none d-sm-flex">
             {{ $salestotalorder }}
+        </div>
+    @endif
+    @if (isset($toolbarrightside))
+        <div class="d-none d-sm-flex w-600px justify-content-end">
+            {{ $toolbarrightside }}
         </div>
     @endif
     <!--end::This is for full screen-->

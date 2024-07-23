@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ReportBuilderFile;
 use Illuminate\Http\Request;
 use PHPJasper\PHPJasper;
 use Response;
@@ -331,12 +332,29 @@ class JasperReports extends Controller
      */
     private function OrderInvoiceViewer($ID, $isWithoutPrice = false)
     {
-        $view = view('dims/printorder')->with('ID', $ID);
-        if ($isWithoutPrice) {
-            $view = $view->with('isWithoutPrice', true);
+        $reporType = 1;
+        if (isset($isWithoutPrice) && $isWithoutPrice) {
+            $reporType = 2;
         }
+        $reportUrl = '';
+        $reportBuilderFile = ReportBuilderFile::where('company_id', auth()->guard('central_api_user')->user()->company_id)
+            ->where('report_type', $reporType)
+            ->first();
+        if (isset($reportBuilderFile)) {
+            $reportUrl = $reportBuilderFile->file_url;
+        }
+        $routeParams = [
+            'user_id' => auth()->guard('central_api_user')->user()->id,
+            'order_id' => $ID,
+            'company_id' => auth()->guard('central_api_user')->user()->company_id,
+        ];
+        if (isset($isWithoutPrice) && $isWithoutPrice) {
+            $routeParams['is_without_price'] = $isWithoutPrice;
+        }
+        $reportViewerUrl = config('custom.DIMS_REPORT_BUILDER_URL') . '?apiUrl=' . urlencode(route('order.get-pdf-data', $routeParams));
+        $reportViewerUrl .= '&reportUrl=' . $reportUrl;
 
-        return $view;
+        return view('dims/printorder', compact('ID', 'reportViewerUrl'));
     }
 
 }

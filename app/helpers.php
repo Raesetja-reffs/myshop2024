@@ -509,6 +509,26 @@ if (!function_exists('getMenuItems')) {
         }
         $menuItems = array_merge($menuItems, [
             [
+                'name' => 'Report Builder Files',
+                'icon' => 'ki-outline ki-row-horizontal fs-2',
+                'submenuitems' => [
+                    [
+                        'name' => 'Add Report Builder File',
+                        'icon' => 'ki-outline ki-minus fs-2',
+                        'href' => route('report-builder-files.create'),
+                        'target' => '',
+                    ],
+                    [
+                        'name' => 'Report Builder Files Listing',
+                        'icon' => 'ki-outline ki-minus fs-2',
+                        'href' => route('report-builder-files.index'),
+                        'target' => '',
+                    ]
+                ]
+            ]
+        ]);
+        $menuItems = array_merge($menuItems, [
+            [
                 'name' => 'Company Permissions',
                 'icon' => 'ki-outline ki-key-square fs-2',
                 'href' => route('company-permissions.set-permissions'),

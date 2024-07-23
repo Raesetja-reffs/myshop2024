@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('report_engine_files', function (Blueprint $table) {
+        Schema::create('report_builder_files', function (Blueprint $table) {
             $table->id();
             $table->string('company_id');
             $table->string('company_name')->nullable();
+            $table->string('report_type');
             $table->string('file_url');
             $table->timestamps();
         });
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('report_engine_files');
+        Schema::dropIfExists('report_builder_files');
     }
 };

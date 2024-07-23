@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ReportEngineFile extends Model
+class ReportBuilderFile extends Model
 {
     use HasFactory;
 
@@ -17,6 +17,7 @@ class ReportEngineFile extends Model
     protected $fillable = [
         'company_id',
         'company_name',
+        'report_type',
         'file_url',
     ];
 }
