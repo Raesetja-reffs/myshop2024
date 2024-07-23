@@ -17,4 +17,15 @@ trait WareHouseManagementControllerTrait
     {
         return $this->httpRequest('post', 'Post_RetreiveProductsGrid');
     }
+
+    public function apiGetPushedAndProhibitedCustomers($data)
+    {
+        return $this->httpRequest('post', 'GetPushedAndProhibitedCustomers', $data);
+    }
+
+    public function apiPushAndProhibitProductForCustomers($data)
+    {
+        return $this->httpRequest('post', 'PushAndProhibitProductForCustomers', $data);
+    }
 }
+

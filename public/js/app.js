@@ -152,6 +152,10 @@ function getCommonDelay()
 
 // formats date to yyyy-MM-dd
 function formatDate(date) {
+    if (!date) {
+        return '';
+    }
+    
     returnFormat = date.toLocaleDateString("en-ZA", {
         year: 'numeric',
         month: '2-digit',
