@@ -95,9 +95,7 @@ class TabletLoadingApp extends Controller
             ]);
         } else {
             $products = DB::connection('sqlsrv4')->select("EXEC sp_API_R_TabletLoading " . $orderId);
-        }  
-
-        dd($products);
+        }
 
         return view('dims.miniorderform_tablet')->with('orderId', $orderId)->with('products', $products);
     }

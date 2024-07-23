@@ -2,11 +2,11 @@
 
 namespace App\Traits;
 
-use App\Traits\ApiTrait;
+use App\Traits\UtilityTrait;
 
 trait TabletLoadingAppTrait
 {
-    use ApiTrait;
+    use UtilityTrait;
     
     public function apiGetRoutes()
     {
@@ -42,6 +42,10 @@ trait TabletLoadingAppTrait
 
     public function apiGetTabletLoading($data)
     {
-        return $this->httpRequest('post','Post_GetTabletLoading', $data);
+
+        $queries = $this->httpRequest('post', 'Post_GetTabletLoading', $data);
+        $queries = $this->convertToCollectionObject($queries);
+
+        return $queries;
     }
 }
