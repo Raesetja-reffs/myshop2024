@@ -522,7 +522,7 @@
                         type: 'success', // 'info', 'success', 'warning'
                         displayTime: 3500,
                     });
-                    getStops();
+                    location.reload();
                 }
             });
         }

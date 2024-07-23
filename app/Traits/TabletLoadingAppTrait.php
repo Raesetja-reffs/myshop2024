@@ -10,33 +10,38 @@ trait TabletLoadingAppTrait
     
     public function apiGetRoutes()
     {
-        return $this->httpRequest('post','Post_GetRoutes'); //sp_API_GetRoutes
+        return $this->httpRequest('post','Post_GetRoutes');
     }
 
     public function apiGetOrderTypes()
     {
-        return $this->httpRequest('post','Post_GetOrderTypes'); //sp_API_GetOrderTypes
+        return $this->httpRequest('post','Post_GetOrderTypes');
     }
 
     public function apiGetRoutePlannerStops($data)
     {
-        return $this->httpRequest('post','Post_GetRoutePlannerStops', $data); //sp_API_R_getRoutePlannerStops
+        return $this->httpRequest('post','Post_GetRoutePlannerStops', $data);
     }
 
     public function apiGetRouteMassAndValueOnPlanner($data)
     {
-        return $this->httpRequest('post','Post_GetRouteMassAndValueOnPlanner', $data); //sp_API_R_GetRouteMassAndValueOnPlanner
+        return $this->httpRequest('post','Post_GetRouteMassAndValueOnPlanner', $data);
     }
 
     public function apiMoveOrder($data)
     {
         $data = $this->setUserNameInApiData($data);
 
-        return $this->httpRequest('post','Post_MoveOrder', $data); //sp_API_U_MoveOrder
+        return $this->httpRequest('post','Post_MoveOrder', $data);
     }
 
     public function apiSequenceStops($data)
     {
-        return $this->httpRequest('post','Post_SequenceStops', $data); //sp_API_U_SequenceStops
+        return $this->httpRequest('post','Post_SequenceStops', $data);
+    }
+
+    public function apiGetTabletLoading($data)
+    {
+        return $this->httpRequest('post','Post_GetTabletLoading', $data);
     }
 }

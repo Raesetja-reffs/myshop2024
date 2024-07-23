@@ -87,16 +87,17 @@ class TabletLoadingApp extends Controller
         return $outPut;
     }
 
-    public function spTabletLoading($orderId)
+    public function TabletLoading($orderId)
     {
+        if (config('app.IS_API_BASED')) {
+            $products = $this->apiGetTabletLoading([
+                'orderId' => $orderId,
+            ]);
+        } else {
+            $products = DB::connection('sqlsrv4')->select("EXEC sp_API_R_TabletLoading " . $orderId);
+        }  
 
-        $getRouteProducts = DB::connection('sqlsrv4')
-            ->select("EXEC spTabletLoading " . $orderId);
-        //echo "EXEC spGetStopsToSort '" . $deliveryDate . "'," . $OrderType . "," . $routeId ;
-
-
-        return view('dims/miniorderform_tablet')->with('orderId', $orderId)
-            ->with('products', $getRouteProducts);
+        return view('dims.miniorderform_tablet')->with('orderId', $orderId)->with('products', $products);
     }
 
     public function routePlannerPrintPreview($deliveryDate, $dateTo, $OrderType, $routeId, $status)
