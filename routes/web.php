@@ -437,7 +437,7 @@ Route::get('geoJson',[TabletLoadingApp::class,'geoJson']);
 Route::get('drone',[TabletLoadingApp::class,'drone']);
 Route::get('getRouteDifference',[TabletLoadingApp::class,'getRouteDifference']);
 Route::get('ordersNotONDefaultRoutes', [TabletLoadingApp::class,'ordersNotONDefaultRoutes']);
-Route::get('productontheminiorderform/{orderId}',[TabletLoadingApp::class,'spTabletLoading']);
+Route::get('productontheminiorderform/{orderId}',[TabletLoadingApp::class,'TabletLoading']);
 Route::get('updateTableLoadingAppProducts', [TabletLoadingApp::class,'updateTableLoadingAppProducts']);
 Route::post('orderDetailsWithDeliveryAddress', [TabletLoadingApp::class,'orderDetailsWithDeliveryAddress']);
 Route::post('orderDetailsWithDeliveryAddressOnOrder',[TabletLoadingApp::class,'orderDetailsWithDeliveryAddressOnOrder'] );
