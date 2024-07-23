@@ -57,35 +57,32 @@
         <th style="color:#61ff13;font-size: 25px;font-family: sans-serif;">I</th>
         <th style="color:#61ff13;font-size: 25px;font-family: sans-serif;">J</th>
         <th style="color:#61ff13;font-size: 25px;font-family: sans-serif;">K</th>
-        <th style="color:#61ff13;font-size: 25px;font-family: sans-serif;">L</th>
 
         </thead>
         <tbody style="font-size: 25px;font-family: sans-serif;font-weight: 900;">
         @foreach($performance as $val)
-            @if( $val->blnAttended =="NOT STARTED")
+            @if( $val['blnAttended'] =="NOT STARTED")
             <tr style="background: red;color: black">@endif
-            @if( $val->blnAttended =="PROGRESS")
+            @if( $val['blnAttended'] =="PROGRESS")
             <tr style="background: yellow;color: black" >
             @endif
-            @if( $val->blnAttended =="DONE")
+            @if( $val['blnAttended'] =="DONE")
                 <tr style="background: green;color: black" >
                     @endif
-                <td>{{$val->OrderType}}</td>
-                <td>{{$val->Route}}</td>
-                <td>{{$val->dDelDate}}</td>
-                <td>{{$val->A}}</td>
-                <td>{{$val->B}}</td>
-                <td>{{$val->C}}</td>
-                <td>{{$val->D}}</td>
-                <td>{{$val->E}}</td>
-                <td>{{$val->F}}</td>
-                <td>{{$val->G}}</td>
-                <td>{{$val->H}}
-
-                </td><td>{{$val->I}}</td>
-                <td>{{$val->J}}</td>
-                <td>{{$val->K}}</td>
-                <td>{{$val->L}}</td>
+                <td>{{$val['OrderType']}}</td>
+                <td>{{$val['Route']}}</td>
+                <td>{{$val['dDelDate']}}</td>
+                <td>{{$val['A']}}</td>
+                <td>{{$val['B']}}</td>
+                <td>{{$val['C']}}</td>
+                <td>{{$val['D']}}</td>
+                <td>{{$val['E']}}</td>
+                <td>{{$val['F']}}</td>
+                <td>{{$val['G']}}</td>
+                <td>{{$val['H']}}</td>
+                <td>{{$val['I']}}</td>
+                <td>{{$val['J']}}</td>
+                <td>{{$val['K']}}</td>
                 
 
             </tr>

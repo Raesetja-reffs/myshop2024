@@ -39,4 +39,9 @@ trait TabletLoadingAppTrait
     {
         return $this->httpRequest('post','Post_SequenceStops', $data); //sp_API_U_SequenceStops
     }
+
+    public function apiGetBulkPickingGridData()
+    {
+        return $this->httpRequest('post','Post_GetBulkPickingGridData'); //sp_API_CR_BulkPickingGridView
+    }
 }

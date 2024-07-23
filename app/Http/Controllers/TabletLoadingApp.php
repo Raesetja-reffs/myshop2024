@@ -715,11 +715,16 @@ class TabletLoadingApp extends Controller
 
     public function liveBulkPicking()
     {
-        $Date = (new \DateTime())->format('Y-m-d');
-        $livebulk = DB::connection('sqlsrv3')
-            ->select("EXEC spBulkPickingLiveGrid ?",array($Date));
 
-        //dd($livebulk);
+        if (config('app.IS_API_BASED')) {
+
+            $livebulk = $this->apiGetBulkPickingGridData();
+
+        } else {
+
+            $livebulk = DB::connection('sqlsrv3')->select("EXEC [sp_API_CR_BulkPickingGridView]");
+
+        }
         $company =  env('COMPANY');
         switch ($company) {
             case "Goodfood Enterprise":
