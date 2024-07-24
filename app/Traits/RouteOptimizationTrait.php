@@ -36,6 +36,12 @@ trait RouteOptimizationTrait
         return $this->httpRequest('post','Post_UpdateCustomerGeoCoordinates', $data);
     }
 
+    public function apiLogRouteOptimizationUsage($data)
+    {
+        $data = $this->setUserNameInApiData($data);
+        return $this->httpRequest('post','Post_LogRouteOptimizationUsage', $data);
+    }
+
 
 
 }
