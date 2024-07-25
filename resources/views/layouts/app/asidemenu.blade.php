@@ -16,7 +16,7 @@
             data-kt-toggle="true" data-kt-toggle-state="active" data-kt-toggle-target="body"
             data-kt-toggle-name="aside-minimize">
 
-            <i class="ki-outline ki-double-left fs-1 rotate-180"></i>
+            <span class="ki-outline ki-double-left fs-1 rotate-180"></span>
         </div>
         <!--end::Aside toggler-->
     </div>
@@ -50,14 +50,14 @@
                                         onclick="window.location.href = '{{ $menuItem['href'] }}'; return false;"
                                     @endif>
                                     <span class="menu-icon">
-                                        <i class="{{ $menuItem['icon'] }}"></i>
+                                        <span class="{{ $menuItem['icon'] }}"></span>
                                     </span>
                                     <span class="menu-title">{{ $menuItem['name'] }}</span>
                                 </a>
                             @else
                                 <span class="menu-link">
                                     <span class="menu-icon">
-                                        <i class="{{ $menuItem['icon'] }}"></i>
+                                        <span class="{{ $menuItem['icon'] }}"></span>
                                     </span>
                                     <span class="menu-title">{{ $menuItem['name'] }}</span>
                                     <span class="menu-arrow"></span>
@@ -106,7 +106,7 @@
                         href="https://preview.keenthemes.com/html/metronic/docs/getting-started/changelog"
                         target="_blank">
                             <span class="menu-icon">
-                                <i class="ki-outline ki-code fs-2"></i>
+                                <span class="ki-outline ki-code fs-2"></span>
                             </span>
                             <span class="menu-title">DIMS24: V 23.02.22.01</span>
                         </a>

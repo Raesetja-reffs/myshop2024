@@ -6,11 +6,11 @@ if (!function_exists('getMenuItems')) {
         $menuItems = [
             [
                 'name' => 'Extras',
-                'icon' => 'ki-outline ki-printer fs-2',
+                'icon' => 'ki-outline ki-folder-added fs-2',
                 'submenuitems' => [
                     [
                         'name' => 'Management Console',
-                        'icon' => 'fa fa-circle-question fa-lg',
+                        'icon' => 'ki-outline ki-screen fs-2',
                         'href' => url("/managementSearch"),
                         'windowopen' => [
                             'name' => 'managementSearch',
@@ -19,8 +19,8 @@ if (!function_exists('getMenuItems')) {
                         ]
                     ],
                     [
-                        'name' => 'Progress and Status Report',
-                        'icon' => 'fa fa-circle-question fa-lg',
+                        'name' => 'Progress & Status Report',
+                        'icon' => 'ki-outline ki-loading fs-2',
                         'href' => url("/viewStatusReport"),
                         'windowopen' => [
                             'name' => 'viewBlockedAccount',
@@ -32,11 +32,11 @@ if (!function_exists('getMenuItems')) {
             ],
             [
                 'name' => 'C-Panel',
-                'icon' => 'fa mi-cpanel',
+                'icon' => 'ki-outline ki-setting fs-2',
                 'submenuitems' => [
                     [
                         'name' => 'Delivery Address Editor',
-                        'icon' => 'fa fa-circle-question fa-lg',
+                        'icon' => 'ki-outline ki-delivery-geolocation fs-2',
                         'href' => url("/deliveryaddresspage"),
                         'windowopen' => [
                             'name' => 'deliveryaddresspage',
@@ -46,7 +46,7 @@ if (!function_exists('getMenuItems')) {
                     ],
                     [
                         'name' => 'Users',
-                        'icon' => 'fa fa-circle-question fa-lg',
+                        'icon' => 'ki-outline ki-people fs-2',
                         'href' => url("/grid_Users"),
                         'windowopen' => [
                             'name' => 'users',
@@ -56,7 +56,7 @@ if (!function_exists('getMenuItems')) {
                     ],
                     [
                         'name' => 'Order Locks Deleter',
-                        'icon' => 'fa fa-circle-question fa-lg',
+                        'icon' => 'ki-outline ki-lock fs-2',
                         'href' => url("/getorderlocksdeleterpage"),
                         'windowopen' => [
                             'name' => 'getorderlocksdeleterpage',
@@ -66,7 +66,7 @@ if (!function_exists('getMenuItems')) {
                     ],
                     [
                         'name' => 'User Actions',
-                        'icon' => 'fa fa-circle-question fa-lg',
+                        'icon' => 'ki-outline ki-user-tick fs-2',
                         'href' => url("/getuseractionsBydate"),
                         'windowopen' => [
                             'name' => 'getuseractionsBydate',
@@ -76,7 +76,7 @@ if (!function_exists('getMenuItems')) {
                     ],
                     [
                         'name' => 'Credit Limit Notes',
-                        'icon' => 'fa fa-circle-question fa-lg',
+                        'icon' => 'ki-outline ki-credit-cart fs-2',
                         'href' => url("/viewCreditLimit"),
                         'windowopen' => [
                             'name' => 'creditLimitNotes',
@@ -86,7 +86,7 @@ if (!function_exists('getMenuItems')) {
                     ],
                     [
                         'name' => 'Edit Printer Paths',
-                        'icon' => 'fa fa-circle-question fa-lg',
+                        'icon' => 'ki-outline ki-printer fs-2',
                         'href' => url("/PathEditor"),
                         'windowopen' => [
                             'name' => 'PathEditor',
@@ -96,7 +96,7 @@ if (!function_exists('getMenuItems')) {
                     ],
                     [
                         'name' => 'Deleted Orders',
-                        'icon' => 'fa fa-circle-question fa-lg',
+                        'icon' => 'ki-outline ki-trash fs-2',
                         'href' => url("/viewDeletedOrders"),
                         'windowopen' => [
                             'name' => 'viewDeletedOrders',
@@ -108,11 +108,11 @@ if (!function_exists('getMenuItems')) {
             ],
             [
                 'name' => 'Customers',
-                'icon' => 'fa mi-customers',
+                'icon' => 'ki-outline ki-user fs-2',
                 'submenuitems' => [
                     [
                         'name' => 'Customer Listing',
-                        'icon' => 'fa fa-circle-question fa-lg',
+                        'icon' => 'ki-outline ki-search-list fs-2',
                         'href' => url("/customerflexgrid"),
                         'windowopen' => [
                             'name' => 'customerflexgrid',
@@ -122,7 +122,7 @@ if (!function_exists('getMenuItems')) {
                     ],
                     [
                         'name' => 'Push Products',
-                        'icon' => 'fa fa-circle-question fa-lg',
+                        'icon' => 'ki-outline ki-arrow-up-refraction fs-2',
                         'href' => url("/productOnPush/0"),
                         'windowopen' => [
                             'name' => 'pushproducts',
@@ -132,7 +132,7 @@ if (!function_exists('getMenuItems')) {
                     ],
                     [
                         'name' => 'Prohibit Products',
-                        'icon' => 'fa fa-circle-question fa-lg',
+                        'icon' => 'ki-outline ki-arrow-down-refraction fs-2',
                         'href' => url("/productOnprohibit/0"),
                         'windowopen' => [
                             'name' => 'prohibitproducts',
@@ -143,12 +143,12 @@ if (!function_exists('getMenuItems')) {
                 ]
             ],
             [
-                'name' => 'SALES',
-                'icon' => 'fa mi-checkout',
+                'name' => 'Sales',
+                'icon' => 'ki-outline ki-handcart fs-2',
                 'submenuitems' => [
                     [
                         'name' => 'Awaiting Orders',
-                        'icon' => 'fa mi-awaiting',
+                        'icon' => 'ki-outline ki-brifecase-timer fs-2',
                         'href' => url("/getAwaitingStockbycustomer"),
                         'windowopen' => [
                             'name' => 'getAwaitingStock',
@@ -159,7 +159,7 @@ if (!function_exists('getMenuItems')) {
                     ],
                     [
                         'name' => 'Awaiting Products',
-                        'icon' => 'fa mi-awaiting',
+                        'icon' => 'ki-outline ki-time fs-2',
                         'href' => url("/getAwaitingStock"),
                         'windowopen' => [
                             'name' => 'getAwaitingStockgetAwaitingStock',
@@ -170,7 +170,7 @@ if (!function_exists('getMenuItems')) {
                     ],
                     [
                         'name' => 'Remote Orders',
-                        'icon' => 'fa mi-backorders',
+                        'icon' => 'ki-outline ki-cloud fs-2',
                         'href' => url("/backorders"),
                         'windowopen' => [
                             'name' => 'backorders',
@@ -181,7 +181,7 @@ if (!function_exists('getMenuItems')) {
                     ],
                     [
                         'name' => 'Customer Sales Trend Report',
-                        'icon' => 'fa mi-overallspecials',
+                        'icon' => 'ki-outline ki-discount fs-2',
                         'href' => url("/customersalespage"),
                         'windowopen' => [
                             'name' => 'salescustomers',
@@ -192,7 +192,7 @@ if (!function_exists('getMenuItems')) {
                     ],
                     [
                         'name' => 'Customer Groups',
-                        'icon' => 'fa mi-groups',
+                        'icon' => 'ki-outline ki-people fs-2',
                         'href' => url("/groups"),
                         'windowopen' => [
                             'name' => 'groups',
@@ -213,13 +213,13 @@ if (!function_exists('getMenuItems')) {
                     ],
                     [
                         'name' => 'Sales Order/Quote',
-                        'icon' => 'fa mi-checkout',
+                        'icon' => 'ki-outline ki-handcart fs-2',
                         'href' => url("/home"),
                         'target' => '_blank'
                     ],
                     [
                         'name' => 'User Sales Performance',
-                        'icon' => 'fa mi-salesperfuser',
+                        'icon' => 'ki-outline ki-chart-line-up fs-2',
                         'href' => url("/salesPerformanceview"),
                         'windowopen' => [
                             'name' => 'telesalesperformance',
@@ -230,12 +230,12 @@ if (!function_exists('getMenuItems')) {
                 ]
             ],
             [
-                'name' => 'SPECIALS',
-                'icon' => 'fa mi-badge',
+                'name' => 'Specials',
+                'icon' => 'ki-outline ki-discount fs-2',
                 'submenuitems' => [
                     [
                         'name' => 'Group Specials',
-                        'icon' => 'fa mi-overallspecials',
+                        'icon' => 'ki-outline ki-discount fs-2',
                         'href' => url("/groupSpecials"),
                         'windowopen' => [
                             'name' => 'groupspecials',
@@ -245,7 +245,7 @@ if (!function_exists('getMenuItems')) {
                     ],
                     [
                         'name' => 'Overall Specials',
-                        'icon' => 'fa mi-overallspecials',
+                        'icon' => 'ki-outline ki-discount fs-2',
                         'href' => url("/overallspecials"),
                         'windowopen' => [
                             'name' => 'overallspecials',
@@ -256,7 +256,7 @@ if (!function_exists('getMenuItems')) {
                     ],
                     [
                         'name' => 'Customer Specials',
-                        'icon' => 'fa mi-overallspecials',
+                        'icon' => 'ki-outline ki-discount fs-2',
                         'href' => url("/customerSpecials"),
                         'windowopen' => [
                             'name' => 'massGrid',
@@ -266,7 +266,7 @@ if (!function_exists('getMenuItems')) {
                     ],
                     [
                         'name' => 'Search Customer Specials',
-                        'icon' => 'fa mi-search',
+                        'icon' => 'ki-outline ki-filter-search fs-2',
                         'href' => url("/searchSpecialKF"),
                         'windowopen' => [
                             'name' => 'searchSpecialKF',
@@ -277,12 +277,12 @@ if (!function_exists('getMenuItems')) {
                 ]
             ],
             [
-                'name' => 'WAREHOUSE',
-                'icon' => 'fa mi-warehouse',
+                'name' => 'Warehouse',
+                'icon' => 'ki-outline ki-home fs-2',
                 'submenuitems' => [
                     [
                         'name' => 'Products',
-                        'icon' => 'fa mi-products',
+                        'icon' => 'ki-outline ki-parcel fs-2',
                         'href' => url("/massProducts"),
                         'windowopen' => [
                             'name' => 'massp',
@@ -292,7 +292,7 @@ if (!function_exists('getMenuItems')) {
                     ],
                     [
                         'name' => 'Picking Dashboard',
-                        'icon' => 'fa mi-webstore',
+                        'icon' => 'ki-outline ki-parcel-tracking fs-2',
                         'href' => url("/liveBulkPicking"),
                         'windowopen' => [
                             'name' => 'customerflexgrid',
@@ -302,7 +302,7 @@ if (!function_exists('getMenuItems')) {
                     ],
                     [
                         'name' => 'Picking Team',
-                        'icon' => 'fa mi-pteams',
+                        'icon' => 'ki-outline ki-courier fs-2',
                         'href' => url("/pickingteam"),
                         'windowopen' => [
                             'name' => 'pickingteam',
@@ -312,7 +312,7 @@ if (!function_exists('getMenuItems')) {
                     ],
                     [
                         'name' => 'Stock Take',
-                        'icon' => 'fa mi-pteams',
+                        'icon' => 'ki-outline ki-logistic fs-2',
                         'href' => url("/stocktake"),
                         'windowopen' => [
                             'name' => 'stocktake',
@@ -322,7 +322,7 @@ if (!function_exists('getMenuItems')) {
                     ],
                     [
                         'name' => 'Driver BI Report',
-                        'icon' => 'fa fa-circle-question fa-lg',
+                        'icon' => 'ki-outline ki-delivery fs-2',
                         'href' => url("/getDriverBIReport"),
                         'windowopen' => [
                             'name' => 'reports',
@@ -333,7 +333,7 @@ if (!function_exists('getMenuItems')) {
                     ],
                     [
                         'name' => 'Qty Adj Picking',
-                        'icon' => 'fa mi-qtyajustments',
+                        'icon' => 'ki-outline ki-plus-circle fs-2',
                         'href' => url("/qtyadjustmentspicking"),
                         'windowopen' => [
                             'name' => 'qtyadjustmentspicking',
@@ -344,7 +344,7 @@ if (!function_exists('getMenuItems')) {
                     ],
                     [
                         'name' => 'Qty Adj Stage',
-                        'icon' => 'fa mi-qtyajustments',
+                        'icon' => 'ki-outline ki-plus-circle fs-2',
                         'href' => url("/qtyadjustmentsstagingimoveit"),
                         'windowopen' => [
                             'name' => 'qtyadjustmentsstagingimoveit',
@@ -355,7 +355,7 @@ if (!function_exists('getMenuItems')) {
                     ],
                     [
                         'name' => 'Transfers',
-                        'icon' => 'fa mi-warehousetransfer',
+                        'icon' => 'ki-outline ki-arrow-mix fs-2',
                         'href' => url("/transfersstatus"),
                         'windowopen' => [
                             'name' => 'transfersstatus',
@@ -367,25 +367,25 @@ if (!function_exists('getMenuItems')) {
                 ]
             ],
             [
-                'name' => 'DISPATCH',
-                'icon' => 'fa mi-dispatch',
+                'name' => 'Dispatch',
+                'icon' => 'ki-outline ki-delivery fs-2',
                 'submenuitems' => [
                     [
                         'name' => 'Route Plan',
-                        'icon' => 'fa mi-routeplan',
+                        'icon' => 'ki-outline ki-route fs-2',
                         'href' => url("/routeplanner"),
                         'target' => '_blank'
                     ],
                     [
                         'name' => 'Drivers Report',
-                        'icon' => 'fa mi-driversreport',
+                        'icon' => 'ki-outline ki-delivery-time fs-2',
                         'href' => url("/driversperformancereport"),
                         'target' => '_blank',
                         'permission_slug' => 'isallowdriversreport',
                     ],
                     [
                         'name' => 'Logistics Plan',
-                        'icon' => 'fa mi-routeplan',
+                        'icon' => 'ki-outline ki-technology-4 fs-2',
                         'href' => url("/ligisticsplan"),
                         'target' => '_blank',
                         'permission_slug' => 'isallowlogisticsplan',
@@ -393,7 +393,7 @@ if (!function_exists('getMenuItems')) {
                     ],
                     [
                         'name' => 'Drivers',
-                        'icon' => 'fa mi-driver',
+                        'icon' => 'ki-outline ki-people fs-2',
                         'href' => url("/driverspage"),
                         'windowopen' => [
                             'name' => 'driverspage',
@@ -403,7 +403,7 @@ if (!function_exists('getMenuItems')) {
                     ],
                     [
                         'name' => 'Trucks',
-                        'icon' => 'fa mi-truck',
+                        'icon' => 'ki-outline ki-delivery fs-2',
                         'href' => url("/trucks"),
                         'windowopen' => [
                             'name' => 'trucks',
@@ -413,7 +413,7 @@ if (!function_exists('getMenuItems')) {
                     ],
                     [
                         'name' => 'Routes',
-                        'icon' => 'fa mi-route',
+                        'icon' => 'ki-outline ki-address-book fs-2',
                         'href' => url("/routes1"),
                         'windowopen' => [
                             'name' => 'routes',
@@ -423,7 +423,7 @@ if (!function_exists('getMenuItems')) {
                     ],
                     [
                         'name' => 'iMoveIt PODs',
-                        'icon' => 'fa mi-contract',
+                        'icon' => 'ki-outline ki-note-2 fs-2',
                         'href' => url("/driverspdfdocs"),
                         'windowopen' => [
                             'name' => 'routes',
@@ -434,7 +434,7 @@ if (!function_exists('getMenuItems')) {
                     ],
                     [
                         'name' => 'Delivery Current Stats',
-                        'icon' => 'fa mi-fleet',
+                        'icon' => 'ki-outline ki-chart-simple fs-2',
                         'href' => url("/liveFleetDeliveries"),
                         'windowopen' => [
                             'name' => 'fleet',
@@ -445,7 +445,7 @@ if (!function_exists('getMenuItems')) {
                     ],
                     [
                         'name' => 'Number Of Deliveries',
-                        'icon' => 'fa mi-box',
+                        'icon' => 'ki-outline ki-folder-added fs-2',
                         'href' => url("/noOfStops"),
                         'windowopen' => [
                             'name' => 'noofdel',
