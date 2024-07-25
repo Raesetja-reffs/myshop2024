@@ -337,7 +337,8 @@ class JasperReports extends Controller
             $reporType = 2;
         }
         $reportUrl = '';
-        $reportBuilderFile = ReportBuilderFile::where('company_id', auth()->guard('central_api_user')->user()->company_id)
+        $companyId = auth()->guard('central_api_user')->user()->company_id;
+        $reportBuilderFile = ReportBuilderFile::where('company_id', $companyId)
             ->where('report_type', $reporType)
             ->first();
         if (isset($reportBuilderFile)) {
@@ -346,7 +347,7 @@ class JasperReports extends Controller
         $routeParams = [
             'user_id' => auth()->guard('central_api_user')->user()->id,
             'order_id' => $ID,
-            'company_id' => auth()->guard('central_api_user')->user()->company_id,
+            'company_id' => $companyId,
         ];
         if (isset($isWithoutPrice) && $isWithoutPrice) {
             $routeParams['is_without_price'] = $isWithoutPrice;

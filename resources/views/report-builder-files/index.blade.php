@@ -13,20 +13,25 @@
         <li class="breadcrumb-item text-dark">Report Engine Files Listing </li>
     </x-slot>
     <x-slot name="toolbarrightside">
+        <a class="btn btn-info btn-sm ms-1 me-1" href="{{ asset('reports/DevExDesigner V1.0.0.zip') }}">
+            Download Report Designer Tool(.exe)
+        </a>
         <div class="d-flex justify-end sample-download-div">
-            <div class="w-200px">
+            <div class="w-150px">
                 <x-select-input id='DimsReport'
                     name='DimsReport'
                     value=""
                     :options="config('custom.dims_report')"
-                    placeholder="Select report"
+                    placeholder="Select Report Type"
                     class="me-1 mb-1 mb-sm-0"
                     data-allow-clear="true"
                     required autofocus
                 />
             </div>
             <a class="downloadLink" style="display: none;"></a>
-            <button class="btn btn-info btn-sm ms-1 me-1 download-sample-file" url="{{ route('report-builder-files.download-sample-file', [0]) }}">Download Sample Report</button>
+            <button class="btn btn-info btn-sm ms-1 me-1 download-sample-file" url="{{ route('report-builder-files.download-sample-file', [0]) }}">
+                Download Sample Report
+            </button>
         </div>
     </x-slot>
 
