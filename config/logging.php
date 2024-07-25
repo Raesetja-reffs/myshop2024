@@ -63,6 +63,7 @@ return [
             'path' => storage_path('logs/laravel.log'),
             'level' => env('LOG_LEVEL', 'debug'),
             'replace_placeholders' => true,
+            'tap' => [App\Logging\CustomizeFormatter::class],
         ],
 
         'daily' => [
@@ -127,5 +128,6 @@ return [
             'path' => storage_path('logs/laravel.log'),
         ],
     ],
+    'max_file_size' => env('LOG_FILESIZE', 1024 * 1024 * 20),
 
 ];
