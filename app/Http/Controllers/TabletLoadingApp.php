@@ -817,7 +817,7 @@ class TabletLoadingApp extends Controller
     }
     public function ligisticsplan($dates)
     {
-        $this->authorize('isAllowCompanyPermission', ['App\Models\CompanyPermission', 'isallowlogisticsplan']);
+        // $this->authorize('isAllowCompanyPermission', ['App\Models\CompanyPermission', 'isallowlogisticsplan']);
         $Date = (new \DateTime($dates))->format('Y-m-d');
 
         if (config('app.IS_API_BASED')) {
