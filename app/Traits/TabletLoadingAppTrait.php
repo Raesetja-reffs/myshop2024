@@ -56,11 +56,17 @@ trait TabletLoadingAppTrait
 
     public function apiGetLogisticsPlan($data)
     {
-        return $this->httpRequest('post','Post_GetLogisticsPlan', $data);
+        $queries = $this->httpRequest('post', 'Post_GetLogisticsPlan', $data);
+        $queries = $this->convertToCollectionObject($queries);
+
+        return $queries;
     }
 
     public function apiGetLogisticsPlannedRoutes($data)
     {
-        return $this->httpRequest('post','Post_GetLogisticsPlannedRoutes', $data);
+        $queries = $this->httpRequest('post', 'Post_GetLogisticsPlannedRoutes', $data);
+        $queries = $this->convertToCollectionObject($queries);
+
+        return $queries;
     }
 }
