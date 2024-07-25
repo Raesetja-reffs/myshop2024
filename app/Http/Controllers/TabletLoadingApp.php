@@ -819,16 +819,25 @@ class TabletLoadingApp extends Controller
     {
         $this->authorize('isAllowCompanyPermission', ['App\Models\CompanyPermission', 'isallowlogisticsplan']);
         $Date = (new \DateTime($dates))->format('Y-m-d');
-        //$Date='2019-07-05';
-        $livebulk = DB::connection('sqlsrv3')
-            ->select("EXEC spLogisticsPlan '" . $Date . "'");
 
-        $livePalnned = DB::connection('sqlsrv3')
-            ->select("EXEC spLogisticsPlannedRoutes '" . $Date . "'");
+        if (config('app.IS_API_BASED')) {
+            $livebulk = $this->apiGetLogisticsPlan([
+                'Date' => $Date,
+            ]);
 
-        //dd($livebulk);
-        return view('dims/logistics_plan')
-            ->with('performance', $livebulk)->with('delDate', $Date)->with('planned',$livePalnned);
+            $livePlanned = $this->apiGetLogisticsPlannedRoutes([
+                'Date' => $Date,
+            ]);
+
+        } else {
+            $livebulk = DB::connection('sqlsrv3')->select("EXEC sp_API_R_LogisticsPlan '" . $Date . "'");
+            $livePlanned = DB::connection('sqlsrv3')->select("EXEC sp_API_R_LogisticsPlannedRoutes '" . $Date . "'");
+        }
+
+        return view('dims.logistics_plan')
+            ->with('performance', $livebulk)
+            ->with('delDate', $Date)
+            ->with('planned',$livePlanned);
     }
     public function LogisticsInsertMapRoute($deldateRoutingid,$ordertype,$route)
     {

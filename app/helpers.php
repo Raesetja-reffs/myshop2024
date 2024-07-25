@@ -10,7 +10,7 @@ if (!function_exists('getMenuItems')) {
                 'submenuitems' => [
                     [
                         'name' => 'Management Console',
-                        'icon' => 'ki-outline ki-screen fs-2',
+                        'icon' => 'ki-outline ki-underlining fs-2',
                         'href' => url("/managementSearch"),
                         'windowopen' => [
                             'name' => 'managementSearch',
@@ -458,11 +458,11 @@ if (!function_exists('getMenuItems')) {
             ],
             [
                 'name' => 'E-Commerce',
-                'icon' => 'fa mi-smartphone',
+                'icon' => 'ki-outline ki-basket-ok fs-2',
                 'submenuitems' => [
                     [
                         'name' => 'Web Store',
-                        'icon' => 'fa mi-webstore',
+                        'icon' => 'ki-outline ki-icon fs-2',
                         'href' => url("/webstore"),
                         'windowopen' => [
                             'name' => 'webstore',
@@ -472,7 +472,7 @@ if (!function_exists('getMenuItems')) {
                     ],
                     [
                         'name' => 'Remote Orders',
-                        'icon' => 'fa mi-smartphone',
+                        'icon' => 'ki-outline ki-cloud-add fs-2',
                         'href' => url("/remoteorders"),
                         'windowopen' => [
                             'name' => 'webstore',
