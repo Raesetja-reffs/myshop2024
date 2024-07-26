@@ -53,4 +53,20 @@ trait TabletLoadingAppTrait
     {
         return $this->httpRequest('post','Post_GetBulkPickingGridData'); //sp_API_CR_BulkPickingGridView
     }
+
+    public function apiGetLogisticsPlan($data)
+    {
+        $queries = $this->httpRequest('post', 'Post_GetLogisticsPlan', $data);
+        $queries = $this->convertToCollectionObject($queries);
+
+        return $queries;
+    }
+
+    public function apiGetLogisticsPlannedRoutes($data)
+    {
+        $queries = $this->httpRequest('post', 'Post_GetLogisticsPlannedRoutes', $data);
+        $queries = $this->convertToCollectionObject($queries);
+
+        return $queries;
+    }
 }
