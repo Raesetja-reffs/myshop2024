@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="refresh" content="40">
     <script src="{{ asset('js/ag_grid.js') }}"></script>
-    <script src="{{ asset('public/js/jquery-2.2.3.min.js') }}"></script>
+    <script src="{{ asset('js/jquery-2.2.3.min.js') }}"></script>
     <script src="{{ asset('js/jquery-ui.js') }}"></script>
 
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">

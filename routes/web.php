@@ -572,6 +572,9 @@ Route::get('rptToSeeInTockVsOrders', [DimsReports::class,'rptToSeeInTockVsOrders
 Route::get('getJsonSrockVsOrdered/{date1}/{date2}/{percentage}',[DimsReports::class,'getJsonSrockVsOrdered']);
 Route::post('topOrdersOfACustomer',[DimsReports::class,'topOrdersOfACustomer']);
 Route::post('contactDetailsOnOrder', [DimsReports::class,'contactDetailsOnOrder']);
+Route::get('searchcustomerpricing', [DimsReports::class,'searchcustomerpricing']);
+Route::post('getAllCustomerPricesSearch', [DimsReports::class,'getAllCustomerPricesSearch']);
+Route::post('getGroupPricesSearch', [DimsReports::class,'getGroupPricesSearch']);
 Route::get('pricelistview', [DimsReports::class,'pricelistview']);
 Route::get('getProductsMappedToThePriceList', [DimsReports::class,'getProductsMappedToThePriceList']);
 Route::get('exportorder/{orderid}',[DimsReports::class,'exportorder'] );
