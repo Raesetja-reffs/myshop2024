@@ -210,6 +210,16 @@ if (!function_exists('getMenuItems')) {
                             'height' => 900,
                         ],
                         'permission_slug' => 'isallowisellit',
+                    ], 
+                    [
+                        'name' => 'Price List Printing',
+                        'icon' => 'ki-outline ki-discount fs-2',
+                        'href' => url("/searchcustomerpricing"),
+                        'windowopen' => [
+                            'name' => 'pricelistprinting',
+                            'width' => 1200,
+                            'height' => 950,
+                        ],
                     ],
                     [
                         'name' => 'Sales Order/Quote',
