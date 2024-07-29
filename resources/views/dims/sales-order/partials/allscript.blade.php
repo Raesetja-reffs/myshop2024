@@ -5583,7 +5583,7 @@
             ],
             "createdRow": function(row, data, dataIndex) {
 
-                if (data.PushProduct == "1") {
+                if (data.PushProduct == "1" || data.PushProduct == "true") {
                     $(row).addClass('green');
                 }
                 if (data.TrendingId == "1") {
