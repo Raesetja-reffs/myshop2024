@@ -569,7 +569,7 @@
         let orderListingSelectedOrderId = null;
 
         let chooseInvoice, chooseOrderId, chooseCustomer, chooseDeliveryDate;
-        
+
         const btnPDFOrder = $('#btnPDFOrder').dxButton({
             stylingMode: 'contained',
             text: '',
@@ -588,6 +588,13 @@
             onClick() {
                 window.open('{!! url('/PDFDelDate') !!}/'+orderListingSelectedOrderId, '_blank');
             },
+        }).dxButton("instance");
+
+        const btnViewPOD = $('#btnViewPOD').dxButton({
+            stylingMode: 'contained',
+            text: '',
+            type: 'default',
+            width: '100%',
         }).dxButton("instance");
 
         const gridOrderListing = $("#gridOrderListing").dxDataGrid({
@@ -619,49 +626,49 @@
             columns: [
                 {
                     dataField: "ListKey",
-                    caption: "Key", 
+                    caption: "Key",
                 },{
                     dataField: "OrderId",
-                    caption: "Order Id", 
+                    caption: "Order Id",
                 },{
                     dataField: "InvoiceNo",
-                    caption: "Invoice No", 
+                    caption: "Invoice No",
                 },{
                     dataField: "CustomerPastelCode",
-                    caption: "Customer Code", 
+                    caption: "Customer Code",
                 },{
                     dataField: "StoreName",
-                    caption: "Customer Name", 
+                    caption: "Customer Name",
                 },{
                     dataField: "LateOrder",
-                    caption: "Order Type", 
+                    caption: "Order Type",
                 },{
                     dataField: "Route",
-                    caption: "Route", 
+                    caption: "Route",
                 },{
                     dataField: "DeliveryDate",
-                    caption: "Delivery Date", 
+                    caption: "Delivery Date",
                 },{
                     dataField: "OrderDate",
-                    caption: "Order Date", 
+                    caption: "Order Date",
                 },{
                     dataField: "OrderNo",
-                    caption: "Reference No", 
+                    caption: "Reference No",
                 },{
                     dataField: "UserName",
-                    caption: "Created By", 
+                    caption: "Created By",
                 },{
                     dataField: "inclusives",
-                    caption: "Total Inv", 
+                    caption: "Total Inv",
                 },{
                     dataField: "Terms",
-                    caption: "Terms", 
+                    caption: "Terms",
                 },{
                     dataField: "BalanceDue",
-                    caption: "Bal. Due", 
+                    caption: "Bal. Due",
                 },{
                     dataField: "GPperc",
-                    caption: "GP(%)", 
+                    caption: "GP(%)",
                 },
             ],
             onRowDblClick: function(e){
@@ -669,9 +676,24 @@
                     alert('There is Currently an order, Opened Please Close it!');
                 } else {
                     orderListingSelectedOrderId = e.data.OrderId;
-                    
+
                     btnPDFOrder.option('text', 'View Order PDF')
                     btnDeliveryNote.option('text', 'View Delivery Note')
+                    if (e.data.hasPOD && e.data.hasPOD == 'PODAVAILABLE') {
+                        btnViewPOD.option({
+                            text: 'View POD',
+                            type: 'default',
+                            onClick: function() {
+                                window.open(e.data.strPodUrl);
+                            }
+                        });
+                    } else {
+                        btnViewPOD.option({
+                            text: 'No POD',
+                            type: 'danger',
+                            onClick: function() {}
+                        });
+                    }
 
                     popupOrderListingSelect.show();
 
@@ -695,24 +717,39 @@
                     }
                 }
             },
-            onKeyDown: function(e) {  
-                if (e.event.key == "Enter") {  
-                    const focusedRowKey = e.component.option("focusedRowKey");  
-                    let rowData = e.component.byKey(focusedRowKey);  
-                    rowData.done(function(data) {  
+            onKeyDown: function(e) {
+                if (e.event.key == "Enter") {
+                    const focusedRowKey = e.component.option("focusedRowKey");
+                    let rowData = e.component.byKey(focusedRowKey);
+                    rowData.done(function(data) {
                         if ($('#orderId').val().length > 0) {
                             alert('There is Currently an order, Opened Please Close it!');
                         } else {
                             orderListingSelectedOrderId = data.OrderId;
-                            
+
                             btnPDFOrder.option('text', 'View Order PDF')
                             btnDeliveryNote.option('text', 'View Delivery Note')
+                            if (data.hasPOD && data.hasPOD == 'PODAVAILABLE') {
+                                btnViewPOD.option({
+                                    text: 'View POD',
+                                    type: 'default',
+                                    onClick: function() {
+                                        window.open(e.data.strPodUrl);
+                                    }
+                                });
+                            } else {
+                                btnViewPOD.option({
+                                    text: 'No POD',
+                                    type: 'danger',
+                                    onClick: function() {}
+                                });
+                            }
 
                             popupOrderListingSelect.show();
 
                         }
-                    })  
-                }  
+                    })
+                }
             },
             onToolbarPreparing: function(e) {
                 e.toolbarOptions.items.push({
@@ -923,8 +960,8 @@
                     chooseCustomer.option('dataSource', orderListingCustomers);
                 }
             });
-            
-            
+
+
         }
 
         // New Order Listing Related Code

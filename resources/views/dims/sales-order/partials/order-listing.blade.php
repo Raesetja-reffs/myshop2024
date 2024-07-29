@@ -17,4 +17,7 @@
     <div class="dx-field">
         <div id="btnDeliveryNote"></div>
     </div>
+    <div class="dx-field">
+        <div id="btnViewPOD"></div>
+    </div>
 </div>
