@@ -61,4 +61,9 @@ trait SalesFormTrait
     {
         return $this->httpRequest('post', 'searchProducts', $data, true);
     }
+
+    public function apiGetSalesOrderProductsBasedOnCustomerCode($data)
+    {
+        return $this->httpRequest('post', 'searchProductsorderform', $data, true);
+    }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreReportBuilderFileRequest extends FormRequest
 {
@@ -21,11 +22,43 @@ class StoreReportBuilderFileRequest extends FormRequest
      */
     public function rules(): array
     {
+        $uniqueValidation = Rule::unique('report_builder_files')->where(function ($query) {
+            return $query->where('report_type', $this->report_type);
+        });
+        if (isset($this->report_builder_file->id)) {
+            $uniqueValidation = $uniqueValidation->ignore($this->report_builder_file->id);
+        }
+
         return [
-            'company_id' => ['required', 'string', 'max:255'],
+            'company_id' => [
+                'required',
+                'string',
+                'max:255',
+                $uniqueValidation,
+            ],
             'company_name' => ['nullable'],
             'report_type' => ['required', 'string'],
-            'file_url' => ['required', 'file'],
+            'file_url' => [
+                'required',
+                'file',
+                function ($attribute, $value, $fail) {
+                    $allowedMimeTypes = ['application/octet-stream'];
+                    $fileMimeType = $value->getMimeType();
+
+                    if (!in_array($fileMimeType, $allowedMimeTypes) && $value->getClientOriginalExtension() !== 'repx') {
+                        $fail('The file must be of type application/octet-stream or have a .repx extension.');
+                    }
+                },
+                'max:2048',
+            ],
+
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'company_id.unique' => 'This company has already submitted a file of the same report type.',
         ];
     }
 
@@ -33,6 +66,7 @@ class StoreReportBuilderFileRequest extends FormRequest
     {
         return [
             'company_id' => 'company name',
+            'file_url' => 'report file'
         ];
     }
 }
