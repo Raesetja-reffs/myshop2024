@@ -377,7 +377,7 @@ public function getCustomerStoppedBuyingJSon()
         if (config('app.IS_API_BASED')) {
             $response = $this->apiGetSalesOrderProductsBasedOnCustomerCode([
                 'searchTerm' => $request->get('term'),
-                'CustomerPastelCode' => $request->get('term'),
+                'CustomerPastelCode' => $request->get('CustomerPastelCode'),
             ]);
         } else {
             if (env('CustomerAccess') == 1) {
