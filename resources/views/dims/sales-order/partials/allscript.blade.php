@@ -5058,10 +5058,11 @@
                             ajaxRequests[requestName].abort();
                         }
                         ajaxRequests[requestName] = $.ajax({
-                            url: "{{ route('sales-order.get-sales-order-products') }}",
+                            url: "{{ route('sales-order.get-sales-order-products-based-on-customercode') }}",
                             dataType: "json",
                             data: {
-                                term: req.term
+                                term: req.term,
+                                CustomerPastelCode: $('#inputCustAcc').val(),
                             },
                             success: function(data) {
                                 response(data);
@@ -5152,10 +5153,11 @@
                             ajaxRequests[requestName].abort();
                         }
                         ajaxRequests[requestName] = $.ajax({
-                            url: "{{ route('sales-order.get-sales-order-products') }}",
+                            url: "{{ route('sales-order.get-sales-order-products-based-on-customercode') }}",
                             dataType: "json",
                             data: {
-                                term: req.term
+                                term: req.term,
+                                CustomerPastelCode: $('#inputCustAcc').val(),
                             },
                             success: function(data) {
                                 response(data);
