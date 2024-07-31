@@ -26,6 +26,20 @@
         <div class="col-md-12 mt-5">
             <div class="card">
                 <div class="card-body">
+
+                    <div class="mb-3">
+                        <x-input-label for="company_id" :value="__('Company Name')" class="required" />
+                        <x-select-input id='company_id'
+                            name='company_id'
+                            :value="old('company_id')"
+                            :options="$companies"
+                            :messages='$errors->get("company_id")'
+                            placeholder="Please select company"
+                            required autofocus autocomplete='company_id'
+                        />
+                        <input type="hidden" id="company_name" name="company_name" value="{{ old('company_name') }}" />
+                    </div>
+
                     @if (count($companyRoles) == 0)
                         <div class="row">
                             <div class="col-12 d-flex align-items-center justify-content-center">

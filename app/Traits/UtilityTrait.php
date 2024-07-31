@@ -73,20 +73,23 @@ trait UtilityTrait
      */
     public function getCompaniesListForDropdown()
     {
-        $companies = $this->httpRequest('get', 'GetcompaniesAndGuid', [], false, true);
-        if ($companies) {
-            foreach ($companies as &$company) {
-                $company['id'] = $company['strGUID'];
-                $company['name'] = $company['strCompanyName'];
+        $companies = [];
+        if (config('app.IS_API_BASED')) {
+            $companies = $this->httpRequest('get', 'GetcompaniesAndGuid', [], false, true);
+            if ($companies) {
+                foreach ($companies as &$company) {
+                    $company['id'] = $company['strGUID'];
+                    $company['name'] = $company['strCompanyName'];
+                }
+                $companies[] = [
+                    'id' => '5730aaa7-fd77-e46f-298d',
+                    'name' => 'Linx Demo2'
+                ];
+                $companies[] = [
+                    'id' => '5730aaa7-fd77-e46f-300d',
+                    'name' => 'Linx Demo3'
+                ];
             }
-            $companies[] = [
-                'id' => '5730aaa7-fd77-e46f-298d',
-                'name' => 'Linx Demo2'
-            ];
-            $companies[] = [
-                'id' => '5730aaa7-fd77-e46f-300d',
-                'name' => 'Linx Demo3'
-            ];
         }
 
         return $companies;

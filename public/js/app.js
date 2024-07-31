@@ -5,10 +5,10 @@ $(document).ready(function() {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
         beforeSend: function(xhr) {
-            $(".general-loader").show();
+            showLoader();
         },
         complete: function(xhr, status) {
-            $(".general-loader").hide();
+            hideLoader();
         },
         error: function(xhr, status, error) {
             if (status !== 'abort') {
@@ -24,11 +24,11 @@ $(document).ready(function() {
         }
     });
     $(document).ajaxSend(function(event, xhr, settings) {
-        $(".general-loader").show();
+        showLoader();
     });
 
     $(document).ajaxComplete(function(event, xhr, settings) {
-        $(".general-loader").hide();
+        hideLoader();
     });
 
     //On hover, toggle the "active" class
@@ -41,7 +41,7 @@ $(document).ready(function() {
     });
 
     $.ui.dialog.prototype.options.open = function() {
-        $(".general-loader").hide();
+        hideLoader();
         $(this).closest(".ui-dialog")
         .find(".ui-dialog-titlebar-close")
         .html("<span style='margin: 0px;' class='ui-icon ui-icon-circle-close' title='close'></span>");
@@ -155,7 +155,7 @@ function formatDate(date) {
     if (!date) {
         return '';
     }
-    
+
     returnFormat = date.toLocaleDateString("en-ZA", {
         year: 'numeric',
         month: '2-digit',
@@ -163,4 +163,12 @@ function formatDate(date) {
     });
 
     return returnFormat.replace(/\//g, '-');
+}
+
+function showLoader() {
+    $(".general-loader").show();
+}
+
+function hideLoader() {
+    $(".general-loader").hide();
 }
