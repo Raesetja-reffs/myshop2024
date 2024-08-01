@@ -12,7 +12,7 @@
         <form method="POST" action="{{ route('company-permissions.save-permissions') }}">
             @csrf
 
-            <input type="hidden" name="intCompanyId" value="0">
+            <input type="hidden" name="strCompanyId" value="{{ $companyId }}">
 
             @foreach ($companyRoles as $name => $group)
                 <div class="row">

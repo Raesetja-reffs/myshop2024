@@ -122,7 +122,7 @@ trait UtilityTrait
     public function checkCompanyPermission($companyRoleSlug)
     {
         if ($this->companyPermissions === null) {
-            $this->companyPermissions = CompanyPermission::where('intCompanyId', 0)
+            $this->companyPermissions = CompanyPermission::where('strCompanyId', '0')
                 ->where('bitActive', 1)
                 ->join('tblCompanyRoles', 'tblCompanyRoles.intAutoId', '=', 'tblCompanyPermissions.intCompanyRoleId')
                 ->select('tblCompanyRoles.strSlug', 'tblCompanyPermissions.bitActive')

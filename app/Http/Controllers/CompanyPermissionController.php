@@ -35,7 +35,7 @@ class CompanyPermissionController extends Controller
                     $companyRoles[$record['strGroupName']][] = $record;
                 }
             }
-            $companyPermissions = CompanyPermission::where('intCompanyId', $companyId)
+            $companyPermissions = CompanyPermission::where('strCompanyId', $companyId)
                 ->where('bitActive', 1)
                 ->select('intCompanyRoleId')
                 ->pluck('intCompanyRoleId')
@@ -47,43 +47,20 @@ class CompanyPermissionController extends Controller
     }
 
     /**
-     * This function is used for show the set company permission page
-     */
-    public function setPermissions()
-    {
-        $data = CompanyRole::orderBy('strGroupName', 'asc')
-            ->get();
-        $companyRoles = [];
-        if ($data) {
-            foreach ($data as $record) {
-                $companyRoles[$record['strGroupName']][] = $record;
-            }
-        }
-        $companyPermissions = CompanyPermission::where('intCompanyId', 0)
-            ->where('bitActive', 1)
-            ->select('intCompanyRoleId')
-            ->pluck('intCompanyRoleId')
-            ->toArray();
-        $companies = $this->getCompaniesListForDropdown();
-
-        return view('company-permissions.set-permissions', compact('companyRoles', 'companyPermissions', 'companies'));
-    }
-
-    /**
      * This function is used for save the company permissions
      */
     public function savePermissions(Request $request)
     {
         if ($request->has('companyRoles')) {
             foreach ($request->get('companyRoles') as $roleId => $value) {
-                $isExist = CompanyPermission::where('intCompanyId', $request->get('intCompanyId'))
+                $isExist = CompanyPermission::where('strCompanyId', $request->get('strCompanyId'))
                     ->where('intCompanyRoleId', $roleId)
                     ->first();
                 if ($isExist) {
                     $isExist->update(['bitActive' => $value]);
                 } else {
                     CompanyPermission::create([
-                        'intCompanyId' => $request->get('intCompanyId'),
+                        'strCompanyId' => $request->get('strCompanyId'),
                         'intCompanyRoleId' => $roleId,
                         'bitActive' => $value,
                     ]);
@@ -91,6 +68,7 @@ class CompanyPermissionController extends Controller
             }
         }
 
-        return redirect()->route('company-permissions.set-permissions')->with('success', 'Company Permissions has been successfully saved.');
+        return redirect()->route('company-permissions.index', ['company_id' => $request->get('strCompanyId')])
+            ->with('success', 'Company Permissions has been successfully saved.');
     }
 }

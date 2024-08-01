@@ -531,7 +531,7 @@ if (!function_exists('getMenuItems')) {
             [
                 'name' => 'Company Permissions',
                 'icon' => 'ki-outline ki-key-square fs-2',
-                'href' => route('company-permissions.set-permissions'),
+                'href' => route('company-permissions.index'),
             ],
         ]);
 

@@ -11,9 +11,8 @@ use App\Http\Controllers\ReportBuilderFileController;
 Route::middleware('auth:web,central_api_user')->group(function () {
 
     Route::resource('company-permissions', CompanyPermissionController::class)->only(['index']);
-    Route::get('company-permissions/get-roles/{companyId}', [CompanyPermissionController::class, 'getRoles'])->name('company-permissions.get-roles');
-    Route::get('company-permissions/set-permissions', [CompanyPermissionController::class, 'setPermissions'])
-        ->name('company-permissions.set-permissions');
+    Route::get('company-permissions/get-roles/{companyId}', [CompanyPermissionController::class, 'getRoles'])
+        ->name('company-permissions.get-roles');
     Route::post('company-permissions/save-permissions', [CompanyPermissionController::class, 'savePermissions'])
         ->name('company-permissions.save-permissions');
 

@@ -18,7 +18,7 @@ class CompanyPermission extends Model
      */
     protected $fillable = [
         'intCompanyRoleId',
-        'intCompanyId',
+        'strCompanyId',
         'bitActive',
     ];
 }
