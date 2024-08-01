@@ -210,7 +210,7 @@
 
         function getStops() {
             $.ajax({
-                url: '{!! url('/getLiveDriversInfo') !!}',
+                url: '{!! url('/getLiveDriversAppInfo') !!}',
                 type: "POST",
                 data: {
                     route: selectRoute.option('value'),

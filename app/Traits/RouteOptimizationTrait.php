@@ -47,6 +47,4 @@ trait RouteOptimizationTrait
         return $this->convertToCollectionObject($this->httpRequest('post','Post_GetLiveDriversAppInfo', $data));
     }
 
-    
-
 }

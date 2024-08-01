@@ -1086,6 +1086,6 @@ Route::group(['middleware' => 'auth:web,central_api_user'], function() {
     Route::post('updateCustomerGeoCoordinates', [RouteOptimizationController::class,'updateCustomerGeoCoordinates']);
 
     Route::get('driversMap', [RouteOptimizationController::class,'driversMap']);
-    Route::post('getLiveDriversInfo', [RouteOptimizationController::class, 'getLiveDriversInfo'] );
+    Route::post('getLiveDriversAppInfo', [RouteOptimizationController::class, 'getLiveDriversAppInfo'] );
 
 });

@@ -74,13 +74,13 @@ class RouteOptimizationController extends Controller
             ->with('companyAbv', $this->companyAbv);
     }
 
-    public function getLiveDriversInfo(Request $request){
+    public function getLiveDriversAppInfo(Request $request){
         $deldate= $request->get('deldate');
         $routename= $request->get('route');
         $ordertype= $request->get('ordertype');
-
+        
         if (config('app.IS_API_BASED')) {
-            $result = $this->Post_GetLiveDriversInfo([
+            $result = $this->apiGetLiveDriversAppInfo([
                 'deldate' => $deldate,
                 'routename' => $routename,
                 'ordertype' => $ordertype,
