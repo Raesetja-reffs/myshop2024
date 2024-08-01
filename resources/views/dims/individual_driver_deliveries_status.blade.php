@@ -38,7 +38,7 @@
 </head>
 <body>
 <div class="col-md-12" style="background: black;color:white;">
-    <a href='{!!url("/officemap")!!}' onclick="window.open(this.href, 'massc',
+    <a href='{!!url("/driversMap")!!}' onclick="window.open(this.href, 'massc',
 'left=20,top=20,width=1000,height=1000,toolbar=1,resizable=0'); return false;" >MAP</a>
     <br>
 <h4>This Information Relay On The User Device Coverage </h4>

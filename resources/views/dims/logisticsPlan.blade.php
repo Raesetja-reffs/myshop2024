@@ -36,7 +36,7 @@
 </head>
 <body>
 <div class="col-md-12" style="background: black;color:white;height: 100%;width:100%">
-    <a href='{!!url("/officemap")!!}' onclick="window.open(this.href, 'massc',
+    <a href='{!!url("/driversMap")!!}' onclick="window.open(this.href, 'massc',
 'left=20,top=20,width=1000,height=1000,toolbar=1,resizable=0'); return false;" >MAP</a>
 <a href='{!!url("/driverreq_report")!!}' onclick="window.open(this.href, 'massc',
 'left=20,top=20,width=1000,height=1000,toolbar=1,resizable=0'); return false;" style="    padding: 20px;
@@ -140,7 +140,7 @@
 		 $("#livedrivers").tablesorter();
         $('#lplan').click(function(){
             var newODate = $('#deliverydate').val();
-            window.open('{!!url("/ligisticsplan")!!}/'+newODate, 'SAMPLEV', "location=1,status=1,scrollbars=1, width=1500,height=850");
+            window.open('{!!url("/logisticsPlan")!!}/'+newODate, 'SAMPLEV', "location=1,status=1,scrollbars=1, width=1500,height=850");
         });
         $('#livedrivers').on('dblclick', 'tbody tr', function () {
 

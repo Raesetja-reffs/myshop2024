@@ -289,7 +289,7 @@
 		     var Odate = new Date();
         var newODate = $.datepicker.formatDate('dd-mm-yy', new Date(Odate));
         $('#lplan').click(function(){
-            window.open('{!!url("/ligisticsplan")!!}/'+newODate, 'SAMPLEV', "location=1,status=1,scrollbars=1, width=1500,height=850");
+            window.open('{!!url("/logisticsPlan")!!}/'+newODate, 'SAMPLEV', "location=1,status=1,scrollbars=1, width=1500,height=850");
         });
 
         $("#unsequenced").tablesorter();

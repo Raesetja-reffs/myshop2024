@@ -55,8 +55,6 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
-Route::post('getLiveDriversInfo', [ExternalFunctions::class, 'getLiveDriversInfo'] );
-
 Route::get('home',[SalesForm::class, 'index'])->name('home');
 Route::get('/sales',[SalesForm::class, 'index']);
 Route::get('pl', [SalesForm::class,'pl']);
@@ -425,7 +423,7 @@ Route::get('driverreq_report',[TabletLoadingApp::class,'driverreq_report']);
 Route::get('driverreq_reportJson/{date1}/{date2}', [TabletLoadingApp::class,'driverreq_reportJson']);
 Route::get('driverreq_perrouteJson/{routeid}',[TabletLoadingApp::class,'driverreq_perrouteJson']);
 Route::get('updatelogisticsinformation', [TabletLoadingApp::class,'updatelogisticsinformation']);
-Route::get('ligisticsplan/{dates}', [TabletLoadingApp::class,'ligisticsplan']);
+Route::get('logisticsPlan/{dates}', [TabletLoadingApp::class,'logisticsPlan']);
 Route::get('LogisticsInsertMapRoute/{routingId}/{ot}/{route}',[TabletLoadingApp::class,'LogisticsInsertMapRoute']);
 Route::get('createtripsheet', [TabletLoadingApp::class,'createtripsheet']);
 Route::get('createtripsheetnotes', [TabletLoadingApp::class,'createtripsheetnotes']);
@@ -775,7 +773,6 @@ Route::get('getTransfersJsonbydate/{date}', [ExternalFunctions::class,'getTransf
 Route::post('updateCheckedOrNotTrasfers',[ExternalFunctions::class,'updateCheckedOrNotTrasfers'] );
 Route::post('checkUnCheckTransfers',[ExternalFunctions::class,'checkUnCheckTransfers'] );
 Route::get('getWebstoreCustomers', [ExternalFunctions::class,'getWebstoreCustomers']);
-Route::get('officemap', [ExternalFunctions::class,'officemap']);
 Route::get('getWebstoreFile',[ExternalFunctions::class,'getWebstoreFile'] );
 Route::get('brifcaseCustomerEdits',[ExternalFunctions::class,'brifcaseCustomerEdits'] );
 Route::get('synchProducts', [ExternalFunctions::class,'synchProducts']);
@@ -1087,5 +1084,8 @@ Route::group(['middleware' => 'auth:web,central_api_user'], function() {
     Route::get('getRoutesToOptimize', [RouteOptimizationController::class,'getRoutesToOptimize']);
     Route::post('optimizeStops', [RouteOptimizationController::class,'optimizeStops']);
     Route::post('updateCustomerGeoCoordinates', [RouteOptimizationController::class,'updateCustomerGeoCoordinates']);
+
+    Route::get('driversMap', [RouteOptimizationController::class,'driversMap']);
+    Route::post('getLiveDriversInfo', [RouteOptimizationController::class, 'getLiveDriversInfo'] );
 
 });

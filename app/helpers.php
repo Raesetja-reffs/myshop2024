@@ -396,7 +396,7 @@ if (!function_exists('getMenuItems')) {
                     [
                         'name' => 'Logistics Plan',
                         'icon' => 'ki-outline ki-technology-4 fs-2',
-                        'href' => url("/ligisticsplan"),
+                        'href' => url("/logisticsPlan"),
                         'target' => '_blank',
                         'permission_slug' => 'isallowlogisticsplan',
                         'id' => 'logisticsplan',
