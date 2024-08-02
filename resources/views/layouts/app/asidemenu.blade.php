@@ -35,11 +35,8 @@
                 @php $menuItems = getMenuItems(); @endphp
 
                 @foreach ($menuItems as $menuItem)
-                    @if (!isset($menuItem['permission_slug']) ||
-                        (
-                            isset($menuItem['permission_slug']) && auth()->user() &&
-                            auth()->user()->can('isAllowCompanyPermission', ['App\Models\CompanyPermission', $menuItem['permission_slug']])
-                        )
+                    @if (!isset($menuItem['permission_slug'])
+                        || (isset($menuItem['permission_slug']) && viewCheckCompanyPermission($menuItem['permission_slug']))
                     )
                         <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
                             @if (isset($menuItem['href']))
@@ -66,11 +63,11 @@
                             @if (isset($menuItem['submenuitems']))
                                 <div class="menu-sub menu-sub-accordion">
                                     @foreach ($menuItem['submenuitems'] as $subMenuItem)
-                                        @if (!isset($subMenuItem['permission_slug']) ||
-                                            (
-                                                isset($subMenuItem['permission_slug']) && auth()->user() &&
-                                                auth()->user()->can('isAllowCompanyPermission', ['App\Models\CompanyPermission', $subMenuItem['permission_slug']])
-                                            )
+                                        @if (isset($subMenuItem['permission_slug']) && $subMenuItem['permission_slug'] == 'isallowdriversreport')
+                                            <?php dd($subMenuItem['permission_slug']);?>
+                                        @endif
+                                        @if (!isset($subMenuItem['permission_slug'])
+                                            || (isset($menuItem['permission_slug']) && viewCheckCompanyPermission($menuItem['permission_slug']))
                                         )
                                             <div class="menu-item">
                                                 @if (isset($subMenuItem['windowopen']))

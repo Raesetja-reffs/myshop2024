@@ -7,10 +7,11 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\DimsCommon;
 use App\Traits\DriversControllerTrait;
+use App\Traits\UtilityTrait;
 
 class DriversController extends Controller
 {
-    use DriversControllerTrait;
+    use DriversControllerTrait, UtilityTrait;
     //Drivers
     public function addItem(Request $request)
     {
@@ -195,7 +196,7 @@ class DriversController extends Controller
         $deladd3 = $request->get('DAddress3');
         $deladd4 = $request->get('DAddress4');
         $deladd5 = $request->get('DAddress5');
-        $route = $request->get('Route'); 
+        $route = $request->get('Route');
       if (config('app.IS_API_BASED')) {
            $this->apiUpdateDeliveryAddressInformation([
                'deladdid' => $deladdID,
@@ -509,7 +510,8 @@ dbo.fnRouteLoader($routingId) as strLoadedBy,bitCashUpCheckedIt cashdealtwithit
     }
     public function driversperformancereport()
     {
-        $this->authorize('isAllowCompanyPermission', ['App\Models\CompanyPermission', 'isallowdriversreport']);
+        $this->authorizeCompanyPermission('isallowdriversreport');
+
         return view('dims/drivers_report');
     }
     public function getNoOfDelPerCustomer($date1,$date2)

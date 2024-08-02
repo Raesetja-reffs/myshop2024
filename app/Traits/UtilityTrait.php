@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Traits\ApiTrait;
 use App\Models\CompanyPermission;
+use Illuminate\Auth\Access\AuthorizationException;
 
 trait UtilityTrait
 {
@@ -117,12 +118,17 @@ trait UtilityTrait
 
     /**
      * This function is used for check the company permission
+     *
      * @param string $companyRoleSlug
      */
     public function checkCompanyPermission($companyRoleSlug)
     {
         if ($this->companyPermissions === null) {
-            $this->companyPermissions = CompanyPermission::where('strCompanyId', '0')
+            $companyId = '0';
+            if (config('app.IS_API_BASED')) {
+                $companyId = auth()->guard('central_api_user')->user()->company_id;
+            }
+            $this->companyPermissions = CompanyPermission::where('strCompanyId', $companyId)
                 ->where('bitActive', 1)
                 ->join('tblCompanyRoles', 'tblCompanyRoles.intAutoId', '=', 'tblCompanyPermissions.intCompanyRoleId')
                 ->select('tblCompanyRoles.strSlug', 'tblCompanyPermissions.bitActive')
@@ -135,5 +141,26 @@ trait UtilityTrait
         }
 
         return false;
+    }
+
+    /**
+     * This function is used for authorize the company permission
+     *
+     * @param string $companyRoleSlug
+     */
+    public function authorizeCompanyPermission($companyRoleSlug)
+    {
+        if (!$this->checkCompanyPermission($companyRoleSlug)) {
+            $this->throwUnAuthorizationException();
+        }
+    }
+
+    /**
+     * This function is used for throw unauthorization exception
+     *
+     */
+    public function throwUnAuthorizationException()
+    {
+        throw new AuthorizationException();
     }
 }

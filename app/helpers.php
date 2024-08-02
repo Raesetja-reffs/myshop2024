@@ -635,3 +635,12 @@ if (!function_exists('hasThingRole')) {
         return (new \App\Http\Controllers\SalesForm())->commonGetThings($thing);
     }
 }
+
+if (!function_exists('viewCheckCompanyPermission')) {
+    function viewCheckCompanyPermission($companyRoleSlug)
+    {
+        $controllerInstance = (new \App\Http\Controllers\SalesForm());
+
+        return $controllerInstance->checkCompanyPermission($companyRoleSlug);
+    }
+}
