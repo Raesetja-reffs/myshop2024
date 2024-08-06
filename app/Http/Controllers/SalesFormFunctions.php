@@ -985,21 +985,37 @@ class SalesFormFunctions extends Controller
 
     public function getorderlocksdeleterpage(Request $request)
     {
-        return view('dims/orderlockdeletepage');
+        return view('dims.orderlockDeleter.index');
     }
     public function getOrderLocksForDeletePageData(Request $request){
 
-            $output = DB::connection('sqlsrv3')
-                ->select("EXEC spGetOrderLocksForDeleterPage");
 
-            return response()->json($output);
+            if (config('app.IS_API_BASED')) {
+               $orderLockData= $this->apiGetOrderLocksForDeleting();
+            } else {
+    
+                $orderLockData = DB::connection('sqlsrv3')->select("exec sp_API_R_GetOrderLocksForDelete");
+                
+                }
+            
+    
+            return response()->json($orderLockData);
+
+            
     }
     public function deleteDataForOrderLockPage(Request $request){
 
-        $userid = Auth::user()->UserID;
         $OrderId = $request->get('OrderId');
-        DB::connection('sqlsrv3')
-        ->statement("EXEC spDeleteOrderLocksDeleterpage ?,?",array($userid,$OrderId));
+
+        if (config('app.IS_API_BASED')) {
+            $orderLockData= $this->apiDeleteOrderLocksParams([
+                'orderid'=>$OrderId
+            ]);
+         } else {
+ 
+              DB::connection('sqlsrv3')->statement("exec sp_API_D_DeleteOrderLockParams ?",array($OrderId));
+             
+             }
 
     }
     public function getOrderListingOtherTrans(Request $request)
