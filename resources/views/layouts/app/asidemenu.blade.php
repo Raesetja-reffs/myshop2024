@@ -63,11 +63,8 @@
                             @if (isset($menuItem['submenuitems']))
                                 <div class="menu-sub menu-sub-accordion">
                                     @foreach ($menuItem['submenuitems'] as $subMenuItem)
-                                        @if (isset($subMenuItem['permission_slug']) && $subMenuItem['permission_slug'] == 'isallowdriversreport')
-                                            <?php dd($subMenuItem['permission_slug']);?>
-                                        @endif
                                         @if (!isset($subMenuItem['permission_slug'])
-                                            || (isset($menuItem['permission_slug']) && viewCheckCompanyPermission($menuItem['permission_slug']))
+                                            || (isset($subMenuItem['permission_slug']) && viewCheckCompanyPermission($subMenuItem['permission_slug']))
                                         )
                                             <div class="menu-item">
                                                 @if (isset($subMenuItem['windowopen']))
