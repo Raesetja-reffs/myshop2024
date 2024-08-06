@@ -1,7 +1,7 @@
 <x-app-layout>
 
     <x-slot name="header">
-        {{ __('Route Optimization') }}
+        {{ __('Drivers Map') }}
     </x-slot>
 
     <x-slot name="breadcrum">
@@ -19,15 +19,17 @@
 
         <!--begin::Item-->
         <li class="breadcrumb-item text-dark">
-            Route Optimization </li>
+            Drivers Map </li>
         <!--end::Item-->
     </x-slot>
+
     <div class="col-12 d-inline-flex h-100">
         <div class="col-4">
             <div id="gridRoutes"></div>
         </div>
 
-        <div class="col-8">
+        <div class="col-8 position-relative">
+            <div id="selectGroups"></div>
             <div id="mapRoutes"></div>
         </div>
     </div>
@@ -53,6 +55,6 @@
         </div>
     </div>
 
-    @include('dims.routeOptimization.partials.allscripts')
+    @include('dims.routeOptimization.partials.driversMapAllscripts')
 
 </x-app-layout>

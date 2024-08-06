@@ -56,6 +56,42 @@ class RouteOptimizationController extends Controller
         }
     }
 
+    public function driversMap(){
+        if (config('app.IS_API_BASED')) {
+            $routes = $this->apiGetRoutes();
+            $types = $this->apiGetOrderTypes();
+        } else {
+            $routes = DB::connection('sqlsrv3')->select("EXEC sp_API_GetRoutes 0");
+            $types = DB::connection('sqlsrv3')->select("EXEC sp_API_GetOrderTypes 0");
+        }
+
+        return view('dims.routeOptimization.driversMap')
+            ->with('routes',$routes)
+            ->with('types',$types)
+            ->with('companyLat', $this->companyLat)
+            ->with('companyLng',  $this->companyLng)
+            ->with('companyName', $this->companyName)
+            ->with('companyAbv', $this->companyAbv);
+    }
+
+    public function getLiveDriversAppInfo(Request $request){
+        $deldate= $request->get('deldate');
+        $routename= $request->get('route');
+        $ordertype= $request->get('ordertype');
+        
+        if (config('app.IS_API_BASED')) {
+            $result = $this->apiGetLiveDriversAppInfo([
+                'deldate' => $deldate,
+                'routename' => $routename,
+                'ordertype' => $ordertype,
+            ]);
+        } else {
+            $result =  DB::connection('sqlsrv3')->select("EXEC sp_API_R_LiveDriversAppInfo '".$deldate."','".$routename."','".$ordertype."'");
+        }
+
+        return response()->json($result);
+    }
+
     public function getRoutesToOptimize(Request $request){
         $deliveryDate = $request->get("deliveryDate");
         $routeId = $request->get("routeId");
@@ -120,7 +156,6 @@ class RouteOptimizationController extends Controller
         ];
 
         $routes = json_encode($routesArray);
-        // dd($routes);
 
         $ConsoleTypeId = 66;
         $Qty = count($data);
@@ -137,7 +172,7 @@ class RouteOptimizationController extends Controller
             $UserId = Auth::user()->UserID;
             $LoggedBy = Auth::user()->UserName;
 
-            DB::connection('sqlsrv3')->statement("EXEC sp_API_C_RouteOptimizationUsage $ConsoleTypeId, '$LoggedBy', $Qty, $UserId, '$xmlData'");
+            // DB::connection('sqlsrv3')->statement("EXEC sp_API_C_RouteOptimizationUsage $ConsoleTypeId, '$LoggedBy', $Qty, $UserId, '$xmlData'");
         }
 
         $curl = curl_init();
@@ -164,8 +199,6 @@ class RouteOptimizationController extends Controller
         if($response) {
             $response = json_decode($response);
         }
-
-        // dd($response);
 
         $originalDataMap = [];
         foreach ($originalData as $data) {
@@ -197,9 +230,10 @@ class RouteOptimizationController extends Controller
         return $newResponse;
     }
 
-    public function optimizeStops(Request $request) {
+    public function optimizeStops(Request $request){
         $data = $request->get('routes');
         $data = json_decode(json_encode($data));
+
         $optimizedRoute = $this->optimizeRoutesRoutific($data);
     
         return $optimizedRoute;
@@ -242,7 +276,7 @@ class RouteOptimizationController extends Controller
         return $result;
     }
 
-    function xmlConvert($array) {
+    function xmlConvert($array){
         $xml = new \SimpleXMLElement('<data/>');
     
         foreach ($array as $productData) {

@@ -397,7 +397,7 @@
             width: '100%',
             onClick() {
                 var todaysDate = new Date();
-                window.open('{!! url('/ligisticsplan') !!}/' + formatDate(todaysDate), "ligisticsplan",
+                window.open('{!! url('/logisticsPlan') !!}/' + formatDate(todaysDate), "logisticsPlan",
                     "location=1,status=1,scrollbars=1, width=1200,height=850");
             },
         }).dxButton("instance");

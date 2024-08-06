@@ -133,7 +133,7 @@
                         </button>
 
                         <hr>
-                        <button id="ligisticsplan" class="btn btn-primary btn-auto-height w-100">
+                        <button id="logisticsPlan" class="btn btn-primary btn-auto-height w-100">
                             Logistics Plan
                         </button>
                     @endif
@@ -260,7 +260,7 @@
             var newODate = $.datepicker.formatDate('dd-mm-yy', new Date(Odate));
 
             $('#lplan').click(function(){
-                window.open('{!!url("/ligisticsplan")!!}/'+newODate, 'SAMPLEV', "location=1,status=1,scrollbars=1, width=1500,height=850");
+                window.open('{!!url("/logisticsPlan")!!}/'+newODate, 'SAMPLEV', "location=1,status=1,scrollbars=1, width=1500,height=850");
             });
 
             $('#reprinting').click(function(){
@@ -374,10 +374,10 @@
             $('#invoicesnotprinting').click(function(){
                 window.open( '{!!url("/invoicesnotprinting")!!}', "Invoices Not printed", "location=1,status=1,scrollbars=1, width=1200,height=850");
             });
-            $('#ligisticsplan').click(function(){
+            $('#logisticsPlan').click(function(){
                 var Odate = new Date();
                 var newODate = $.datepicker.formatDate('dd-mm-yy', new Date(Odate));
-                window.open( '{!!url("/ligisticsplan")!!}/'+newODate, "ligisticsplan", "location=1,status=1,scrollbars=1, width=1200,height=850");
+                window.open( '{!!url("/logisticsPlan")!!}/'+newODate, "logisticsPlan", "location=1,status=1,scrollbars=1, width=1200,height=850");
             });
 
             //The main big function !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

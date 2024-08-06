@@ -549,7 +549,7 @@ class TabletLoadingAppKF extends controller
             ->with('stops', $driversondutyStops);
 
     }
-	   public function ligisticsplan($dates)
+	   public function logisticsPlan($dates)
     {
         $Date = (new \DateTime($dates))->format('Y-m-d');
           //$Date='2019-07-05';
@@ -560,7 +560,7 @@ class TabletLoadingAppKF extends controller
             ->select("EXEC spLogisticsPlannedRoutes '" . $Date . "'");
 
         //dd($livebulk);
-        return view('dims/logistics_plan')
+        return view('dims/logisticsPlan')
             ->with('performance', $livebulk)->with('delDate', $Date)->with('planned',$livePalnned);
     }
     public function LogisticsInsertMapRoute($deldateRoutingid,$ordertype,$route)

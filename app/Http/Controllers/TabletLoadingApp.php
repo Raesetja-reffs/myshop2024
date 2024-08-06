@@ -801,7 +801,7 @@ class TabletLoadingApp extends Controller
             ->with('stops', $driversondutyStops);
 
     }
-    public function ligisticsplan($dates)
+    public function logisticsPlan($dates)
     {
         // $this->authorize('isAllowCompanyPermission', ['App\Models\CompanyPermission', 'isallowlogisticsplan']);
         $Date = (new \DateTime($dates))->format('Y-m-d');
@@ -820,7 +820,7 @@ class TabletLoadingApp extends Controller
             $livePlanned = DB::connection('sqlsrv3')->select("EXEC sp_API_R_LogisticsPlannedRoutes '" . $Date . "'");
         }
 
-        return view('dims.logistics_plan')
+        return view('dims.logisticsPlan')
             ->with('performance', $livebulk)
             ->with('delDate', $Date)
             ->with('planned',$livePlanned);
