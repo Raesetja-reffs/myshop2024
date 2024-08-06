@@ -5105,7 +5105,7 @@
                         $('#margin_' + token_number).val(ui.item.Margin);
 
 
-                        if ($.trim(ui.item.SoldByWeight) == "1") {
+                        if ($.trim(ui.item.SoldByWeight) == "1" || $.trim(ui.item.SoldByWeight) == "true") {
                             $('#table').find('#prodBulk_' + token_number).focus();
                             $('#prodBulk_' + token_number).addClass('inputs');
                             $('#prodBulk_' + token_number).addClass('addgreen');
@@ -5192,7 +5192,7 @@
                         $('#unitWeight' + token_number).val(ui.item.UnitWeight);
                         $('#strBulkUnit' + token_number).val(ui.item.strBulkUnit);
                         $('#margin_' + token_number).val(ui.item.Margin);
-                        if ($.trim(ui.item.SoldByWeight) == "1") {
+                        if ($.trim(ui.item.SoldByWeight) == "1" || $.trim(ui.item.SoldByWeight) == "true") {
                             $('#table').find('#prodBulk_' + token_number).focus();
                             $('#prodBulk_' + token_number).addClass('inputs');
                             $('#prodBulk_' + token_number).addClass('addgreen');
