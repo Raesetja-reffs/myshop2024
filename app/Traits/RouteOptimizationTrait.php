@@ -42,6 +42,9 @@ trait RouteOptimizationTrait
         return $this->httpRequest('post','Post_LogRouteOptimizationUsage', $data);
     }
 
-
+    public function apiGetLiveDriversAppInfo($data)
+    {
+        return $this->convertToCollectionObject($this->httpRequest('post','Post_GetLiveDriversAppInfo', $data));
+    }
 
 }

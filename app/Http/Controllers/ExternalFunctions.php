@@ -485,22 +485,6 @@ $history = $this->convertUtf8( $history );
 
         return response()->json($driversondutyStops);
     }
-    public function officemap(){
-        $route = DB::connection('sqlsrv3')->table('tblRoutes')->select('Route')->get();
-        $ordertypes = DB::connection('sqlsrv3')->table('tblOrderTypes')->select('OrderType')->get();
-        return view('dims/driversmap')->with('routes',$route)->with('ordertypes',$ordertypes);
-    }
-    public function getLiveDriversInfo(Request $request)
-    {
-        //[spLiveDriversAppInfo]
-        $deldate= $request->get('deldate');
-        $routename= $request->get('route');
-        $ordertype= $request->get('ordertype');
-        $driversondutyStops=  DB::connection('sqlsrv3')
-            ->select("EXEC spLiveDriversAppInfo '".$deldate."','".$routename."','".$ordertype."'");
-
-        return response()->json($driversondutyStops);
-    }
     public function transferblade()
     {
         return view('dims/transferslist');

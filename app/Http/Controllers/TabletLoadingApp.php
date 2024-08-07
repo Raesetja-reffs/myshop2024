@@ -716,41 +716,27 @@ class TabletLoadingApp extends Controller
 
     public function liveBulkPicking()
     {
+        $CurrentDate = (new \DateTime())->format('Y-m-d');
+        $FutureDate = new \DateTime();
+        $FutureDate->modify('+7 days');
+        $FutureDate = $FutureDate->format('Y-m-d');
 
         if (config('app.IS_API_BASED')) {
 
-            $livebulk = $this->apiGetBulkPickingGridData();
+            $livebulk = $this->apiGetBulkPickingGridData([
+                'CurrentDate'=>$CurrentDate,
+                'FutureDate'=> $FutureDate
+            ]);
+            
 
         } else {
 
-            $livebulk = DB::connection('sqlsrv3')->select("EXEC [sp_API_CR_BulkPickingGridView]");
+            $livebulk = DB::connection('sqlsrv3')->select("EXEC [sp_API_R_BulkPickingGridViewHTML]");
 
         }
-        $company =  env('COMPANY');
-        switch ($company) {
-            case "Goodfood Enterprise":
-                return view('bulkpicking/bulkpickingperformanceseafood')
-                    ->with('performance', $livebulk);
-                break;
-            case "Linx Systems":
-                return view('bulkpicking/bulkpickingperformancedemo')
-                    ->with('performance', $livebulk);
-                break;
-            case "Foodgistics":
-                return view('bulkpicking/bulkpickingperformancefoodgistics')
-                    ->with('performance', $livebulk);
-                    break;
-            case "Kerston Foods":
-                return view('bulkpicking/bulkpickingperformancekersonfoods')
-                    ->with('performance', $livebulk);
-                break;
-            // code to execute when expression is equal to value2
-            //  break;
+        return view('bulkpicking/bulkpickingperformancedemo')
+        ->with('performance', $livebulk);
 
-            default:
-                // code to execute when none of the cases match the expression
-                break;
-        }
     }
     public function bulkPickingPerUserView()
     {
@@ -815,7 +801,7 @@ class TabletLoadingApp extends Controller
             ->with('stops', $driversondutyStops);
 
     }
-    public function ligisticsplan($dates)
+    public function logisticsPlan($dates)
     {
         // $this->authorize('isAllowCompanyPermission', ['App\Models\CompanyPermission', 'isallowlogisticsplan']);
         $Date = (new \DateTime($dates))->format('Y-m-d');
@@ -834,7 +820,7 @@ class TabletLoadingApp extends Controller
             $livePlanned = DB::connection('sqlsrv3')->select("EXEC sp_API_R_LogisticsPlannedRoutes '" . $Date . "'");
         }
 
-        return view('dims.logistics_plan')
+        return view('dims.logisticsPlan')
             ->with('performance', $livebulk)
             ->with('delDate', $Date)
             ->with('planned',$livePlanned);

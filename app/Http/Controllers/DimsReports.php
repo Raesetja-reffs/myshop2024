@@ -138,6 +138,52 @@ class DimsReports extends Controller
     {
         return view('dims/quotationprint');
     }
+    public function searchcustomerpricing(){
+        if (config('app.IS_API_BASED')) {
+            
+        $queryCustomers = $this->apiGetCustomerData();
+        $queryGroups = $this->apiGetGroupData();
+            }else{
+                
+        $queryCustomers =DB::connection('sqlsrv3')->table("viewtblCustomers" )->select('CustomerId','StoreName','CustomerPastelCode')->orderBy('CustomerPastelCode','ASC')->get();
+        $queryGroups =DB::connection('sqlsrv3')->table("tblGroups" )->select('GroupId','GroupName','GroupCode')->orderBy('GroupId','ASC')->get();
+       
+                    }
+        return view('dims.priceprinting.index')
+        ->with('customers',$queryCustomers)
+        ->with('groups',$queryGroups);
+    }
+
+    public function getAllCustomerPricesSearch(Request $request){
+        $inputCustAccount = $request->get('inputCustAccount');
+        if (config('app.IS_API_BASED')) {
+            
+        $getSpecialsOnParams = $this->apiGetSpecialDefaultPricesData([
+            'inputCustAccount'=>$inputCustAccount
+        ]);
+        }else{
+            
+        $getSpecialsOnParams = DB::connection('sqlsrv3')
+        ->select("EXEC sp_API_R_GetCustomerPricesFromSearchParams ? ",array($inputCustAccount));
+                }
+
+        return response()->json($getSpecialsOnParams);
+    }
+
+    public function getGroupPricesSearch(Request $request){
+        $inputGroupId = $request->get('inputGroupId');
+        if (config('app.IS_API_BASED')) {
+            $getSpecialsOnParams = $this->apiGetGroupSpecialDefaultPricesData([
+                'groupid'=>$inputGroupId
+            ]);
+        }else{
+            
+        $getSpecialsOnParams = DB::connection('sqlsrv3')
+        ->select("EXEC sp_API_R_GetGroupPricesFromSearchParams ? ",array($inputGroupId));
+                }
+
+        return response()->json($getSpecialsOnParams);
+    }
     public function pickingSlipManue()
     {
         $GroupId = Auth::user()->GroupId;

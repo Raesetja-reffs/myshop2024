@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="refresh" content="40">
     <script src="{{ asset('js/ag_grid.js') }}"></script>
-    <script src="{{ asset('public/js/jquery-2.2.3.min.js') }}"></script>
+    <script src="{{ asset('js/jquery-2.2.3.min.js') }}"></script>
     <script src="{{ asset('js/jquery-ui.js') }}"></script>
 
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -37,62 +37,13 @@
     </style>
 </head>
 <body>
-<div class="col-md-12" style="background: black;color:white;height: 1500px;">
-    <a href='{!!url("/userpickingloadingperformancereport")!!}' onclick="window.open(this.href, 'massc',
-'left=20,top=20,width=1000,height=1000,toolbar=1,resizable=0'); return false;" >Advance</a>
-    <table class="table" id="livepickingtable">
-        <thead>
-        <th style="color:#61ff13;font-size: 20px;font-family: sans-serif;font-weight: 900;">Type</th>
-        <th style="color:#61ff13;font-size: 20px;font-family: sans-serif;font-weight: 900;">Route</th>
-        <th style="color:#61ff13;font-size: 20px;font-family: sans-serif;font-weight: 900;">Delivery Date</th>
-
-        <th style="color:#61ff13;font-size: 25px;font-family: sans-serif;">A</th>
-        <th style="color:#61ff13;font-size: 25px;font-family: sans-serif;">B</th>
-		<th style="color:#61ff13;font-size: 25px;font-family: sans-serif;">C</th>
-		<th style="color:#61ff13;font-size: 25px;font-family: sans-serif;">D</th>
-        <th style="color:#61ff13;font-size: 25px;font-family: sans-serif;">E</th>
-        <th style="color:#61ff13;font-size: 25px;font-family: sans-serif;">F</th>
-        <th style="color:#61ff13;font-size: 25px;font-family: sans-serif;">G</th>
-        <th style="color:#61ff13;font-size: 25px;font-family: sans-serif;">H</th>
-        <th style="color:#61ff13;font-size: 25px;font-family: sans-serif;">I</th>
-        <th style="color:#61ff13;font-size: 25px;font-family: sans-serif;">J</th>
-        <th style="color:#61ff13;font-size: 25px;font-family: sans-serif;">K</th>
-
-        </thead>
-        <tbody style="font-size: 25px;font-family: sans-serif;font-weight: 900;">
-        @foreach($performance as $val)
-            @if( $val['blnAttended'] =="NOT STARTED")
-            <tr style="background: red;color: black">@endif
-            @if( $val['blnAttended'] =="PROGRESS")
-            <tr style="background: yellow;color: black" >
-            @endif
-            @if( $val['blnAttended'] =="DONE")
-                <tr style="background: green;color: black" >
-                    @endif
-                <td>{{$val['OrderType']}}</td>
-                <td>{{$val['Route']}}</td>
-                <td>{{$val['dDelDate']}}</td>
-                <td>{{$val['A']}}</td>
-                <td>{{$val['B']}}</td>
-                <td>{{$val['C']}}</td>
-                <td>{{$val['D']}}</td>
-                <td>{{$val['E']}}</td>
-                <td>{{$val['F']}}</td>
-                <td>{{$val['G']}}</td>
-                <td>{{$val['H']}}</td>
-                <td>{{$val['I']}}</td>
-                <td>{{$val['J']}}</td>
-                <td>{{$val['K']}}</td>
-                
-
-            </tr>
-
-        @endforeach
-        </tbody>
-    </table>
-
-</div>
-
+@if (!empty($performance) && count($performance) > 0)
+    @foreach($performance as $val)
+       {!! $val !!}
+    @endforeach
+@else
+    <p>No data available.</p>
+@endif
 <script type="text/javascript" charset="utf-8">
 
     $(document).ready(function() {
