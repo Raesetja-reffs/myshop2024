@@ -159,6 +159,7 @@ Route::get('checkifcustomerspecial/{date1}/{date2}', [DimsCommon::class,'checkif
 Route::get('getcheckifcustomerspecials', [DimsCommon::class,'getcheckifcustomerspecials']);
 Route::get('addNewGroupSpecial', [DimsCommon::class,'addNewGroupSpecial']);
 Route::get('managementSearch', [DimsCommon::class,'managementSearch']);
+Route::post('getManagementConsoleData', [DimsCommon::class,'getManagementConsoleData']);
 Route::post('updateDelvAdress', [DimsCommon::class,'updateDelvAdress']);
 Route::post('XmlBulkEditingCustomerSpecials',[DimsCommon::class,'XmlBulkEditingCustomerSpecials']);
 Route::post('XmlBulkEditingGroupSpecials', [DimsCommon::class,'XmlBulkEditingGroupSpecials']);
