@@ -203,7 +203,7 @@ class ExternalFunctions extends Controller
     }
     public function viewMissedVisit()
     {
-        $this->authorize('isAllowCompanyPermission', ['App\Models\CompanyPermission', 'isallowisellit']);
+        $this->authorizeCompanyPermission('isallowisellit');
         return view('dims/notVisited');
     }
     public function assets()
@@ -228,7 +228,7 @@ class ExternalFunctions extends Controller
     }
     public function webstore()
     {
-        $this->authorize('isAllowCompanyPermission', ['App\Models\CompanyPermission', 'isallowecommerce']);
+        $this->authorizeCompanyPermission('isallowecommerce');
         return view('dims/webstore/index');
     }
     public function synchwebstore()
@@ -491,7 +491,7 @@ $history = $this->convertUtf8( $history );
     }
     public function transfersstatus()
     {
-        $this->authorize('isAllowCompanyPermission', ['App\Models\CompanyPermission', 'isallowtransfers']);
+        $this->authorizeCompanyPermission('isallowtransfers');
         $listoftransfers= DB::connection('sqlsrv3')
             ->select("Exec spGetListOfTransfers ");
         return view('dims/transfersstatus')->with('Transfers',$listoftransfers);

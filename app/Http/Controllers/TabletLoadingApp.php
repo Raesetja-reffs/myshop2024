@@ -196,13 +196,13 @@ class TabletLoadingApp extends Controller
     public function routePlanner()
     {
         if (config('app.IS_API_BASED')) {
-            
+
             $routes = $this->apiGetRoutes();
             $orderTypes = $this->apiGetOrderTypes();
         } else {
             $routes = DB::connection('sqlsrv4')->select("EXEC sp_API_GetRoutes 0");
             $orderTypes = DB::connection('sqlsrv4')->select("EXEC sp_API_GetOrderTypes 0");
-        }   
+        }
 
         return view('dims.routePlanner.index')
             ->with('routes', $routes)
@@ -228,7 +228,7 @@ class TabletLoadingApp extends Controller
             ]);
         } else {
             $stops = DB::connection('sqlsrv3')->select("EXEC sp_API_R_getRoutePlannerStops '$deliveryDate', '$dateTo', $OrderType, '$routeId', '$status'");
-        } 
+        }
 
         return response()->json($stops);
     }
@@ -245,7 +245,7 @@ class TabletLoadingApp extends Controller
             ]);
         } else {
             $result =DB::connection('sqlsrv3')->select("EXEC sp_API_R_GetRouteMassAndValueOnPlanner '$dateFrom','$dateTo'");
-        } 
+        }
 
         return response()->json($result);
     }
@@ -727,7 +727,7 @@ class TabletLoadingApp extends Controller
                 'CurrentDate'=>$CurrentDate,
                 'FutureDate'=> $FutureDate
             ]);
-            
+
 
         } else {
 
@@ -750,7 +750,7 @@ class TabletLoadingApp extends Controller
     }
     public function liveFleetDeliveries()
     {
-        $this->authorize('isAllowCompanyPermission', ['App\Models\CompanyPermission', 'isallowdeliverycurrentstats']);
+        $this->authorizeCompanyPermission('isallowdeliverycurrentstats');
         $Date = (new \DateTime())->format('Y-m-d');
       //  $Date='2019-07-05';
         $livebulk = DB::connection('sqlsrv3')
@@ -762,7 +762,7 @@ class TabletLoadingApp extends Controller
     }
     public function routePlannerSuggestions($deliveryDate,$OrderType,$routeId,$status)
     {
-        $this->authorize('isAllowCompanyPermission', ['App\Models\CompanyPermission', 'isallowrouteoptomo']);
+        $this->authorizeCompanyPermission('isallowrouteoptomo');
         $array = array();
         $getInvoicesOnRoute = DB::connection('sqlsrv3')
             ->select("EXEC spGetStopsToOptimize '" . $deliveryDate . "','".$OrderType."'," . $routeId . ",'" . $status."'" );
@@ -803,7 +803,7 @@ class TabletLoadingApp extends Controller
     }
     public function logisticsPlan($dates)
     {
-        // $this->authorize('isAllowCompanyPermission', ['App\Models\CompanyPermission', 'isallowlogisticsplan']);
+        $this->authorizeCompanyPermission('isallowlogisticsplan');
         $Date = (new \DateTime($dates))->format('Y-m-d');
 
         if (config('app.IS_API_BASED')) {
@@ -1003,8 +1003,9 @@ and  cast(dteDeliveryDate as date) = cast(tdd.DeliveryDate as date)
     public function getShortLoadedReport(){
         return view('dims/loadingreport');
     }
-    public function getDriverBIReport(){
-        $this->authorize('isAllowCompanyPermission', ['App\Models\CompanyPermission', 'isallowdriverbireport']);
+    public function getDriverBIReport()
+    {
+        $this->authorizeCompanyPermission('isallowdriverbireport');
         return view('dims/driverbireport');
     }
     public function driverbireportget(Request $request){

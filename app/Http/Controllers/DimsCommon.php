@@ -840,15 +840,14 @@ class DimsCommon extends Controller
         if (config('app.IS_API_BASED')) {
            $consoleData= $this->apiManagementConsoleData([
                 'dateFrom' => $dateFrom,
-                'dateTo' => $dateTo
-                
+                'dateTo' => $dateTo,
             ]);
         } else {
 
             $consoleData = DB::connection('sqlsrv3')->select("exec sp_API_R_ManagementConsoleData ?,?",array($dateFrom,$dateTo));
-            
+
             }
-        
+
 
         return response()->json($consoleData);
 
@@ -1174,7 +1173,7 @@ class DimsCommon extends Controller
 
     public function overallspecials()
     {
-        $this->authorize('isAllowCompanyPermission', ['App\Models\CompanyPermission', 'isallowoverallspecials']);
+        $this->authorizeCompanyPermission('isallowoverallspecials');
         //
         $queryCustomers =DB::connection('sqlsrv3')->table("vwTestTblCustomers" )->select('CustomerId','StoreName','CustomerPastelCode','CreditLimit','BalanceDue','UserField5','Email','Routeid','Discount','OtherImportantNotes','strRoute')->where('StatusId',1)->orderBy('CustomerPastelCode','ASC')->get();
         $queryProducts =DB::connection('sqlsrv3')->table("viewActiveProductWithVat" )->select('ProductId','PastelCode','PastelDescription','UnitSize','Tax','Cost','QtyInStock','Margin','Alcohol','Available','PurchOrder')->orderBy('PastelDescription','ASC')->distinct()->get();
@@ -1486,7 +1485,7 @@ class DimsCommon extends Controller
         return response()->json($id);
 
     }
-    
+
     public function XmlBulkEditingCustomerSpecials(Request $request)
     {
 
@@ -1854,7 +1853,7 @@ class DimsCommon extends Controller
 
     public function customersalespage()
     {
-        $this->authorize('isAllowCompanyPermission', ['App\Models\CompanyPermission', 'isallowcustomersalestrend']);
+        $this->authorizeCompanyPermission('isallowcustomersalestrend');
         return view('dims/customersalescomparison');
     }
     public function customersalesJson($datefrom1,$dateto1,$datefrom2,$dateto2)
@@ -2226,15 +2225,15 @@ class DimsCommon extends Controller
         }else{
         $returncosts = DB::connection('sqlsrv3')
             ->select("Exec [sp_API_R_ViewDeletedOrders] ?,?",array($date1,$date2));
-            
+
         return response()->json($returncosts);
         }
-        
+
     }
 
     public function backorders()
     {
-        $this->authorize('isAllowCompanyPermission', ['App\Models\CompanyPermission', 'isallowremoteorders']);
+        $this->authorizeCompanyPermission('isallowremoteorders');
         return view('dims/backorders');
     }
 
@@ -2320,7 +2319,7 @@ class DimsCommon extends Controller
         }else{
             DB::connection('sqlsrv3')->select("EXEC sp_API_D_CustomerSpecialLine $CustomerSpecial");
         }
-        
+
         return  response()->json($CustomerSpecial);
     }
 
@@ -2339,7 +2338,7 @@ class DimsCommon extends Controller
             $UserId = Auth::user()->UserID;
             $activeUser= DB::connection('sqlsrv3')->select("EXEC sp_API_R_AdminAuthorize '$userName', '$userPassword', $UserId, '$requiredAuth'");
         }
-        
+
         return  response()->json($activeUser);
     }
 
@@ -2424,7 +2423,7 @@ class DimsCommon extends Controller
         }else{
             DB::connection('sqlsrv3')->select("EXEC sp_API_D_GroupSpecialLine $GroupSpecial");
         }
-        
+
         return response()->json($GroupSpecial);
     }
 

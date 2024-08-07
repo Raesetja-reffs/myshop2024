@@ -33,13 +33,13 @@ ORDER BY [GROUP 2],[GROUP 3] ,Description_1 ");
     }
     public function qtyadjustmentsstagingimoveit()
     {
-        $this->authorize('isAllowCompanyPermission', ['App\Models\CompanyPermission', 'isallowqtyadjstage']);
+        $this->authorizeCompanyPermission('isallowqtyadjstage');
         return view('wims/stagingimoveitadjustments');
 
     }
     public function qtyadjustmentspicking()
     {
-        $this->authorize('isAllowCompanyPermission', ['App\Models\CompanyPermission', 'isallowqtyadjpicking']);
+        $this->authorizeCompanyPermission('isallowqtyadjpicking');
         return view('wims/qtyadjustonpicking');
 
     }
@@ -71,7 +71,7 @@ ORDER BY [GROUP 2],[GROUP 3] ,Description_1 ");
         }else{
             $result = DB::connection('sqlsrv3')->select("EXEC sp_API_R_PushedProhibitedCustomers $ProductId, '$Type'");
         }
-        
+
         return response()->json($result);
     }
 
@@ -92,7 +92,7 @@ ORDER BY [GROUP 2],[GROUP 3] ,Description_1 ");
             // dd("EXEC sp_API_CU_PushAndProhibitCustomers $ProductId, '$PushedList', '$ProhibitedList', $UserId");
             $result = DB::connection('sqlsrv3')->select("EXEC sp_API_CU_PushAndProhibitCustomers $ProductId, '$PushedList', '$ProhibitedList', $UserId");
         }
-        
+
         return response()->json($result);
     }
 

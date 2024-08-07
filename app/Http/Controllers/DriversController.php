@@ -288,7 +288,7 @@ class DriversController extends Controller
     }
     public function driverspdfdocs()
     {
-        $this->authorize('isAllowCompanyPermission', ['App\Models\CompanyPermission', 'isallowimoveitpod']);
+        $this->authorizeCompanyPermission('isallowimoveitpod');
         $sessionUserId = Auth::user()->UserID;
         $pdfdocs = DB::connection('sqlsrv3')
             ->select(" Exec spGetPDFdocs $sessionUserId"); //WHERE ID = ''
@@ -522,7 +522,7 @@ dbo.fnRouteLoader($routingId) as strLoadedBy,bitCashUpCheckedIt cashdealtwithit
     }
     public function noOfStops()
     {
-        $this->authorize('isAllowCompanyPermission', ['App\Models\CompanyPermission', 'isallownumberofdeliveries']);
+        $this->authorizeCompanyPermission('isallownumberofdeliveries');
         return view('dims/numberofdeliveries_report');
     }
     public function creditRequisitionByRoutingId($routingId)

@@ -62,7 +62,7 @@
                                 <div id="inputOrderVal"></div>
                             </div>
                         </div>
-                        
+
                     </div>
                 </div>
                 <div id="gridRoutePlanner"></div>
@@ -95,13 +95,13 @@
                             <div id="btnNotifyPickers"></div>
                         </div>
                     </div>
-                    {{-- @can('isAllowCompanyPermission', ['App\Models\CompanyPermission', 'isallowrouteoptomo']) --}}
+                    @if(viewCheckCompanyPermission('isallowrouteoptomo'))
                         <div class="field mb-2">
                             <div class="value">
                                 <div id="btnRouteOptimization"></div>
                             </div>
                         </div>
-                    {{-- @endcan --}}
+                    @endif
 
                     <div class="field mb-2">
                         <div class="value">

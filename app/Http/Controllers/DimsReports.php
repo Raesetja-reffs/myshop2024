@@ -140,14 +140,14 @@ class DimsReports extends Controller
     }
     public function searchcustomerpricing(){
         if (config('app.IS_API_BASED')) {
-            
+
         $queryCustomers = $this->apiGetCustomerData();
         $queryGroups = $this->apiGetGroupData();
             }else{
-                
+
         $queryCustomers =DB::connection('sqlsrv3')->table("viewtblCustomers" )->select('CustomerId','StoreName','CustomerPastelCode')->orderBy('CustomerPastelCode','ASC')->get();
         $queryGroups =DB::connection('sqlsrv3')->table("tblGroups" )->select('GroupId','GroupName','GroupCode')->orderBy('GroupId','ASC')->get();
-       
+
                     }
         return view('dims.priceprinting.index')
         ->with('customers',$queryCustomers)
@@ -157,12 +157,12 @@ class DimsReports extends Controller
     public function getAllCustomerPricesSearch(Request $request){
         $inputCustAccount = $request->get('inputCustAccount');
         if (config('app.IS_API_BASED')) {
-            
+
         $getSpecialsOnParams = $this->apiGetSpecialDefaultPricesData([
             'inputCustAccount'=>$inputCustAccount
         ]);
         }else{
-            
+
         $getSpecialsOnParams = DB::connection('sqlsrv3')
         ->select("EXEC sp_API_R_GetCustomerPricesFromSearchParams ? ",array($inputCustAccount));
                 }
@@ -177,7 +177,7 @@ class DimsReports extends Controller
                 'groupid'=>$inputGroupId
             ]);
         }else{
-            
+
         $getSpecialsOnParams = DB::connection('sqlsrv3')
         ->select("EXEC sp_API_R_GetGroupPricesFromSearchParams ? ",array($inputGroupId));
                 }
@@ -573,12 +573,14 @@ $salesMonthToDate = DB::connection('sqlsrv3')
     public function getuseractionsBydate(){
         return view('dims/useractionsbydate');
     }
-    public function getAwaitingStock(){
-        $this->authorize('isAllowCompanyPermission', ['App\Models\CompanyPermission', 'isallowawaitingproducts']);
+    public function getAwaitingStock()
+    {
+        $this->authorizeCompanyPermission('isallowawaitingproducts');
         return view('dims/awaitingstockreport');
     }
-    public function getAwaitingStockbycustomer(){
-        $this->authorize('isAllowCompanyPermission', ['App\Models\CompanyPermission', 'isallowawaitingorders']);
+    public function getAwaitingStockbycustomer()
+    {
+        $this->authorizeCompanyPermission('isallowawaitingorders');
         return view('dims/awaitingstockbycustomer');
     }
     public function jsonawaitingstock(Request $request){
@@ -625,7 +627,7 @@ $salesMonthToDate = DB::connection('sqlsrv3')
             ->select("Exec [sp_API_R_UserActionsByDate] ?,?",array($from,$to));
             return response()->json($shorloadedJasper);
         }
-        
+
     }
     public function jsonawaitingstockorders(Request $request){
         $productId  = $request->get('productId');

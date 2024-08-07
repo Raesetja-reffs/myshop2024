@@ -118,11 +118,11 @@
                         <button id="notifypickers" class="btn btn-primary btn-auto-height w-100 mb-2">
                             NOTIFY PICKERS
                         </button>
-                        @can('isAllowCompanyPermission', ['App\Models\CompanyPermission', 'isallowrouteoptomo'])
+                        @if(viewCheckCompanyPermission('isallowrouteoptomo'))
                             <button id="suggestions" class="btn btn-primary btn-auto-height w-100">
                                 ROUTE OPTOM
                             </button>
-                        @endcan
+                        @endif
 
                         <hr>
                         <button id="reprinting" class="btn btn-primary btn-auto-height w-100 mb-2">

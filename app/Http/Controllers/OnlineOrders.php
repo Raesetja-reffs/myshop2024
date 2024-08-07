@@ -10,7 +10,7 @@ class OnlineOrders extends Controller
 {
     public function remoteorders()
     {
-        $this->authorize('isAllowCompanyPermission', ['App\Models\CompanyPermission', 'isallowecommerce']);
+        $this->authorizeCompanyPermission('isallowecommerce');
         $myMarkerOrders=$this->mymarketGetSales();
         return view('dims/remote_orders')->with('MyMarket',$myMarkerOrders);
     }
