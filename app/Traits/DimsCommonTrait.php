@@ -152,4 +152,9 @@ trait DimsCommonTrait
     public function apiGroupSpecialsDeals(){
         return $this->httpRequest('post', 'Post_GroupSpecialsDeals');
     }
+    
+    public function apiManagementConsoleData($data){
+        return $this->httpRequest('post', 'Post_ManagementConsoleData',$data);
+    }
+
 }

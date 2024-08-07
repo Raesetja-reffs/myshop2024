@@ -283,4 +283,15 @@ trait SalesFormFunctionsTrait
 
         return $this->convertToCollectionObject($this->httpRequest('post', 'Post_XMLSplitOrder', $data));
     }
+    
+    public function apiGetOrderLocksForDeleting()
+    {
+        return $this->httpRequest('post', 'Post_GetOrderLocksForDeleting');
+    }
+    
+    public function apiDeleteOrderLocksParams($data)
+    {
+        return $this->httpRequest('post', 'Post_DeleteOrderLocksParams', $data);
+    }
+
 }

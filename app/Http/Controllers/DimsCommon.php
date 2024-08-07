@@ -830,13 +830,27 @@ class DimsCommon extends Controller
     }
     public function managementSearch()
     {
-        $queryCustomers =DB::connection('sqlsrv3')->table("vwTestTblCustomers" )->select('CustomerId','StoreName','CustomerPastelCode','CreditLimit','BalanceDue','UserField5','Email','Routeid','Discount','OtherImportantNotes','strRoute')->where('StatusId',1)->orderBy('CustomerPastelCode','ASC')->get();
-        $queryProducts =DB::connection('sqlsrv3')->table("viewActiveProductWithVat" )->select('ProductId','PastelCode','PastelDescription','UnitSize','Tax','Cost','QtyInStock','Margin','Alcohol','Available','PurchOrder','UnitWeight','SoldByWeight','strBulkUnit')->distinct()->orderBy('PastelDescription','ASC')->get();
-        $consoleTypes =  DB::connection('sqlsrv3')
-            ->select("SELECT * FROM tblDIMSConsoleTypes Order by strConsoleTypes");
 
-        return view('dims/management_console')->with('customers',$queryCustomers)
-            ->with('products',$queryProducts)->with('consoles',$consoleTypes);
+            return view('dims.managementConsole.index');
+
+    }
+    public function getManagementConsoleData(Request $request){
+        $dateFrom = $request->get('dateFrom');
+        $dateTo = $request->get('dateTo');
+        if (config('app.IS_API_BASED')) {
+           $consoleData= $this->apiManagementConsoleData([
+                'dateFrom' => $dateFrom,
+                'dateTo' => $dateTo
+                
+            ]);
+        } else {
+
+            $consoleData = DB::connection('sqlsrv3')->select("exec sp_API_R_ManagementConsoleData ?,?",array($dateFrom,$dateTo));
+            
+            }
+        
+
+        return response()->json($consoleData);
 
     }
     public function masscustomerdatatable(Request $request){
