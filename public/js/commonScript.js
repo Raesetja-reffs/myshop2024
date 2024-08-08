@@ -266,8 +266,7 @@ function readyMadeLineOrderLine(tag,prodDesc,prodCodes,prodQty,price,cost,instoc
         $(tag).find('#prodQty_'+tokenId).val('1');
         $(tag).find('#prodQty_'+tokenId).select();
 
-        if($.trim(SoldByWeight) == "1")
-        {
+        if ($.trim(SoldByWeight) == "1" || $.trim(SoldByWeight) == "true") {
             $('#table').find('#prodBulk_' + tokenId).focus();
             $('#prodBulk_' + tokenId).addClass('inputs');
             $('#prodBulk_' + tokenId).addClass('addgreen');
@@ -276,13 +275,11 @@ function readyMadeLineOrderLine(tag,prodDesc,prodCodes,prodQty,price,cost,instoc
             $('#prodComment_' + tokenId).val(1 +' '+strBulkUnit );
             // $('#prodComment_' + tokenId).prop('title', 1 +' '+strBulkUnit );
 
-        }else
-        {
+        } else {
             $('#prodBulk_' + tokenId).prop('readonly', true);
             $('#prodBulk_' + tokenId).val(0);
         }
-    }else
-    {
+    } else {
         /*var dialog = $('<p><strong style="color:red">Authorization Needed</strong></p>').dialog({
             height: 200, width: 700,modal: true,containment: false,
             buttons: {
@@ -297,8 +294,7 @@ function readyMadeLineOrderLine(tag,prodDesc,prodCodes,prodQty,price,cost,instoc
         $(tag).find('#prodQty_'+tokenId).val('1');
         $(tag).find('#prodPrice_'+tokenId).select();
 
-        if($.trim(SoldByWeight) == "1")
-        {
+        if ($.trim(SoldByWeight) == "1" || $.trim(SoldByWeight) == "true") {
             $('#table').find('#prodPrice_' + tokenId).focus();
             $('#prodBulk_' + tokenId).addClass('inputs');
             $('#prodBulk_' + tokenId).addClass('addgreen');
@@ -307,8 +303,7 @@ function readyMadeLineOrderLine(tag,prodDesc,prodCodes,prodQty,price,cost,instoc
             $('#prodComment_' + tokenId).val(1 +' '+strBulkUnit );
             // $('#prodComment_' + tokenId).prop('title', 1 +' '+strBulkUnit );
 
-        }else
-        {
+        } else {
             $('#prodBulk_' + tokenId).prop('readonly', true);
             $('#prodBulk_' + tokenId).val(0);
         }
