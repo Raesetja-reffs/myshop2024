@@ -551,6 +551,26 @@ if (!function_exists('getMenuItems')) {
                     'href' => route('company-permissions.index'),
                 ],
             ]);
+            $menuItems = array_merge($menuItems, [
+                [
+                    'name' => 'Groups',
+                    'icon' => 'ki-outline ki-abstract-33 fs-2',
+                    'submenuitems' => [
+                        [
+                            'name' => 'Add Group',
+                            'icon' => 'ki-outline ki-minus fs-2',
+                            'href' => route('groups.create'),
+                            'target' => '',
+                        ],
+                        [
+                            'name' => 'Groups Listing',
+                            'icon' => 'ki-outline ki-minus fs-2',
+                            'href' => route('groups.index'),
+                            'target' => '',
+                        ]
+                    ]
+                ]
+            ]);
         }
 
         return $menuItems;

@@ -7,6 +7,7 @@ use App\Http\Controllers\CentralUserController;
 use App\Http\Controllers\JasperReports;
 use App\Http\Controllers\LaravelLogController;
 use App\Http\Controllers\ReportBuilderFileController;
+use App\Http\Controllers\GroupController;
 
 Route::middleware('auth:web,central_api_user')->group(function () {
 
@@ -28,6 +29,8 @@ Route::middleware('auth:web,central_api_user')->group(function () {
     Route::get('/getSalesOrderProductsBasedOnCustomerCode', [SalesForm::class,'getSalesOrderProductsBasedOnCustomerCode'])->name('sales-order.get-sales-order-products-based-on-customercode');
 
     Route::get('/logs', [LaravelLogController::class,'index'])->name('laravel.log');
+
+    Route::resource('groups', GroupController::class);
 });
 
 Route::get('/order/getPdfData', [JasperReports::class,'getPdfDataFromApi'])->name('order.get-pdf-data');
