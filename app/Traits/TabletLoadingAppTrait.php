@@ -69,4 +69,61 @@ trait TabletLoadingAppTrait
 
         return $queries;
     }
+
+    public function apiGetDrivers(){
+        $queries = $this->httpRequest('post','Post_GetDrivers'); 
+        $queries = $this->convertToCollectionObject($queries);
+
+        return $queries;
+    }
+
+    public function apiGetDispatchLocations(){
+        $queries = $this->httpRequest('post','Post_GetDispatchLocations'); 
+        $queries = $this->convertToCollectionObject($queries);
+
+        return $queries;
+    }
+
+    public function apiGetTrucks(){
+        $queries = $this->httpRequest('post','Post_GetTrucks'); 
+        $queries = $this->convertToCollectionObject($queries);
+
+        return $queries;
+    }
+
+    public function apiGetDeliveryRoutingInfo($data){
+        $queries = $this->httpRequest('post','Post_GetDeliveryRoutingInfo', $data); 
+        $queries = $this->convertToCollectionObject($queries);
+
+        return $queries;
+    }
+
+    public function apiGetCreditRequisitionPerRoute($data){
+        $queries = $this->httpRequest('post','Post_GetCreditRequisitionPerRoute', $data); 
+        $queries = $this->convertToCollectionObject($queries);
+
+        return $queries;
+    }
+
+    public function apiUpdateLogisticsInformation($data){
+        $queries = $this->httpRequest('post','Post_UpdateLogisticsInformation', $data); 
+        $queries = $this->convertToCollectionObject($queries);
+
+        return $queries;
+    }
+
+    public function apiGetCreditRequisitionReport($data){
+        $queries = $this->httpRequest('post','Post_GetCreditRequisitionReport', $data); 
+        $queries = $this->convertToCollectionObject($queries);
+
+        return $queries;
+    }
+
+    public function apiGetDriversAppCreditRequests($data){
+        $queries = $this->httpRequest('post','Post_GetDriversAppCreditRequests', $data); 
+        $queries = $this->convertToCollectionObject($queries);
+
+        return $queries;
+    }
+
 }

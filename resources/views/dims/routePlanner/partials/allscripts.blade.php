@@ -1,8 +1,11 @@
 <script>
     var orderTypes = {!! json_encode($orderTypes) !!};
     var routes = {!! json_encode($routes) !!};
-    
-    orderTypes.unshift({ OrderTypeId: "-99", OrderType: "All" });
+
+    orderTypes.unshift({
+        OrderTypeId: "-99",
+        OrderType: "All"
+    });
 
     var statuses = [{
         id: "3",
@@ -397,8 +400,7 @@
             width: '100%',
             onClick() {
                 var todaysDate = new Date();
-                window.open('{!! url('/logisticsPlan') !!}/' + formatDate(todaysDate), "logisticsPlan",
-                    "location=1,status=1,scrollbars=1, width=1200,height=850");
+                window.open('{!! url('/logisticsPlan') !!}/' + formatDate(todaysDate), '_blank');
             },
         }).dxButton("instance");
 

@@ -63,8 +63,14 @@
     @php $sidebaropenValue = ''; @endphp
 @endif
 
+@php
+    $excludeNavAndToolBar = [
+        'logisticsPlan/*',
+    ];
+@endphp
+
 <body id="kt_body"
-    class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled toolbar-fixed toolbar-tablet-and-mobile-fixed aside-enabled aside-fixed"
+    class="@if (!request()->is($excludeNavAndToolBar)) header-fixed header-tablet-and-mobile-fixed toolbar-enabled toolbar-fixed toolbar-tablet-and-mobile-fixed  aside-enabled aside-fixed @endif"
     style="--kt-toolbar-height:55px;--kt-toolbar-height-tablet-and-mobile:55px" data-kt-aside-minimize="{{ $sidebaropenValue }}">
     <!--begin::Theme mode setup on page load-->
     @include('layouts.theme-mode')
@@ -76,17 +82,23 @@
         <!--begin::Page-->
         <div class="page d-flex flex-row flex-column-fluid">
             <!--begin::Aside-->
-            @include('layouts.app.asidemenu')
+            @if (!request()->is($excludeNavAndToolBar))
+                @include('layouts.app.asidemenu')
+            @endif
             <!--end::Aside-->
             <!--begin::Wrapper-->
             <div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
                 <!--begin::Header-->
-                @include('layouts.app.header')
+                @if (!request()->is($excludeNavAndToolBar))
+                    @include('layouts.app.header')
+                @endif
                 <!--end::Header-->
                 <!--begin::Content-->
                 <div class="content d-flex flex-column flex-column-fluid " id="kt_content">
                     <!--begin::Toolbar-->
-                    @include('layouts.app.toolbar')
+                    @if (!request()->is($excludeNavAndToolBar))
+                        @include('layouts.app.toolbar')
+                    @endif
                     <!--end::Toolbar-->
                     <!--begin::Post-->
                     <div class="post d-flex flex-column-fluid" id="kt_post">
@@ -107,7 +119,9 @@
                 </div>
                 <!--end::Content-->
                 <!--begin::Footer-->
-                @include('layouts.app.footer')
+                @if (!request()->is($excludeNavAndToolBar))
+                    @include('layouts.app.footer')
+                @endif
                 <!--end::Footer-->
             </div>
             <!--end::Wrapper-->

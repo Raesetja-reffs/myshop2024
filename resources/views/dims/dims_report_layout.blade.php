@@ -118,8 +118,7 @@ if ((Auth::guest()))
         @endif
     </div>
     <div><h3>Drivers</h3>
-        <a href='{!!url("/driverreq_report")!!}' onclick="window.open(this.href, 'driverreq_report',
-'left=20,top=20,width=1500,height=1000,toolbar=1,resizable=0'); return false;"   style="text-decoration: underline">Returns</a>
+        <a href='{!!url("/creditRequisitionReport")!!}' onclick="window.open(this.href, 'creditRequisitionReport','_blank'); return false;"   style="text-decoration: underline">Returns</a>
     </div>
     <div><h3>Other</h3>
         <a href='{!!url("/reports")!!}' onclick="window.open(this.href, 'reports',

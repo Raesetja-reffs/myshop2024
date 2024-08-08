@@ -235,7 +235,7 @@
         }).then(function (data) {
             gridOptions.api.setRowData(data);
         });
-        fetch('{!!url("/creditNoteReasonsJSonWithBook")!!}/' + datefrom1 + "/" + dateto1).then(function (response) {
+        fetch('{!!url("/getDriversAppCreditRequests")!!}/' + datefrom1 + "/" + dateto1).then(function (response) {
             return response.json();
         }).then(function (data) {
             gridOptionsWithBook.api.setRowData(data);

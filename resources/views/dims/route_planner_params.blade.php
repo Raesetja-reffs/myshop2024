@@ -377,7 +377,7 @@
             $('#logisticsPlan').click(function(){
                 var Odate = new Date();
                 var newODate = $.datepicker.formatDate('dd-mm-yy', new Date(Odate));
-                window.open( '{!!url("/logisticsPlan")!!}/'+newODate, "logisticsPlan", "location=1,status=1,scrollbars=1, width=1200,height=850");
+                window.open( '{!!url("/logisticsPlan")!!}/'+newODate, '_blank');
             });
 
             //The main big function !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

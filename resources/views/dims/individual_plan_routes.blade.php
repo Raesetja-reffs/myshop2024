@@ -150,7 +150,7 @@
                 }
             });
             $.ajax({
-                url: '{!!url("/updatelogisticsinformation")!!}',
+                url: '{!!url("/updateLogisticsInformation")!!}',
                 type: "GET",
                 data: {
                     routingid: $('#finish').val(),

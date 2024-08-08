@@ -248,13 +248,13 @@
 
     console.log(newODate);
 
-    fetch('{!!url("/driverreq_reportJson")!!}/' + newODate + "/" + newODate).then(function (response) {
+    fetch('{!!url("/getDriversRequisitionReport")!!}/' + newODate + "/" + newODate).then(function (response) {
         return response.json();
     }).then(function (data) {
         gridOptions.api.setRowData(data);
     });
 
-    fetch('{!!url("/creditNoteReasonsJSonWithBook")!!}/' + newODate + "/" + newODate).then(function (response) {
+    fetch('{!!url("/getDriversAppCreditRequests")!!}/' + newODate + "/" + newODate).then(function (response) {
         return response.json();
     }).then(function (data) {
         gridOptionsWithBook.api.setRowData(data);
@@ -276,12 +276,12 @@
         var datefrom1 = $('#datefrom1').val();
         var dateto1 = $('#dateeto1').val();
 
-        fetch('{!!url("/driverreq_reportJson")!!}/' + datefrom1 + "/" + dateto1).then(function (response) {
+        fetch('{!!url("/getDriversRequisitionReport")!!}/' + datefrom1 + "/" + dateto1).then(function (response) {
             return response.json();
         }).then(function (data) {
             gridOptions.api.setRowData(data);
         });
-        fetch('{!!url("/creditNoteReasonsJSonWithBook")!!}/' + datefrom1 + "/" + dateto1).then(function (response) {
+        fetch('{!!url("/getDriversAppCreditRequests")!!}/' + datefrom1 + "/" + dateto1).then(function (response) {
             return response.json();
         }).then(function (data) {
             gridOptionsWithBook.api.setRowData(data);

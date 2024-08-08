@@ -599,7 +599,7 @@ on ot.OrderTypeId = tdd.OrderTypeId
             ;
 
     }
-    public function updatelogisticsinformation(Request $request)
+    public function updateLogisticsInformation(Request $request)
     {
         //update here
         $routingid = $request->get('routingid');
@@ -614,11 +614,11 @@ on ot.OrderTypeId = tdd.OrderTypeId
             ->where('DeliveryDateRoutingID',$routingid )
             ->update(['DriverId' => $driverid,'TruckId'=>$truckid,'intDispatchId'=>$dispatchid,'AssistantId'=>$assistantid]);
     }
-	 public function driverreq_report()
+	 public function creditRequisitionReport()
     {
         return view('dims/drivers_requisitions');
     }
-    public function driverreq_reportJson($datefrom,$dateTo)
+    public function getDriversRequisitionReport($datefrom,$dateTo)
     {
         $gridcustomerjsonspecials =  DB::connection('sqlsrv3')
             ->select("EXEC spDriversAppRequisitionReport '".$datefrom."','".$dateTo."'");

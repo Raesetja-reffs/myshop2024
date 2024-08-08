@@ -820,91 +820,108 @@ class TabletLoadingApp extends Controller
             $livePlanned = DB::connection('sqlsrv3')->select("EXEC sp_API_R_LogisticsPlannedRoutes '" . $Date . "'");
         }
 
-        return view('dims.logisticsPlan')
+        return view('dims.logisticsPlan.index')
             ->with('performance', $livebulk)
             ->with('delDate', $Date)
             ->with('planned',$livePlanned);
     }
-    public function LogisticsInsertMapRoute($deldateRoutingid,$ordertype,$route)
-    {
 
-        $oTypes=  DB::connection('sqlsrv3')
-            ->select("select * from tblOrdertypes (nolock) order by ordertypeid");
+    public function logisticsRouteReport($deliveryDateId, $selectedType, $selectedRoute){
 
-        $routes=  DB::connection('sqlsrv3')
-            ->select("select * from tblRoutes (nolock) order by route");
-        $drivers=  DB::connection('sqlsrv3')
-            ->select("select * from tblDrivers (nolock) order by DriverName");
-        $tblDispatchLocations =  DB::connection('sqlsrv3')
-            ->select("select * from tblDispatchLocations (nolock)");
+        if (config('app.IS_API_BASED')) {
+            $routes = $this->apiGetRoutes();
+            $types = $this->apiGetOrderTypes();
+            $drivers = $this->apiGetDrivers();
+            $dispatchLocations = $this->apiGetDispatchLocations();
+            $trucks = $this->apiGetTrucks();
+            $routingInfo = $this->apiGetDeliveryRoutingInfo([
+                'deliveryDateId' => $deliveryDateId,
+            ]);
+            $routeRequisition = $this->apiGetCreditRequisitionPerRoute([
+                'deliveryDateId' => $deliveryDateId,
+            ]);
+        } else {
+            $routes = DB::connection('sqlsrv3')->select("EXEC sp_API_GetRoutes 0");
+            $types = DB::connection('sqlsrv3')->select("EXEC sp_API_GetOrderTypes 0");
+            $drivers = DB::connection('sqlsrv3')->select("EXEC sp_API_R_GetDrivers");
+            $dispatchLocations = DB::connection('sqlsrv3')->select("EXEC sp_API_R_GetDispatchLocations 0");
+            $trucks = DB::connection('sqlsrv3')->select("EXEC sp_API_R_GetTrucks 0");
+            $routingInfo = DB::connection('sqlsrv3')->select("EXEC sp_API_R_GetDeliveryRoutingInfo $deliveryDateId");
+            $routeRequisition = DB::connection('sqlsrv3')->select("EXEC sp_API_R_GetCreditRequisitionPerRoute $deliveryDateId");
+        }
 
-        $trucks =  DB::connection('sqlsrv3')
-            ->select("select * from tblTrucks (nolock) order by RegNo");
-        $routinginfo =  DB::connection('sqlsrv3')
-            ->select("select cast(DeliveryDate as date ) as DeliveryDate,r.Route,ot.OrderType,strdrivername,mnykmdone,mnykmoutt,strSealNumber
-,dtm,ass.DriverName AssitName,driv.DriverName,driv.DriverId,ass.DriverId as assId,tblTrucks.TruckId,TruckName,RegNo
- from tblDeliveryDateRouting (nolock) tdd
-inner join tblRoutes(nolock) r
-on r.Routeid = tdd.RouteId
-inner join tblOrderTypes (nolock) ot
-on ot.OrderTypeId = tdd.OrderTypeId
-left outer join tblDrivers driv
-on driv.DriverId = tdd.DriverId
-left outer join tblDrivers ass
-on ass.DriverId = tdd.AssistantId
-left outer join tblTrucks
-on tblTrucks.TruckId = tdd.TruckId
-left outer join tblDriversAppTripHeader
-on tblDriversAppTripHeader.strroutename = r.Route
-and  tblDriversAppTripHeader.strordertypes = ot.OrderType
-and  cast(dteDeliveryDate as date) = cast(tdd.DeliveryDate as date)
- where DeliveryDateRoutingID = $deldateRoutingid ");
-
-        return view('dims/individual_plan_routes')
-            ->with('otypes', $oTypes)
+        return view('dims.reports.logisticsRouteReport')
             ->with('routes', $routes)
+            ->with('types', $types)
             ->with('drivers', $drivers)
-            ->with('dispatch', $tblDispatchLocations)
+            ->with('dispatchLocations', $dispatchLocations)
             ->with('trucks', $trucks)
-            ->with('ot', $ordertype)
-            ->with('route', $route)
-            ->with('routinginfo', $routinginfo)
-            ->with('routingId', $deldateRoutingid)
-            ;
+            ->with('routingInfo', $routingInfo)
+            ->with('routeRequisition', $routeRequisition)
+            ->with('selectedType', $selectedType)
+            ->with('selectedRoute', $selectedRoute)
+            ->with('deliveryDateId', $deliveryDateId);
+    }
+
+    public function updateLogisticsInformation(Request $request){
+        $routingId = $request->get('routingId');
+        $driverId = $request->get('driverId');
+        $assistantId = $request->get('assistantId');
+        $truckId = $request->get('truckId');
+        $dispatchId = $request->get('dispatchId');
+
+        if (config('app.IS_API_BASED')) {
+            $result = $this->apiUpdateLogisticsInformation([
+                'routingId' => $routingId,
+                'driverId' => $driverId,
+                'assistantId' => $assistantId,
+                'truckId' => $truckId,
+                'dispatchId' => $dispatchId
+            ]);
+        } else {
+            $result = DB::connection('sqlsrv3')->select("EXEC sp_API_U_LogisticsInformation $routingId, $driverId, $assistantId, $truckId, $dispatchId");
+        }
+
+        return response()->json($result);
 
     }
-    public function updatelogisticsinformation(Request $request)
-    {
-        //update here
-        $routingid = $request->get('routingid');
-        $driverid = $request->get('driverid');
-        $assistantid = $request->get('assistantid');
-        $truckid = $request->get('truckid');
-        $dispatchid = $request->get('dispatchid');
 
-        // dd($routingid);
+    public function creditRequisitionReport(){
+        return view('dims.reports.creditRequisition');
+    }
 
-        DB::connection('sqlsrv3')->table('tblDeliveryDateRouting')
-            ->where('DeliveryDateRoutingID',$routingid )
-            ->update(['DriverId' => $driverid,'TruckId'=>$truckid,'intDispatchId'=>$dispatchid,'AssistantId'=>$assistantid]);
-    }
-    public function driverreq_report()
-    {
-        return view('dims/drivers_requisitions');
-    }
-    public function driverreq_reportJson($datefrom,$dateTo)
-    {
-        $gridcustomerjsonspecials =  DB::connection('sqlsrv3')
-            ->select("EXEC spDriversAppRequisitionReport '".$datefrom."','".$dateTo."'");
-        return response()->json($gridcustomerjsonspecials);
+    public function getCreditRequisitionReport(Request $request){
+        $dateFrom = $request->get('dateFrom');
+        $dateTo = $request->get('dateTo');
 
+        if (config('app.IS_API_BASED')) {
+            $response = $this->apiGetCreditRequisitionReport([
+                'dateFrom' => $dateFrom,
+                'dateTo' => $dateTo,
+            ]);
+        } else {
+            $response =  DB::connection('sqlsrv3')->select("EXEC sp_API_R_CreditRequisitionReport '$dateFrom','$dateTo'");
+        }
+
+        return response()->json($response);
     }
-    public function creditNoteReasonsJSonWithBook($dateFrom,$dateTo)
-    {
-        $creditNote = DB::connection('sqlsrv3')
-            ->select("Exec spViewCreditRequestFromTheApp '".$dateFrom."','".$dateTo."'");
-        return response()->json($creditNote);
+
+    public function getDriversAppCreditRequests(Request $request){
+        $dateFrom = $request->get('dateFrom');
+        $dateTo = $request->get('dateTo');
+
+        if (config('app.IS_API_BASED')) {
+            $response = $this->apiGetDriversAppCreditRequests([
+                'dateFrom' => $dateFrom,
+                'dateTo' => $dateTo,
+            ]);
+        } else {
+            $response =  DB::connection('sqlsrv3')->select("EXEC sp_API_R_DriversAppCreditRequests '".$dateFrom."','".$dateTo."'");
+        }
+
+        return response()->json($response);
     }
+
     public function driverreq_perrouteJson($routingid)
     {
         $gridcustomerjsonspecials =  DB::connection('sqlsrv3')
