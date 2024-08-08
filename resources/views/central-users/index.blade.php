@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        {{ __('Central Users Listing') }}
+        {{ __('Users Listing') }}
     </x-slot>
     <x-slot name="breadcrum">
         <li class="breadcrumb-item text-muted">
@@ -10,7 +10,7 @@
         <li class="breadcrumb-item">
             <span class="bullet bg-gray-300 w-5px h-2px"></span>
         </li>
-        <li class="breadcrumb-item text-dark">Central Users Listing </li>
+        <li class="breadcrumb-item text-dark">Users Listing </li>
     </x-slot>
 
     <div class="card card-flush m-3 mb-2 mt-2">
@@ -22,7 +22,7 @@
                         <i class="ki-outline ki-magnifier fs-3 position-absolute ms-4"></i>
                         <input type="text" name="search"
                             class="form-control ps-12"
-                            placeholder="Search central users by username, erp user id, erp username"
+                            placeholder="Search users by username, erp user id, erp username"
                             value="{{ request()->query('search') }}"
                         >
                     </div>
@@ -44,7 +44,7 @@
                     @endif
                     @if (auth()->guard('central_api_user')->user()->can('create', App\Models\CentralUser::class))
                         <a href="{{ route('central-users.create') }}" class="btn btn-primary btn-sm">
-                            Add Central User
+                            Add User
                         </a>
                     @endif
                 </div>
@@ -98,7 +98,7 @@
                                         <a href="{{ route('central-users.edit', $centralUser->id) }}" class="btn btn-primary btn-sm me-1">Edit</a>
                                     @endif
                                     @if (auth()->guard('central_api_user')->user()->can('delete', $centralUser))
-                                        <form action="{{ route('central-users.destroy', $centralUser->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this central user?');">
+                                        <form action="{{ route('central-users.destroy', $centralUser->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this user?');">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-danger btn-sm me-1">Delete</button>

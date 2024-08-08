@@ -210,7 +210,7 @@ if (!function_exists('getMenuItems')) {
                             'height' => 900,
                         ],
                         'permission_slug' => 'isallowisellit',
-                    ], 
+                    ],
                     [
                         'name' => 'Price List Printing',
                         'icon' => 'ki-outline ki-discount fs-2',
@@ -498,17 +498,17 @@ if (!function_exists('getMenuItems')) {
             && auth()->guard('central_api_user')->user()->can('index', App\Models\CentralUser::class)) {
             $menuItems = array_merge($menuItems, [
                 [
-                    'name' => 'Central Users',
+                    'name' => 'Users',
                     'icon' => 'ki-outline ki-people fs-2',
                     'submenuitems' => [
                         [
-                            'name' => 'Add Central User',
+                            'name' => 'Add User',
                             'icon' => 'ki-outline ki-minus fs-2',
                             'href' => route('central-users.create'),
                             'target' => '',
                         ],
                         [
-                            'name' => 'Central Users Listing',
+                            'name' => 'Users Listing',
                             'icon' => 'ki-outline ki-minus fs-2',
                             'href' => route('central-users.index'),
                             'target' => '',
@@ -517,33 +517,41 @@ if (!function_exists('getMenuItems')) {
                 ]
             ]);
         }
-        $menuItems = array_merge($menuItems, [
-            [
-                'name' => 'Report Builder Files',
-                'icon' => 'ki-outline ki-row-horizontal fs-2',
-                'submenuitems' => [
-                    [
-                        'name' => 'Add Report Builder File',
-                        'icon' => 'ki-outline ki-minus fs-2',
-                        'href' => route('report-builder-files.create'),
-                        'target' => '',
-                    ],
-                    [
-                        'name' => 'Report Builder Files Listing',
-                        'icon' => 'ki-outline ki-minus fs-2',
-                        'href' => route('report-builder-files.index'),
-                        'target' => '',
+        if (!config('app.IS_API_BASED')
+            || (
+                config('app.IS_API_BASED')
+                && auth()->guard('central_api_user')->user()
+                && auth()->guard('central_api_user')->user()->isSuperAdmin()
+            )
+        ) {
+            $menuItems = array_merge($menuItems, [
+                [
+                    'name' => 'Report Builder Files',
+                    'icon' => 'ki-outline ki-row-horizontal fs-2',
+                    'submenuitems' => [
+                        [
+                            'name' => 'Add Report Builder File',
+                            'icon' => 'ki-outline ki-minus fs-2',
+                            'href' => route('report-builder-files.create'),
+                            'target' => '',
+                        ],
+                        [
+                            'name' => 'Report Builder Files Listing',
+                            'icon' => 'ki-outline ki-minus fs-2',
+                            'href' => route('report-builder-files.index'),
+                            'target' => '',
+                        ]
                     ]
                 ]
-            ]
-        ]);
-        $menuItems = array_merge($menuItems, [
-            [
-                'name' => 'Company Permissions',
-                'icon' => 'ki-outline ki-key-square fs-2',
-                'href' => route('company-permissions.index'),
-            ],
-        ]);
+            ]);
+            $menuItems = array_merge($menuItems, [
+                [
+                    'name' => 'Company Permissions',
+                    'icon' => 'ki-outline ki-key-square fs-2',
+                    'href' => route('company-permissions.index'),
+                ],
+            ]);
+        }
 
         return $menuItems;
     }

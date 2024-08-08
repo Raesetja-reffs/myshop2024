@@ -163,4 +163,15 @@ trait UtilityTrait
     {
         throw new AuthorizationException();
     }
+
+    /**
+     * This function is used for authorize the company permission
+     *
+     */
+    public function authorizeUserIsSuperAdmin()
+    {
+        if (config('app.IS_API_BASED') && (!(auth()->guard('central_api_user')->user()->isSuperAdmin()))) {
+            $this->throwUnAuthorizationException();
+        }
+    }
 }

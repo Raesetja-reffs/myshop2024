@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        {{ __('Edit Central User') }}
+        {{ __('Edit User') }}
     </x-slot>
     <x-slot name="breadcrum">
         <li class="breadcrumb-item text-muted">
@@ -12,13 +12,13 @@
         </li>
         <li class="breadcrumb-item">
             <a href="{{ route('central-users.index') }}" class="text-muted text-hover-primary">
-                Central Users Listing
+                Users Listing
             </a>
         </li>
         <li class="breadcrumb-item">
             <span class="bullet bg-gray-300 w-5px h-2px"></span>
         </li>
-        <li class="breadcrumb-item text-dark">Edit Central User </li>
+        <li class="breadcrumb-item text-dark">Edit User </li>
     </x-slot>
 
     <div class="card mb-2 mt-2">

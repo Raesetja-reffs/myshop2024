@@ -14,7 +14,7 @@
 
         <li class="breadcrumb-item">
             <a href="{{ route('central-users.index') }}" class="text-muted text-hover-primary">
-                Central Users Listing
+                Users Listing
             </a>
         </li>
         <li class="breadcrumb-item">

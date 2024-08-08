@@ -13,6 +13,7 @@ class CompanyPermissionController extends Controller
 
     public function index()
     {
+        $this->authorizeUserIsSuperAdmin();
         $companies = $this->getCompaniesListForDropdown();
 
         return view('company-permissions.index', compact('companies'));
@@ -23,6 +24,7 @@ class CompanyPermissionController extends Controller
      */
     public function getRoles($companyId = 0)
     {
+        $this->authorizeUserIsSuperAdmin();
         $companyRoles = [];
         $companyPermissions = [];
         $companies = [];
@@ -51,6 +53,7 @@ class CompanyPermissionController extends Controller
      */
     public function savePermissions(Request $request)
     {
+        $this->authorizeUserIsSuperAdmin();
         if ($request->has('companyRoles')) {
             foreach ($request->get('companyRoles') as $roleId => $value) {
                 $isExist = CompanyPermission::where('strCompanyId', $request->get('strCompanyId'))

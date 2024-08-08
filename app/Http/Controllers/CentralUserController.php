@@ -83,7 +83,7 @@ class CentralUserController extends Controller
             $centralUser->update(['erp_user_id' => $response[0]['UserId']]);
         }
 
-        return redirect()->route('central-users.index')->with('success', 'Central User' . config('custom.flash_messages')['create']);
+        return redirect()->route('central-users.index')->with('success', 'User' . config('custom.flash_messages')['create']);
     }
 
     /**
@@ -117,7 +117,7 @@ class CentralUserController extends Controller
 
         $centralUser->update($this->getRequestData($request->validated(), true));
 
-        return redirect()->route('central-users.index')->with('success', 'Central User' . config('custom.flash_messages')['update']);
+        return redirect()->route('central-users.index')->with('success', 'User' . config('custom.flash_messages')['update']);
     }
 
     /**
@@ -135,7 +135,7 @@ class CentralUserController extends Controller
 
         $this->deleteCentralDimsUser($data);
 
-        return redirect()->route('central-users.index')->with('success', 'Central User' . config('custom.flash_messages')['delete']);
+        return redirect()->route('central-users.index')->with('success', 'User' . config('custom.flash_messages')['delete']);
     }
 
     /**
@@ -168,6 +168,11 @@ class CentralUserController extends Controller
             $returnData['password'] = Hash::make($data['password']);
             $returnData['internal_pass'] = encrypt($data['password']);
         }
+        if ($isUpdate && (!auth()->guard('central_api_user')->user()->isSuperAdmin())) {
+            unset($returnData['company_id']);
+            unset($returnData['company_name']);
+            unset($returnData['user_role']);
+        }
 
         return $returnData;
     }
@@ -195,6 +200,6 @@ class CentralUserController extends Controller
             'internal_pass' => encrypt($data['password']),
         ]);
 
-        return redirect()->route('central-users.index')->with('success', 'Central User Reset Password' . config('custom.flash_messages')['update']);
+        return redirect()->route('central-users.index')->with('success', 'User Reset Password' . config('custom.flash_messages')['update']);
     }
 }

@@ -18,6 +18,7 @@ class ReportBuilderFileController extends Controller
      */
     public function index(Request $request)
     {
+        $this->authorizeUserIsSuperAdmin();
         $reportBuilderFiles = ReportBuilderFile::latest();
 
         if ($request->has('search') && $request->input('search')) {
@@ -49,6 +50,7 @@ class ReportBuilderFileController extends Controller
      */
     public function create()
     {
+        $this->authorizeUserIsSuperAdmin();
         $companies = $this->getCompaniesListForDropdown();
 
         return view('report-builder-files.create', compact('companies'));
@@ -59,6 +61,7 @@ class ReportBuilderFileController extends Controller
      */
     public function store(StoreReportBuilderFileRequest $request)
     {
+        $this->authorizeUserIsSuperAdmin();
         $data = $request->validated();
         $passData = $this->getRequestData($data);
         if ($request->hasFile('file_url')) {
@@ -80,6 +83,8 @@ class ReportBuilderFileController extends Controller
      */
     public function show(ReportBuilderFile $reportBuilderFile)
     {
+        $this->authorizeUserIsSuperAdmin();
+
         return view('report-builder-files.show', compact('reportBuilderFile'));
     }
 
@@ -88,6 +93,7 @@ class ReportBuilderFileController extends Controller
      */
     public function edit(ReportBuilderFile $reportBuilderFile)
     {
+        $this->authorizeUserIsSuperAdmin();
         $companies = $this->getCompaniesListForDropdown();
 
         return view('report-builder-files.edit', compact('reportBuilderFile', 'companies'));
@@ -98,6 +104,7 @@ class ReportBuilderFileController extends Controller
      */
     public function update(StoreReportBuilderFileRequest $request, ReportBuilderFile $reportBuilderFile)
     {
+        $this->authorizeUserIsSuperAdmin();
         $data = $request->validated();
         $passData = $this->getRequestData($data);
         if ($request->hasFile('file_url')) {
@@ -120,6 +127,7 @@ class ReportBuilderFileController extends Controller
      */
     public function destroy(ReportBuilderFile $reportBuilderFile)
     {
+        $this->authorizeUserIsSuperAdmin();
         $this->removeImageToAzureBlob($reportBuilderFile->file_url);
         $reportBuilderFile->delete();
 
@@ -141,6 +149,7 @@ class ReportBuilderFileController extends Controller
 
     public function downloadSampleFile($reportType)
     {
+        $this->authorizeUserIsSuperAdmin();
         $filename = 'OrderInvoice.repx';
         if ($reportType == 2) {
             $filename = 'OrderInvoiceWithoutPrice.repx';
