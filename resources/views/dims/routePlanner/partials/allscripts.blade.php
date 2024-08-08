@@ -23,8 +23,11 @@
 
     $(document).ready(function() {
         // inputs to get data
+        let date = new Date();
+
         const selectDateRange = $("#selectDateRange").dxDateRangeBox({
             displayFormat: 'yyyy-MM-dd',
+            value: [formatDate(date), formatDate(date)],
             showClearButton: true,
         }).dxDateRangeBox("instance");
 
@@ -46,7 +49,6 @@
 
         const selectRoute = $("#selectRoute").dxTagBox({
             dataSource: routes,
-            applyValueMode: 'useButtons',
             showSelectionControls: true,
             showClearButton: true,
             searchEnabled: true,

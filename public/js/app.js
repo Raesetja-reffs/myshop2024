@@ -156,7 +156,21 @@ function formatDate(date) {
         return '';
     }
 
-    returnFormat = date.toLocaleDateString("en-ZA", {
+    // Check if the date is already in the correct format (yyyy-MM-dd)
+    const datePattern = /^\d{4}-\d{2}-\d{2}$/;
+    if (datePattern.test(date)) {
+        return date;
+    }
+
+    // Parse the date string into a Date object
+    const parsedDate = new Date(date);
+    if (isNaN(parsedDate)) {
+        // If the date is invalid, return an empty string or handle the error as needed
+        return '';
+    }
+
+    // Format the date to yyyy-MM-dd
+    const returnFormat = parsedDate.toLocaleDateString("en-ZA", {
         year: 'numeric',
         month: '2-digit',
         day: '2-digit'
