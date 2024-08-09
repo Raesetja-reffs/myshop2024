@@ -214,6 +214,8 @@ class GroupController extends Controller
         ];
         $group = $this->apiGroupResource($passData);
         if (isset($group[0]->Result) && $group[0]->Result == 'SUCCESS') {
+            GroupUser::where('intGroupId', $groupId)
+                ->delete();
 
             return redirect()->route('groups.index')->with('success', 'Group' . config('custom.flash_messages')['delete']);
         }
