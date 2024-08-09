@@ -172,3 +172,54 @@ function showLoader() {
 function hideLoader() {
     $(".general-loader").hide();
 }
+
+function select2WithDynamicSearch() {
+    if ($(".select2-with-dynamic-search").length > 0) {
+        $(".select2-with-dynamic-search").each(function () {
+            let $this = $(this);
+
+            // Destroy existing select2 instance if it exists
+            if ($this.data('select2')) {
+                $this.select2('destroy');
+            }
+
+            $(this).select2({
+                ajax: {
+                    url: $(this).attr('url'),
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            q: params.term // search query entered by the user
+                        };
+                    },
+                    processResults: function (data) {
+                        return {
+                            results: $.map(data, function (item) {
+                                return {
+                                    id: item.id,
+                                    text: item.name // or any other field you want to display
+                                }
+                            })
+                        };
+                    },
+                    cache: true
+                },
+                placeholder: 'Search items',
+                minimumInputLength: 3,
+            });
+        });
+    }
+}
+function removeSelect2WithDynamicSearch() {
+    if ($(".select2-with-dynamic-search").length > 0) {
+        $(".select2-with-dynamic-search").each(function () {
+            let $this = $(this);
+
+            // Destroy existing select2 instance if it exists
+            if ($this.data('select2')) {
+                $this.select2('destroy');
+            }
+        });
+    }
+}

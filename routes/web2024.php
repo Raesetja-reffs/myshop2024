@@ -17,6 +17,7 @@ Route::middleware('auth:web,central_api_user')->group(function () {
     Route::post('company-permissions/save-permissions', [CompanyPermissionController::class, 'savePermissions'])
         ->name('company-permissions.save-permissions');
 
+    Route::get('/central-users/get-search-users', [CentralUserController::class, 'getSearchUsers'])->name('central-users.get-search-users');
     Route::resource('central-users', CentralUserController::class);
     Route::get('/central-users/reset-password/{centralUser}', [CentralUserController::class, 'resetPassword'])->name('central-users.reset.password');
     Route::post('/central-users/store/reset-password/{centralUser}', [CentralUserController::class, 'storeResetPassword'])->name('central-users.store.reset.password');

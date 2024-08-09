@@ -43,8 +43,8 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <x-input-label for="strGroupDescription" :value="__('Group Description')" class="required" />
-                                    <x-text-input id="strGroupDescription"
+                                    <x-input-label for="strGroupDescription" :value="__('Group Description')" />
+                                    <x-text-area id="strGroupDescription"
                                         name="strGroupDescription"
                                         type="text"
                                         class="form-control"
@@ -52,6 +52,35 @@
                                         :messages="$errors->get('strGroupDescription')"
                                         required
                                     />
+                                </div>
+
+                                <div class="mb-3">
+                                    <x-input-label for="group_users" :value="__('Group Users')" class="mb-3" />
+                                    <!--begin::Repeater-->
+                                    <div id="kt_docs_repeater_nested">
+                                        <!--begin::Form group-->
+                                        <div class="form-group">
+                                            <div data-repeater-list="kt_docs_repeater_nested_outer" class="d-flex flex-column gap-3">
+                                                @if (old('kt_docs_repeater_nested_outer', $groupUsers))
+                                                    @foreach (old('kt_docs_repeater_nested_outer', $groupUsers) as $key => $groupUser)
+                                                        @isset($groupUser->id)
+                                                            @php $groupUser->group_user_id = $groupUser->id; @endphp
+                                                        @endisset
+                                                        <x-group-users :key="$key" :users="$users" :groupUser="$groupUser" />
+                                                    @endforeach
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <!--begin::Form group-->
+                                        <div class="form-group mt-5 mb-5">
+                                            <a href="javascript:;" data-repeater-create class="btn btn-flex btn-light-primary">
+                                                <i class="ki-outline ki-plus fs-3"></i>
+                                                Add New Group User
+                                            </a>
+                                        </div>
+                                        <!--end::Form group-->
+                                    </div>
+                                    <!--end::Repeater-->
                                 </div>
 
                                 <div class="flex items-center gap-4">
@@ -65,4 +94,21 @@
             </div>
         </div>
     </div>
+    @push('scripts')
+        <script>
+            $(document).ready(function() {
+                removeSelect2WithDynamicSearch();
+                $('#kt_docs_repeater_nested').repeater({
+                    show: function () {
+                        $(this).slideDown();
+                        select2WithDynamicSearch();
+                    },
+                    hide: function (deleteElement) {
+                        $(this).slideUp(deleteElement);
+                    }
+                });
+                select2WithDynamicSearch();
+            });
+        </script>
+    @endpush
 </x-app-layout>

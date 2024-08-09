@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        {{ __('Report Builder File Details') }}
+        {{ __('Group Details') }}
     </x-slot>
     <x-slot name="breadcrum">
         <li class="breadcrumb-item text-muted">
@@ -12,14 +12,14 @@
         </li>
 
         <li class="breadcrumb-item">
-            <a href="{{ route('report-builder-files.index') }}" class="text-muted text-hover-primary">
-                Report Builder Files Listing
+            <a href="{{ route('groups.index') }}" class="text-muted text-hover-primary">
+                Groups Listing
             </a>
         </li>
         <li class="breadcrumb-item">
             <span class="bullet bg-gray-300 w-5px h-2px"></span>
         </li>
-        <li class="breadcrumb-item text-dark">Report Builder File Details </li>
+        <li class="breadcrumb-item text-dark">Group Details </li>
     </x-slot>
 
     <div class="card mb-2 mt-2">
@@ -31,11 +31,11 @@
                         <div class="card-header align-items-center py-5 gap-2 gap-md-5">
                             <!--begin::Card toolbar-->
                             <div class="card-toolbar flex-row-fluid justify-content-end gap-5">
-                                <a href="{{ route('report-builder-files.edit', $reportBuilderFile->id) }}" class="btn btn-primary btn-sm">
-                                    Edit Report Builder File
+                                <a href="{{ route('groups.edit', $group->intGroupId) }}" class="btn btn-primary btn-sm">
+                                    Edit Group
                                 </a>
-                                <a href="{{ route('report-builder-files.index') }}" class="btn btn-primary btn-sm">
-                                    Report Builder Files Listing
+                                <a href="{{ route('groups.index') }}" class="btn btn-primary btn-sm">
+                                    Groups Listing
                                 </a>
                             </div>
                             <!--end::Card toolbar-->
@@ -49,33 +49,61 @@
                                     <tbody>
                                         <tr>
                                             <td style="width: 200px;"><strong>Id</strong></td>
-                                            <td>{{ $reportBuilderFile->id }}</td>
+                                            <td>{{ $group->intGroupId }}</td>
                                         </tr>
                                         <tr>
-                                            <td><strong>Company Name</strong></td>
+                                            <td><strong>Group Name</strong></td>
                                             <td>
-                                                {{ $reportBuilderFile->company_name }}
+                                                {{ $group->strGroupName }}
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td><strong>Report Type</strong></td>
-                                            <td>{{ $reportBuilderFile->report_type }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>File URL</strong></td>
-                                            <td>
-                                                <a href="{{ $reportBuilderFile->file_url }}" title="{{ $reportBuilderFile->report_type }}" alt="{{ $reportBuilderFile->report_type }}">
-                                                    Download File
-                                                </a>
-                                            </td>
+                                            <td><strong>Group Description</strong></td>
+                                            <td>{{ $group->strGroupDescription }}</td>
                                         </tr>
                                         <tr>
                                             <td><strong>Created At</strong></td>
-                                            <td>{{ $reportBuilderFile->created_at }}</td>
+                                            <td>{{ date('Y-m-d H:i:s', strtotime($group->dteCreated)) }}</td>
                                         </tr>
                                         <tr>
                                             <td><strong>Updated At</strong></td>
-                                            <td>{{ $reportBuilderFile->updated_at }}</td>
+                                            <td>{{ date('Y-m-d H:i:s', strtotime($group->dteUpdated)) }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Group Users</strong></td>
+                                            <td>
+                                                <div class="table-responsive">
+                                                    <table class="table table-striped table-bordered">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>User Name</th>
+                                                        </thead>
+                                                        <tbody>
+                                                            @if($groupUsers->isEmpty())
+                                                                <tr>
+                                                                    <td colspan="1">
+                                                                        No Record(s) Found
+                                                                    </td>
+                                                                </tr>
+                                                            @else
+                                                                @foreach ($groupUsers as $groupUser)
+                                                                    <tr>
+                                                                        <td>
+                                                                            @if (isset($users[$groupUser->user_id][0]))
+                                                                                <a href="{{ route('central-users.show', $users[$groupUser->user_id][0]['id']) }}">
+                                                                                    {{ $users[$groupUser->user_id][0]['name'] }}
+                                                                                </a>
+                                                                            @else
+                                                                                -
+                                                                            @endif
+                                                                        </td>
+                                                                    </tr>
+                                                                @endforeach
+                                                            @endif
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </table>

@@ -44,6 +44,7 @@
                             <th class="">Id</th>
                             <th class="">Group Name</th>
                             <th class="">Group Description</th>
+                            <th class="">No Of Users</th>
                             <th class="">Creared At</th>
                             <th style="width: 200px;">Actions</th>
                         </tr>
@@ -58,7 +59,16 @@
                                 <td>
                                     {{ $group->strGroupDescription }}
                                 </td>
-                                <td>{{ $group->dteCreated }}</td>
+                                <td>
+                                    @if (isset($groupWiseNoOfUsers[$group->intGroupId]) && isset($groupWiseNoOfUsers[$group->intGroupId][0]))
+                                        <a href="{{ route('groups.show', $group->intGroupId) }}">
+                                            {{ $groupWiseNoOfUsers[$group->intGroupId][0]->total }}
+                                        </a>
+                                    @else
+                                        0
+                                    @endif
+                                </td>
+                                <td>{{ date('Y-m-d H:i:s', strtotime($group->dteCreated)) }}</td>
                                 <td class="d-flex" style="width: 200px;">
                                     <a href="{{ route('groups.show', $group->intGroupId) }}" class="btn btn-info btn-sm me-1">View</a>
                                     <a href="{{ route('groups.edit', $group->intGroupId) }}" class="btn btn-primary btn-sm me-1">Edit</a>

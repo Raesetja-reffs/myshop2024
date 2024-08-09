@@ -3,16 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\ReportBuilderFile;
 use App\Traits\UtilityTrait;
-use App\Traits\ImageUpload;
 use App\Traits\GroupTrait;
-use App\Http\Requests\StoreReportBuilderFileRequest;
+use App\Http\Requests\StoreGroupRequest;
 use Illuminate\Pagination\LengthAwarePaginator;
+use App\Models\GroupUser;
+use Illuminate\Support\Facades\DB;
 
 class GroupController extends Controller
 {
-    use UtilityTrait, ImageUpload, GroupTrait;
+    use UtilityTrait, GroupTrait;
 
     /**
      * This function is used for show the set company permission page
@@ -25,14 +25,27 @@ class GroupController extends Controller
         if ($request->has('page') && $request->input('page')) {
             $pageNumber = $request->input('page');
         }
-        $groups = $this->apiGroupResource([
+        $passData = [
             'intGroupId' => 0,
             'StatementType' => 'Select'
-        ]);
-        // Manually create a LengthAwarePaginator instance
+        ];
+        $groups = $this->apiGroupResource($passData);
+        $groupIds = [];
+        if ($groups) {
+            foreach ($groups as $group) {
+                $groupIds[] = $group->intGroupId;
+            }
+        }
+        $groupWiseNoOfUsers = [];
+        if (!empty($groupIds)) {
+            $groupWiseNoOfUsers = GroupUser::whereIn('intGroupId', $groupIds)
+                ->select(DB::raw('COUNT(*) as total'), 'intGroupId')
+                ->groupBy('intGroupId')
+                ->get();
+            $groupWiseNoOfUsers = $groupWiseNoOfUsers->groupBy('intGroupId');
+        }
         $total = count($groups);
 
-        // Create a LengthAwarePaginator instance
         $groups = new LengthAwarePaginator(
             $groups,
             $total,
@@ -41,7 +54,7 @@ class GroupController extends Controller
             ['path' => $request->url(), 'query' => $request->query()]
         );
 
-        return view('groups.index', compact('groups'));
+        return view('groups.index', compact('groups', 'groupWiseNoOfUsers'));
     }
 
     /**
@@ -50,110 +63,193 @@ class GroupController extends Controller
     public function create()
     {
         $this->authorizeUserIsSuperAdmin();
+        $groupUsers = collect();
+        $groupUsers->push([
+            'group_user_id' => '',
+            'user_id' => '',
+        ]);
+        $userIds = [];
+        if (old('kt_docs_repeater_nested_outer')) {
+            foreach (old('kt_docs_repeater_nested_outer') as $value) {
+                $userIds[] = $value['user_id'];
+            }
+        }
+        $users = [];
+        if ($userIds) {
+            $users = $this->getSearchCentralUserListForDropdown('', $userIds);
+        }
 
-        return view('groups.create');
+        return view('groups.create', compact('groupUsers', 'users'));
     }
 
     /**
      * This function is used for save the create user
      */
-    public function store(StoreReportBuilderFileRequest $request)
+    public function store(StoreGroupRequest $request)
     {
         $this->authorizeUserIsSuperAdmin();
         $data = $request->validated();
-        $passData = $this->getRequestData($data);
-        if ($request->hasFile('file_url')) {
-            $response = $this->uploadImageToAzureBlob($request->file('file_url'));
-            if ($response['status'] == 'success') {
-                $passData['file_url'] = $response['imageUrl'];
-            } else {
-
-                return redirect()->route('report-builder-files.index')->with('error', $response['message']);
-            }
+        $passData = [
+            'intGroupId' => 0,
+            'strGroupName' => $data['strGroupName'],
+            'strGroupDescription' => $data['strGroupDescription'],
+            'StatementType' => 'Insert'
+        ];
+        $group = $this->apiGroupResource($passData);
+        if (isset($group[0]->Result) && $group[0]->Result == 'SUCCESS') {
+            $this->saveGroupUsers($request, $group[0]->intGroupId);
         }
-        ReportBuilderFile::create($passData);
 
-        return redirect()->route('report-builder-files.index')->with('success', 'Report Builder File' . config('custom.flash_messages')['create']);
+        return redirect()->route('groups.index')->with('success', 'Group' . config('custom.flash_messages')['create']);
     }
 
     /**
      * This function is used for show the user details
      */
-    public function show(ReportBuilderFile $reportBuilderFile)
+    public function show($groupId)
     {
         $this->authorizeUserIsSuperAdmin();
+        $passData = [
+            'intGroupId' => $groupId,
+            'strGroupName' => '',
+            'strGroupDescription' => '',
+            'StatementType' => 'ShowGroup'
+        ];
+        $groupData = $this->apiGroupResource($passData);
+        if (isset($groupData[0])) {
+            $group = $groupData[0];
+            $userIds = [];
+            $groupUsers = GroupUser::where('intGroupId', $groupId)
+                ->get();
+            if (!$groupUsers->isEmpty()) {
+                foreach ($groupUsers as $groupUser) {
+                    $userIds[] = $groupUser->user_id;
+                }
+            }
+            $users = [];
+            if ($userIds) {
+                $users = $this->getSearchCentralUserListForDropdown('', $userIds);
+                $users = $users->groupBy('id');
+            }
 
-        return view('report-builder-files.show', compact('reportBuilderFile'));
+            return view('groups.show', compact('group', 'groupUsers', 'users'));
+        }
     }
 
     /**
-     * This function is used for show the edit user page
+     * This function is used for show the edit group page
      */
-    public function edit(ReportBuilderFile $reportBuilderFile)
+    public function edit($groupId)
     {
         $this->authorizeUserIsSuperAdmin();
-        $companies = $this->getCompaniesListForDropdown();
+        $passData = [
+            'intGroupId' => $groupId,
+            'strGroupName' => '',
+            'strGroupDescription' => '',
+            'StatementType' => 'ShowGroup'
+        ];
+        $groupData = $this->apiGroupResource($passData);
+        if (isset($groupData[0])) {
+            $group = $groupData[0];
+            $userIds = [];
+            $groupUsers = GroupUser::where('intGroupId', $groupId)
+                ->get();
+            if ($groupUsers->isEmpty()) {
+                $groupUsers->push([
+                    'group_user_id' => '',
+                    'user_id' => '',
+                ]);
+            } else {
+                foreach ($groupUsers as $groupUser) {
+                    $userIds[] = $groupUser->user_id;
+                }
+            }
+            if (old('kt_docs_repeater_nested_outer')) {
+                foreach (old('kt_docs_repeater_nested_outer') as $value) {
+                    $userIds[] = $value['user_id'];
+                }
+            }
+            $users = [];
+            if ($userIds) {
+                $users = $this->getSearchCentralUserListForDropdown('', $userIds);
+            }
 
-        return view('report-builder-files.edit', compact('reportBuilderFile', 'companies'));
+            return view('groups.edit', compact('group', 'groupUsers', 'users'));
+        }
     }
 
     /**
-     * This function is used for save the update user
+     * This function is used for save the update group
      */
-    public function update(StoreReportBuilderFileRequest $request, ReportBuilderFile $reportBuilderFile)
+    public function update(StoreGroupRequest $request, $groupId)
     {
+        $this->authorizeUserIsSuperAdmin();
         $this->authorizeUserIsSuperAdmin();
         $data = $request->validated();
-        $passData = $this->getRequestData($data);
-        if ($request->hasFile('file_url')) {
-            $response = $this->uploadImageToAzureBlob($request->file('file_url'));
-            if ($response['status'] == 'success') {
-                $this->removeImageToAzureBlob($reportBuilderFile->file_url);
-                $passData['file_url'] = $response['imageUrl'];
-            } else {
-
-                return redirect()->route('report-builder-files.index')->with('error', $response['message']);
-            }
+        $passData = [
+            'intGroupId' => $groupId,
+            'strGroupName' => $data['strGroupName'],
+            'strGroupDescription' => $data['strGroupDescription'],
+            'StatementType' => 'Update'
+        ];
+        $group = $this->apiGroupResource($passData);
+        if (isset($group[0]->Result) && $group[0]->Result == 'SUCCESS') {
+            $this->saveGroupUsers($request, $group[0]->intGroupId);
         }
-        $reportBuilderFile->update($passData);
 
-        return redirect()->route('report-builder-files.index')->with('success', 'Report Builder File' . config('custom.flash_messages')['update']);
+        return redirect()->route('groups.index')->with('success', 'Group' . config('custom.flash_messages')['update']);
     }
 
     /**
      * This function is used for destroy the report builder file
      */
-    public function destroy(ReportBuilderFile $reportBuilderFile)
+    public function destroy($groupId)
     {
         $this->authorizeUserIsSuperAdmin();
-        $this->removeImageToAzureBlob($reportBuilderFile->file_url);
-        $reportBuilderFile->delete();
+        $passData = [
+            'intGroupId' => $groupId,
+            'strGroupName' => '',
+            'strGroupDescription' => '',
+            'StatementType' => 'Delete'
+        ];
+        $group = $this->apiGroupResource($passData);
+        if (isset($group[0]->Result) && $group[0]->Result == 'SUCCESS') {
 
-        return redirect()->route('report-builder-files.index')->with('success', 'Report Builder File' . config('custom.flash_messages')['delete']);
+            return redirect()->route('groups.index')->with('success', 'Group' . config('custom.flash_messages')['delete']);
+        }
+
+        return redirect()->route('groups.index')->with('success', config('custom.flash_messages')['error_contact_to_administrator']);
     }
 
     /**
-     * This function is used for get the request data
-     * @param array $data
+     * This function is used for save the group users
+     *
+     * @param obj $request
+     * @param int $groupId
      */
-    private function getRequestData($data)
+    private function saveGroupUsers($request, $groupId)
     {
-        return [
-            'company_id' => $data['company_id'],
-            'company_name' => $data['company_name'],
-            'report_type' => $data['report_type'],
-        ];
-    }
-
-    public function downloadSampleFile($reportType)
-    {
-        $this->authorizeUserIsSuperAdmin();
-        $filename = 'OrderInvoice.repx';
-        if ($reportType == 2) {
-            $filename = 'OrderInvoiceWithoutPrice.repx';
+        $groupUserIds = [];
+        if ($request->get('kt_docs_repeater_nested_outer')) {
+            foreach ($request->get('kt_docs_repeater_nested_outer') as $groupUser) {
+                if ($groupUser['user_id'] != '') {
+                    $groupUserData = [
+                        'intGroupId' => $groupId,
+                        'user_id' => $groupUser['user_id'],
+                    ];
+                    $groupUserModel = null;
+                    if ($groupUser['group_user_id']) {
+                        $groupUserModel = GroupUser::where('id', $groupUser['group_user_id'])->first();
+                        $groupUserModel->update($groupUserData);
+                    } else {
+                        $groupUserModel = GroupUser::create($groupUserData);
+                    }
+                    $groupUserIds[] = $groupUserModel->id;
+                }
+            }
         }
-        $reportTypeFilePath = public_path('reports/' . $filename);
-
-        return response()->download($reportTypeFilePath);
+        GroupUser::where('intGroupId', $groupId)
+            ->whereNotIn('id', $groupUserIds)
+            ->delete();
     }
 }

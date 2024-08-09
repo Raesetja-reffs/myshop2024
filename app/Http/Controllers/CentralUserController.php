@@ -202,4 +202,16 @@ class CentralUserController extends Controller
 
         return redirect()->route('central-users.index')->with('success', 'User Reset Password' . config('custom.flash_messages')['update']);
     }
+
+    /**
+     * This function is used for get the search users
+     *
+     * @param Request $request
+     */
+    public function getSearchUsers(Request $request)
+    {
+        $result = $this->getSearchCentralUserListForDropdown($request->get('q'), []);
+
+        return response()->json($result);
+    }
 }

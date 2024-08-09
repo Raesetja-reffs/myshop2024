@@ -52,6 +52,7 @@
     <script src="{{ asset('js/dx.all.js') }}"></script>
     <script src="{{ asset('js/exceljs.min.js') }}"></script>
     <script src="{{ asset('js/select2.min.js') }}"></script>
+    <script src="{{ asset('js/formrepeater/formrepeater.bundle.js') }}"></script>
     <script src="{{ asset('js/jspdf.umd.min.js') }}"></script>
     <!-- end: Page level JS -->
     <script src="{{ asset('js/commonScript.js?v=' . config('app.js_version')) }}"></script>

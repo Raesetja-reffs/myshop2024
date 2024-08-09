@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Models\CentralUser;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Traits\ApiTrait;
@@ -173,5 +174,34 @@ trait UtilityTrait
         if (config('app.IS_API_BASED') && (!(auth()->guard('central_api_user')->user()->isSuperAdmin()))) {
             $this->throwUnAuthorizationException();
         }
+    }
+
+    /**
+     * This function is used for get the central users list for dropdown
+     *
+     * @return array
+     */
+    public function getSearchCentralUserListForDropdown($searchString = '', $ids = [])
+    {
+        $applyOnlyUser = false;
+        $users = CentralUser::select('id', 'username as name');
+        if ($searchString != '') {
+            $applyOnlyUser = true;
+            $users = $users->where(function ($query) use ($searchString) {
+                $query->orWhere('username', 'like', '%' . $searchString . '%');
+            });
+        }
+        if (!empty($ids)) {
+            $applyOnlyUser = true;
+            $users = $users->whereIn('id', $ids);
+        }
+        if ($applyOnlyUser) {
+            $users = $users->where('company_id', auth()->guard('central_api_user')->user()->company_id);
+            $users = $users->orderBy('username', 'asc')->get();
+        } else {
+            $users = [];
+        }
+
+        return $users;
     }
 }

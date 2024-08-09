@@ -1,8 +1,9 @@
 <x-app-layout>
     <x-slot name="header">
-        {{ __('Edit Report Builder File') }}
+        {{ __('Edit Group') }}
     </x-slot>
     <x-slot name="breadcrum">
+        <!--begin::Item-->
         <li class="breadcrumb-item text-muted">
             <a href="{{ route('home') }}" class="text-muted text-hover-primary">
                 Home </a>
@@ -11,68 +12,81 @@
             <span class="bullet bg-gray-300 w-5px h-2px"></span>
         </li>
         <li class="breadcrumb-item">
-            <a href="{{ route('report-builder-files.index') }}" class="text-muted text-hover-primary">
-                Report Builder Files Listing
+            <a href="{{ route('groups.index') }}" class="text-muted text-hover-primary">
+                Groups Listing
             </a>
         </li>
         <li class="breadcrumb-item">
             <span class="bullet bg-gray-300 w-5px h-2px"></span>
         </li>
-        <li class="breadcrumb-item text-dark">Edit Report Builder File </li>
+        <li class="breadcrumb-item text-dark">Edit Group </li>
     </x-slot>
-
     <div class="card mb-2 mt-2">
         <div class="card-body">
             <div class="row mb-3">
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-body">
-                            <form method="POST" action="{{ route('report-builder-files.update', $reportBuilderFile->id) }}" class="addnovalidate" enctype="multipart/form-data">
+                            <form method="POST" action="{{ route('groups.update', $group->intGroupId) }}" class="addnovalidate" enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
 
-                                <!-- Company Name-->
                                 <div class="mb-3">
-                                    <x-input-label for="company_id" :value="__('Company Name')" class="required" />
-                                    <x-select-input id='company_id'
-                                        name='company_id'
-                                        :value="old('company_id', $reportBuilderFile->company_id)"
-                                        :options="$companies"
-                                        :messages='$errors->get("company_id")'
-                                        placeholder="Please select company"
-                                        required autofocus
-                                    />
-                                    <input type="hidden" id="company_name" name="company_name" value="{{ old('company_name', $reportBuilderFile->company_name) }}" />
-                                </div>
-
-                                <div class="mb-3">
-                                    <x-input-label for="report_type" :value="__('Report Type')" class="required" />
-                                    <x-select-input id='report_type'
-                                        name='report_type'
-                                        :value="old('report_type', $reportBuilderFile->report_type)"
-                                        :options="config('custom.dims_report')"
-                                        :messages='$errors->get("report_type")'
-                                        placeholder="Please select report type"
-                                        required autofocus
+                                    <x-input-label for="strGroupName" :value="__('Group Name')" class="required" />
+                                    <x-text-input id="strGroupName"
+                                        name="strGroupName"
+                                        type="text"
+                                        class="form-control"
+                                        :value="old('strGroupName', $group->strGroupName)"
+                                        :messages="$errors->get('strGroupName')"
+                                        required
                                     />
                                 </div>
 
-                                <div class="general_image_preview_container">
-                                    <x-input-label for="file_url" :value="__('Report File Upload')" class="required" />
-                                    <div class="mb-3">
-                                        <x-text-input id="file_url"
-                                            name="file_url"
-                                            type="file"
-                                            class="form-control general_image_upload"
-                                            :messages="$errors->get('file_url')"
-                                            required
-                                        />
+                                <div class="mb-3">
+                                    <x-input-label for="strGroupDescription" :value="__('Group Description')" />
+                                    <x-text-area id="strGroupDescription"
+                                        name="strGroupDescription"
+                                        type="text"
+                                        class="form-control"
+                                        :value="old('strGroupDescription', $group->strGroupDescription)"
+                                        :messages="$errors->get('strGroupDescription')"
+                                        required
+                                    />
+                                </div>
+
+                                <div class="mb-3">
+                                    <x-input-label for="group_users" :value="__('Group Users')" class="mb-3" />
+                                    <!--begin::Repeater-->
+                                    <div id="kt_docs_repeater_nested">
+                                        <!--begin::Form group-->
+                                        <div class="form-group">
+                                            <div data-repeater-list="kt_docs_repeater_nested_outer" class="d-flex flex-column gap-3">
+                                                @if (old('kt_docs_repeater_nested_outer', $groupUsers))
+                                                    @foreach (old('kt_docs_repeater_nested_outer', $groupUsers) as $key => $groupUser)
+                                                        @isset($groupUser->id)
+                                                            @php $groupUser->group_user_id = $groupUser->id; @endphp
+                                                        @endisset
+                                                        <x-group-users :key="$key" :users="$users" :groupUser="$groupUser" />
+                                                    @endforeach
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <!--begin::Form group-->
+                                        <div class="form-group mt-5 mb-5">
+                                            <a href="javascript:;" data-repeater-create class="btn btn-flex btn-light-primary">
+                                                <i class="ki-outline ki-plus fs-3"></i>
+                                                Add New Group User
+                                            </a>
+                                        </div>
+                                        <!--end::Form group-->
                                     </div>
+                                    <!--end::Repeater-->
                                 </div>
 
                                 <div class="flex items-center gap-4">
                                     <x-primary-button class="btn-sm">{{ __('Update') }}</x-primary-button>
-                                    <x-a-secondary-button class="btn-sm" href="{{ route('report-builder-files.index') }}">{{ __('Cancel') }}</x-a-secondary-button>
+                                    <x-a-secondary-button class="btn-sm" href="{{ route('groups.index') }}">{{ __('Cancel') }}</x-a-secondary-button>
                                 </div>
                             </form>
                         </div>
@@ -81,4 +95,21 @@
             </div>
         </div>
     </div>
+    @push('scripts')
+        <script>
+            $(document).ready(function() {
+                removeSelect2WithDynamicSearch();
+                $('#kt_docs_repeater_nested').repeater({
+                    show: function () {
+                        $(this).slideDown();
+                        select2WithDynamicSearch();
+                    },
+                    hide: function (deleteElement) {
+                        $(this).slideUp(deleteElement);
+                    }
+                });
+                select2WithDynamicSearch();
+            });
+        </script>
+    @endpush
 </x-app-layout>
